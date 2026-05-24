@@ -2,7 +2,11 @@
 
 This is the maintainer's personal skill collection. It started as a fork/adaptation of [mattpocock/skills](https://github.com/mattpocock/skills), copied as it existed on May 24, 2026, and is being adapted to the maintainer's use cases. This is not the original repo; the original is [mattpocock/skills](https://github.com/mattpocock/skills). Treat the original repo as upstream inspiration, not as the maintainer's personal instruction set.
 
-the maintainer's native language is Brazilian Portuguese. Use PT-BR by default when talking to him, unless a repository artifact is intentionally written in English.
+## Communication / Language
+
+- Chat language: match the user's language.
+- Project language: English for code, git, GitHub, docs, issues, PRs, README,
+  skill names, skill descriptions, and agent-facing instructions.
 
 If you are not 100% sure what to do, ask for clarification.
 
@@ -21,7 +25,7 @@ Use `rtk` for shell commands to keep context cleaner.
 
 The default workflow these skills should reinforce is:
 
-`ideia -> grill -> docs -> issue -> branch -> PR -> handoff`
+`idea -> grill -> docs -> issue -> branch -> PR -> handoff`
 
 When a task touches architecture, shared behavior, Docker/runtime, AI runners, TTS, persistence, or publish flows, do not jump straight to implementation. First check for an existing issue, triage it, use `grill-with-docs` if there is ambiguity, and record durable decisions in `CONTEXT.md` or `docs/adr/`.
 

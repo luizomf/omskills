@@ -1,92 +1,92 @@
 # omskills
 
-Skills pessoais do the maintainer para trabalhar com Codex e outros agentes sem sair dos trilhos.
+the maintainer's personal skill collection for working with Codex and other agents without drifting off track.
 
-## Origem
+## Origin
 
-Este repositorio e basicamente um fork/adaptacao de [mattpocock/skills](https://github.com/mattpocock/skills), copiado como estava em 24 de maio de 2026, e esta sendo adaptado aos casos de uso do the maintainer.
+This repository is basically a fork/adaptation of [mattpocock/skills](https://github.com/mattpocock/skills), copied as it existed on May 24, 2026, and adapted to the maintainer's use cases.
 
-the maintainer nao criou a base original destas skills. Este nao e o repo original; para ver o projeto de origem, use [mattpocock/skills](https://github.com/mattpocock/skills).
+the maintainer did not create the original base for these skills. This is not the original repository; to see the source project, use [mattpocock/skills](https://github.com/mattpocock/skills).
 
-Os repos devem divergir bastante ao longo do tempo. O repo original deve continuar separado para acompanhar upstream; este aqui e o espaco pessoal do the maintainer para ajustar nomes, rituais, triage e instalacao ao proprio workflow.
+The repositories are expected to diverge significantly over time. The original repo should remain separate for upstream tracking; this repo is the maintainer's personal space for adapting names, rituals, triage, and installation to his workflow.
 
-## Workflow the maintainer
+## the maintainer Workflow
 
-O fluxo que este repo deve reforcar:
+The flow this repo should reinforce:
 
-`ideia -> grill -> docs -> issue -> branch -> PR -> handoff`
+`idea -> grill -> docs -> issue -> branch -> PR -> handoff`
 
-Regra mental:
+Mental model:
 
-- Quero pensar: `/grill-with-docs`
-- Quero organizar fila: `/triage`
-- Quero decidir arquitetura: `/improve-codebase-architecture`
-- Quero implementar issue madura: `/tdd`
-- Algo quebrou: `/diagnose`
-- Vou parar: `/handoff`
+- I want to think: `/grill-with-docs`
+- I want to organize the queue: `/triage`
+- I want to decide architecture: `/improve-codebase-architecture`
+- I want to implement a mature issue: `/tdd`
+- Something broke: `/diagnose`
+- I am stopping: `/handoff`
 
-Regra de seguranca para repos como `omnews`: se a tarefa tocar arquitetura, comportamento compartilhado, Docker/runtime, AI runners, TTS, persistencia ou fluxo de publish, nao implemente direto. Primeiro verifique issue existente, trie a issue, use `/grill-with-docs` se houver ambiguidade, registre linguagem/decisoes em `CONTEXT.md` ou `docs/adr/`, e so entao siga para branch + PR.
+Safety rule for repos like `omnews`: if the task touches architecture, shared behavior, Docker/runtime, AI runners, TTS, persistence, or publish flows, do not implement directly. First check for an existing issue, triage it, use `/grill-with-docs` if there is ambiguity, record language/decisions in `CONTEXT.md` or `docs/adr/`, and only then move to branch + PR.
 
-Se aparecer conflito, ambiguidade arquitetural, dependencia nao resolvida ou duas opcoes plausiveis com tradeoffs reais, pare e converse.
+If there is a conflict, architectural ambiguity, unresolved dependency, or two plausible options with real tradeoffs, stop and discuss.
 
-## Quickstart Local
+## Local Quickstart
 
-1. Linke as skills ativas para o Codex local:
+1. Link the active skills into local Codex:
 
 ```bash
 ./scripts/link-skills.sh
 ```
 
-Por padrao o script escreve em `~/.codex/skills`. Para testar em outro destino:
+By default, the script writes to `~/.codex/skills`. To test another destination:
 
 ```bash
 OMSKILLS_DEST=/tmp/omskills-test ./scripts/link-skills.sh
 ```
 
-2. Em cada repo que vai consumir estas skills, rode:
+2. In each repo that will consume these skills, run:
 
 ```text
 /setup-omskills
 ```
 
-Esse setup registra onde ficam issues, quais labels de triage o repo usa, e como o agente deve consumir `CONTEXT.md` e ADRs.
+This setup records where issues live, which triage labels the repo uses, and how the agent should consume `CONTEXT.md` and ADRs.
 
-## Modelo De Triage
+## Triage Model
 
-As skills usam cinco papeis canonicos. Cada repo pode mapear esses papeis para labels reais em `docs/agents/triage-labels.md`.
+The skills use five canonical roles. Each repo can map those roles to real labels in `docs/agents/triage-labels.md`.
 
-- `needs-triage`: mantenedor precisa avaliar.
-- `needs-info`: falta informacao do reporter/autor.
-- `ready-for-agent`: issue bem especificada, pronta para um agente implementar sem contexto extra.
-- `ready-for-human`: precisa de implementacao ou decisao humana.
-- `wontfix`: nao sera feita.
+- `needs-triage`: maintainer needs to evaluate.
+- `needs-info`: missing information from the reporter/author.
+- `ready-for-agent`: well-specified issue, ready for an agent to implement without extra context.
+- `ready-for-human`: needs human implementation or decision-making.
+- `wontfix`: will not be actioned.
 
-Para `omnews`, a fila deve favorecer issues pequenas, verticais e verificaveis. Issues de runtime, AI runners, TTS, persistencia, Docker e publish precisam estar maduras antes de implementacao.
+For `omnews`, the queue should favor small, vertical, verifiable issues. Runtime, AI runner, TTS, persistence, Docker, and publish issues need to be mature before implementation.
 
-## Skills Ativas
+## Active Skills
 
 ### Engineering
 
-- **[diagnose](./skills/engineering/diagnose/SKILL.md)**: loop disciplinado para bugs e regressoes: reproduzir, minimizar, hipotetizar, instrumentar, corrigir e criar teste de regressao.
-- **[grill-with-docs](./skills/engineering/grill-with-docs/SKILL.md)**: entrevista o usuario, cruza respostas com o codigo quando possivel, afia linguagem de dominio e atualiza `CONTEXT.md`/ADRs quando decisoes cristalizam.
-- **[triage](./skills/engineering/triage/SKILL.md)**: processa issues por uma maquina de estados baseada nos papeis de triage.
-- **[improve-codebase-architecture](./skills/engineering/improve-codebase-architecture/SKILL.md)**: encontra oportunidades de aprofundar modulos e reduzir acoplamento, usando `CONTEXT.md` e ADRs como contexto.
-- **[setup-omskills](./skills/engineering/setup-omskills/SKILL.md)**: configura issue tracker, labels de triage e layout de docs por repo.
-- **[tdd](./skills/engineering/tdd/SKILL.md)**: desenvolvimento com red-green-refactor, em fatias verticais pequenas.
-- **[to-issues](./skills/engineering/to-issues/SKILL.md)**: quebra planos, specs ou PRDs em issues independentes.
-- **[to-prd](./skills/engineering/to-prd/SKILL.md)**: transforma o contexto da conversa em PRD e publica no issue tracker.
-- **[zoom-out](./skills/engineering/zoom-out/SKILL.md)**: pede uma perspectiva de sistema antes de mexer em uma area desconhecida.
-- **[prototype](./skills/engineering/prototype/SKILL.md)**: cria prototipos descartaveis para validar logica, estado ou alternativas de UI.
+- **[diagnose](./skills/engineering/diagnose/SKILL.md)**: disciplined loop for bugs and regressions: reproduce, minimize, hypothesize, instrument, fix, and add a regression test.
+- **[grill-with-docs](./skills/engineering/grill-with-docs/SKILL.md)**: interviews the user, cross-checks answers with code when possible, sharpens domain language, and updates `CONTEXT.md`/ADRs when decisions crystallize.
+- **[triage](./skills/engineering/triage/SKILL.md)**: moves issues through a state machine based on triage roles.
+- **[improve-codebase-architecture](./skills/engineering/improve-codebase-architecture/SKILL.md)**: finds opportunities to deepen modules and reduce coupling, using `CONTEXT.md` and ADRs as context.
+- **[setup-omskills](./skills/engineering/setup-omskills/SKILL.md)**: configures issue tracker, triage labels, and docs layout per repo.
+- **[tdd](./skills/engineering/tdd/SKILL.md)**: development with red-green-refactor, in small vertical slices.
+- **[to-issues](./skills/engineering/to-issues/SKILL.md)**: breaks plans, specs, or PRDs into independent issues.
+- **[to-prd](./skills/engineering/to-prd/SKILL.md)**: turns the current conversation context into a PRD and publishes it to the issue tracker.
+- **[zoom-out](./skills/engineering/zoom-out/SKILL.md)**: asks for a system-level perspective before touching an unfamiliar area.
+- **[prototype](./skills/engineering/prototype/SKILL.md)**: creates throwaway prototypes to validate logic, state, or UI alternatives.
 
 ### Productivity
 
-- **[grill-me](./skills/productivity/grill-me/SKILL.md)**: entrevista rigorosa para amadurecer uma ideia sem necessariamente tocar codigo.
-- **[handoff](./skills/productivity/handoff/SKILL.md)**: compacta a sessao em um handoff para outro agente continuar.
-- **[write-a-skill](./skills/productivity/write-a-skill/SKILL.md)**: cria novas skills com estrutura, frontmatter e recursos auxiliares.
+- **[grill-me](./skills/productivity/grill-me/SKILL.md)**: rigorous interview to mature an idea without necessarily touching code.
+- **[handoff](./skills/productivity/handoff/SKILL.md)**: compacts the session into a handoff so another agent can continue.
+- **[write-a-skill](./skills/productivity/write-a-skill/SKILL.md)**: creates new skills with structure, frontmatter, and supporting resources.
 
-## Skills Opcionais
+## Optional Skills
 
-Mantidas como inspiracao ou para uso pontual, mas fora do manifest Codex principal por enquanto:
+Kept as inspiration or for occasional use, but outside the main Codex manifest for now:
 
 - **[caveman](./skills/productivity/caveman/SKILL.md)**
 - **[setup-pre-commit](./skills/misc/setup-pre-commit/SKILL.md)**
@@ -94,19 +94,19 @@ Mantidas como inspiracao ou para uso pontual, mas fora do manifest Codex princip
 - **[scaffold-exercises](./skills/misc/scaffold-exercises/SKILL.md)**
 - **[migrate-to-shoehorn](./skills/misc/migrate-to-shoehorn/SKILL.md)**
 
-Ignorar por enquanto:
+Ignore for now:
 
 - `skills/deprecated/`
 - `skills/personal/`
 - `skills/in-progress/`
 
-## Manutencao
+## Maintenance
 
-Quando uma skill ativa for renomeada ou promovida, atualize em conjunto:
+When an active skill is renamed or promoted, update these together:
 
-- pasta da skill
+- skill folder
 - frontmatter `name`
-- README principal
-- README do bucket
+- top-level README
+- bucket README
 - `.codex-plugin/plugin.json`
-- referencias duras em outras skills, ADRs, scripts e docs
+- hard-coded mentions in other skills, ADRs, scripts, and docs
