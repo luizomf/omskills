@@ -1,33 +1,96 @@
 # omskills
 
-the maintainer's personal skill collection for working with Codex and other agents without drifting off track.
+A practical skill collection for keeping agent-assisted software work structured, reviewable, and less likely to jump from a vague idea straight into code.
 
 ## Origin
 
-This repository is basically a fork/adaptation of [mattpocock/skills](https://github.com/mattpocock/skills), copied as it existed on May 24, 2026, and adapted to the maintainer's use cases.
+This repository started as a fork/adaptation of [mattpocock/skills](https://github.com/mattpocock/skills), copied as it existed on May 24, 2026.
 
-the maintainer did not create the original base for these skills. This is not the original repository; to see the source project, use [mattpocock/skills](https://github.com/mattpocock/skills).
+This is not the original repository. To see the source project, use [mattpocock/skills](https://github.com/mattpocock/skills).
 
-The repositories are expected to diverge significantly over time. The original repo should remain separate for upstream tracking; this repo is the maintainer's personal space for adapting names, rituals, triage, and installation to his workflow.
+The repositories are expected to diverge over time. The original repo should remain separate for upstream tracking; this repo adapts names, rituals, triage, installation, and project defaults for a Codex-oriented workflow.
 
-## the maintainer Workflow
+## What This Is
 
-The flow this repo should reinforce:
+`omskills` is not runtime application code. It is a curated set of agent skills, prompts, setup docs, and helper scripts for working with Codex and other coding agents.
+
+The main flow this repo reinforces is:
 
 `idea -> grill -> docs -> issue -> branch -> PR -> handoff`
 
-Mental model:
+The skills act as checkpoints: clarify before planning, document before queuing, triage before implementation, test before refactoring, and hand off before context is lost.
 
-- I want to think: `/grill-with-docs`
-- I want to organize the queue: `/triage`
-- I want to decide architecture: `/improve-codebase-architecture`
-- I want to implement a mature issue: `/tdd`
+## Operating Model
+
+Before asking an agent to "build it", classify the moment:
+
+- Need to think through an idea: `/grill-me` or `/grill-with-docs`
+- Know the goal, but not the queue: `/to-prd`, `/to-issues`, or `/triage`
+- Have a mature, small issue: `/tdd`
 - Something broke: `/diagnose`
-- I am stopping: `/handoff`
+- Do not understand an area of the code: `/zoom-out`
+- The architecture is getting muddy: `/improve-codebase-architecture`
+- Need to pause without losing context: `/handoff`
 
-Safety rule for repos like `omnews`: if the task touches architecture, shared behavior, Docker/runtime, AI runners, TTS, persistence, or publish flows, do not implement directly. First check for an existing issue, triage it, use `/grill-with-docs` if there is ambiguity, record language/decisions in `CONTEXT.md` or `docs/adr/`, and only then move to branch + PR.
+The core habit is to ask: "Is this clear enough to become code?"
+
+If the answer is not clearly yes, use grill, triage, docs, or zoom-out before implementation.
 
 If there is a conflict, architectural ambiguity, unresolved dependency, or two plausible options with real tradeoffs, stop and discuss.
+
+## Common Scenarios
+
+### New Empty Project
+
+The risk in an empty repo is inventing too much architecture too early.
+
+1. Create the minimum project identity: `README.md`, `AGENTS.md`, license if needed, and the stack decision if it is already known.
+2. Run `/setup-omskills` to record issue tracker, triage labels, and docs layout.
+3. Use `/grill-with-docs` before substantial coding to clarify domain language, constraints, and the smallest useful first slice.
+4. Use `/to-prd` if the direction needs a durable spec.
+5. Use `/to-issues` to break the spec into small, vertical issues.
+6. Use `/tdd` only when a slice is clear and verifiable.
+
+Good prompt:
+
+```text
+Before implementing, help identify the smallest useful first slice.
+```
+
+### Existing Project Without These Skills
+
+The risk in an existing project is enforcing process before understanding the system.
+
+1. Start with `/zoom-out` to map modules, workflows, risks, and conventions.
+2. Run `/setup-omskills` to connect the repo to the skills.
+3. Use `/grill-with-docs` if project language is unclear or undocumented.
+4. Use `/triage` before picking work from a messy queue.
+5. Use `/improve-codebase-architecture` when coupling or structure needs attention; treat the output as diagnosis and issue material, not blanket permission to refactor.
+6. Use `/tdd` when a specific issue is mature enough to implement.
+
+Good prompt:
+
+```text
+Before changing code, explain how this request fits into the current system.
+```
+
+### Project Already Using These Skills
+
+The risk in a prepared repo is ignoring decisions that already exist.
+
+1. Read the local instructions and context: `AGENTS.md`, `CONTEXT.md`, `docs/agents/*`, and `docs/adr/*`.
+2. Start from an existing issue when possible.
+3. Use `/triage` if the task is new or unclear.
+4. Use `/tdd` if the issue is small, mature, and has acceptance criteria.
+5. Use `/grill-with-docs` if the issue conflicts with domain language or decisions.
+6. Stop and discuss when the task conflicts with an ADR, changes architecture, or has meaningful tradeoffs.
+7. Use `/handoff` before pausing a long session.
+
+Good prompt:
+
+```text
+Follow the repo instructions, read the issue, and tell me whether it is ready for implementation.
+```
 
 ## Local Quickstart
 
@@ -61,7 +124,7 @@ The skills use five canonical roles. Each repo can map those roles to real label
 - `ready-for-human`: needs human implementation or decision-making.
 - `wontfix`: will not be actioned.
 
-For `omnews`, the queue should favor small, vertical, verifiable issues. Runtime, AI runner, TTS, persistence, Docker, and publish issues need to be mature before implementation.
+For mature projects, the queue should favor small, vertical, verifiable issues. Changes to shared systems such as architecture, runtime, persistence, deployment, or AI integration need to be mature before implementation.
 
 ## Active Skills
 
