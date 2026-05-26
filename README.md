@@ -145,6 +145,7 @@ For mature projects, the queue should favor small, vertical, verifiable issues. 
 
 - **[grill-me](./skills/productivity/grill-me/SKILL.md)**: rigorous interview to mature an idea without necessarily touching code.
 - **[handoff](./skills/productivity/handoff/SKILL.md)**: compacts the session into a handoff so another agent can continue.
+- **[daily-paper-social-post](./skills/productivity/daily-paper-social-post/SKILL.md)**: turns a Daily Paper Automation article into compact PT-BR social posts.
 - **[write-a-skill](./skills/productivity/write-a-skill/SKILL.md)**: creates new skills with structure, frontmatter, and supporting resources.
 
 ## Optional Skills
