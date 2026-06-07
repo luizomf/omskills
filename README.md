@@ -27,6 +27,7 @@ Before asking an agent to "build it", classify the moment:
 - Need to think through an idea: `/grill-me` or `/grill-with-docs`
 - Know the goal, but not the queue: `/to-prd`, `/to-issues`, or `/triage`
 - Have a mature, small issue: `/tdd`
+- Have an ordered queue of ready GitHub issues that should become PRs: `/deep-coder`
 - Something broke: `/diagnose`
 - Do not understand an area of the code: `/zoom-out`
 - The architecture is getting muddy: `/improve-codebase-architecture`
@@ -133,6 +134,7 @@ For mature projects, the queue should favor small, vertical, verifiable issues. 
 - **[diagnose](./skills/engineering/diagnose/SKILL.md)**: disciplined loop for bugs and regressions: reproduce, minimize, hypothesize, instrument, fix, and add a regression test.
 - **[grill-with-docs](./skills/engineering/grill-with-docs/SKILL.md)**: interviews the user, cross-checks answers with code when possible, sharpens domain language, and updates `CONTEXT.md`/ADRs when decisions crystallize.
 - **[triage](./skills/engineering/triage/SKILL.md)**: moves issues through a state machine based on triage roles.
+- **[deep-coder](./skills/engineering/deep-coder/SKILL.md)**: runs ready-for-agent GitHub issues through a serial Issuer -> Orchestrator -> Coder -> Reviewer PR loop.
 - **[improve-codebase-architecture](./skills/engineering/improve-codebase-architecture/SKILL.md)**: finds opportunities to deepen modules and reduce coupling, using `CONTEXT.md` and ADRs as context.
 - **[setup-omskills](./skills/engineering/setup-omskills/SKILL.md)**: configures issue tracker, triage labels, and docs layout per repo.
 - **[tdd](./skills/engineering/tdd/SKILL.md)**: development with red-green-refactor, in small vertical slices.
