@@ -31,6 +31,7 @@ Before asking an agent to "build it", classify the moment:
 - Something broke: `/diagnose`
 - Do not understand an area of the code: `/zoom-out`
 - The architecture is getting muddy: `/improve-codebase-architecture`
+- Want to learn a topic over multiple sessions: `/teach`
 - Need to pause without losing context: `/handoff`
 
 The core habit is to ask: "Is this clear enough to become code?"
@@ -147,6 +148,7 @@ For mature projects, the queue should favor small, vertical, verifiable issues. 
 
 - **[grill-me](./skills/productivity/grill-me/SKILL.md)**: rigorous interview to mature an idea without necessarily touching code.
 - **[handoff](./skills/productivity/handoff/SKILL.md)**: compacts the session into a handoff so another agent can continue.
+- **[teach](./skills/productivity/teach/SKILL.md)**: teaches a new skill or concept over multiple sessions, using the current directory as a stateful teaching workspace.
 - **[daily-paper-social-post](./skills/productivity/daily-paper-social-post/SKILL.md)**: turns a Daily Paper Automation article into compact PT-BR social posts.
 - **[write-a-skill](./skills/productivity/write-a-skill/SKILL.md)**: creates new skills with structure, frontmatter, and supporting resources.
 
