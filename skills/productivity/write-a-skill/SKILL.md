@@ -115,3 +115,7 @@ After drafting, verify:
 - [ ] Consistent terminology
 - [ ] Concrete examples included
 - [ ] References one level deep
+
+## See also
+
+This skill is the *process* for building a skill. For the *vocabulary and design principles* behind why a skill works — predictability, context vs cognitive load, the information hierarchy, leading words, and common failure modes — see the [writing-great-skills](../writing-great-skills/SKILL.md) reference.

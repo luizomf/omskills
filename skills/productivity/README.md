@@ -9,6 +9,7 @@ General workflow tools, not code-specific.
 - **[teach](./teach/SKILL.md)** - Teach the user a new skill or concept over multiple sessions, using the current directory as a stateful teaching workspace.
 - **[daily-paper-social-post](./daily-paper-social-post/SKILL.md)** - Turn a Daily Paper Automation article into compact PT-BR social posts.
 - **[write-a-skill](./write-a-skill/SKILL.md)** - Create new skills with proper structure, progressive disclosure, and bundled resources.
+- **[writing-great-skills](./writing-great-skills/SKILL.md)** - User-invoked reference for the vocabulary and design principles behind predictable skills (companion to write-a-skill).
 
 ## Optional
 

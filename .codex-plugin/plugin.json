@@ -12,10 +12,14 @@
     "./skills/engineering/to-prd",
     "./skills/engineering/zoom-out",
     "./skills/engineering/prototype",
+    "./skills/engineering/codebase-design",
+    "./skills/engineering/domain-modeling",
+    "./skills/engineering/resolving-merge-conflicts",
     "./skills/productivity/grill-me",
     "./skills/productivity/handoff",
     "./skills/productivity/teach",
     "./skills/productivity/daily-paper-social-post",
-    "./skills/productivity/write-a-skill"
+    "./skills/productivity/write-a-skill",
+    "./skills/productivity/writing-great-skills"
   ]
 }

@@ -143,6 +143,9 @@ For mature projects, the queue should favor small, vertical, verifiable issues. 
 - **[to-prd](./skills/engineering/to-prd/SKILL.md)**: turns the current conversation context into a PRD and publishes it to the issue tracker.
 - **[zoom-out](./skills/engineering/zoom-out/SKILL.md)**: asks for a system-level perspective before touching an unfamiliar area.
 - **[prototype](./skills/engineering/prototype/SKILL.md)**: creates throwaway prototypes to validate logic, state, or UI alternatives.
+- **[codebase-design](./skills/engineering/codebase-design/SKILL.md)**: shared vocabulary and principles for designing deep modules — glossary, deep-vs-shallow, deepening, and design-for-testability.
+- **[domain-modeling](./skills/engineering/domain-modeling/SKILL.md)**: actively builds and sharpens the project's domain model — challenges terms, sharpens language, and updates `CONTEXT.md`/ADRs as decisions crystallize.
+- **[resolving-merge-conflicts](./skills/engineering/resolving-merge-conflicts/SKILL.md)**: resolves an in-progress git merge or rebase conflict, preserving both intents and running the project's checks before finishing.
 
 ### Productivity
 
@@ -151,6 +154,7 @@ For mature projects, the queue should favor small, vertical, verifiable issues. 
 - **[teach](./skills/productivity/teach/SKILL.md)**: teaches a new skill or concept over multiple sessions, using the current directory as a stateful teaching workspace.
 - **[daily-paper-social-post](./skills/productivity/daily-paper-social-post/SKILL.md)**: turns a Daily Paper Automation article into compact PT-BR social posts.
 - **[write-a-skill](./skills/productivity/write-a-skill/SKILL.md)**: creates new skills with structure, frontmatter, and supporting resources.
+- **[writing-great-skills](./skills/productivity/writing-great-skills/SKILL.md)**: user-invoked reference for the vocabulary and design principles behind predictable skills (companion to `write-a-skill`).
 
 ## Optional Skills
 
