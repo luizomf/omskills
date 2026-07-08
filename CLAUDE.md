@@ -11,7 +11,7 @@ Skills are organized into bucket folders under `skills/`:
 - `in-progress/` — drafts not yet ready to ship
 - `deprecated/` — no longer used
 
-Core skills must have a reference in the top-level `README.md` and an entry in `.codex-plugin/plugin.json`. Optional skills may be documented in their bucket README without being part of the Codex plugin manifest. Skills in `personal/`, `in-progress/`, and `deprecated/` must not appear in `.codex-plugin/plugin.json`.
+Core skills must have a reference in the top-level `README.md` and an entry in both plugin manifests, `.codex-plugin/plugin.json` and `.claude-plugin/plugin.json`, which are kept as mirrors of each other. Optional skills may be documented in their bucket README without being part of the manifests. Skills in `personal/`, `in-progress/`, and `deprecated/` must not appear in either manifest.
 
 Each skill entry in the top-level `README.md` must link the skill name to its `SKILL.md`.
 

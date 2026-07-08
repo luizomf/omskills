@@ -2,17 +2,24 @@
 
 Core skills for code work, issue workflow, and architecture decisions.
 
-- **[diagnose](./diagnose/SKILL.md)** - Disciplined diagnosis loop for hard bugs and performance regressions: reproduce, minimise, hypothesise, instrument, fix, regression-test.
-- **[grill-with-docs](./grill-with-docs/SKILL.md)** - Grilling session that challenges your plan against the existing domain model, sharpens terminology, and updates `CONTEXT.md` and ADRs inline.
-- **[triage](./triage/SKILL.md)** - Triage issues through a state machine of triage roles.
-- **[deep-coder](./deep-coder/SKILL.md)** - Serial GitHub PR loop for ready-for-agent issues, using fresh Coder/Reviewer contexts and Orchestrator gates.
-- **[improve-codebase-architecture](./improve-codebase-architecture/SKILL.md)** - Find deepening opportunities in a codebase, informed by the domain language in `CONTEXT.md` and the decisions in `docs/adr/`.
-- **[setup-omskills](./setup-omskills/SKILL.md)** - Scaffold the per-repo config (issue tracker, triage label vocabulary, domain doc layout) that the other engineering skills consume.
-- **[tdd](./tdd/SKILL.md)** - Test-driven development with a red-green-refactor loop. Builds features or fixes bugs one vertical slice at a time.
-- **[to-issues](./to-issues/SKILL.md)** - Break any plan, spec, or PRD into independently-grabbable GitHub issues using vertical slices.
-- **[to-prd](./to-prd/SKILL.md)** - Turn the current conversation context into a PRD and submit it as a GitHub issue.
-- **[zoom-out](./zoom-out/SKILL.md)** - Tell the agent to zoom out and give broader context or a higher-level perspective on an unfamiliar section of code.
-- **[prototype](./prototype/SKILL.md)** - Build a throwaway prototype to flesh out a design: a runnable terminal app for state/business-logic questions, or several radically different UI variations toggleable from one route.
-- **[codebase-design](./codebase-design/SKILL.md)** - Shared vocabulary and principles for designing deep modules: glossary, deep-vs-shallow, deepening, and design-for-testability.
-- **[domain-modeling](./domain-modeling/SKILL.md)** - Actively build and sharpen the project's domain model: challenge terms, sharpen language, and update `CONTEXT.md`/ADRs inline.
-- **[resolving-merge-conflicts](./resolving-merge-conflicts/SKILL.md)** - Resolve an in-progress git merge or rebase conflict, preserving both intents and running the project's checks before finishing.
+## User-invoked
+
+- **[grill-with-docs](./grill-with-docs/SKILL.md)** - Run a grilling session while maintaining domain language and ADRs.
+- **[triage](./triage/SKILL.md)** - Move issues and external PRs through a state machine of triage roles.
+- **[improve-codebase-architecture](./improve-codebase-architecture/SKILL.md)** - Scan a codebase for deepening opportunities, present a visual report, then grill through the selected candidate.
+- **[setup-omskills](./setup-omskills/SKILL.md)** - Scaffold the per-repo config that the other engineering skills consume.
+- **[to-spec](./to-spec/SKILL.md)** - Turn the current conversation context into a spec and publish it to the issue tracker.
+- **[to-tickets](./to-tickets/SKILL.md)** - Break a plan, spec, or conversation into tracer-bullet tickets with blocking edges.
+- **[implement](./implement/SKILL.md)** - Implement a spec, issue, or ticket, using `/tdd` where possible and closing with `/code-review`.
+- **[wayfinder](./wayfinder/SKILL.md)** - Map a huge or foggy effort into investigation tickets on the issue tracker.
+
+## Model-invoked
+
+- **[prototype](./prototype/SKILL.md)** - Build a throwaway prototype to validate logic, state, or UI alternatives.
+- **[diagnosing-bugs](./diagnosing-bugs/SKILL.md)** - Disciplined diagnosis loop for hard bugs and performance regressions.
+- **[research](./research/SKILL.md)** - Investigate a question against high-trust primary sources and save cited findings in the repo.
+- **[tdd](./tdd/SKILL.md)** - Red -> green development at pre-agreed seams.
+- **[domain-modeling](./domain-modeling/SKILL.md)** - Actively build and sharpen the project's domain model.
+- **[codebase-design](./codebase-design/SKILL.md)** - Shared vocabulary and principles for designing deep modules.
+- **[code-review](./code-review/SKILL.md)** - Review a diff along standards and spec axes.
+- **[resolving-merge-conflicts](./resolving-merge-conflicts/SKILL.md)** - Resolve an in-progress git merge or rebase conflict.

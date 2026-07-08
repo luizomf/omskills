@@ -1,10 +1,10 @@
 # Issue tracker integrations are limited to mainstream tools
 
-`setup-matt-pocock-skills` only offers first-class support for **mainstream** issue trackers. Requests to add support for niche, new, or single-vendor experimental trackers are out of scope.
+`setup-omskills` only offers first-class support for **mainstream** issue trackers. Requests to add support for niche, new, or single-vendor experimental trackers are out of scope.
 
 ## Why this is out of scope
 
-Every issue-tracker backend hard-codes a CLI shape into the skills (commands, flags, output parsing). Each new backend is permanent maintenance surface — it has to keep working as the tool's CLI evolves, and it has to keep being tested against `/to-prd`, `/to-issues`, `/triage`, and friends. That cost is only worth paying for trackers a meaningful fraction of users actually have.
+Every issue-tracker backend hard-codes a CLI shape into the skills (commands, flags, output parsing). Each new backend is permanent maintenance surface — it has to keep working as the tool's CLI evolves, and it has to keep being tested against `/to-spec`, `/to-tickets`, `/triage`, and friends. That cost is only worth paying for trackers a meaningful fraction of users actually have.
 
 "Mainstream" is a judgment call, not a numeric bar:
 

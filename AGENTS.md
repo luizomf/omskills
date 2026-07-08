@@ -1,6 +1,6 @@
 # AGENTS.md
 
-This is the maintainer's personal skill collection. It started as a fork/adaptation of [mattpocock/skills](https://github.com/mattpocock/skills), copied as it existed on May 24, 2026, and is being adapted to the maintainer's use cases. This is not the original repo; the original is [mattpocock/skills](https://github.com/mattpocock/skills). Treat the original repo as upstream inspiration, not as the maintainer's personal instruction set.
+This is the maintainer's personal skill collection. It started as a fork/adaptation of [mattpocock/skills](https://github.com/mattpocock/skills), first copied on May 24, 2026, and has since pulled in selected changes from later upstream snapshots. This is not the original repo; the original is [mattpocock/skills](https://github.com/mattpocock/skills). Treat the original repo as upstream inspiration, not as the maintainer's personal instruction set.
 
 ## Communication / Language
 
@@ -25,7 +25,7 @@ Use `rtk` for shell commands to keep context cleaner.
 
 The default workflow these skills should reinforce is:
 
-`idea -> grill -> docs -> issue -> branch -> PR -> handoff`
+`idea -> grill -> spec -> tickets -> implement -> review -> PR -> handoff`
 
 When a task touches architecture, shared behavior, Docker/runtime, AI runners, TTS, persistence, or publish flows, do not jump straight to implementation. First check for an existing issue, triage it, use `grill-with-docs` if there is ambiguity, and record durable decisions in `CONTEXT.md` or `docs/adr/`.
 
@@ -42,9 +42,11 @@ Skills are organized under `skills/`:
 - `in-progress/` - drafts not ready to ship.
 - `deprecated/` - no longer used.
 
-Core skills should appear in the top-level `README.md` and `.codex-plugin/plugin.json`. Optional skills may be documented in their bucket README without being part of the Codex plugin manifest.
+There are two plugin manifests, `.codex-plugin/plugin.json` and `.claude-plugin/plugin.json`. They are mirrors: the same skill list, in the same order. Any change to one must be made to the other.
 
-Skills in `personal/`, `in-progress/`, and `deprecated/` must not appear in `.codex-plugin/plugin.json`.
+Core skills should appear in the top-level `README.md` and both plugin manifests. Optional skills may be documented in their bucket README without being part of the manifests.
+
+Skills in `personal/`, `in-progress/`, and `deprecated/` must not appear in either manifest.
 
 Each active skill entry in the top-level `README.md` must link the skill name to its `SKILL.md`. Each bucket README should list the skills in that bucket with one-line descriptions.
 
@@ -55,6 +57,7 @@ When renaming a skill, update all of these together:
 - README references
 - bucket README references
 - `.codex-plugin/plugin.json`
+- `.claude-plugin/plugin.json`
 - hard-coded mentions in other skills, ADRs, scripts, and docs
 
 ## Adaptation Rules
