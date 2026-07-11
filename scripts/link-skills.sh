@@ -6,6 +6,15 @@ set -euo pipefail
 
 REPO="$(cd "$(dirname "$0")/.." && pwd)"
 DEST="${OMSKILLS_DEST:-$HOME/.codex/skills}"
+STATE="$DEST/.omskills-managed-links"
+MODE="install"
+
+if [ "${1:-}" = "--check" ]; then
+  MODE="check"
+elif [ "$#" -ne 0 ]; then
+  echo "usage: $0 [--check]" >&2
+  exit 2
+fi
 
 # If the destination is a symlink that resolves into this repo, we'd end up
 # writing the per-skill symlinks back into the repo's own skills/ tree. Detect
@@ -21,12 +30,40 @@ if [ -L "$DEST" ]; then
   esac
 fi
 
-mkdir -p "$DEST"
-
 if ! command -v jq >/dev/null 2>&1; then
   echo "error: jq is required to read .codex-plugin/plugin.json" >&2
   exit 1
 fi
+
+if [ "$MODE" = "install" ]; then
+  mkdir -p "$DEST"
+elif [ ! -d "$DEST" ]; then
+  echo "error: skills destination does not exist: $DEST" >&2
+  exit 1
+fi
+
+# One-time migration from the state-less installer used before the July 2026
+# catalog rename. Remove only the exact obsolete links that installer created.
+if [ "$MODE" = "install" ] && [ ! -f "$STATE" ]; then
+  while IFS='|' read -r name relative; do
+    target="$DEST/$name"
+    expected="$REPO/skills/$relative"
+    if [ -L "$target" ] && [ "$(readlink "$target")" = "$expected" ]; then
+      rm "$target"
+      echo "removed legacy link $name -> $expected"
+    fi
+  done <<'LEGACY_LINKS'
+daily-paper-social-post|productivity/daily-paper-social-post
+deep-coder|engineering/deep-coder
+diagnose|engineering/diagnose
+to-issues|engineering/to-issues
+to-prd|engineering/to-prd
+zoom-out|engineering/zoom-out
+LEGACY_LINKS
+fi
+
+manifest_names="$(mktemp)"
+trap 'rm -f "$manifest_names"' EXIT
 
 jq -r '.skills[]' "$REPO/.codex-plugin/plugin.json" |
 while IFS= read -r skill_path; do
@@ -39,11 +76,68 @@ while IFS= read -r skill_path; do
 
   name="$(basename "$src")"
   target="$DEST/$name"
+  echo "$name" >> "$manifest_names"
 
-  if [ -e "$target" ] && [ ! -L "$target" ]; then
-    rm -rf "$target"
+  if [ -L "$target" ]; then
+    existing="$(readlink "$target")"
+    case "$existing" in
+      "$REPO/skills"/*) ;;
+      *)
+        echo "error: refusing to replace external symlink: $target -> $existing" >&2
+        exit 1
+        ;;
+    esac
+  elif [ -e "$target" ]; then
+    echo "error: refusing to replace non-symlink path: $target" >&2
+    exit 1
   fi
 
-  ln -sfn "$src" "$target"
-  echo "linked $name -> $src"
+  if [ "$MODE" = "check" ]; then
+    if [ ! -L "$target" ] || [ "$(readlink "$target")" != "$src" ]; then
+      echo "error: missing or incorrect link: $target -> $src" >&2
+      exit 1
+    fi
+    echo "ok $name -> $src"
+  else
+    ln -sfn "$src" "$target"
+    echo "linked $name -> $src"
+  fi
 done
+
+# Remove only stale links recorded by a previous installer run. A manually
+# linked optional skill from this repository is not owned unless listed here.
+if [ -f "$STATE" ]; then
+  while IFS= read -r name; do
+    [ -n "$name" ] || continue
+    target="$DEST/$name"
+    if ! grep -Fqx "$name" "$manifest_names"; then
+      if [ ! -L "$target" ]; then
+        echo "error: stale managed path is no longer a symlink: $target" >&2
+        exit 1
+      fi
+      existing="$(readlink "$target")"
+      case "$existing" in
+        "$REPO/skills"/*) ;;
+        *)
+          echo "error: stale managed link now points outside this repo: $target -> $existing" >&2
+          exit 1
+          ;;
+      esac
+      if [ "$MODE" = "check" ]; then
+        echo "error: stale managed link: $target -> $existing" >&2
+        exit 1
+      fi
+      rm "$target"
+      echo "removed stale link $name -> $existing"
+    fi
+  done < "$STATE"
+fi
+
+if [ "$MODE" = "check" ]; then
+  if [ ! -f "$STATE" ] || ! cmp -s "$manifest_names" "$STATE"; then
+    echo "error: managed-link state is missing or differs from the manifest" >&2
+    exit 1
+  fi
+else
+  cp "$manifest_names" "$STATE"
+fi

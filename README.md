@@ -103,6 +103,13 @@ Follow the repo instructions, read the issue, and tell me whether it is ready fo
 ./scripts/link-skills.sh
 ```
 
+The installer prunes only obsolete symlinks managed by this repository and refuses to overwrite real paths or external symlinks. Verify the current installation without changing it:
+
+```bash
+./scripts/check-catalog.py
+./scripts/link-skills.sh --check
+```
+
 By default, the script writes to `~/.codex/skills`. To test another destination:
 
 ```bash

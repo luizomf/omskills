@@ -31,6 +31,20 @@ When a task touches architecture, shared behavior, Docker/runtime, AI runners, T
 
 If there is a real tradeoff, unresolved dependency, architectural ambiguity, or two plausible options with different costs, stop and talk to the maintainer.
 
+## Agent skills
+
+### Issue tracker
+
+Specs, tickets, and issues are tracked in GitHub Issues. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+The five canonical omskills triage-role names are used as GitHub labels. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+This is a single-context repository with `CONTEXT.md` and root-level ADRs. See `docs/agents/domain.md`.
+
 ## Skill Buckets
 
 Skills are organized under `skills/`:

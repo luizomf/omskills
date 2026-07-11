@@ -1,0 +1,19 @@
+name: Validate skill catalog
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  catalog:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate manifests and documentation
+        run: ./scripts/check-catalog.py
+      - name: Test safe local linking
+        run: ./tests/test-link-skills.sh
