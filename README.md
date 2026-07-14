@@ -167,6 +167,7 @@ For mature projects, the queue should favor small, vertical, verifiable tickets.
 **User-invoked**
 
 - **[grill-me](./skills/productivity/grill-me/SKILL.md)**: runs a grilling session without touching code or docs.
+- **[caveman](./skills/productivity/caveman/SKILL.md)**: switches to an ultra-compressed communication mode while retaining technical substance.
 - **[handoff](./skills/productivity/handoff/SKILL.md)**: compacts the session into a handoff so another agent can continue.
 - **[teach](./skills/productivity/teach/SKILL.md)**: teaches a new skill or concept over multiple sessions, using the current directory as a stateful teaching workspace.
 - **[writing-great-skills](./skills/productivity/writing-great-skills/SKILL.md)**: reference for the vocabulary and design principles behind predictable skills.
@@ -178,9 +179,8 @@ For mature projects, the queue should favor small, vertical, verifiable tickets.
 
 ## Optional Skills
 
-Kept as inspiration or for occasional use, but outside the main Codex manifest for now:
+Kept as inspiration or for occasional use, but outside the main Codex manifest:
 
-- **[caveman](./skills/productivity/caveman/SKILL.md)**
 - **[setup-pre-commit](./skills/misc/setup-pre-commit/SKILL.md)**
 - **[git-guardrails-claude-code](./skills/misc/git-guardrails-claude-code/SKILL.md)**
 - **[scaffold-exercises](./skills/misc/scaffold-exercises/SKILL.md)**
