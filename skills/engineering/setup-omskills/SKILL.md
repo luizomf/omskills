@@ -120,6 +120,13 @@ Include the triage-label block and file only when `triage` is installed. Then wr
 
 For "other" issue trackers, write `docs/agents/issue-tracker.md` from scratch using the user's description.
 
+**Provision triage labels:** After writing `docs/agents/triage-labels.md`, verify
+that every mapped label exists in the configured tracker. For GitHub and GitLab,
+list the repository's labels and create only the missing mapped labels; preserve
+existing labels, colors, descriptions, and unrelated vocabulary. Local-markdown
+trackers need no provisioning. The label setup is complete only when each mapped
+triage role resolves to an existing tracker label.
+
 ### 5. Done
 
 Tell the user the setup is complete and which engineering skills will now read from these files. Mention they can edit `docs/agents/*.md` directly later — re-running this skill is only necessary if they want to switch issue trackers or restart from scratch.
