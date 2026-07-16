@@ -28,7 +28,7 @@ expected_with_optional="$((expected + 1))"
   exit 1
 }
 
-ln -s "$REPO/skills/deprecated/qa" "$DEST/stale-managed"
+ln -s "$REPO/skills/retired-example" "$DEST/stale-managed"
 echo "stale-managed" >> "$DEST/.omskills-managed-links"
 "$REPO/scripts/link-skills.sh" >/dev/null
 [ ! -L "$DEST/stale-managed" ] || {

@@ -8,7 +8,7 @@ This repository started as a fork/adaptation of [mattpocock/skills](https://gith
 
 This is not the original repository. To see the source project, use [mattpocock/skills](https://github.com/mattpocock/skills).
 
-The repositories are expected to diverge over time. The original repo should remain separate for upstream tracking; this repo adapts names, rituals, triage, installation, and project defaults for the maintainer's Codex-oriented workflow.
+This repository is maintained independently and does not track or synchronize with the original. Useful ideas may be implemented here deliberately under this project's own conventions.
 
 ## What This Is
 
@@ -160,7 +160,9 @@ For mature projects, the queue should favor small, vertical, verifiable tickets.
 - **[domain-modeling](./skills/engineering/domain-modeling/SKILL.md)**: actively builds and sharpens the project's domain model.
 - **[codebase-design](./skills/engineering/codebase-design/SKILL.md)**: shared vocabulary and principles for designing deep modules.
 - **[code-review](./skills/engineering/code-review/SKILL.md)**: reviews a diff along standards and spec axes.
+- **[orchestrate-issue-queue](./skills/engineering/orchestrate-issue-queue/SKILL.md)**: delivers ordered issue queues through isolated implementation, review, correction, verification, and integration.
 - **[resolving-merge-conflicts](./skills/engineering/resolving-merge-conflicts/SKILL.md)**: resolves an in-progress git merge or rebase conflict.
+- **[supervise-async-codex-task](./skills/engineering/supervise-async-codex-task/SKILL.md)**: supervises a separate long-running Codex executor through adaptive heartbeats and bounded recovery.
 
 ### Productivity
 
@@ -175,22 +177,12 @@ For mature projects, the queue should favor small, vertical, verifiable tickets.
 **Model-invoked**
 
 - **[grilling](./skills/productivity/grilling/SKILL.md)**: the reusable interview loop behind `grill-me`, `grill-with-docs`, `triage`, and `wayfinder`.
+- **[prompt-comprehension-audits](./skills/productivity/prompt-comprehension-audits/SKILL.md)**: audits agent prompts through clean-context interpretation, independent review, and root adjudication.
 - **[write-a-skill](./skills/productivity/write-a-skill/SKILL.md)**: creates new skills with structure, frontmatter, and supporting resources.
 
 ## Optional Skills
 
-Kept as inspiration or for occasional use, but outside the main Codex manifest:
-
-- **[setup-pre-commit](./skills/misc/setup-pre-commit/SKILL.md)**
-- **[git-guardrails-claude-code](./skills/misc/git-guardrails-claude-code/SKILL.md)**
-- **[scaffold-exercises](./skills/misc/scaffold-exercises/SKILL.md)**
-- **[migrate-to-shoehorn](./skills/misc/migrate-to-shoehorn/SKILL.md)**
-
-Ignore for now:
-
-- `skills/deprecated/`
-- `skills/personal/`
-- `skills/in-progress/`
+There are no optional skills currently.
 
 ## Maintenance
 

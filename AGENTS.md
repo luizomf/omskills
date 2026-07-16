@@ -1,6 +1,6 @@
 # AGENTS.md
 
-This is the maintainer's personal skill collection. It started as a fork/adaptation of [mattpocock/skills](https://github.com/mattpocock/skills), first copied on May 24, 2026, and has since pulled in selected changes from later upstream snapshots. This is not the original repo; the original is [mattpocock/skills](https://github.com/mattpocock/skills). Treat the original repo as upstream inspiration, not as the maintainer's personal instruction set.
+This is the maintainer's personal skill collection. It started as a fork/adaptation of [mattpocock/skills](https://github.com/mattpocock/skills), first copied on May 24, 2026, and has since pulled in selected changes from later upstream snapshots. This is not the original repo; the original is [mattpocock/skills](https://github.com/mattpocock/skills). This repository is maintained independently: do not synchronize from the original, and implement useful ideas locally under omskills conventions.
 
 ## Communication / Language
 
@@ -51,16 +51,10 @@ Skills are organized under `skills/`:
 
 - `engineering/` - daily code work and issue/architecture workflows.
 - `productivity/` - non-code workflow tools.
-- `misc/` - kept around but not part of the core Codex setup by default.
-- `personal/` - tied to someone else's setup or private workflow; not promoted.
-- `in-progress/` - drafts not ready to ship.
-- `deprecated/` - no longer used.
 
 There are two plugin manifests, `.codex-plugin/plugin.json` and `.claude-plugin/plugin.json`. They are mirrors: the same skill list, in the same order. Any change to one must be made to the other.
 
 Core skills should appear in the top-level `README.md` and both plugin manifests. Optional skills may be documented in their bucket README without being part of the manifests.
-
-Skills in `personal/`, `in-progress/`, and `deprecated/` must not appear in either manifest.
 
 Each active skill entry in the top-level `README.md` must link the skill name to its `SKILL.md`. Each bucket README should list the skills in that bucket with one-line descriptions.
 

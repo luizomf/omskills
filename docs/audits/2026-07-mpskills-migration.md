@@ -1,5 +1,9 @@
 # July 2026 mpskills migration audit
 
+> Historical record: the optional, personal, in-progress, and deprecated skills
+> described below were removed on July 16, 2026. Omskills is now maintained
+> independently and does not track or synchronize with the original repository.
+
 ## Scope
 
 This audit reconstructs the migration from the sibling `mpskills` checkout into `omskills`, verifies the active catalog and local Codex installation, and separates omissions in PR #9 from upstream changes that landed afterward.

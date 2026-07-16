@@ -1,6 +1,6 @@
 ---
 name: setup-omskills
-description: Sets up an `## Agent skills` block in AGENTS.md/CODEX.md/CLAUDE.md and `docs/agents/` so the omskills engineering skills know this repo's issue tracker, triage label vocabulary, and domain doc layout. Run before first use of `to-spec`, `to-tickets`, `triage`, `code-review`, `wayfinder`, `diagnosing-bugs`, `tdd`, `improve-codebase-architecture`, or `grill-with-docs` - or if those skills appear to be missing context about the issue tracker, triage labels, or domain docs.
+description: Sets up an `## Agent skills` block in AGENTS.md/CODEX.md/CLAUDE.md and `docs/agents/` so the omskills engineering skills know this repo's issue tracker, triage label vocabulary, and domain doc layout. Run before first use of `to-spec`, `to-tickets`, `triage`, `code-review`, `wayfinder`, `orchestrate-issue-queue`, `supervise-async-codex-task`, `diagnosing-bugs`, `tdd`, `improve-codebase-architecture`, or `grill-with-docs` - or if those skills appear to be missing context about the issue tracker, triage labels, or domain docs.
 disable-model-invocation: true
 ---
 
