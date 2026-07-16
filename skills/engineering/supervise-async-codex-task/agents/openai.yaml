@@ -1,4 +1,0 @@
-interface:
-  display_name: "Supervise Async Codex Task"
-  short_description: "Supervisione tasks com heartbeat adaptativo"
-  default_prompt: "Use $supervise-async-codex-task para criar e supervisionar uma task executora até a conclusão verificável."

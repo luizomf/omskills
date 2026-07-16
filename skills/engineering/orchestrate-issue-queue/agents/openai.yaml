@@ -1,4 +1,0 @@
-interface:
-  display_name: "Orchestrate Issue Queue"
-  short_description: "Orquestre filas de issues com revisão isolada"
-  default_prompt: "Use $orchestrate-issue-queue para implementar, revisar e integrar esta fila de issues com estado persistente."

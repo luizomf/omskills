@@ -1,4 +1,0 @@
-interface:
-  display_name: "Prompt Comprehension Audits"
-  short_description: "Blindly verify prompt contracts and handoffs"
-  default_prompt: "Use $prompt-comprehension-audits to audit this agent prompt against its accepted intent."
