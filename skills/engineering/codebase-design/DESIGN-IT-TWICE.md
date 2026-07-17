@@ -1,44 +1,21 @@
 # Design It Twice
 
-When the user wants to explore alternative interfaces for a chosen deepening candidate, use this parallel sub-agent pattern. Based on "Design It Twice" (Ousterhout) — your first idea is unlikely to be the best.
+When alternative interfaces would expose a real tradeoff, ask one clean designer to produce two or three genuinely different options in a single pass. The root compares them and recommends one. Do not create an agent per option.
 
-Uses the vocabulary in [SKILL.md](./SKILL.md) — **module**, **interface**, **seam**, **adapter**, **leverage**.
+## Frame the problem
 
-## Process
+Collect the constraints, callers, dependencies, domain vocabulary, relevant code paths, and what the proposed module should hide. Include the vocabulary from [SKILL.md](./SKILL.md) and dependency guidance from [DEEPENING.md](./DEEPENING.md).
 
-### 1. Frame the problem space
+## Dispatch one clean designer
 
-Before spawning sub-agents, write a user-facing explanation of the problem space for the chosen candidate:
+Give one fresh-context designer the sources and this contract:
 
-- The constraints any new interface would need to satisfy
-- The dependencies it would rely on, and which category they fall into (see [DEEPENING.md](./DEEPENING.md))
-- A rough illustrative code sketch to ground the constraints — not a proposal, just a way to make the constraints concrete
+```text
+Design two or three materially different interfaces for this module. Vary seam placement or the primary optimization—not merely names. For each option show the interface, caller example, hidden implementation, dependency/adapters strategy, invariants and error modes, and tradeoffs in depth, locality, and leverage. Recommend one option. Do not edit code, spawn, or delegate.
+```
 
-Show this to the user, then immediately proceed to Step 2. The user reads and thinks while the sub-agents work in parallel.
+Useful contrasting optimizations include minimal interface, simplest common caller, or extensibility. Use only contrasts that fit the actual problem.
 
-### 2. Spawn sub-agents
+## Decide
 
-Spawn 3+ sub-agents in parallel using whatever subagent mechanism your agent harness provides. Each must produce a **radically different** interface for the deepened module.
-
-Prompt each sub-agent with a separate technical brief (file paths, coupling details, dependency category from [DEEPENING.md](./DEEPENING.md), what sits behind the seam). The brief is independent of the user-facing problem-space explanation in Step 1. Give each agent a different design constraint:
-
-- Agent 1: "Minimize the interface — aim for 1–3 entry points max. Maximise leverage per entry point."
-- Agent 2: "Maximise flexibility — support many use cases and extension."
-- Agent 3: "Optimise for the most common caller — make the default case trivial."
-- Agent 4 (if applicable): "Design around ports & adapters for cross-seam dependencies."
-
-Include both [SKILL.md](./SKILL.md) vocabulary and the project's domain vocabulary (e.g. from a CONTEXT.md if one exists) in the brief so each sub-agent names things consistently with the architecture language and the project's domain language.
-
-Each sub-agent outputs:
-
-1. Interface (types, methods, params — plus invariants, ordering, error modes)
-2. Usage example showing how callers use it
-3. What the implementation hides behind the seam
-4. Dependency strategy and adapters (see [DEEPENING.md](./DEEPENING.md))
-5. Trade-offs — where leverage is high, where it's thin
-
-### 3. Present and compare
-
-Present designs sequentially so the user can absorb each one, then compare them in prose. Contrast by **depth** (leverage at the interface), **locality** (where change concentrates), and **seam placement**.
-
-After comparing, give your own recommendation: which design you think is strongest and why. If elements from different designs would combine well, propose a hybrid. Be opinionated — the user wants a strong read, not a menu.
+The root checks each option against repository and domain constraints, may combine compatible strengths, and chooses the simplest design that preserves the required flexibility. Resolve architecture tradeoffs directly from the accepted intent and repository evidence; do not hand the decision back to the user.

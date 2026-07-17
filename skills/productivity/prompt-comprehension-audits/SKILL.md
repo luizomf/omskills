@@ -1,129 +1,45 @@
 ---
 name: prompt-comprehension-audits
-description: Audit an agent prompt without author bias through a clean-context interpreter, an independent reviewer, and root-agent adjudication. Use before expensive, scheduled, autonomous, or side-effecting runs; when validating prompt clarity, contracts, handoffs, likely shortcuts, or prompt/spec alignment; or when an apparently correct prompt needs blind verification.
+description: Audit whether a clean agent understands a prompt as intended. Use before costly or autonomous runs, or when prompt clarity, ownership, handoffs, and likely shortcuts need blind verification.
 ---
 
-# Audit prompt comprehension
+# Audit Prompt Comprehension
 
-Test whether fresh Codex agents reconstruct the intended contract from the prompt. For a static audit, analyze the workflow without executing it.
+Check whether a fresh agent reconstructs the intended contract from the prompt. This is a read-only audit unless the user explicitly asks for edits or execution.
 
-## Preserve the experiment
+## Keep the experiment clean
 
-- Keep the root agent as coordinator and final adjudicator.
-- Spawn the interpreter and reviewer as separate subagents with `fork_turns: "none"`. Do not reuse an agent for both roles.
-- Treat clean context as conversation isolation, not filesystem isolation: all Codex agents share the workspace. Give each subagent only named inputs and instruct it to ignore unrelated workspace files.
-- Pass source artifacts, not the root agent's diagnosis or desired answer.
-- Keep static audits read-only. The audit request authorizes analysis and subagent delegation, not execution, publication, prompt edits, or other side effects.
-- Run each reviewer only after its matching interpreter finishes. Parallelize different prompt pairs only when context and concurrency limits make that safe.
+- Keep the root as coordinator and decision-maker.
+- Dispatch one auditor with clean context (`fork_turns: "none"`). Supply the prompt, its explicitly required dependencies, and—only when comparison is required—the accepted intent or spec.
+- Supply source artifacts, not the root's diagnosis, conversation, or desired answer.
+- Instruct the auditor to inspect only supplied sources, make no changes, take no external actions, and not delegate.
+- Keep the root context lean: consume the consolidated report, not the auditor's scratch work or unfiltered logs.
 
-## Audit each prompt
+## Run the audit
 
-### 1. Dispatch a clean interpreter
+1. **Establish intent:** Identify the accepted intent or spec against which the prompt will be judged. If none exists, audit only self-sufficiency and label inferred intent.
+2. **Dispatch one clean auditor:** Ask it to reconstruct the mission, inputs, outputs, authority, sequence, success conditions, fallbacks, side effects, ambiguities, and likely shortcuts. Require source evidence for every defect.
+3. **Adjudicate:** Compare the report with the prompt and accepted intent. The root owns the result and rejects invented requirements, weak citations, stylistic preferences, and confusion caused only by the auditor's summary.
+4. **Decide:** Mark each material finding as real, intentional flexibility, or auditor error. Make routine judgment calls autonomously.
+5. **Resolve:** If edits were requested, make the smallest prompt change that removes each real defect while preserving useful flexibility. Otherwise report the findings succinctly.
 
-Spawn a subagent with `fork_turns: "none"`. Provide only:
+The normal budget is one clean auditor. Dispatch one different clean auditor only when a material disagreement remains after the root inspects the cited evidence. Give it the disputed sources and question, not the first auditor's conclusion. The root then decides; do not create a voting loop or third judge.
 
-- the prompt under test;
-- dependencies the prompt explicitly requires it to read;
-- a request to reconstruct the contract without executing it.
+## What counts as a defect
 
-Do not provide the spec, historical prompts, surrounding conversation, root assessment, or intended interpretation. Instruct the interpreter to inspect only the supplied content and explicitly named dependency paths, perform no writes or external actions, and return:
+A defect can change execution: contradictory ownership, missing input or output, ambiguous authority, broken handoff, unsafe side effect, unclear success or fallback state, prompt/spec mismatch, or a likely shortcut that defeats the task.
 
-1. mission;
-2. inputs and outputs;
-3. authority and ownership;
-4. sequence and decision points;
-5. success, fallback, and blocker states;
-6. allowed side effects;
-7. ambiguities;
-8. likely shortcuts or unsafe interpretations.
+Style, optional detail, and intentionally delegated judgment are not defects unless they plausibly change behavior. Repeated clean-agent confusion is evidence, not automatic proof.
 
-Require line citations when the source has stable line numbers; otherwise require short exact excerpts for every ambiguity or risk claim. The interpreter is complete when every category has an evidence-backed answer or is marked unspecified.
+For multi-prompt workflows, also check shared field names, artifact paths, stage order, blocker semantics, and ownership of final side effects. Report only inconsistent seams.
 
-### 2. Make the root assessment
+## Report
 
-Compare the interpreter's reconstruction against, in order:
+Return a compact result:
 
-1. the current spec or accepted intent, which is authoritative;
-2. current role and orchestration contracts;
-3. the matching historical prompt, only when checking whether useful behavior was accidentally lost.
+- `PASS`, or `DIVERGENCE`;
+- evidence-backed material findings;
+- the root's disposition for each;
+- minimal recommended or applied changes.
 
-History is evidence, not authority. A newer intentional decision overrides it. Record candidate divergences before reading the independent review; do not edit the prompt yet. This step is complete when each material contract element is classified as aligned, ambiguous, contradictory, or omitted.
-
-### 3. Dispatch a clean reviewer
-
-After the interpreter returns, spawn a different subagent with `fork_turns: "none"`. Provide:
-
-- the original prompt;
-- the interpreter response;
-- the current spec or accepted intent;
-- the matching historical role only when preservation matters.
-
-Withhold the root assessment to avoid anchoring. Instruct the reviewer to inspect only supplied content, perform no side effects or further delegation, and return `PASS` or `DIVERGENCE` with evidence. Require it to classify findings as:
-
-- interpreter error or omission;
-- real prompt ambiguity;
-- prompt/spec contradiction;
-- historical regression;
-- intentionally flexible judgment;
-- plausible model shortcut.
-
-The reviewer owns comparison with the spec; the interpreter was intentionally denied it. Require the reviewer to:
-
-- trace ownership across roles before declaring a missing guard;
-- verify each claimed requirement against the cited spec text;
-- reject invented requirements and mismatched citations;
-- distinguish similarly named actions performed at different workflow stages;
-- distinguish a prompt defect from an interpreter summary omission.
-
-The review is complete when every claimed divergence identifies the source evidence, affected behavior, and responsible layer.
-
-### 4. Adjudicate at the root
-
-Compare the root assessment with the reviewer. Agreement on material behavior supports a pass. Disagreement triggers evidence inspection, not automatic prompt editing: the interpreter, reviewer, spec, history, or root assessment may be wrong.
-
-Repeated independent confusion about the same structure is evidence of a clarity defect even when the author's intent seems obvious. Before accepting a missing-path or missing-dependency finding, trace the full handoff seam: one role may produce an intermediate artifact that another promotes, or consume a path supplied by the orchestrator.
-
-Finish the audit matrix before proposing changes. Edit prompts only when the user requested edits or approves the evidence-backed changes. Adjudication is complete when every finding has a disposition and every material recommendation traces to evidence.
-
-## Report the matrix
-
-Use one row per prompt:
-
-| Prompt | Interpreter | Reviewer | Root assessment | Result | Evidence | Recommended change |
-|---|---|---|---|---|---|---|
-
-Leave `Recommended change` empty for clean passes. Keep optional stylistic observations out of failure results. For a single prompt, the final response can be the durable record. For a multi-prompt or unattended audit, update a matrix file incrementally only when workspace writes are within the user's requested scope; otherwise return it in the response.
-
-## Check workflow seams
-
-After adjudicating all prompt pairs, mechanically compare the prompts for:
-
-- status vocabularies and handoff fields;
-- artifact paths and stage ordering;
-- optional-stage degradation and blocker semantics;
-- ownership of final side effects;
-- one-pass or no-loop guarantees.
-
-Verify environment and API claims against their actual primary interface before accepting them. The seam check is complete when every cross-prompt field and transition is either consistent or represented as a matrix finding.
-
-## Bound the conclusion
-
-A static audit provides strong evidence about prompt self-sufficiency, contract comprehension, ownership, fallbacks, wording-induced shortcuts, spec alignment, and preserved historical behavior. It does not prove tool use, source or artifact quality, build correctness, deployment, or behavior on large real inputs. State this boundary in the result when it matters.
-
-## Dynamic clean-room branch
-
-Use this branch only when the user has authorized actual execution and its side effects:
-
-1. Spawn a clean-context executor with only the prompt and explicit dependencies to perform the bounded task.
-2. Spawn a separate clean-context reviewer with the prompt, result, accepted intent, and narrowly relevant history.
-3. Adjudicate both outputs at the root.
-
-Reviewer disagreement is evidence to inspect, never permission to rewrite, publish, retry indefinitely, or expand scope. Preserve the semantic prompt when comparing runtimes; adapt only invocation, tool, and handoff mechanics.
-
-## Control cost and context
-
-- Use one interpreter and one reviewer per prompt; add a third clean judge only for unresolved material disagreement.
-- Keep outputs structured and bounded. For more than three prompts, process pairs sequentially or in small batches and retain only the compact matrix plus artifact paths in root context.
-- Respect available collaboration slots; sequential interpreter/reviewer pairs are the safe default.
-- Use a persistent goal only when the runtime demonstrably stops early, not merely because the audit is long.
-- For cross-harness evaluation, repeat the same bounded task and record elapsed time, context growth, interventions, retries, completion, delivery, independently reviewed quality, and handoff survival on the target surface.
+State the audit boundary when relevant: static comprehension review does not prove runtime behavior, tool availability, artifact quality, or deployment correctness.

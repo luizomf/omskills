@@ -24,4 +24,4 @@ Core skills for code work, issue workflow, and architecture decisions.
 - **[code-review](./code-review/SKILL.md)** - Review a diff along standards and spec axes.
 - **[orchestrate-issue-queue](./orchestrate-issue-queue/SKILL.md)** - Deliver ordered issue queues through isolated implementation, review, correction, verification, and integration.
 - **[resolving-merge-conflicts](./resolving-merge-conflicts/SKILL.md)** - Resolve an in-progress git merge or rebase conflict.
-- **[supervise-async-codex-task](./supervise-async-codex-task/SKILL.md)** - Supervise a separate long-running Codex executor through adaptive heartbeats and bounded recovery.
+- **[supervise-async-codex-task](./supervise-async-codex-task/SKILL.md)** - Supervise a long-running Codex executor with compact monitoring and bounded recovery.

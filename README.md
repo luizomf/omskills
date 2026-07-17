@@ -144,7 +144,7 @@ For mature projects, the queue should favor small, vertical, verifiable tickets.
 
 - **[grill-with-docs](./skills/engineering/grill-with-docs/SKILL.md)**: runs a grilling session while maintaining domain language and ADRs.
 - **[triage](./skills/engineering/triage/SKILL.md)**: moves issues and external PRs through a state machine based on triage roles.
-- **[improve-codebase-architecture](./skills/engineering/improve-codebase-architecture/SKILL.md)**: scans a codebase for deepening opportunities, presents a visual report, then grills through the selected candidate.
+- **[improve-codebase-architecture](./skills/engineering/improve-codebase-architecture/SKILL.md)**: scans a codebase for deepening opportunities and presents a visual report with a top recommendation.
 - **[setup-omskills](./skills/engineering/setup-omskills/SKILL.md)**: configures issue tracker, triage labels, and docs layout per repo.
 - **[to-spec](./skills/engineering/to-spec/SKILL.md)**: turns the current conversation context into a spec and publishes it to the issue tracker.
 - **[to-tickets](./skills/engineering/to-tickets/SKILL.md)**: breaks a plan, spec, or conversation into tracer-bullet tickets with blocking edges.
@@ -162,7 +162,7 @@ For mature projects, the queue should favor small, vertical, verifiable tickets.
 - **[code-review](./skills/engineering/code-review/SKILL.md)**: reviews a diff along standards and spec axes.
 - **[orchestrate-issue-queue](./skills/engineering/orchestrate-issue-queue/SKILL.md)**: delivers ordered issue queues through isolated implementation, review, correction, verification, and integration.
 - **[resolving-merge-conflicts](./skills/engineering/resolving-merge-conflicts/SKILL.md)**: resolves an in-progress git merge or rebase conflict.
-- **[supervise-async-codex-task](./skills/engineering/supervise-async-codex-task/SKILL.md)**: supervises a separate long-running Codex executor through adaptive heartbeats and bounded recovery.
+- **[supervise-async-codex-task](./skills/engineering/supervise-async-codex-task/SKILL.md)**: supervises a long-running Codex executor with compact monitoring and bounded recovery.
 
 ### Productivity
 
@@ -177,7 +177,7 @@ For mature projects, the queue should favor small, vertical, verifiable tickets.
 **Model-invoked**
 
 - **[grilling](./skills/productivity/grilling/SKILL.md)**: the reusable interview loop behind `grill-me`, `grill-with-docs`, `triage`, and `wayfinder`.
-- **[prompt-comprehension-audits](./skills/productivity/prompt-comprehension-audits/SKILL.md)**: audits agent prompts through clean-context interpretation, independent review, and root adjudication.
+- **[prompt-comprehension-audits](./skills/productivity/prompt-comprehension-audits/SKILL.md)**: audits prompt comprehension with one clean auditor and root adjudication.
 - **[write-a-skill](./skills/productivity/write-a-skill/SKILL.md)**: creates new skills with structure, frontmatter, and supporting resources.
 
 ## Optional Skills
