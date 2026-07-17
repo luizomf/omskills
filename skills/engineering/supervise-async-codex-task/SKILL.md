@@ -1,6 +1,6 @@
 ---
 name: supervise-async-codex-task
-description: Supervise a separate long-running Codex task through an asynchronous ping-pong protocol, acting as the user's autonomous decision proxy while an orchestrator delivers specified issues.
+description: Supervise a separate long-running Codex task through asynchronous ping-pong with a slow heartbeat fallback, acting as the user's autonomous decision proxy while an orchestrator delivers specified issues.
 ---
 
 # Supervise Async Codex Task
@@ -11,16 +11,40 @@ Act as the user's decision proxy in the current task. Create and steer one separ
 
 The current task is the **supervisor**. The separate task is the **orchestrator**. Create or resume it with Codex task-management tools; a collaboration subagent is not the orchestrator and does not satisfy this contract.
 
-Before dispatch, capture the supervisor task's return address. Give the orchestrator that task ID, its host when needed, and this ping-pong protocol:
+Before dispatch, resolve the supervisor task's concrete return address. Put the supervisor task ID and host ID, when needed, in the orchestrator's initial prompt. If no concrete return address is available, do not dispatch the mission.
+
+Establish the channel before work begins:
+
+1. The supervisor's initial prompt is `PING`: mission, authority, return address, and protocol.
+2. The orchestrator's first action is to call the Codex task-messaging tool, such as `send_message_to_thread`, with that exact return address and a compact `PONG` containing its task identity and readiness.
+3. A message is delivered only when the tool call reports success. Printing `PONG` or a decision packet as the orchestrator's final response does not deliver it.
+4. After a successful `PONG`, end the orchestrator turn. Begin work only when the supervisor replies `START` through the orchestrator's task channel.
+
+Then use this ping-pong protocol:
 
 1. Work until a supervisory decision checkpoint.
-2. Send the supervisor one compact decision packet containing current issue and phase, branch/PR/SHA, verified evidence, blocker or choice, risks, recommendation, and the exact response needed.
+2. Call the task-messaging tool with the supervisor's exact return address and one compact decision packet containing current issue and phase, branch/PR/SHA, verified evidence, blocker or choice, risks, recommendation, and the exact response needed.
 3. End the orchestrator turn. Do not poll or wait for the supervisor inside that turn.
 4. Resume only when the supervisor sends the decision back to the orchestrator task.
+
+Treat the tool's successful delivery result as the completion criterion for every `PONG` and decision packet. The orchestrator's local final response may acknowledge delivery, but it is never the transport. Address every decision, blocker, manual gate, and pending action to the supervisor task, never to the user or the maintainer. Only the supervisor may determine that external owner authority is required.
 
 Decision checkpoints include scope or acceptance deviations, reviewer adjudication, retry strategy, blockers, workflow fallback, merge or continue/stop choices, and claimed completion. Planned mechanical work between checkpoints remains with the orchestrator.
 
 After creating the orchestrator or returning a decision, end the supervisor turn. The orchestrator's next decision packet wakes the supervisor through the task messaging channel. This is asynchronous ping-pong, not a blocking monitor loop.
+
+## Install a slow fallback heartbeat
+
+After dispatch, create one recurring heartbeat attached to the supervisor task with an approximately 30-minute cadence. Use the Codex automation tool, reuse an existing heartbeat for the same mission instead of duplicating it, and retain its automation ID in the supervisor's compact state. Direct task messages remain the primary loop; the heartbeat exists only to recover a dropped hot-potato handoff.
+
+On each heartbeat wake:
+
+1. Read only the orchestrator's latest compact status and expected checkpoint.
+2. If it is working or waiting on an explained command or external system, do not interrupt it. Leave the heartbeat active for its next scheduled wake and end the supervisor turn.
+3. If a decision packet is pending, process it normally. If the expected checkpoint is late without explanation, apply the stall-recovery rules below.
+4. If the defined mission is complete, verify completion, delete the heartbeat by its stored automation ID, and finish. Also delete it whenever supervision terminates on an objective blocker so no orphaned heartbeat remains.
+
+Never create another heartbeat merely because the existing one woke. If completion arrives through direct task messaging before the next wake, delete the heartbeat during that completion pass.
 
 ## Establish the mission
 
