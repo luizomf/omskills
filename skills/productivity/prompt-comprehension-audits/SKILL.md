@@ -10,7 +10,8 @@ Check whether a fresh agent reconstructs the intended contract from the prompt. 
 ## Keep the experiment clean
 
 - Keep the root as coordinator and decision-maker.
-- Dispatch one auditor with clean context (`fork_turns: "none"`). Supply the prompt, its explicitly required dependencies, and—only when comparison is required—the accepted intent or spec.
+- Create a new auditor agent instance with clean context (`fork_turns: "none"`) for every audit pass. "Fresh" means a newly spawned agent identity, not a new turn, follow-up, reset, or nominally clean prompt sent to any existing or previously used agent.
+- Supply the prompt, its explicitly required dependencies, and—only when comparison is required—the accepted intent or spec.
 - Supply source artifacts, not the root's diagnosis, conversation, or desired answer.
 - Instruct the auditor to inspect only supplied sources, make no changes, take no external actions, and not delegate.
 - Keep the root context lean: consume the consolidated report, not the auditor's scratch work or unfiltered logs.
@@ -23,7 +24,7 @@ Check whether a fresh agent reconstructs the intended contract from the prompt. 
 4. **Decide:** Mark each material finding as real, intentional flexibility, or auditor error. Make routine judgment calls autonomously.
 5. **Resolve:** If edits were requested, make the smallest prompt change that removes each real defect while preserving useful flexibility. Otherwise report the findings succinctly.
 
-The normal budget is one clean auditor. Dispatch one different clean auditor only when a material disagreement remains after the root inspects the cited evidence. Give it the disputed sources and question, not the first auditor's conclusion. The root then decides; do not create a voting loop or third judge.
+The normal budget is one clean auditor. Create a second new auditor agent instance only when a material disagreement remains after the root inspects the cited evidence. Never reuse the first auditor or another existing agent. Give the second auditor the disputed sources and question, not the first auditor's conclusion. The root then decides; do not create a voting loop or third judge.
 
 ## What counts as a defect
 

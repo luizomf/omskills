@@ -17,10 +17,10 @@ Fill small gaps in an issue when the repository sources make the intended result
 
 ## Keep every context clean
 
-- Start the orchestration in a fresh task. Keep its context lean: consume compact agent reports and authoritative PR/issue state, not full transcripts or unfiltered logs. At an issue boundary, hand off the queue state to a fresh orchestrator whenever the current context has accumulated implementation detail.
-- Start every writer and reviewer with fresh context. Give them source locations, the issue, the exact SHA when reviewing, and the required outcome—not another agent's conversation.
+- Start the orchestration in a newly created task identity with no prior conversation. Keep its context lean: consume compact agent reports and authoritative PR/issue state, not full transcripts or unfiltered logs. At an issue boundary, hand off the queue state to another newly created orchestrator task whenever the current context has accumulated implementation detail.
+- Create a new writer or reviewer agent instance with clean context for every role assignment, round, and issue. Give it source locations, the issue, the exact SHA when reviewing, and the required outcome—not another agent's conversation.
 - Writers and reviewers are leaf agents. They do not spawn or delegate.
-- Never reuse an agent for another role, round, or issue.
+- "Fresh" means newly spawned identity plus clean context, not a new turn, follow-up, reset, or clean-looking prompt sent to an existing agent. Never reuse or repurpose an agent for another role, round, issue, or orchestrator handoff, even if it is idle or previously handled related work.
 
 Use [references/subagent-contracts.md](references/subagent-contracts.md) as compact role prompts.
 
@@ -36,12 +36,12 @@ Use [references/subagent-contracts.md](references/subagent-contracts.md) as comp
 For each issue:
 
 1. **Preflight:** Confirm the issue is open, unowned, unblocked, and has enough acceptance criteria to implement. Confirm its branch and worktree are exclusive and it has no material conflict with active work.
-2. **Write:** Dispatch one fresh writer for the whole issue. The writer owns implementation, local iteration, relevant tests, commit, push, and the PR.
+2. **Write:** Spawn one new clean writer agent for the whole issue. The writer owns implementation, local iteration, relevant tests, commit, push, and the PR.
 3. **Validate delivery:** Revalidate the PR and exact remote SHA. Treat GitHub as authoritative.
-4. **Review:** Dispatch one fresh read-only reviewer for the whole issue at that SHA. The reviewer checks the spec, behavior, tests, security implications, documentation, and repository rules in one pass.
+4. **Review:** Spawn one new clean read-only reviewer agent for the whole issue at that SHA. The reviewer checks the spec, behavior, tests, security implications, documentation, and repository rules in one pass.
 5. **Adjudicate:** Verify every blocking finding yourself. Ignore vague, duplicated, or non-reproducible objections.
-6. **Retry once:** If blockers remain, dispatch one fresh writer with the issue and adjudicated findings. After its delivery, dispatch one fresh reviewer for the new SHA. Any push invalidates the earlier review.
-7. **Resolve:** If the second review still blocks, choose the smallest safe path forward from the available evidence. You may revise non-material issue details when that produces a simpler, correct, maintainable, and secure result. Give the decision, revised constraints, and surviving blockers to a new fresh writer; do not reopen process discussion. Verify the resulting SHA yourself and merge when the issue's intent, checks, and repository rules are satisfied.
+6. **Retry once:** If blockers remain, spawn a new clean writer agent with the issue and adjudicated findings. After its delivery, spawn a new clean reviewer agent for the new SHA. Do not send either assignment back to an earlier writer or reviewer. Any push invalidates the earlier review.
+7. **Resolve:** If the second review still blocks, choose the smallest safe path forward from the available evidence. You may revise non-material issue details when that produces a simpler, correct, maintainable, and secure result. Give the decision, revised constraints, and surviving blockers to another newly spawned clean writer agent; do not reopen process discussion. Verify the resulting SHA yourself and merge when the issue's intent, checks, and repository rules are satisfied.
 8. **Advance:** Confirm the issue closed, clean its branch and worktree, synchronize the remaining work, and dispatch newly eligible frontier issues.
 
 The normal budget per issue is therefore one writer and one reviewer, with one fresh writer/reviewer retry only when needed. The final resolution writer is an escape hatch, not another automatic review loop.

@@ -9,7 +9,9 @@ Act as the user's decision proxy in the current task. Create and steer one separ
 
 ## Use two Codex tasks
 
-The current task is the **supervisor**. The separate task is the **orchestrator**. Create or resume it with Codex task-management tools; a collaboration subagent is not the orchestrator and does not satisfy this contract.
+The current task is the **supervisor**. The separate task is the **orchestrator**. Create a brand-new Codex task for the orchestrator with task-management tools; a collaboration subagent is not the orchestrator and does not satisfy this contract.
+
+"Separate" and "clean" mean a newly created task identity with no prior conversation. Never resume, fork, repurpose, or send a follow-up mission to an existing or previously used task, even if it is idle, appears unrelated, or can be given a clean prompt. Continuing the newly created orchestrator after its own `PONG` or a later decision checkpoint is the only allowed resumption because those turns belong to the same mission.
 
 Before dispatch, resolve the supervisor task's concrete return address. Put the supervisor task ID and host ID, when needed, in the orchestrator's initial prompt. If no concrete return address is available, do not dispatch the mission.
 
@@ -51,9 +53,9 @@ Never create another heartbeat merely because the existing one woke. If completi
 1. Preserve a compact intent brief: requested outcome, why it matters, scope, authority, and definition of done.
 2. Inspect the issue, repository state, open PRs, and active tasks. Refuse duplicate ownership.
 3. Treat the issue as a strong plan, not infallible intent. Remove accidental scope amplification and decide product-adjacent implementation, scope, and risk tradeoffs from the intent brief and repository evidence. Prefer the smallest safe complete result; do not hand decisions back to the user.
-4. Create or resume one clean orchestrator task. Give it the intent brief, issues, repository instructions, authority, return address, decision checkpoints, stop conditions, and the `orchestrate-issue-queue` contract. This skill's ping-pong protocol overrides that contract wherever it grants the orchestrator final decision authority.
+4. Create one new clean orchestrator task. Give it the intent brief, issues, repository instructions, authority, return address, decision checkpoints, stop conditions, and the `orchestrate-issue-queue` contract. Do not select an existing task discovered during inspection. This skill's ping-pong protocol overrides that contract wherever it grants the orchestrator final decision authority.
 
-The orchestrator uses one fresh writer and one fresh reviewer per issue. It may run demonstrably independent issues concurrently in exclusive worktrees, but never creates competing writers for the same or conflicting work. It may repeat a writer/reviewer pair once when the supervisor confirms adjudicated blockers. If that still fails, it returns a decision packet so the supervisor can choose a different safe strategy and send it to one new clean writer. Do not create multiple review axes, agents for individual findings, or unbounded retry loops.
+The orchestrator creates one new clean writer and one new clean reviewer per issue. It may run demonstrably independent issues concurrently in exclusive worktrees, but never creates competing writers for the same or conflicting work. It may create one additional new writer and one additional new reviewer when the supervisor confirms adjudicated blockers; neither retry role may reuse an earlier agent. If that still fails, it returns a decision packet so the supervisor can choose a different safe strategy and send it to one newly spawned clean writer. Do not create multiple review axes, agents for individual findings, or unbounded retry loops.
 
 ## Maintain compact state
 
@@ -72,7 +74,7 @@ Read only new task output. Do not reread full conversations, ingest raw logs, or
 
 Quiet work is not automatically stalled. On a later user, event, or scheduled wake, treat it as a stall only when an expected checkpoint is late, no command or external wait explains it, and one compact probe receives no useful progress evidence.
 
-On a confirmed stall, steer or stop the stale operation within existing authority. Preserve completed work, change strategy when needed, and continue with the same orchestrator or one clean replacement. Do not broaden scope or start competing writers.
+On a confirmed stall, first steer the current orchestrator within its existing mission. If replacement is necessary, stop the stale operation and create one brand-new orchestrator task with no prior conversation; pass only compact authoritative state and source locations. Never repurpose another existing task or agent as the replacement. Preserve completed work, change strategy when needed, and do not broaden scope or start competing writers.
 
 ## Decide for the user
 
