@@ -1,34 +1,58 @@
 ---
 name: prompt-comprehension-audits
-description: Blind-audit whether a fresh agent reconstructs a prompt's intended execution contract before costly or autonomous work.
+description: Check whether clean-context agents understand an issue or execution prompt exactly as intended before costly or autonomous work.
 ---
 
 # Audit Prompt Comprehension
 
-Test whether a fresh agent can reconstruct the intended contract from source material. The audit is read-only unless the user requested prompt edits.
+Test semantic comprehension without executing the prompt or turning it into a more complete plan. The question is narrow: did a fresh agent understand exactly what the user asked?
 
-## Keep the audit blind
+## Establish the reference intent
 
-- Establish the accepted intent or spec used for comparison. When none exists, assess self-sufficiency and label inferred intent.
-- Spawn a new auditor identity for each audit pass with `fork_turns: "none"`.
-- Supply the prompt and its explicitly required source artifacts. Include the accepted intent only when comparison requires it.
-- Ask the auditor to reconstruct mission, inputs, outputs, authority, sequence, success conditions, fallbacks, side effects, ambiguities, and likely shortcuts, citing source evidence for material defects.
-- Keep the auditor read-only and non-delegating. Consume its consolidated report rather than scratch work.
+State the accepted intent from the user's request, issue, or authoritative spec. Preserve its explicit boundaries, including work the user deferred or left for later.
 
-Fresh identity is central to the test: success should come from the prompt and supplied artifacts, not earlier conversation or the coordinator's diagnosis.
+When no accepted intent exists outside the prompt, report the interpretation and ambiguities without inventing the missing intent. Prompt edits remain read-only unless the user requested them.
 
-## Adjudicate once
+## Run two clean passes
 
-Compare the report with the prompt, accepted intent, and cited evidence. Classify each material finding as a real defect, intentional flexibility, or auditor error. Resolve routine wording and ownership gaps autonomously.
+Use a new agent identity for each pass. Explicitly call `spawn_agent` with `fork_turns: "none"`; the default fork may copy the parent conversation and invalidate the audit. Never reuse an existing agent or continue the first agent for the second pass.
 
-A defect is something capable of changing execution: contradictory ownership, missing required input or output, ambiguous authority, broken handoff, unsafe side effect, unclear completion or fallback state, prompt/spec mismatch, or a likely shortcut that defeats the task. Style, optional detail, implementation freedom, and preferences remain outside the result unless they plausibly change behavior.
+### 1. Ask a clean interpreter
 
-For multi-prompt workflows, concentrate on seams: shared field names, artifact paths, stage order, blocker semantics, ownership, and final side effects.
+Give the first agent only:
 
-One clean auditor is the normal budget. Use a second fresh auditor only when a material disagreement remains after inspecting the cited sources; give it the disputed sources and question, then adjudicate the result. This is a tie-break, not a voting loop.
+- the original prompt;
+- artifacts the prompt explicitly requires;
+- this question: "What do you understand you are being asked to do?"
 
-## Resolve and report
+Withhold the surrounding conversation, accepted intent, coordinator diagnosis, and desired answer. Require a compact reconstruction of the requested outcome, scope boundaries, deliverables, completion point, and material ambiguities. Keep the agent read-only and non-delegating.
 
-When edits are in scope, apply the smallest changes that remove real defects while preserving useful implementation judgment. Otherwise return a compact `PASS` or `DIVERGENCE` with evidence-backed findings and their disposition.
+The interpreter explains the prompt as written. It does not execute it, improve the task, or supply requirements that the prompt did not state.
 
-Completion means every reported material defect has a disposition and every in-scope real defect is resolved. Static comprehension establishes prompt clarity; runtime behavior, tool availability, artifact quality, and deployment remain separate evidence surfaces.
+### 2. Make the coordinator assessment
+
+Compare the interpreter response with the accepted intent. Record only behavioral differences: work omitted, work added, a boundary changed, a deliverable misunderstood, or wording that permits materially different executions.
+
+Missing release preparation, tests, artifacts, fallbacks, documentation, or implementation detail is not a defect unless the accepted intent requires it. The audit measures fidelity to the request, not readiness or completeness for implementation.
+
+### 3. Ask a clean reviewer
+
+After the interpreter finishes, always call `spawn_agent` again with `fork_turns: "none"` for a different reviewer. Give it:
+
+- the original prompt;
+- the interpreter's response;
+- the accepted intent or authoritative spec.
+
+Withhold the coordinator assessment. Keep the reviewer read-only, non-delegating, and focused on semantic equivalence. Require `PASS` or `DIVERGENCE`, with evidence for any work added, omitted, or changed. The reviewer must reject requirements that come from its idea of a complete workflow rather than the accepted intent.
+
+### 4. Adjudicate
+
+Use the prompt, interpreter response, reviewer judgment, and accepted intent to decide. The agents advise; the coordinator owns the result.
+
+Return `PASS` only when the interpreted task is materially equivalent to the accepted intent and adds no work. Otherwise return `DIVERGENCE` with the smallest evidence-backed correction. When prompt edits are in scope, change only wording needed to restore that equivalence and preserve every deferred or out-of-scope boundary.
+
+If the prompt changes, run one new interpreter/reviewer pair against the revised prompt. Stop with the remaining divergence instead of broadening the task to make it look complete.
+
+## Audit boundary
+
+This audit answers whether the prompt communicates the intended request. It does not validate implementation readiness, execute the issue, inspect the application, run tests, prepare a release, or prove runtime behavior.

@@ -13,5 +13,5 @@ General workflow tools, not code-specific.
 ## Model-invoked
 
 - **[grilling](./grilling/SKILL.md)** - Reusable interview loop behind `grill-me`, `grill-with-docs`, `triage`, and `wayfinder`.
-- **[prompt-comprehension-audits](./prompt-comprehension-audits/SKILL.md)** - Blind-audit prompt comprehension with a fresh auditor and evidence-based adjudication.
+- **[prompt-comprehension-audits](./prompt-comprehension-audits/SKILL.md)** - Check an issue or execution prompt with two clean-context agents for exact semantic comprehension.
 - **[write-a-skill](./write-a-skill/SKILL.md)** - Create new skills with proper structure, progressive disclosure, and bundled resources.

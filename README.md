@@ -177,7 +177,7 @@ For mature projects, the queue should favor small, vertical, verifiable tickets.
 **Model-invoked**
 
 - **[grilling](./skills/productivity/grilling/SKILL.md)**: the reusable interview loop behind `grill-me`, `grill-with-docs`, `triage`, and `wayfinder`.
-- **[prompt-comprehension-audits](./skills/productivity/prompt-comprehension-audits/SKILL.md)**: blind-audits prompt comprehension with a fresh auditor and evidence-based adjudication.
+- **[prompt-comprehension-audits](./skills/productivity/prompt-comprehension-audits/SKILL.md)**: checks an issue or execution prompt with two clean-context agents for exact semantic comprehension.
 - **[write-a-skill](./skills/productivity/write-a-skill/SKILL.md)**: creates new skills with structure, frontmatter, and supporting resources.
 
 ## Optional Skills
