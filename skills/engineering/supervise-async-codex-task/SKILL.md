@@ -5,7 +5,7 @@ description: Watch a separate long-running Codex delivery task through asynchron
 
 # Supervise Async Codex Task
 
-Act as **the maintainer Decisivo**, the user's fallback decision proxy, while one separate Codex task acts as **the maintainer Dev** and owns orchestration and product delivery. Keep the supervisor read-only with respect to product code.
+Act as **the maintainer Decisivo**, the user's fallback decision proxy, while one separate Codex task acts as **the maintainer Dev** and owns orchestration and product delivery. Keep the supervisor read-only with respect to product code; it may directly correct trivial tracker or automation administration under the gate below.
 
 ## Establish two clean tasks
 
@@ -21,7 +21,7 @@ Tool-confirmed message delivery is the transport boundary. Continue the same orc
 
 Keep supervision event-driven. The supervisor never calls `wait_threads`, polls the orchestrator, or remains running to monitor progress. Direct task messages wake it for decisions and completion; the scheduled heartbeat is the sole fallback check.
 
-The orchestrator creates a fresh writer and reviewer identity for every issue, role, and round using `spawn_agent` with `fork_turns: "none"`. Each receives compact authoritative context. This clean-context protocol is the core quality control; ownership stays exclusive for overlapping work.
+The orchestrator creates a fresh writer and reviewer identity for every substantive delegated role and round using `spawn_agent` with `fork_turns: "none"`. Each receives compact authoritative context. This clean-context protocol is the core quality control; ownership stays exclusive for overlapping work.
 
 ## Watch without taking over delivery
 
@@ -43,9 +43,20 @@ The orchestrator works autonomously and sends one compact decision packet when i
 
 Include current issue/phase, branch/PR/SHA, verified evidence, choice or blocker, risks, recommendation, and exact response needed. End that orchestrator turn after delivery; resume when the supervisor replies through the task channel.
 
-Routine implementation choices, reviewer preferences, bounded correction rounds, merge sequencing, tracker metadata, and recoverable tooling failures remain with the orchestrator. This keeps ping-pong focused on recovery and completion rather than status conversation.
+While delivery is active, routine implementation choices, reviewer preferences, substantive correction rounds, merge sequencing, tracker metadata, and recoverable tooling failures remain with the orchestrator. This keeps ping-pong focused on recovery and completion rather than status conversation.
 
 At a decision packet, revalidate the evidence and send one explicit direction: continue, correct, retry, merge, change strategy, or stop. Prefer the orchestrator's recommendation when it preserves intent, scope, code quality, and security. End the supervisor turn after the direction is delivered.
+
+## Close trivial administration directly
+
+Process boundaries are quality controls, not ceremony. Before waking a stopped orchestrator or creating a replacement, handle the correction directly when all of these are true:
+
+- it only records an already-made owner decision or terminates supervision;
+- the exact desired value is unambiguous from the decision or live state;
+- it is limited to wording, spelling, tracker metadata, a status note, or heartbeat cleanup;
+- no product edit, review, merge, integration, technical judgment, or acceptance decision remains.
+
+Make the bounded tracker or automation change, confirm the resulting live state once, delete the heartbeat when supervision has ended, and finish. Do not wake the orchestrator merely to relay or approve that predetermined correction. If any condition fails, return the substantive work to the orchestrator through the normal channel.
 
 ## Maintain a slow fallback heartbeat
 
@@ -55,8 +66,8 @@ On each heartbeat, inspect the orchestrator's live task state once:
 
 - **The task is running or has an explained wait:** leave the heartbeat active and end the supervisor turn.
 - **The task has stopped:** verify the delivery state, then choose one outcome:
-  - **Mission complete:** delete the heartbeat and finish supervision.
-  - **Work remains with a safe correction:** send one concrete direction or create one clean replacement orchestrator, keep the heartbeat active, and end the supervisor turn. A replacement resumes from compact authoritative state through a fresh `PING`/`PONG` before `START`.
+  - **Mission complete:** apply any trivial administrative closeout directly, delete the heartbeat, and finish supervision.
+  - **Substantive work remains with a safe correction:** send one concrete direction or create one clean replacement orchestrator, keep the heartbeat active, and end the supervisor turn. A replacement resumes from compact authoritative state through a fresh `PING`/`PONG` before `START`.
   - **Objective blocker with no safe correction:** delete the heartbeat and report the blocker.
 
 The heartbeat reads live state and requires no periodic status report from the orchestrator.

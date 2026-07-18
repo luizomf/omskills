@@ -5,7 +5,7 @@ description: Deliver a repository issue queue through dependency-aware schedulin
 
 # Orchestrate Issue Queue
 
-Own delivery of the queue as **the maintainer Dev**. Git, the issue tracker, specs, ADRs, and repository evidence define the work; agents and workflow metadata support that outcome. Keep the orchestrator focused on scheduling, adjudication, integration, and verification while writers own product edits.
+Own delivery of the queue as **the maintainer Dev**. Git, the issue tracker, specs, ADRs, and repository evidence define the work; agents and workflow metadata support that outcome. Keep the orchestrator focused on scheduling, adjudication, integration, and verification while writers own substantive product edits.
 
 ## Act as the delivery owner
 
@@ -17,12 +17,25 @@ Continue through technical uncertainty while a safe path preserves the requested
 
 When a supervisor is present, send it a compact decision packet before pausing, stopping, or escalating. The supervisor acts as **the maintainer Decisivo** and can authorize a path the orchestrator hesitated to take. Direct user involvement remains for external authority or a situation where both tasks find no safe route to the intended outcome.
 
+## Size the process to the judgment
+
+Process boundaries are quality controls, not ceremony. Use a writer and independent reviewer when a change affects behavior, logic, interfaces, data, security, tests, build or publish flow, or otherwise benefits from separate technical judgment.
+
+Handle a correction directly when all of these are true:
+
+- the intended result is already unambiguous from the issue, owner decision, or live evidence;
+- the edit is bounded and non-functional, such as wording, spelling, presentation-only color, formatting, tracker metadata, or a status note;
+- it does not change product behavior, contracts, risk, or an acceptance decision;
+- targeted verification can conclusively confirm it.
+
+For that mechanical path, make the edit, run the proportionate check, commit and push when repository files changed, update tracker state if needed, and continue. Do not create a writer or reviewer whose only contribution would be relaying or approving the predetermined edit. If any condition is uncertain, use the normal writer/reviewer path.
+
 ## Preserve clean contexts
 
 Context isolation is the quality boundary:
 
 - Start orchestration in a new task identity with lean context.
-- Create a new writer or reviewer identity for every role assignment and round with `spawn_agent` and `fork_turns: "none"`.
+- Create a new writer or reviewer identity for every delegated role assignment and round with `spawn_agent` and `fork_turns: "none"`.
 - Give each agent a compact, self-contained prompt containing its role, authoritative sources, scope, worktree or exact review SHA, and expected result.
 - Keep writers and reviewers as leaf agents.
 - Use a new orchestrator at an issue boundary when accumulated implementation detail is materially crowding its decision context.
@@ -39,16 +52,16 @@ Give each active writer exclusive ownership of its issue, branch, and worktree. 
 
 ## Deliver each issue
 
-1. **Preflight:** Confirm live issue, dependency, branch, worktree, PR, and base state. Live state wins over handoffs and snapshots.
-2. **Write:** Spawn one fresh writer for the whole issue. It owns implementation, local iteration, relevant tests, commit, push, and PR creation or update.
+1. **Preflight:** Confirm live issue, dependency, branch, worktree, PR, and base state. Live state wins over handoffs and snapshots. Classify the work through the mechanical gate above.
+2. **Write:** For substantive work, spawn one fresh writer for the whole issue. It owns implementation, local iteration, relevant tests, commit, push, and PR creation or update. For mechanical work, perform the bounded path directly.
 3. **Validate delivery:** Revalidate the exact remote SHA and PR state.
-4. **Review:** Spawn one fresh read-only reviewer for a complete pass at that SHA.
+4. **Review:** For substantive work, spawn one fresh read-only reviewer for a complete pass at that SHA. Mechanical work needs only its conclusive targeted verification.
 5. **Adjudicate:** Verify concrete blockers, discard preferences and speculative scope, and consolidate the surviving findings.
-6. **Correct:** For surviving blockers, spawn one fresh writer with the full correction batch, then one fresh reviewer at the new SHA. Each push establishes a new review target.
-7. **Resolve:** If blockers survive, choose the smallest safe resolution from the issue, spec, ADRs, code, tests, and review evidence. Send that bounded decision to one fresh writer and directly verify the resulting SHA before integration.
+6. **Correct:** For surviving blockers, apply the mechanical gate again. Handle a wholly mechanical batch directly; otherwise spawn one fresh writer with the full correction batch, then one fresh reviewer at the new SHA. Each substantive push establishes a new review target.
+7. **Resolve:** If blockers survive, choose the smallest safe resolution from the issue, spec, ADRs, code, tests, and review evidence. Handle it directly only if the resulting correction passes the mechanical gate; otherwise send the bounded decision to one fresh writer. Directly verify the resulting SHA before integration.
 8. **Integrate:** Run repository-defined verification on the accepted SHA, merge serially, confirm issue closure, clean the branch and worktree, synchronize the base, and advance the frontier. If the user is dogfooding a worktree build, preserve it at an authorized persistent destination before cleanup or explicitly warn that its path will disappear.
 
-One writer/reviewer pair is the normal path. Correction rounds exist to produce a complete result, not to debate preferences. Give agents whole-issue assignments and consolidated findings. The writer absorbs its own test reruns and micro-edits; the orchestrator handles status and integration checks directly.
+One writer/reviewer pair is the normal path for substantive work. Correction rounds exist to produce a complete result, not to debate preferences. Give agents whole-issue assignments and consolidated findings. The writer absorbs its own test reruns and micro-edits; the orchestrator handles mechanical corrections, status, and integration checks directly.
 
 ## Finish on product evidence
 
