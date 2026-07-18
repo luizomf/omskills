@@ -20,7 +20,7 @@ The lenses stay distinct in the report, but one fresh reviewer covers both so it
 
 ## Dispatch one clean reviewer
 
-Start one reviewer with fresh context. Give it:
+Create one new reviewer with clean context: call `spawn_agent` with `fork_turns: "none"`. Give it a compact, self-contained initial prompt containing:
 
 - repository and fixed point;
 - diff and commit commands;

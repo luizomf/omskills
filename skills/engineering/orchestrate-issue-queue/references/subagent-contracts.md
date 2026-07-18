@@ -1,6 +1,6 @@
 # Fresh-agent contracts
 
-Use each contract only as the initial prompt for a newly spawned agent with clean context. Never send one as a new turn or follow-up to an existing or previously used agent. Pass source locations and outcomes, never previous-agent conversation. Replace the placeholders and keep the prompt compact.
+Use each contract only as the initial prompt for a newly spawned agent with clean context: its `spawn_agent` call must set `fork_turns: "none"`. Never send one as a new turn or follow-up to an existing or previously used agent. Replace the placeholders with authoritative source locations, scope, required artifacts or SHA, and outcome; keep the prompt compact and self-contained, without previous-agent conversation or reasoning.
 
 ## Writer
 

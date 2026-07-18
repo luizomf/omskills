@@ -18,7 +18,7 @@ Fill small gaps in an issue when the repository sources make the intended result
 ## Keep every context clean
 
 - Start the orchestration in a newly created task identity with no prior conversation. Keep its context lean: consume compact agent reports and authoritative PR/issue state, not full transcripts or unfiltered logs. At an issue boundary, hand off the queue state to another newly created orchestrator task whenever the current context has accumulated implementation detail.
-- Create a new writer or reviewer agent instance with clean context for every role assignment, round, and issue. Give it source locations, the issue, the exact SHA when reviewing, and the required outcome—not another agent's conversation.
+- Create a new writer or reviewer agent instance with clean context for every role assignment, round, and issue: call `spawn_agent` with `fork_turns: "none"`. Make its initial prompt self-contained with the role, authoritative sources, scope, issue, required worktree or exact review SHA, and expected result—not another agent's conversation or reasoning.
 - Writers and reviewers are leaf agents. They do not spawn or delegate.
 - "Fresh" means newly spawned identity plus clean context, not a new turn, follow-up, reset, or clean-looking prompt sent to an existing agent. Never reuse or repurpose an agent for another role, round, issue, or orchestrator handoff, even if it is idle or previously handled related work.
 
