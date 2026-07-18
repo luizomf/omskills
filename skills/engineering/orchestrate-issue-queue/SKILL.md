@@ -27,6 +27,8 @@ Context isolation is the quality boundary:
 - Keep writers and reviewers as leaf agents.
 - Use a new orchestrator at an issue boundary when accumulated implementation detail is materially crowding its decision context.
 
+When supervised, request that replacement through the supervisor; the supervisor establishes a fresh `PING`/`PONG` with the successor before `START`.
+
 Use [references/subagent-contracts.md](references/subagent-contracts.md) for the role prompts.
 
 ## Schedule by demonstrated independence
@@ -44,7 +46,7 @@ Give each active writer exclusive ownership of its issue, branch, and worktree. 
 5. **Adjudicate:** Verify concrete blockers, discard preferences and speculative scope, and consolidate the surviving findings.
 6. **Correct:** For surviving blockers, spawn one fresh writer with the full correction batch, then one fresh reviewer at the new SHA. Each push establishes a new review target.
 7. **Resolve:** If blockers survive, choose the smallest safe resolution from the issue, spec, ADRs, code, tests, and review evidence. Send that bounded decision to one fresh writer and directly verify the resulting SHA before integration.
-8. **Integrate:** Run repository-defined verification on the accepted SHA, merge serially, confirm issue closure, clean the branch and worktree, synchronize the base, and advance the frontier.
+8. **Integrate:** Run repository-defined verification on the accepted SHA, merge serially, confirm issue closure, clean the branch and worktree, synchronize the base, and advance the frontier. If the user is dogfooding a worktree build, preserve it at an authorized persistent destination before cleanup or explicitly warn that its path will disappear.
 
 One writer/reviewer pair is the normal path. Correction rounds exist to produce a complete result, not to debate preferences. Give agents whole-issue assignments and consolidated findings. The writer absorbs its own test reruns and micro-edits; the orchestrator handles status and integration checks directly.
 

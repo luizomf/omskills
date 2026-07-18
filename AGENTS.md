@@ -19,6 +19,11 @@ Always look for local instruction files in this order:
 
 Use `rtk` for shell commands to keep context cleaner.
 
+After completing a task that changes this repository, verify the intended diff,
+create a conventional commit, and push the current branch to `origin` unless
+the maintainer explicitly asks to keep the changes local. Treat the private remote as
+backup; do not leave finished work only in the worktree.
+
 ## Repo Purpose
 
 `omskills` is not runtime application code. It is a curated set of agent skills, prompts, setup docs, and small helper scripts for the maintainer's workflow with Codex and other coding agents.
