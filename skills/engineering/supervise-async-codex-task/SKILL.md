@@ -51,9 +51,13 @@ At a decision packet, revalidate the evidence and send one explicit direction: c
 
 Create one recurring heartbeat attached to the supervisor task at approximately 30-minute cadence and retain its automation ID. Direct task messages remain primary; the heartbeat recovers a dropped handoff.
 
-On a heartbeat, read only the latest compact status and expected checkpoint. Quiet work with an explained command or external wait continues undisturbed. Probe once when an expected checkpoint is late without explanation; steer the current orchestrator when useful. If replacement becomes necessary, preserve completed work, create one new clean orchestrator from compact authoritative state, and repeat `PING`/`PONG` before `START`. End the supervisor turn after this single fallback pass.
+On each heartbeat, inspect the orchestrator's live task state once:
 
-Delete the heartbeat when the mission completes or supervision ends on an objective blocker.
+- **Working or explained wait:** leave the heartbeat active and end the supervisor turn.
+- **Pending decision, unreported completion, or recoverable stall:** process the packet or send one concrete probe or direction. Keep the heartbeat for continuing work and end the supervisor turn. When replacement is the safe path, preserve completed work, create one clean orchestrator from compact authoritative state, and repeat `PING`/`PONG` before `START`.
+- **Verified completion or objective blocker:** delete the heartbeat and finish supervision.
+
+The heartbeat reads live state and requires no periodic status report from the orchestrator.
 
 ## Verify the delivered product
 
