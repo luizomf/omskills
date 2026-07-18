@@ -1,46 +1,34 @@
 ---
 name: prompt-comprehension-audits
-description: Audit whether a clean agent understands a prompt as intended. Use before costly or autonomous runs, or when prompt clarity, ownership, handoffs, and likely shortcuts need blind verification.
+description: Blind-audit whether a fresh agent reconstructs a prompt's intended execution contract before costly or autonomous work.
 ---
 
 # Audit Prompt Comprehension
 
-Check whether a fresh agent reconstructs the intended contract from the prompt. This is a read-only audit unless the user explicitly asks for edits or execution.
+Test whether a fresh agent can reconstruct the intended contract from source material. The audit is read-only unless the user requested prompt edits.
 
-## Keep the experiment clean
+## Keep the audit blind
 
-- Keep the root as coordinator and decision-maker.
-- Create a new auditor agent instance with clean context (`fork_turns: "none"`) for every audit pass. "Fresh" means a newly spawned agent identity, not a new turn, follow-up, reset, or nominally clean prompt sent to any existing or previously used agent.
-- Supply the prompt, its explicitly required dependencies, and—only when comparison is required—the accepted intent or spec.
-- Supply source artifacts, not the root's diagnosis, conversation, or desired answer.
-- Instruct the auditor to inspect only supplied sources, make no changes, take no external actions, and not delegate.
-- Keep the root context lean: consume the consolidated report, not the auditor's scratch work or unfiltered logs.
+- Establish the accepted intent or spec used for comparison. When none exists, assess self-sufficiency and label inferred intent.
+- Spawn a new auditor identity for each audit pass with `fork_turns: "none"`.
+- Supply the prompt and its explicitly required source artifacts. Include the accepted intent only when comparison requires it.
+- Ask the auditor to reconstruct mission, inputs, outputs, authority, sequence, success conditions, fallbacks, side effects, ambiguities, and likely shortcuts, citing source evidence for material defects.
+- Keep the auditor read-only and non-delegating. Consume its consolidated report rather than scratch work.
 
-## Run the audit
+Fresh identity is central to the test: success should come from the prompt and supplied artifacts, not earlier conversation or the coordinator's diagnosis.
 
-1. **Establish intent:** Identify the accepted intent or spec against which the prompt will be judged. If none exists, audit only self-sufficiency and label inferred intent.
-2. **Dispatch one clean auditor:** Ask it to reconstruct the mission, inputs, outputs, authority, sequence, success conditions, fallbacks, side effects, ambiguities, and likely shortcuts. Require source evidence for every defect.
-3. **Adjudicate:** Compare the report with the prompt and accepted intent. The root owns the result and rejects invented requirements, weak citations, stylistic preferences, and confusion caused only by the auditor's summary.
-4. **Decide:** Mark each material finding as real, intentional flexibility, or auditor error. Make routine judgment calls autonomously.
-5. **Resolve:** If edits were requested, make the smallest prompt change that removes each real defect while preserving useful flexibility. Otherwise report the findings succinctly.
+## Adjudicate once
 
-The normal budget is one clean auditor. Create a second new auditor agent instance only when a material disagreement remains after the root inspects the cited evidence. Never reuse the first auditor or another existing agent. Give the second auditor the disputed sources and question, not the first auditor's conclusion. The root then decides; do not create a voting loop or third judge.
+Compare the report with the prompt, accepted intent, and cited evidence. Classify each material finding as a real defect, intentional flexibility, or auditor error. Resolve routine wording and ownership gaps autonomously.
 
-## What counts as a defect
+A defect is something capable of changing execution: contradictory ownership, missing required input or output, ambiguous authority, broken handoff, unsafe side effect, unclear completion or fallback state, prompt/spec mismatch, or a likely shortcut that defeats the task. Style, optional detail, implementation freedom, and preferences remain outside the result unless they plausibly change behavior.
 
-A defect can change execution: contradictory ownership, missing input or output, ambiguous authority, broken handoff, unsafe side effect, unclear success or fallback state, prompt/spec mismatch, or a likely shortcut that defeats the task.
+For multi-prompt workflows, concentrate on seams: shared field names, artifact paths, stage order, blocker semantics, ownership, and final side effects.
 
-Style, optional detail, and intentionally delegated judgment are not defects unless they plausibly change behavior. Repeated clean-agent confusion is evidence, not automatic proof.
+One clean auditor is the normal budget. Use a second fresh auditor only when a material disagreement remains after inspecting the cited sources; give it the disputed sources and question, then adjudicate the result. This is a tie-break, not a voting loop.
 
-For multi-prompt workflows, also check shared field names, artifact paths, stage order, blocker semantics, and ownership of final side effects. Report only inconsistent seams.
+## Resolve and report
 
-## Report
+When edits are in scope, apply the smallest changes that remove real defects while preserving useful implementation judgment. Otherwise return a compact `PASS` or `DIVERGENCE` with evidence-backed findings and their disposition.
 
-Return a compact result:
-
-- `PASS`, or `DIVERGENCE`;
-- evidence-backed material findings;
-- the root's disposition for each;
-- minimal recommended or applied changes.
-
-State the audit boundary when relevant: static comprehension review does not prove runtime behavior, tool availability, artifact quality, or deployment correctness.
+Completion means every reported material defect has a disposition and every in-scope real defect is resolved. Static comprehension establishes prompt clarity; runtime behavior, tool availability, artifact quality, and deployment remain separate evidence surfaces.

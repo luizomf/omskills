@@ -22,6 +22,6 @@ Core skills for code work, issue workflow, and architecture decisions.
 - **[domain-modeling](./domain-modeling/SKILL.md)** - Actively build and sharpen the project's domain model.
 - **[codebase-design](./codebase-design/SKILL.md)** - Shared vocabulary and principles for designing deep modules.
 - **[code-review](./code-review/SKILL.md)** - Review a diff along standards and spec axes.
-- **[orchestrate-issue-queue](./orchestrate-issue-queue/SKILL.md)** - Deliver dependency-aware issue frontiers through isolated worktrees, bounded review, and serial integration.
+- **[orchestrate-issue-queue](./orchestrate-issue-queue/SKILL.md)** - Deliver dependency-aware issue queues through fresh writer/reviewer contexts, autonomous adjudication, and verified integration.
 - **[resolving-merge-conflicts](./resolving-merge-conflicts/SKILL.md)** - Resolve an in-progress git merge or rebase conflict.
-- **[supervise-async-codex-task](./supervise-async-codex-task/SKILL.md)** - Supervise a separate Codex orchestrator through asynchronous decision ping-pong and autonomous workflow recovery.
+- **[supervise-async-codex-task](./supervise-async-codex-task/SKILL.md)** - Watch a separate Codex orchestrator and take over decisions when delivery would pause, stop, escalate, stall, or finish.

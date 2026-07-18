@@ -1,100 +1,60 @@
 ---
 name: supervise-async-codex-task
-description: Supervise a separate long-running Codex task through asynchronous ping-pong with a slow heartbeat fallback, acting as the user's autonomous decision proxy while an orchestrator delivers specified issues.
+description: Watch a separate long-running Codex delivery task through asynchronous ping-pong, taking over decisions when its orchestrator would pause, stop, escalate, stall, or claim completion.
 ---
 
 # Supervise Async Codex Task
 
-Act as the user's decision proxy in the current task. Create and steer one separate Codex task that owns orchestration and delivery. Keep the supervisor task read-only with respect to project code.
+Act as **the maintainer Decisivo**, the user's fallback decision proxy, while one separate Codex task acts as **the maintainer Dev** and owns orchestration and product delivery. Keep the supervisor read-only with respect to product code.
 
-## Use two Codex tasks
+## Establish two clean tasks
 
-The current task is the **supervisor**. The separate task is the **orchestrator**. Create a brand-new Codex task for the orchestrator with task-management tools; a collaboration subagent is not the orchestrator and does not satisfy this contract.
+The current task is the **supervisor**. Create a brand-new Codex task as the **orchestrator** with task-management tools; it receives a compact mission, repository sources, authority, return address, success criteria, and the `orchestrate-issue-queue` contract.
 
-"Separate" and "clean" mean a newly created task identity with no prior conversation. Never resume, fork, repurpose, or send a follow-up mission to an existing or previously used task, even if it is idle, appears unrelated, or can be given a clean prompt. Continuing the newly created orchestrator after its own `PONG` or a later decision checkpoint is the only allowed resumption because those turns belong to the same mission.
+Establish the return channel before delivery:
 
-Before dispatch, resolve the supervisor task's concrete return address. Put the supervisor task ID and host ID, when needed, in the orchestrator's initial prompt. If no concrete return address is available, do not dispatch the mission.
+1. Send `PING` with the mission, authority, exact supervisor task/host address, and this protocol.
+2. The orchestrator sends a compact `PONG` to that address through the task-messaging tool and ends its turn.
+3. After successful delivery, send `START` through the orchestrator's task channel.
 
-Establish the channel before work begins:
+Tool-confirmed message delivery is the transport boundary. Continue the same orchestrator task for this mission after `START` and later supervisor replies.
 
-1. The supervisor's initial prompt is `PING`: mission, authority, return address, and protocol.
-2. The orchestrator's first action is to call the Codex task-messaging tool, such as `send_message_to_thread`, with that exact return address and a compact `PONG` containing its task identity and readiness.
-3. A message is delivered only when the tool call reports success. Printing `PONG` or a decision packet as the orchestrator's final response does not deliver it.
-4. After a successful `PONG`, end the orchestrator turn. Begin work only when the supervisor replies `START` through the orchestrator's task channel.
+The orchestrator creates a fresh writer and reviewer identity for every issue, role, and round using `spawn_agent` with `fork_turns: "none"`. Each receives compact authoritative context. This clean-context protocol is the core quality control; ownership stays exclusive for overlapping work.
 
-Then use this ping-pong protocol:
+## Watch without taking over delivery
 
-1. Work until a supervisory decision checkpoint.
-2. Call the task-messaging tool with the supervisor's exact return address and one compact decision packet containing current issue and phase, branch/PR/SHA, verified evidence, blocker or choice, risks, recommendation, and the exact response needed.
-3. End the orchestrator turn. Do not poll or wait for the supervisor inside that turn.
-4. Resume only when the supervisor sends the decision back to the orchestrator task.
+Give the orchestrator primary decision authority for implementation details, review adjudication, correction batches, merges, cleanup, and workflow recovery. It receives writer and reviewer evidence directly and stays closest to the technical work. Specs and issues provide strong direction while leaving room for the smallest safe implementation.
 
-Treat the tool's successful delivery result as the completion criterion for every `PONG` and decision packet. The orchestrator's local final response may acknowledge delivery, but it is never the transport. Address every decision, blocker, manual gate, and pending action to the supervisor task, never to the user or the maintainer. Only the supervisor may determine that external owner authority is required.
+Guide decisions by observable behavior, repository conventions, security, low coupling, clear boundaries, reversibility, and ease of replacement or removal. A safe deviation that continues the requested outcome may proceed and be reported afterward. Material deviations belong in the PR and final report.
 
-Decision checkpoints include scope or acceptance deviations, reviewer adjudication, retry strategy, blockers, workflow fallback, merge or continue/stop choices, and claimed completion. Planned mechanical work between checkpoints remains with the orchestrator.
+The supervisor becomes active when the orchestrator proposes to pause, stop, or escalate; when the heartbeat confirms a stall; and when delivery is claimed complete. At those points, decide from the delegated intent and evidence, then send the orchestrator a concrete direction. Favor continuing with a safe, reversible path and reporting the choice afterward.
 
-After creating the orchestrator or returning a decision, end the supervisor turn. The orchestrator's next decision packet wakes the supervisor through the task messaging channel. This is asynchronous ping-pong, not a blocking monitor loop.
+Reach the user when external authority is missing or both tasks find no safe path to preserve the delegated outcome. A possible future preference is information for the final report, not a delivery blocker.
 
-## Install a slow fallback heartbeat
+## Use compact ping-pong
 
-After dispatch, create one recurring heartbeat attached to the supervisor task with an approximately 30-minute cadence. Use the Codex automation tool, reuse an existing heartbeat for the same mission instead of duplicating it, and retain its automation ID in the supervisor's compact state. Direct task messages remain the primary loop; the heartbeat exists only to recover a dropped hot-potato handoff.
+The orchestrator works autonomously and sends one compact decision packet when it:
 
-On each heartbeat wake:
+- proposes to pause, stop, or escalate after exhausting its own safe alternatives;
+- needs authority unavailable to the delivery task;
+- claims mission completion.
 
-1. Read only the orchestrator's latest compact status and expected checkpoint.
-2. If it is working or waiting on an explained command or external system, do not interrupt it. Leave the heartbeat active for its next scheduled wake and end the supervisor turn.
-3. If a decision packet is pending, process it normally. If the expected checkpoint is late without explanation, apply the stall-recovery rules below.
-4. If the defined mission is complete, verify completion, delete the heartbeat by its stored automation ID, and finish. Also delete it whenever supervision terminates on an objective blocker so no orphaned heartbeat remains.
+Include current issue/phase, branch/PR/SHA, verified evidence, choice or blocker, risks, recommendation, and exact response needed. End that orchestrator turn after delivery; resume when the supervisor replies through the task channel.
 
-Never create another heartbeat merely because the existing one woke. If completion arrives through direct task messaging before the next wake, delete the heartbeat during that completion pass.
+Routine implementation choices, reviewer preferences, bounded correction rounds, merge sequencing, tracker metadata, and recoverable tooling failures remain with the orchestrator. This keeps ping-pong focused on recovery and completion rather than status conversation.
 
-## Establish the mission
+At a decision packet, revalidate the evidence and send one explicit direction: continue, correct, retry, merge, change strategy, or stop. Prefer the orchestrator's recommendation when it preserves intent, scope, code quality, and security.
 
-1. Preserve a compact intent brief: requested outcome, why it matters, scope, authority, and definition of done.
-2. Inspect the issue, repository state, open PRs, and active tasks. Refuse duplicate ownership.
-3. Treat the issue as a strong plan, not infallible intent. Remove accidental scope amplification and decide product-adjacent implementation, scope, and risk tradeoffs from the intent brief and repository evidence. Prefer the smallest safe complete result; do not hand decisions back to the user.
-4. Create one new clean orchestrator task. Give it the intent brief, issues, repository instructions, authority, return address, decision checkpoints, stop conditions, and the `orchestrate-issue-queue` contract. Do not select an existing task discovered during inspection. This skill's ping-pong protocol overrides that contract wherever it grants the orchestrator final decision authority.
+## Maintain a slow fallback heartbeat
 
-The orchestrator creates one new clean writer and one new clean reviewer per issue. Require every internal collaboration-subagent creation to call `spawn_agent` with `fork_turns: "none"` and a compact self-contained role prompt; this does not apply to the orchestrator task created with task-management tools. It may run demonstrably independent issues concurrently in exclusive worktrees, but never creates competing writers for the same or conflicting work. It may create one additional new writer and one additional new reviewer when the supervisor confirms adjudicated blockers; neither retry role may reuse an earlier agent. If that still fails, it returns a decision packet so the supervisor can choose a different safe strategy and send it to one newly spawned clean writer. Do not create multiple review axes, agents for individual findings, or unbounded retry loops.
+Create one recurring heartbeat attached to the supervisor task at approximately 30-minute cadence and retain its automation ID. Direct task messages remain primary; the heartbeat recovers a dropped handoff.
 
-## Maintain compact state
+On a heartbeat, read only the latest compact status and expected checkpoint. Quiet work with an explained command or external wait continues undisturbed. Probe once when an expected checkpoint is late without explanation; steer the current orchestrator when useful. If replacement becomes necessary, preserve completed work and create one new clean orchestrator from compact authoritative state.
 
-Use decision packets and compact task status as the durable state. Track only, per active issue:
+Delete the heartbeat when the mission completes or supervision ends on an objective blocker.
 
-- current issue and phase;
-- active role;
-- branch, PR, and exact SHA;
-- last verified evidence;
-- next expected checkpoint;
-- blockers or external waits.
+## Verify the delivered product
 
-Read only new task output. Do not reread full conversations, ingest raw logs, or rescan Git/GitHub when nothing changed. Let task messages drive the loop; do not keep the supervisor running merely to wait. Never use a subagent to monitor the orchestrator or duplicate it because it is slow.
+Treat completion as the final checkpoint and verify it independently: accepted SHA, required checks, review, merge, issue closure, branch/worktree cleanup, and synchronized base branch. Trust live Git and tracker state over reports and snapshots.
 
-## Recover stalls
-
-Quiet work is not automatically stalled. On a later user, event, or scheduled wake, treat it as a stall only when an expected checkpoint is late, no command or external wait explains it, and one compact probe receives no useful progress evidence.
-
-On a confirmed stall, first steer the current orchestrator within its existing mission. If replacement is necessary, stop the stale operation and create one brand-new orchestrator task with no prior conversation; pass only compact authoritative state and source locations. Never repurpose another existing task or agent as the replacement. Preserve completed work, change strategy when needed, and do not broaden scope or start competing writers.
-
-## Decide for the user
-
-Treat a detailed spec plus issue as roughly 90% of the decision. Own the remaining execution gap. When the orchestrator supplies a reasonable recommendation that preserves intent and approximate scope, accept it by default and continue.
-
-Do not waive a security failure, code smell, durable architectural decision, or material product ambiguity under this default. Require a bounded correction or choose another safe path. Reach the user only when missing external authority or a genuine product choice exceeds the intent already delegated to the supervisor.
-
-At every decision packet:
-
-1. Revalidate and deduplicate the evidence.
-2. Separate requirements and real security boundaries from reviewer overreach, speculative hardening, and agent-created scope.
-3. Choose the smallest safe path that preserves the intent: accept the result, simplify it, revise non-material issue details, or send a bounded correction to a new clean writer.
-4. Send one explicit instruction back to the orchestrator: continue, correct, retry, merge, replace strategy, or stop. Record material deviations in the PR.
-
-Treat failures in preferred tools, skills, subagents, tracker metadata, or reporting as workflow degradation. Preserve completed work, select an equivalent safe path, and continue unless the failure removes required evidence, authority, or every safe route to completion.
-
-If no safe path preserves the intended outcome or external authority is missing, record the concrete blocker and stop. Exhaust safe alternatives first, and do not turn technical uncertainty or reviewer disagreement into a user question.
-
-## Verify completion
-
-Treat completion as a decision checkpoint. Do not trust the claim alone. Confirm the accepted SHA, required checks, review, merge, issue closure, cleanup, and synchronized base branch. Finish only after verified completion or an objective external blocker.
-
-Afterward, report concrete workflow waste observed during the run. Change a skill only when the user requested it or the evidence supports a small, low-risk instruction fix; never launch an expensive test run merely to validate prompt wording.
+Finish with delivered behavior, verification evidence, merges and closed issues, cleanup, material deviations, and concrete workflow waste. The mission ends on verified delivery or an objective blocker that removes every safe route within the delegated authority.

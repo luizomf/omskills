@@ -1,63 +1,55 @@
 ---
 name: orchestrate-issue-queue
-description: Orchestrate repository issues in dependency-aware waves with exclusive worktrees, one fresh writer and reviewer per issue, bounded retry, and serial integration. Use for continuous multi-issue implement-review-merge delivery.
+description: Deliver a repository issue queue through dependency-aware scheduling, fresh writer and reviewer contexts, bounded correction rounds, serial integration, and verified cleanup.
 ---
 
 # Orchestrate Issue Queue
 
-Coordinate delivery; do not implement or approve changes yourself. Keep Git and the issue tracker authoritative. Run issues concurrently only when their independence is demonstrated, and integrate accepted work one issue at a time.
+Own delivery of the queue as **the maintainer Dev**. Git, the issue tracker, specs, ADRs, and repository evidence define the work; agents and workflow metadata support that outcome. Keep the orchestrator focused on scheduling, adjudication, integration, and verification while writers own product edits.
 
-## Exercise judgment
+## Act as the delivery owner
 
-Treat a detailed issue as the default plan, not an immutable script. The orchestrator owns delivery and may adjust implementation details, tests, acceptance wording, or sequencing when repository evidence shows a better path. Preserve the issue's intent and approximate scope, keep the code simple and maintainable, and never weaken security or documented boundaries merely to make a check pass.
+Treat a prepared issue as a strong implementation plan. Fill ordinary implementation gaps autonomously using repository patterns and the smallest safe, maintainable design. Favor low coupling, clear boundaries, reversibility, and components that remain easy to replace or remove.
 
-Make engineering decisions autonomously and record material deviations in the PR. When alternatives differ, choose the smallest safe option that best preserves the issue's intent, code quality, maintainability, and security. Do not return tradeoffs or failed reviews to the user for resolution.
+Adjudicate writer/reviewer disagreements from observable behavior and authoritative sources. Group related corrections into one bounded assignment. A safe, reversible deviation that preserves the issue's goal may proceed; record material deviations in the PR for later review.
 
-Fill small gaps in an issue when the repository sources make the intended result clear and the choice does not expand product scope, weaken a security boundary, create code smell, or revise a durable decision. Escalate only a real product choice, missing authority, owner-only manual gate, or the absence of any safe in-scope path.
+Continue through technical uncertainty while a safe path preserves the requested outcome. Product, architecture, or security choices already resolved by the spec, ADRs, or repository evidence remain execution decisions.
 
-## Keep every context clean
+When a supervisor is present, send it a compact decision packet before pausing, stopping, or escalating. The supervisor acts as **the maintainer Decisivo** and can authorize a path the orchestrator hesitated to take. Direct user involvement remains for external authority or a situation where both tasks find no safe route to the intended outcome.
 
-- Start the orchestration in a newly created task identity with no prior conversation. Keep its context lean: consume compact agent reports and authoritative PR/issue state, not full transcripts or unfiltered logs. At an issue boundary, hand off the queue state to another newly created orchestrator task whenever the current context has accumulated implementation detail.
-- Create a new writer or reviewer agent instance with clean context for every role assignment, round, and issue: call `spawn_agent` with `fork_turns: "none"`. Make its initial prompt self-contained with the role, authoritative sources, scope, issue, required worktree or exact review SHA, and expected result—not another agent's conversation or reasoning.
-- Writers and reviewers are leaf agents. They do not spawn or delegate.
-- "Fresh" means newly spawned identity plus clean context, not a new turn, follow-up, reset, or clean-looking prompt sent to an existing agent. Never reuse or repurpose an agent for another role, round, issue, or orchestrator handoff, even if it is idle or previously handled related work.
+## Preserve clean contexts
 
-Use [references/subagent-contracts.md](references/subagent-contracts.md) as compact role prompts.
+Context isolation is the quality boundary:
 
-## Schedule the frontier
+- Start orchestration in a new task identity with lean context.
+- Create a new writer or reviewer identity for every role assignment and round with `spawn_agent` and `fork_turns: "none"`.
+- Give each agent a compact, self-contained prompt containing its role, authoritative sources, scope, worktree or exact review SHA, and expected result.
+- Keep writers and reviewers as leaf agents.
+- Use a new orchestrator at an issue boundary when accumulated implementation detail is materially crowding its decision context.
 
-- Respect blocking edges. Treat conflict edges and material overlap in files, contracts, artifacts, or integration assumptions as serialization constraints.
-- An unblocked issue is only a parallel candidate; missing declared dependencies does not prove independence. When a quick repository check cannot demonstrate independence, serialize it.
-- Give every active writer exclusive ownership of its issue, branch, and worktree. Use the operating system temporary directory for disposable reproduction or verification worktrees; use a durable path for implementation that must survive task recovery.
-- Implementation and review may overlap across independent issues. Merge accepted issues one at a time, then synchronize and revalidate every remaining branch before accepting it.
+Use [references/subagent-contracts.md](references/subagent-contracts.md) for the role prompts.
 
-## Run the queue
+## Schedule by demonstrated independence
 
-For each issue:
+Respect blocking and conflict edges. File overlap, shared contracts, generated artifacts, or integration assumptions also create serialization constraints. When independence is unclear after a quick repository check, serialize the work.
 
-1. **Preflight:** Confirm the issue is open, unowned, unblocked, and has enough acceptance criteria to implement. Confirm its branch and worktree are exclusive and it has no material conflict with active work.
-2. **Write:** Spawn one new clean writer agent for the whole issue. The writer owns implementation, local iteration, relevant tests, commit, push, and the PR.
-3. **Validate delivery:** Revalidate the PR and exact remote SHA. Treat GitHub as authoritative.
-4. **Review:** Spawn one new clean read-only reviewer agent for the whole issue at that SHA. The reviewer checks the spec, behavior, tests, security implications, documentation, and repository rules in one pass.
-5. **Adjudicate:** Verify every blocking finding yourself. Ignore vague, duplicated, or non-reproducible objections.
-6. **Retry once:** If blockers remain, spawn a new clean writer agent with the issue and adjudicated findings. After its delivery, spawn a new clean reviewer agent for the new SHA. Do not send either assignment back to an earlier writer or reviewer. Any push invalidates the earlier review.
-7. **Resolve:** If the second review still blocks, choose the smallest safe path forward from the available evidence. You may revise non-material issue details when that produces a simpler, correct, maintainable, and secure result. Give the decision, revised constraints, and surviving blockers to another newly spawned clean writer agent; do not reopen process discussion. Verify the resulting SHA yourself and merge when the issue's intent, checks, and repository rules are satisfied.
-8. **Advance:** Confirm the issue closed, clean its branch and worktree, synchronize the remaining work, and dispatch newly eligible frontier issues.
+Give each active writer exclusive ownership of its issue, branch, and worktree. Implementation and review may overlap across independent issues; integrate accepted issues one at a time, then synchronize and revalidate remaining branches.
 
-The normal budget per issue is therefore one writer and one reviewer, with one fresh writer/reviewer retry only when needed. The final resolution writer is an escape hatch, not another automatic review loop.
+## Deliver each issue
 
-## Whole-issue passes
+1. **Preflight:** Confirm live issue, dependency, branch, worktree, PR, and base state. Live state wins over handoffs and snapshots.
+2. **Write:** Spawn one fresh writer for the whole issue. It owns implementation, local iteration, relevant tests, commit, push, and PR creation or update.
+3. **Validate delivery:** Revalidate the exact remote SHA and PR state.
+4. **Review:** Spawn one fresh read-only reviewer for a complete pass at that SHA.
+5. **Adjudicate:** Verify concrete blockers, discard preferences and speculative scope, and consolidate the surviving findings.
+6. **Correct:** For surviving blockers, spawn one fresh writer with the full correction batch, then one fresh reviewer at the new SHA. Each push establishes a new review target.
+7. **Resolve:** If blockers survive, choose the smallest safe resolution from the issue, spec, ADRs, code, tests, and review evidence. Send that bounded decision to one fresh writer and directly verify the resulting SHA before integration.
+8. **Integrate:** Run repository-defined verification on the accepted SHA, merge serially, confirm issue closure, clean the branch and worktree, synchronize the base, and advance the frontier.
 
-- The issue is the unit of work. A writer fixes its own local test failures and small omissions before reporting once.
-- A reviewer finishes the complete review even after finding a blocker and returns one consolidated report.
-- Do not create agents for tests, individual findings, status checks, or micro-edits.
-- Run repository-defined verification once on the accepted SHA. Reviewers rerun only focused checks needed to prove a concern.
-- Merge only a SHA that was reviewed or directly verified after the escape-hatch decision, passes required checks, and closes the issue.
+One writer/reviewer pair is the normal path. Correction rounds exist to produce a complete result, not to debate preferences. Give agents whole-issue assignments and consolidated findings. The writer absorbs its own test reruns and micro-edits; the orchestrator handles status and integration checks directly.
 
-## Stop conditions
+## Finish on product evidence
 
-Workflow plumbing degrades before delivery stops. If a preferred skill, tool, subagent, comment, label, report format, or status update fails, preserve completed work and use an equivalent safe path. Keep PR descriptions to intent, material changes, acceptance criteria, verification evidence, and documentation impact—not an execution diary.
+Workflow conveniences may degrade while delivery continues through an equivalent safe path. Labels, comments, report formatting, or a preferred tool matter only when they carry required evidence or authority.
 
-Continue autonomously while any safe in-scope path exists. Stop only when missing credentials, permission, required evidence, an unavailable external system, or an irreducible conflict actually removes every safe route to completion. Record that concrete blocker without turning it into an open-ended user decision.
-
-Finish when every queued issue is merged and closed and the base branch is clean and synchronized.
+The queue is complete when every intended issue is merged and closed, accepted SHAs and required checks are verified, branches and worktrees are cleaned, and the base branch is clean and synchronized. Report delivered behavior, verification, material deviations, and any concrete blocker or workflow waste.

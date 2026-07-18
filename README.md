@@ -160,9 +160,9 @@ For mature projects, the queue should favor small, vertical, verifiable tickets.
 - **[domain-modeling](./skills/engineering/domain-modeling/SKILL.md)**: actively builds and sharpens the project's domain model.
 - **[codebase-design](./skills/engineering/codebase-design/SKILL.md)**: shared vocabulary and principles for designing deep modules.
 - **[code-review](./skills/engineering/code-review/SKILL.md)**: reviews a diff along standards and spec axes.
-- **[orchestrate-issue-queue](./skills/engineering/orchestrate-issue-queue/SKILL.md)**: delivers dependency-aware issue frontiers through isolated worktrees, bounded review, and serial integration.
+- **[orchestrate-issue-queue](./skills/engineering/orchestrate-issue-queue/SKILL.md)**: delivers dependency-aware issue queues through fresh writer/reviewer contexts, autonomous adjudication, and verified integration.
 - **[resolving-merge-conflicts](./skills/engineering/resolving-merge-conflicts/SKILL.md)**: resolves an in-progress git merge or rebase conflict.
-- **[supervise-async-codex-task](./skills/engineering/supervise-async-codex-task/SKILL.md)**: supervises a separate Codex orchestrator through asynchronous decision ping-pong and autonomous workflow recovery.
+- **[supervise-async-codex-task](./skills/engineering/supervise-async-codex-task/SKILL.md)**: watches a separate Codex orchestrator and takes over decisions when delivery would pause, stop, escalate, stall, or finish.
 
 ### Productivity
 
@@ -177,7 +177,7 @@ For mature projects, the queue should favor small, vertical, verifiable tickets.
 **Model-invoked**
 
 - **[grilling](./skills/productivity/grilling/SKILL.md)**: the reusable interview loop behind `grill-me`, `grill-with-docs`, `triage`, and `wayfinder`.
-- **[prompt-comprehension-audits](./skills/productivity/prompt-comprehension-audits/SKILL.md)**: audits prompt comprehension with one clean auditor and root adjudication.
+- **[prompt-comprehension-audits](./skills/productivity/prompt-comprehension-audits/SKILL.md)**: blind-audits prompt comprehension with a fresh auditor and evidence-based adjudication.
 - **[write-a-skill](./skills/productivity/write-a-skill/SKILL.md)**: creates new skills with structure, frontmatter, and supporting resources.
 
 ## Optional Skills
