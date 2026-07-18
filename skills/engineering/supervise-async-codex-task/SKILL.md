@@ -14,10 +14,12 @@ The current task is the **supervisor**. Create a brand-new Codex task as the **o
 Establish the return channel before delivery:
 
 1. Send `PING` with the mission, authority, exact supervisor task/host address, and this protocol.
-2. The orchestrator sends a compact `PONG` to that address through the task-messaging tool and ends its turn.
-3. After successful delivery, send `START` through the orchestrator's task channel.
+2. Install the fallback heartbeat and end the supervisor turn. The orchestrator sends a compact `PONG` to the return address through the task-messaging tool and ends its turn.
+3. When `PONG` wakes the supervisor, send `START` through the orchestrator's task channel and end the supervisor turn again.
 
 Tool-confirmed message delivery is the transport boundary. Continue the same orchestrator task for this mission after `START` and later supervisor replies.
+
+Keep supervision event-driven. The supervisor never calls `wait_threads`, polls the orchestrator, or remains running to monitor progress. Direct task messages wake it for decisions and completion; the scheduled heartbeat is the sole fallback check.
 
 The orchestrator creates a fresh writer and reviewer identity for every issue, role, and round using `spawn_agent` with `fork_turns: "none"`. Each receives compact authoritative context. This clean-context protocol is the core quality control; ownership stays exclusive for overlapping work.
 
@@ -43,13 +45,13 @@ Include current issue/phase, branch/PR/SHA, verified evidence, choice or blocker
 
 Routine implementation choices, reviewer preferences, bounded correction rounds, merge sequencing, tracker metadata, and recoverable tooling failures remain with the orchestrator. This keeps ping-pong focused on recovery and completion rather than status conversation.
 
-At a decision packet, revalidate the evidence and send one explicit direction: continue, correct, retry, merge, change strategy, or stop. Prefer the orchestrator's recommendation when it preserves intent, scope, code quality, and security.
+At a decision packet, revalidate the evidence and send one explicit direction: continue, correct, retry, merge, change strategy, or stop. Prefer the orchestrator's recommendation when it preserves intent, scope, code quality, and security. End the supervisor turn after the direction is delivered.
 
 ## Maintain a slow fallback heartbeat
 
 Create one recurring heartbeat attached to the supervisor task at approximately 30-minute cadence and retain its automation ID. Direct task messages remain primary; the heartbeat recovers a dropped handoff.
 
-On a heartbeat, read only the latest compact status and expected checkpoint. Quiet work with an explained command or external wait continues undisturbed. Probe once when an expected checkpoint is late without explanation; steer the current orchestrator when useful. If replacement becomes necessary, preserve completed work, create one new clean orchestrator from compact authoritative state, and repeat `PING`/`PONG` before `START`.
+On a heartbeat, read only the latest compact status and expected checkpoint. Quiet work with an explained command or external wait continues undisturbed. Probe once when an expected checkpoint is late without explanation; steer the current orchestrator when useful. If replacement becomes necessary, preserve completed work, create one new clean orchestrator from compact authoritative state, and repeat `PING`/`PONG` before `START`. End the supervisor turn after this single fallback pass.
 
 Delete the heartbeat when the mission completes or supervision ends on an objective blocker.
 
