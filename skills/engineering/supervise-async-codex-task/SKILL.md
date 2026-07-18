@@ -53,9 +53,11 @@ Create one recurring heartbeat attached to the supervisor task at approximately 
 
 On each heartbeat, inspect the orchestrator's live task state once:
 
-- **Working or explained wait:** leave the heartbeat active and end the supervisor turn.
-- **Pending decision, unreported completion, or recoverable stall:** process the packet or send one concrete probe or direction. Keep the heartbeat for continuing work and end the supervisor turn. When replacement is the safe path, preserve completed work, create one clean orchestrator from compact authoritative state, and repeat `PING`/`PONG` before `START`.
-- **Verified completion or objective blocker:** delete the heartbeat and finish supervision.
+- **The task is running or has an explained wait:** leave the heartbeat active and end the supervisor turn.
+- **The task has stopped:** verify the delivery state, then choose one outcome:
+  - **Mission complete:** delete the heartbeat and finish supervision.
+  - **Work remains with a safe correction:** send one concrete direction or create one clean replacement orchestrator, keep the heartbeat active, and end the supervisor turn. A replacement resumes from compact authoritative state through a fresh `PING`/`PONG` before `START`.
+  - **Objective blocker with no safe correction:** delete the heartbeat and report the blocker.
 
 The heartbeat reads live state and requires no periodic status report from the orchestrator.
 
