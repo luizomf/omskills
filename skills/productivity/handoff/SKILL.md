@@ -1,16 +1,23 @@
 ---
 name: handoff
-description: Compact the current conversation into a handoff document for another agent to pick up.
-argument-hint: "What will the next session be used for?"
+description: Compact the useful, undocumented state of the current conversation for a fresh agent.
 disable-model-invocation: true
 ---
 
-Write a handoff document summarising the current conversation so a fresh agent can continue the work. Save to the temporary directory of the user's OS - not the current workspace.
+# Handoff
 
-Include a "suggested skills" section in the document, which suggests skills that the agent should invoke.
+Write a concise handoff for a fresh agent, then save it as a uniquely named Markdown file in the OS temporary directory, outside the current workspace. Return the exact path.
 
-Do not duplicate content already captured in other artifacts (specs, plans, ADRs, issues, commits, diffs). Reference them by path or URL instead.
+Capture only state needed to continue:
 
-Redact any sensitive information, such as API keys, passwords, or personally identifiable information.
+- current goal and immediate next step;
+- user intent, constraints, and preferences not recorded elsewhere;
+- decisions and reasoning not yet made durable;
+- unresolved questions or blockers;
+- relevant working-tree or external state that cannot be inferred safely.
 
-If the user passed arguments, treat them as a description of what the next session will focus on and tailor the doc accordingly.
+Reference existing issues, specs, ADRs, docs, commits, and diffs by path or URL. Do not duplicate them. Omit tool logs, superseded exploration, conversational filler, and facts recoverable from referenced artifacts.
+
+Preserve scope. Do not add recommendations, requirements, tasks, or speculative follow-up work that the conversation did not establish.
+
+If the user provides a next-session focus, use it only to prioritize the summary. Redact secrets and unnecessary personal information.
