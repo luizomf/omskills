@@ -8,7 +8,7 @@ Collect the constraints, callers, dependencies, domain vocabulary, relevant code
 
 ## Dispatch one clean designer
 
-Create one new designer with clean context: call `spawn_agent` with `fork_turns: "none"`. Give it a compact, self-contained initial prompt with the role, authoritative sources, constraints, relevant code paths, expected options, and this contract:
+Create exactly one new designer with clean context. Give it a compact, self-contained initial prompt with the role, authoritative sources, constraints, relevant code paths, expected options, and this contract:
 
 ```text
 Design two or three materially different interfaces for this module. Vary seam placement or the primary optimization—not merely names. For each option show the interface, caller example, hidden implementation, dependency/adapters strategy, invariants and error modes, and tradeoffs in depth, locality, and leverage. Recommend one option. Do not edit code, spawn, or delegate.
