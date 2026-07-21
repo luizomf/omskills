@@ -24,6 +24,8 @@ pi --no-skills --skill "${HOME}/.pi/agent/skills"
 
 Wait until Pi is visibly ready, then submit a short instruction with `tmux send-keys` telling it to read the prompt file. Send the literal text and `Enter` separately. Do not use `pi -p`: the worker must remain interactive so the user can observe or contact it.
 
+After successfully submitting the instruction, yield control back to the user by returning from the current response and making no further tool calls for this worker. Do not poll, sleep, monitor the worker pane, inspect partial output, or wait for completion. This yields the current turn; it does not complete the delegated task, terminate the delegating process, close its window or session, or mark a long-running goal complete or blocked.
+
 4. Require detailed results in an artifact. The worker's final action sends only a short callback:
 
 ```bash
@@ -32,4 +34,4 @@ tmux -S <socket> send-keys -t <pane> -l \
 tmux -S <socket> send-keys -t <pane> Enter
 ```
 
-The callback wakes the delegating conversation; it does not carry the result. Leave the window available when continued observation or interaction is useful. Close it only when the worker has exited and its result is preserved.
+The callback resumes the delegating conversation in a later turn; only then read the artifact and continue. It does not carry the result. Leave the window available when continued observation or interaction is useful. Close it only when the worker has exited and its result is preserved.
