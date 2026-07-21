@@ -178,6 +178,7 @@ For mature projects, the queue should favor small, vertical, verifiable tickets.
 
 - **[grilling](./skills/productivity/grilling/SKILL.md)**: the reusable interview loop behind `grill-me`, `grill-with-docs`, `triage`, and `wayfinder`.
 - **[prompt-comprehension-audits](./skills/productivity/prompt-comprehension-audits/SKILL.md)**: checks an issue or execution prompt with two clean-context agents for exact semantic comprehension.
+- **[tmux-worker](./skills/productivity/tmux-worker/SKILL.md)**: delegates a Pi task to a tmux window and receives a short wake-up ping.
 - **[write-a-skill](./skills/productivity/write-a-skill/SKILL.md)**: creates new skills with structure, frontmatter, and supporting resources.
 
 ## Optional Skills

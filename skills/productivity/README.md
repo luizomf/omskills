@@ -14,4 +14,5 @@ General workflow tools, not code-specific.
 
 - **[grilling](./grilling/SKILL.md)** - Reusable interview loop behind `grill-me`, `grill-with-docs`, `triage`, and `wayfinder`.
 - **[prompt-comprehension-audits](./prompt-comprehension-audits/SKILL.md)** - Check an issue or execution prompt with two clean-context agents for exact semantic comprehension.
+- **[tmux-worker](./tmux-worker/SKILL.md)** - Delegate a Pi task to a tmux window and receive a short wake-up ping.
 - **[write-a-skill](./write-a-skill/SKILL.md)** - Create new skills with proper structure, progressive disclosure, and bundled resources.

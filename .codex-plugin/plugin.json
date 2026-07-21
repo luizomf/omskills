@@ -23,6 +23,7 @@
     "./skills/productivity/caveman",
     "./skills/productivity/grilling",
     "./skills/productivity/prompt-comprehension-audits",
+    "./skills/productivity/tmux-worker",
     "./skills/productivity/handoff",
     "./skills/productivity/teach",
     "./skills/productivity/write-a-skill",
