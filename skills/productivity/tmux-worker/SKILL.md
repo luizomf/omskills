@@ -8,11 +8,15 @@ disable-model-invocation: true
 
 Use the current project's tmux session. Give each worker one named window and pane so the user can observe or interact with it.
 
-1. Read the current socket, pane, and session:
+1. Read the current socket, coordinator pane, and session:
 
 ```bash
-tmux display-message -p '#{socket_path} #{pane_id} #{session_name}'
+tmux display-message -t "$TMUX_PANE" -p \
+  '#{socket_path} #{pane_id} #{session_name}'
 ```
+
+Targeting the coordinator process's `$TMUX_PANE` keeps the callback stable when
+the user views another window.
 
 2. Write a self-contained worker prompt to a temporary or project scratch file. Include scope, relevant artifact paths, completion criteria, and literal callback socket and pane values.
 
