@@ -17,13 +17,13 @@ A durable planning document describing a problem and its solution, published to 
 _Avoid_: PRD (use only when quoting external systems that call them PRDs)
 
 **Triage role**:
-A canonical state-machine label applied to a **Ticket** during triage (e.g. `needs-triage`, `ready-for-agent`). Each role maps to a real label string in the **Issue tracker** via `docs/agents/triage-labels.md`.
+A canonical category or state label applied to a **Ticket** during triage. Category roles are `bug` and `enhancement`; state roles include `needs-triage` and `ready-for-agent`. Each role maps to a real label string in the **Issue tracker** via `docs/agents/triage-labels.md`.
 
 ## Relationships
 
 - An **Issue tracker** holds many **Specs** and **Tickets**
 - A **Spec** is broken down into many **Tickets**
-- A **Ticket** carries one **Triage role** at a time
+- A triaged **Ticket** carries one category **Triage role** and one state **Triage role**
 
 ## Flagged ambiguities
 

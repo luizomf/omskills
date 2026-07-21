@@ -126,7 +126,14 @@ This setup records where issues live, which triage labels the repo uses, and how
 
 ## Triage Model
 
-The skills use five canonical roles. Each repo can map those roles to real labels in `docs/agents/triage-labels.md`.
+The skills use two category roles and five state roles. Each repo can map those roles to real labels in `docs/agents/triage-labels.md`.
+
+Categories:
+
+- `bug`: something is broken.
+- `enhancement`: new feature or improvement.
+
+States:
 
 - `needs-triage`: maintainer needs to evaluate.
 - `needs-info`: missing information from the reporter/author.

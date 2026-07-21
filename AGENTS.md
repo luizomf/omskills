@@ -44,7 +44,7 @@ Specs, tickets, and issues are tracked in GitHub Issues. See `docs/agents/issue-
 
 ### Triage labels
 
-The five canonical omskills triage-role names are used as GitHub labels. See `docs/agents/triage-labels.md`.
+The two category roles and five state roles from omskills are used as GitHub labels. See `docs/agents/triage-labels.md`.
 
 ### Domain docs
 
