@@ -10,7 +10,7 @@ Core skills for code work, issue workflow, and architecture decisions.
 - **[setup-omskills](./setup-omskills/SKILL.md)** - Scaffold the per-repo config that the other engineering skills consume.
 - **[to-spec](./to-spec/SKILL.md)** - Turn the current conversation context into a spec and publish it to the issue tracker.
 - **[to-tickets](./to-tickets/SKILL.md)** - Break a plan, spec, or conversation into tracer-bullet tickets with blocking and conflict edges.
-- **[implement](./implement/SKILL.md)** - Implement a spec, issue, or ticket, using `/tdd` where possible and closing with `/code-review`.
+- **[implement](./implement/SKILL.md)** - Implement a spec, issue, or ticket and verify it against its acceptance criteria.
 - **[wayfinder](./wayfinder/SKILL.md)** - Map a huge or foggy effort into investigation tickets on the issue tracker.
 
 ## Model-invoked
@@ -22,6 +22,4 @@ Core skills for code work, issue workflow, and architecture decisions.
 - **[domain-modeling](./domain-modeling/SKILL.md)** - Actively build and sharpen the project's domain model.
 - **[codebase-design](./codebase-design/SKILL.md)** - Shared vocabulary and principles for designing deep modules.
 - **[code-review](./code-review/SKILL.md)** - Review a diff along standards and spec axes.
-- **[orchestrate-issue-queue](./orchestrate-issue-queue/SKILL.md)** - Deliver dependency-aware issue queues through fresh writer/reviewer contexts, autonomous adjudication, and verified integration.
 - **[resolving-merge-conflicts](./resolving-merge-conflicts/SKILL.md)** - Resolve an in-progress git merge or rebase conflict.
-- **[supervise-async-codex-task](./supervise-async-codex-task/SKILL.md)** - Watch a separate Codex orchestrator and take over decisions when delivery would pause, stop, escalate, stall, or finish.

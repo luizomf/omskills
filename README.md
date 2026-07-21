@@ -148,7 +148,7 @@ For mature projects, the queue should favor small, vertical, verifiable tickets.
 - **[setup-omskills](./skills/engineering/setup-omskills/SKILL.md)**: configures issue tracker, triage labels, and docs layout per repo.
 - **[to-spec](./skills/engineering/to-spec/SKILL.md)**: turns the current conversation context into a spec and publishes it to the issue tracker.
 - **[to-tickets](./skills/engineering/to-tickets/SKILL.md)**: breaks a plan, spec, or conversation into tracer-bullet tickets with blocking and conflict edges.
-- **[implement](./skills/engineering/implement/SKILL.md)**: implements a spec, issue, or ticket, using `/tdd` where possible and closing with `/code-review`.
+- **[implement](./skills/engineering/implement/SKILL.md)**: implements a spec, issue, or ticket and verifies it against its acceptance criteria.
 - **[wayfinder](./skills/engineering/wayfinder/SKILL.md)**: maps a huge or foggy effort into investigation tickets on the issue tracker.
 
 **Model-invoked**
@@ -160,9 +160,7 @@ For mature projects, the queue should favor small, vertical, verifiable tickets.
 - **[domain-modeling](./skills/engineering/domain-modeling/SKILL.md)**: actively builds and sharpens the project's domain model.
 - **[codebase-design](./skills/engineering/codebase-design/SKILL.md)**: shared vocabulary and principles for designing deep modules.
 - **[code-review](./skills/engineering/code-review/SKILL.md)**: reviews a diff along standards and spec axes.
-- **[orchestrate-issue-queue](./skills/engineering/orchestrate-issue-queue/SKILL.md)**: delivers dependency-aware issue queues through fresh writer/reviewer contexts, autonomous adjudication, and verified integration.
 - **[resolving-merge-conflicts](./skills/engineering/resolving-merge-conflicts/SKILL.md)**: resolves an in-progress git merge or rebase conflict.
-- **[supervise-async-codex-task](./skills/engineering/supervise-async-codex-task/SKILL.md)**: watches a separate Codex orchestrator and takes over decisions when delivery would pause, stop, escalate, stall, or finish.
 
 ### Productivity
 

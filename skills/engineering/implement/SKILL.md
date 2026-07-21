@@ -6,10 +6,10 @@ disable-model-invocation: true
 
 Implement the work described by the user in the spec, issue, or tickets.
 
-Use /tdd where possible, at pre-agreed seams.
+Use test-driven development where possible, at pre-agreed seams.
 
 Run typechecking regularly, single test files regularly, and the full test suite once at the end.
 
-Once done, use /code-review to review the work.
+Verify the completed work against its acceptance criteria. Review is a separate, explicitly requested operation.
 
 Only commit when the user explicitly asked for a commit, or when the repo's recorded workflow says this invocation should commit. If committing, use a conventional commit.
