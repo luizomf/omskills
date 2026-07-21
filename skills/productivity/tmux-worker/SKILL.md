@@ -16,7 +16,13 @@ tmux display-message -p '#{socket_path} #{pane_id} #{session_name}'
 
 2. Write a self-contained worker prompt to a temporary or project scratch file. Include scope, relevant artifact paths, completion criteria, and literal callback socket and pane values.
 
-3. Start the active harness in a detached tmux window using its verified non-interactive invocation. Do not guess harness syntax. Pass the prompt file, keep the working directory, and avoid embedding the full prompt in shell quoting.
+3. Start an interactive Pi session in a detached tmux window, keeping the current working directory and limiting skill discovery to the canonical Pi directory:
+
+```bash
+pi --no-skills --skill "${HOME}/.pi/agent/skills"
+```
+
+Wait until Pi is visibly ready, then submit a short instruction with `tmux send-keys` telling it to read the prompt file. Send the literal text and `Enter` separately. Do not use `pi -p`: the worker must remain interactive so the user can observe or contact it.
 
 4. Require detailed results in an artifact. The worker's final action sends only a short callback:
 
