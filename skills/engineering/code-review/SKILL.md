@@ -20,7 +20,7 @@ The lenses stay distinct in the report, but one fresh reviewer covers both so it
 
 ## Dispatch one clean reviewer
 
-Create one new reviewer with clean context: call `spawn_agent` with `fork_turns: "none"`. Give it a compact, self-contained initial prompt containing:
+Use the harness's delegation mechanism to start one fresh, independent reviewer. The reviewer must not inherit the parent conversation; baseline system and project instructions are acceptable, but conversational turns, coordinator analysis, and desired answers must not carry over. If the harness cannot guarantee this isolation, stop and report that the review cannot be performed reliably. Give the reviewer a compact, self-contained initial prompt containing:
 
 - repository and fixed point;
 - diff and commit commands;
