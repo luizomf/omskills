@@ -11,7 +11,7 @@ Break a plan, spec, or conversation into **tickets** — tracer-bullet vertical 
 - A **blocking edge** requires another ticket to complete before this one can start or integrate.
 - A **conflict edge** means two otherwise unblocked tickets should not have active writers at the same time because they overlap in files, contracts, artifacts, or integration assumptions.
 
-The issue tracker and triage label vocabulary should have been provided to you — use the `setup-omskills` skill first if not.
+The issue tracker and triage label vocabulary should have been provided to you — use the [`setup-omskills`](../setup-omskills/SKILL.md) skill first if not.
 
 ## Process
 
@@ -61,7 +61,7 @@ Iterate until the user approves the breakdown.
 
 ### 5. Publish the tickets to the configured tracker
 
-Publish the approved tickets. **How** depends on the tracker configured by `setup-omskills` — the tickets are the same either way, only the shape of the blocking edges changes:
+Publish the approved tickets. **How** depends on the tracker configured by [`setup-omskills`](../setup-omskills/SKILL.md) — the tickets are the same either way, only the shape of the blocking edges changes:
 
 - **Local markdown** → write one file per ticket under `.scratch/<feature-slug>/issues/<NN>-<slug>.md`, numbered from `01` in dependency order (blockers first). Each file lists both edge types. Use the per-ticket template below — never combine all tickets into one file.
 - **A real issue tracker (GitHub, Linear, …)** → publish one issue per ticket in dependency order (blockers first) so edges can reference real identifiers. Use native blocking relationships where available; record conflict edges in the issue body unless the tracker has an equivalent native relation. Apply the `ready-for-agent` triage label unless instructed otherwise — the tickets are agent-grabbable by construction.
@@ -114,4 +114,4 @@ The end-to-end behaviour this ticket makes work, from the user's perspective —
 
 In either form, avoid specific file paths or code snippets — they go stale fast. Exception: if a prototype produced a snippet that encodes a decision more precisely than prose can (state machine, reducer, schema, type shape), inline it and note briefly that it came from a prototype. Trim to the decision-rich parts — not a working demo, just the important bits.
 
-Work each frontier ticket with the `implement` skill, clearing context between tickets. Parallel writers require exclusive worktrees and demonstrated independence; integrate completed tickets one at a time and revalidate the remaining branches after every merge.
+Work each frontier ticket with the [`implement`](../implement/SKILL.md) skill, clearing context between tickets. Parallel writers require exclusive worktrees and demonstrated independence; integrate completed tickets one at a time and revalidate the remaining branches after every merge.

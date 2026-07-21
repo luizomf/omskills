@@ -1,6 +1,7 @@
 ---
 name: write-a-skill
-description: Create new agent skills with proper structure, progressive disclosure, and bundled resources. Use when user wants to create, write, or build a new skill.
+description: Create agent skills with proper structure, progressive disclosure, and bundled resources.
+disable-model-invocation: true
 ---
 
 # Writing Skills
@@ -12,6 +13,7 @@ description: Create new agent skills with proper structure, progressive disclosu
    - What specific use cases should it handle?
    - Does it need executable scripts or just instructions?
    - Any reference materials to include?
+   - Keep it user-only (default), or is there observed use that justifies agent discovery?
 
 2. **Draft the skill** - create:
    - SKILL.md with concise instructions
@@ -39,7 +41,8 @@ skill-name/
 ```md
 ---
 name: skill-name
-description: Brief description of capability. Use when [specific triggers].
+description: Brief human-readable description of the capability.
+disable-model-invocation: true
 ---
 
 # Skill Name
@@ -57,26 +60,32 @@ description: Brief description of capability. Use when [specific triggers].
 [Link to separate files: See [REFERENCE.md](REFERENCE.md)]
 ```
 
-## Description Requirements
+## Description and Discovery
 
-The description is **the only thing your agent sees** when deciding which skill to load. It's surfaced in the system prompt alongside all other installed skills. Your agent reads these descriptions and picks the relevant skill based on the user's request.
+Every skill requires a description. Discovery determines who sees it:
 
-**Goal**: Give your agent just enough info to know:
+- **User-only** (default): set `disable-model-invocation: true`. The description is command-facing metadata hidden from the agent's system context. Keep it to a concise human-readable capability summary.
+- **Agent-discoverable**: omit `disable-model-invocation` only when observed use justifies permanent context load. The description becomes the agent's trigger: state the capability and the distinct branches that should select it.
 
-1. What capability this skill provides
-2. When/why to trigger it (specific keywords, contexts, file types)
+Another loaded skill can compose a user-only skill explicitly by linking its `SKILL.md`; explicit composition does not require agent discovery.
 
 **Format**:
 
 - Max 1024 chars
 - Write in third person
-- First sentence: what it does
-- Second sentence: "Use when [specific triggers]"
+- For user-only skills: one concise sentence describing the capability
+- For agent-discoverable skills: capability first, then specific trigger branches
 
-**Good example**:
+**Agent-discoverable example**:
 
 ```
-Extract text and tables from PDF files, fill forms, merge documents. Use when working with PDF files or when user mentions PDFs, forms, or document extraction.
+Extract text and tables from PDF files, fill forms, and merge documents. Use when working with PDF files or when the user mentions PDFs, forms, or document extraction.
+```
+
+**User-only example**:
+
+```
+Extract text and tables from PDF files, fill forms, and merge documents.
 ```
 
 **Bad example**:
@@ -85,7 +94,7 @@ Extract text and tables from PDF files, fill forms, merge documents. Use when wo
 Helps with documents.
 ```
 
-The bad example gives your agent no way to distinguish this from other document skills.
+The bad example does not identify a useful capability for either the user or the agent.
 
 ## When to Add Scripts
 
@@ -109,7 +118,8 @@ Split into separate files when:
 
 After drafting, verify:
 
-- [ ] Description includes triggers ("Use when...")
+- [ ] `disable-model-invocation: true` is present unless agent discovery was explicitly justified
+- [ ] Description is concise; agent-discoverable descriptions include distinct triggers
 - [ ] SKILL.md under 100 lines
 - [ ] No time-sensitive info
 - [ ] Consistent terminology

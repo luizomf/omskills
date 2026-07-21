@@ -1,6 +1,7 @@
 ---
 name: codebase-design
 description: Shared vocabulary and principles for designing deep modules — a lot of behaviour behind a small interface, placed at a clean seam, testable through that interface. Use when designing or improving a module's interface, deepening modules, deciding where a seam goes, reducing coupling, designing for testability, or when another skill needs the deep-module vocabulary.
+disable-model-invocation: true
 ---
 
 # Codebase Design
@@ -113,4 +114,4 @@ Good interfaces make testing natural:
 - **Deepening a cluster given its dependencies** — see [DEEPENING.md](./DEEPENING.md): dependency categories, seam discipline, and replace-don't-layer testing.
 - **Exploring alternative interfaces** — see [DESIGN-IT-TWICE.md](./DESIGN-IT-TWICE.md): ask one clean designer for distinct alternatives, then compare depth, locality, and seam placement.
 
-To find deepening opportunities across a codebase, see the `improve-codebase-architecture` skill.
+To find deepening opportunities across a codebase, see the [`improve-codebase-architecture`](../improve-codebase-architecture/SKILL.md) skill.

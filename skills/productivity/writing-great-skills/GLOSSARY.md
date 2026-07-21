@@ -2,7 +2,7 @@
 
 The domain model for what makes a skill great. A skill exists to wrangle determinism out of a stochastic system; the root virtue is **Predictability**, and every term below is a lever on it. This is the disclosed reference for [`writing-great-skills`](SKILL.md).
 
-The terms are grouped by axis: **Invocation** (how a skill is reached), **Information Hierarchy** (how its content is arranged), **Steering** (how the agent's runtime behaviour is shaped), and **Pruning** (how it is kept lean). Each **failure mode** lives beside the lever that cures it, tagged _failure mode_.
+The terms are grouped by axis: **Discovery** (how a skill becomes available to the agent), **Information Hierarchy** (how its content is arranged), **Steering** (how the agent's runtime behaviour is shaped), and **Pruning** (how it is kept lean). Each **failure mode** lives beside the lever that cures it, tagged _failure mode_.
 
 **Bold terms** in any definition are themselves defined in this glossary; find them by their heading.
 
@@ -12,55 +12,55 @@ The degree to which a skill makes the agent behave the same _way_ on every run �
 
 _Avoid_: consistency, reliability, robustness, output-determinism
 
-## Invocation
+## Discovery
 
-How a skill is reached — and the two loads you pay for the choice.
+How a skill becomes available to the agent — and the two loads paid for that choice.
 
-### Model-Invoked
+### Agent-Discoverable
 
-A skill that keeps its **description** field, so the agent can see it and fire it autonomously — and the human can still type its name, so model-invocation always _includes_ user reach. There is no model-only state: a description only ever _adds_ agent discovery, never removes the human's. Pays a permanent **context load** on every turn in exchange for that discoverability. Reachable by other skills, because the description that makes it agent-discoverable makes it invocable. A model-invoked skill whose content is all **reference** is also one home for shared reference: another skill can invoke it, so reference needed by several skills lives in one place. Pick model-invocation only when the agent must reach the skill on its own; if it never fires except by hand, drop the description and pay no context load.
+A skill whose required **description** is exposed in the agent's system context, allowing autonomous selection. The user can still invoke it directly. It pays permanent **context load** in exchange for discovery. Use agent discovery only when observed use justifies keeping that trigger visible every turn.
 
-_Avoid_: ability, tool, capability
+_Avoid_: model-invoked, ability, tool, capability
 
-### User-Invoked
+### User-Only
 
-A skill with its **description** stripped — invisible to the agent and reachable only by the human typing its name (user-_only_, where **model-invoked** is user-_and-agent_). Trades agent-discoverability for zero **context load**. Because it has no description, nothing but the human can reach it: no other skill can fire it.
+A skill whose required **description** is hidden from the agent's system context with `disable-model-invocation: true`. The user selects it directly, so it adds no permanent **context load** but spends **cognitive load**. Another loaded skill can still compose it through an explicit **context pointer**; that reach comes from the pointer, not autonomous discovery.
 
-_Avoid_: procedure, workflow, command
+_Avoid_: user-invoked, procedure, workflow, command
 
 ### Description
 
-The skill's machine-readable trigger, and the one **context pointer** a **model-invoked** skill is forced to keep loaded at all times. Its mere presence _is_ the invocation axis: keep it and the skill is model-invoked (and reachable by other skills); delete it and the skill is **user-invoked**, reachable only by the human. The source of a model-invoked skill's **context load**.
+Required skill metadata that identifies the capability. For an **agent-discoverable** skill, it is a machine-readable trigger and top-level **context pointer** kept in the system context. For a **user-only** skill, it remains command-facing metadata but is hidden from the agent and cannot trigger autonomous selection. Visibility, not field presence, determines discovery.
 
 _Avoid_: frontmatter, summary
 
 ### Context Pointer
 
-A reference held in the agent's context that names some out-of-context material and encodes the condition for reaching it. The **description** is the top-level context pointer (context window → skill); pointers to disclosed files are the same object one level down. Its wording, not the target, decides _when_ the agent reaches — and _how reliably_. A must-have target behind a weakly worded pointer is a variance bug: fix the wording first, and inline the material only if sharpening fails.
+A reference held in the agent's current context that names out-of-context material and encodes the condition for loading it. An agent-discoverable **description** is a top-level context pointer; an explicit path from one loaded skill to another skill or disclosed file is the same object one level down. Its wording, not only its target, decides _when_ the agent follows it and how reliably. A must-have target behind a weakly worded pointer is a variance bug: sharpen the wording first, and inline the material only if sharpening fails.
 
 _Avoid_: link, reference, import
 
 ### Context Load
 
-The cost a **model-invoked** skill imposes on the agent's context window — its **description**, always loaded, spending both tokens and attention. What **user-invoked** skills escape by having no description, and the brake on splitting into more model-invoked skills.
+The permanent cost an **agent-discoverable** skill imposes on the agent's system context through its always-visible **description**, spending both tokens and attention. **User-only** skills avoid this cost because their descriptions are hidden, not because the metadata is absent.
 
 _Avoid_: token cost, context bloat
 
 ### Cognitive Load
 
-The cost a **user-invoked** skill imposes on the human — what they must hold in their head: which skills exist and when to reach for each (the human is the index). What **model-invocation** removes by being agent-discoverable, and the brake on splitting into more user-invoked skills. Not a cost to minimise: it is the price of human agency, the reason some skills stay user-invoked. Spend it where human judgement matters; remove it where it does not.
+The cost a **user-only** skill imposes on the human — what they must remember about which skills exist and when to select each one. Agent discovery removes this cost by making selection autonomous. It is not a cost to minimise blindly: it is the price of deliberate human selection. Spend it where human judgement matters; remove it where observed use supports discovery.
 
 _Avoid_: human index, burden, overhead
 
 ### Router Skill
 
-A **user-invoked** skill whose job is to point at your other user-invoked skills — naming each and when to reach for it — so the human has one skill to remember instead of many. It can only hint, never fire them: user-invoked skills have no **description**, so nothing but the human can reach them. The cure for **cognitive load** when user-invoked skills multiply.
+A **user-only** skill with explicit **context pointers** to other user-only skills or references, naming each and when to load it. The user remembers one entry point; once loaded, the router can select a target explicitly without making every target agent-discoverable. It cures accumulated **cognitive load** without adding all target descriptions to the system context.
 
 _Avoid_: dispatcher, menu, registry, index, router procedure
 
 ### Granularity
 
-How finely you divide skills. Finer division spends one of the two loads: more **model-invoked** skills spend **context load** (more descriptions crowding the window and competing for attention); more **user-invoked** skills spend **cognitive load** (more for the human to remember and reach for). Two cuts guide the division. By **invocation**, split off a model-invoked skill where you have a distinct **leading word** to trigger it — a trigger word you actually use in your prompts. By **sequence**, split a run of **steps** where a step's **post-completion steps** need hiding, since isolating it in its own context clears what follows. Beware the reverse: merging sequences exposes each step's post-completion steps to what follows, inviting premature completion.
+How finely you divide skills. Finer division spends one of two loads: more **agent-discoverable** skills spend **context load**; more independently selected **user-only** skills spend **cognitive load**. Two cuts guide the division. By **discovery**, expose a separate skill only where a distinct **leading word** should trigger it autonomously. Explicit composition needs only a context pointer, not discovery. By **sequence**, split a run of **steps** only when a real fresh-context handoff is needed to hide **post-completion steps**. Merely loading another skill in the same conversation does not clear context.
 
 _Avoid_: chunking, modularity
 
@@ -76,13 +76,13 @@ A skill's content ranked by how immediately the agent needs it — a single ladd
 - **Reference**, in-file — secondary
 - **Reference**, disclosed — behind a **context pointer**
 
-A skill with no **steps** uses just the bottom two rungs — often a legitimately flat peer-set (e.g. every rule of a review on one rung), which is a fine arrangement, not a smell. The hierarchy is independent of invocation: a skill can be model- or user-invoked whether it is all steps, all reference, or both. When a skill has steps, in-file reference that should be disclosed buries them and turns attending to them into a coin-flip — a variance lever, not just a legibility one. Keep the top of the ladder legible; push down it whatever you can.
+A skill with no **steps** uses just the bottom two rungs — often a legitimately flat peer-set (e.g. every rule of a review on one rung), which is a fine arrangement, not a smell. The hierarchy is independent of discovery: a skill can be agent-discoverable or user-only whether it is all steps, all reference, or both. When a skill has steps, in-file reference that should be disclosed buries them and turns attending to them into a coin-flip — a variance lever, not just a legibility one. Keep the top of the ladder legible; push down it whatever you can.
 
 _Avoid_: structure, organization, layout
 
 ### Steps
 
-The ordered actions the agent performs — when a skill has them, the primary tier of its content, and the part that earns its place in SKILL.md. Not every skill has steps: a skill can be all steps (`tdd`), all **reference** (a review), or both, independent of invocation. Every step ends on a **completion criterion**, clear or vague.
+The ordered actions the agent performs — when a skill has them, the primary tier of its content, and the part that earns its place in SKILL.md. Not every skill has steps: a skill can be all steps (`tdd`), all **reference** (a review), or both, independent of discovery. Every step ends on a **completion criterion**, clear or vague.
 
 _Avoid_: workflow, instructions, choreography
 
@@ -94,7 +94,7 @@ _Avoid_: supporting material, docs, background
 
 ### External Reference
 
-**Reference** that lives outside the skill system — a plain file, no **description**, no **steps**, not invocable — that any skill can point at. The home for shared reference that needn't fire on its own, and the only shared home two **user-invoked** skills can use, since neither has a description and so neither can fire the other.
+**Reference** that lives outside the skill system — a plain file with no **description** or **steps** — that any loaded skill can point at. It is the shared home for material that needs no independent discovery. User-only skills may also point directly to one another when the target is a complete capability rather than shared reference.
 
 _Avoid_: doc, resource, knowledge base
 
@@ -122,7 +122,7 @@ The levers that shape the agent's runtime behaviour toward **Predictability**.
 
 ### Branch
 
-A distinct way a skill can be invoked — a case the skill handles — so different runs take different paths through it. A skill with many steps may carry many branches; a linear one has none.
+A distinct case a skill handles, so different runs take different paths through it. A skill with many steps may carry many branches; a linear one has none.
 
 _Avoid_: path, case, fork
 
@@ -130,7 +130,7 @@ _Avoid_: path, case, fork
 
 A compact concept — also called a _Leitwort_ — already living in the model's pretraining, that the agent thinks with while running the skill. It encodes a behavioural principle in the fewest possible tokens by invoking priors the model already holds (e.g. _lesson_, _proximal zone of development_, _fog of war_, _tracer bullets_). Repeated as a token, never as a sentence, it accumulates a distributed definition across the skill and anchors a whole region of behaviour. Coining your own works if you define it clearly, but a made-up word recruits no priors — you pay in definition tokens what a pretrained word gives free. Reach for an existing word first.
 
-A leading word serves **predictability** twice. In the body it anchors **execution** — the agent reaches for the same behaviour every time the concept appears, and inside flat reference it focuses attention on a class of thing to look for, recruiting the right checks each run. In the **description** it anchors **invocation** — and not only within the skill: when the same word lives in your prompts, your docs, and your codebase, the agent links that shared language to the skill and fires it more reliably. Word a description with the leading words you actually use when you want the skill.
+A leading word serves **predictability** twice. In the body it anchors **execution** — the agent reaches for the same behaviour every time the concept appears, and inside flat reference it focuses attention on a class of thing to look for, recruiting the right checks each run. In an agent-discoverable **description** it anchors **discovery**: when the same word lives in your prompts, docs, and codebase, the agent links that shared language to the skill and selects it more reliably. Word a discoverable description with the leading words you actually use when you want the skill.
 
 _Avoid_: keyword, term, motif
 
@@ -154,7 +154,7 @@ _Avoid_: horizon, fog of war, lookahead
 
 ### Premature Completion
 
-_Failure mode._ Ending the current step before it is genuinely done, because the agent's attention slips to being done rather than to the work. A between-steps failure: it needs **steps** to occur — a skill with no steps that quits early isn't premature completion but thin **legwork** under an unmet demand. A tug-of-war between two forces: visible **post-completion steps** (the pull forward) and the **completion criterion**'s clarity (the resistance — a sharp, checkable bar holds; a vague one gives way). Fuzziness is the necessary condition: a sharp bound resists the pull no matter how many later steps are visible, so a step that never rushes needs no defending. Two levers hold a step that does, but reach for them in order: **sharpen the bound first** — it is local and cheap. Only when the criterion is irreducibly fuzzy _and_ you actually observe the rush do you **hide the later steps** — and hiding only works across a real context boundary (a user-invoked hand-off or a collaboration subagent given clean context with `fork_turns: "none"`; an inline model-invoked call leaves the later steps in context and clears nothing). One cause of thin legwork, but distinct from it: legwork can be thin even when a step runs to full completion.
+_Failure mode._ Ending the current step before it is genuinely done, because the agent's attention slips to being done rather than to the work. A between-steps failure: it needs **steps** to occur — a skill with no steps that quits early isn't premature completion but thin **legwork** under an unmet demand. A tug-of-war between two forces: visible **post-completion steps** (the pull forward) and the **completion criterion**'s clarity (the resistance — a sharp, checkable bar holds; a vague one gives way). Fuzziness is the necessary condition: a sharp bound resists the pull no matter how many later steps are visible, so a step that never rushes needs no defending. Two levers hold a step that does, but reach for them in order: **sharpen the bound first** — it is local and cheap. Only when the criterion is irreducibly fuzzy _and_ you actually observe the rush do you **hide the later steps** — and hiding only works across a real context boundary, such as a fresh session or isolated worker with clean context. Loading another skill in the same conversation, whether user-only or agent-discoverable, leaves the later steps visible and clears nothing. One cause of thin legwork, but distinct from it: legwork can be thin even when a step runs to full completion.
 
 _Avoid_: premature closure, the rush, rushing, shortcutting
 

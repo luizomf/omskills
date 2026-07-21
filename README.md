@@ -116,6 +116,8 @@ By default, the script writes to `~/.codex/skills`. To test another destination:
 OMSKILLS_DEST=/tmp/omskills-test ./scripts/link-skills.sh
 ```
 
+All active skills are currently user-only (`disable-model-invocation: true`). Supporting harnesses may discover and register the catalog, but skill descriptions stay out of the agent's system context until the user explicitly invokes a skill.
+
 2. In each repo that will consume these skills, run:
 
 ```text

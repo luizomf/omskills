@@ -1,6 +1,7 @@
 ---
 name: prompt-comprehension-audits
 description: Check whether clean-context agents understand an issue or execution prompt exactly as intended before costly or autonomous work.
+disable-model-invocation: true
 ---
 
 # Audit Prompt Comprehension

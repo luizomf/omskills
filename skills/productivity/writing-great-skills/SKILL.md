@@ -8,24 +8,28 @@ A skill exists to wrangle determinism out of a stochastic system. **Predictabili
 
 **Bold terms** are defined in [`GLOSSARY.md`](GLOSSARY.md); look them up there for the full meaning.
 
-## Invocation
+## Discovery
 
 Two choices, trading different costs:
 
-- A **model-invoked** skill keeps a **description**, so the agent can fire it autonomously _and_ other skills can reach it (you can still type its name too). It contributes to **context load** — the description sits in the window every turn. Mechanics: omit `disable-model-invocation`, and write a model-facing description with rich trigger phrasing ("Use when the user wants…, mentions…").
-- A **user-invoked** skill strips the description from the agent's reach: only you, typing its name, can invoke it — and no other skill can. Zero context load, but it spends **cognitive load**: _you_ are the index that must remember it exists. Mechanics: set `disable-model-invocation: true`; the `description` becomes human-facing — a one-line summary, trigger lists stripped.
+- An **agent-discoverable** skill exposes its required **description** to the agent, so the agent can select it autonomously (and the user can still invoke it directly). It contributes to **context load** because the description sits in the system context every turn. Mechanics: omit `disable-model-invocation`, and write a model-facing description with rich trigger phrasing ("Use when the user wants…, mentions…").
+- A **user-only** skill keeps its required **description**, but hides it from the agent's system context. The user selects it directly, so it adds no context load but spends **cognitive load**: the user must remember it exists. Mechanics: set `disable-model-invocation: true`; the description becomes command-facing metadata — a concise human-readable summary rather than an automatic trigger list.
 
-Pick model-invocation only when the agent must reach the skill on its own, or another skill must. If it only ever fires by hand, make it user-invoked and pay no context load.
+A user-only skill is not automatically discoverable, but another loaded skill may compose it explicitly through a direct **context pointer** to its `SKILL.md` or disclosed reference. Explicit composition is different from autonomous discovery: the pointer, not a globally visible description, makes the target reachable.
 
-When user-invoked skills multiply past what you can remember, that piled-up cognitive load is cured by a **router skill**: one user-invoked skill that names the others and when to reach for each.
+Choose agent discovery only when autonomous selection earns its permanent context load. The current omskills catalog defaults every active skill to user-only until observed use justifies exposing a description.
+
+When user-only skills multiply past what the user can remember, that piled-up cognitive load is cured by a **router skill**: one user-only skill with explicit context pointers that names the others and when to load each one.
 
 ## Writing the description
 
-A model-invoked **description** does two jobs — state what the skill is, and list the **branches** that should trigger it. Every word increases **context load**, so a description earns even harder pruning than the body:
+An agent-discoverable **description** does two jobs — state what the skill is, and list the **branches** that should trigger it. Every word increases **context load**, so a discoverable description earns even harder pruning than the body:
 
-- **Front-load the skill's leading word** — the description is where it does its invocation work.
+- **Front-load the skill's leading word** — the description is where it does its discovery work.
 - **One trigger per branch.** Synonyms that rename a single branch are **duplication** — "build features using TDD … asks for test-first development" is one branch written twice. Collapse them; keep only genuinely distinct branches.
 - **Cut identity that's already in the body.** Keep the description to triggers, plus any "when another skill needs…" reach clause.
+
+A user-only description remains required metadata, but because it is hidden from the agent it should be a concise command-facing summary with automatic trigger phrasing removed.
 
 ## Information hierarchy
 
@@ -47,7 +51,7 @@ Where the ladder decides _how far down_ a piece sits, **co-location** decides _w
 
 **Granularity** is how finely you divide skills, and each cut spends one of the two loads, so split only when the cut earns it. Two cuts:
 
-- **By invocation** — split off a **model-invoked** skill when you have a distinct **leading word** that should trigger it on its own, or another skill must reach it. You pay **context load** for the new always-loaded **description**, so that independent reach has to be worth it.
+- **By discovery** — split off an **agent-discoverable** skill when you have a distinct **leading word** that should trigger it on its own. You pay **context load** for the new always-loaded **description**, so autonomous discovery has to be worth it. Explicit composition alone does not require discoverability; a direct context pointer can reach a user-only skill or external reference.
 - **By sequence** — split a run of **steps** when the steps still ahead (a step's **post-completion steps**) tempt the agent to rush the one in front of it (**premature completion**). Keeping them out of view encourages the agent to do more **legwork** on the current task.
 
 ## Pruning
@@ -62,7 +66,7 @@ Then hunt **no-ops** sentence by sentence, not just line by line: run the no-op 
 
 A **leading word** is a compact concept already living in the model's pretraining that the agent thinks with while running the skill (e.g. _lesson_, _fog of war_, _tracer bullets_). Repeated throughout the text (though not necessarily - a strong leading word might only be needed once), it accumulates a distributed definition and anchors a whole region of behaviour in the fewest tokens, by recruiting priors the model already holds.
 
-It serves predictability twice. In the body it anchors _execution_: the agent reaches for the same behaviour every time the word appears. In the description it anchors _invocation_: when the same word lives in your prompts, docs, and code, the agent links that shared language to the skill and fires it more reliably.
+It serves predictability twice. In the body it anchors _execution_: the agent reaches for the same behaviour every time the word appears. In an agent-discoverable description it anchors _discovery_: when the same word lives in your prompts, docs, and code, the agent links that shared language to the skill and selects it more reliably.
 
 Hunt for opportunities to refactor skills to use leading words. A triad spelled out at three sites (**duplication**), a description spending a sentence to gesture at one idea — each is a passage begging to **collapse** into a single token. Examples include:
 

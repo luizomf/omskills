@@ -1,6 +1,7 @@
 ---
 name: code-review
 description: Review changes from a fixed point against both repository standards and the originating spec. Use for branch, PR, or work-in-progress review.
+disable-model-invocation: true
 ---
 
 # Code Review

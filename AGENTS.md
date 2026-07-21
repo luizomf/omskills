@@ -61,6 +61,8 @@ There are two plugin manifests, `.codex-plugin/plugin.json` and `.claude-plugin/
 
 Core skills should appear in the top-level `README.md` and both plugin manifests. Optional skills may be documented in their bucket README without being part of the manifests.
 
+All active skills are currently user-only and must set `disable-model-invocation: true`. Harnesses may discover and register them, but their descriptions should not enter the agent's system context. Do not make a skill agent-discoverable until observed use justifies the permanent context load and the maintainer approves it.
+
 Each active skill entry in the top-level `README.md` must link the skill name to its `SKILL.md`. Each bucket README should list the skills in that bucket with one-line descriptions.
 
 When renaming a skill, update all of these together:

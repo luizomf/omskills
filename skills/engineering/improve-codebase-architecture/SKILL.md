@@ -10,7 +10,7 @@ Surface architectural friction and propose **deepening opportunities** — refac
 
 This command is _informed_ by the project's domain model and built on a shared design vocabulary:
 
-- Use the `codebase-design` skill for the architecture vocabulary (**module**, **interface**, **depth**, **seam**, **adapter**, **leverage**, **locality**) and its principles (the deletion test, "the interface is the test surface", "one adapter = hypothetical seam, two = real"). Use these terms exactly in every suggestion — don't drift into "component," "service," "API," or "boundary."
+- Use the [`codebase-design`](../codebase-design/SKILL.md) skill for the architecture vocabulary (**module**, **interface**, **depth**, **seam**, **adapter**, **leverage**, **locality**) and its principles (the deletion test, "the interface is the test surface", "one adapter = hypothetical seam, two = real"). Use these terms exactly in every suggestion — don't drift into "component," "service," "API," or "boundary."
 - The domain language in `CONTEXT.md` gives names to good seams; ADRs in `docs/adr/` record decisions this command should not re-litigate.
 
 ## Process
@@ -56,11 +56,11 @@ Do NOT propose interfaces yet. After the file is written, identify the top recom
 
 ### 3. Grilling loop
 
-Once the user picks a candidate, use `grill-with-docs` to walk the design tree with them — constraints, dependencies, the shape of the deepened module, what sits behind the seam, what tests survive.
+Once the user picks a candidate, use [`grill-with-docs`](../grill-with-docs/SKILL.md) to walk the design tree with them — constraints, dependencies, the shape of the deepened module, what sits behind the seam, what tests survive.
 
 Keep the domain model current as decisions crystallize:
 
 - **Naming a deepened module after a concept not in `CONTEXT.md`?** Add the term to `CONTEXT.md`. Create the file lazily if it doesn't exist.
 - **Sharpening a fuzzy term during the conversation?** Update `CONTEXT.md` right there.
 - **A load-bearing rejection is already present in the supplied context?** Record an ADR only when the invocation authorizes documentation changes and future agents need the reason to avoid repeating the proposal. Skip ephemeral or self-evident reasons.
-- **Want to explore alternative interfaces for the deepened module?** Use the `codebase-design` skill and its one-designer Design It Twice pattern.
+- **Want to explore alternative interfaces for the deepened module?** Use the [`codebase-design`](../codebase-design/SKILL.md) skill and its one-designer Design It Twice pattern.

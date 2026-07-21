@@ -1,6 +1,7 @@
 ---
 name: resolving-merge-conflicts
 description: Resolves an in-progress git merge or rebase conflict by understanding each change's intent and preserving both where possible. Use when a git merge or rebase has stopped with conflicts, files show conflict markers, or the user asks to resolve merge conflicts.
+disable-model-invocation: true
 ---
 
 # Resolving Merge Conflicts
