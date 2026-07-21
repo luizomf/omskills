@@ -14,7 +14,15 @@ Transfer control to a fresh interactive agent window in the current tmux session
 tmux display-message -p '#{socket_path} #{pane_id} #{session_name}'
 ```
 
-2. Read [`handoff`](../handoff/SKILL.md) and follow its contract. Write the handoff to a uniquely named Markdown file in the OS temporary directory. The file is the authoritative continuation context.
+2. Read [`handoff`](../handoff/SKILL.md) and follow its contract. Write the handoff to a uniquely named Markdown file in the OS temporary directory. Near the top, add:
+
+```md
+## Wormhole context
+
+You are the fresh continuation of a conversation transferred through a wormhole, not an independent worker. The origin session remains alive and recoverable.
+```
+
+The file is the authoritative continuation context.
 
 3. Write a uniquely named temporary bootstrap prompt. Include:
 
