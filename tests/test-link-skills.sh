@@ -3,7 +3,31 @@ set -euo pipefail
 
 REPO="$(cd "$(dirname "$0")/.." && pwd)"
 DEST="$(mktemp -d)"
-trap 'rm -rf "$DEST"' EXIT
+FAKE_HOME="$(mktemp -d)"
+trap 'rm -rf "$DEST" "$FAKE_HOME"' EXIT
+
+mkdir -p "$FAKE_HOME/.codex/skills"
+ln -s "$REPO/skills/engineering/to-spec" "$FAKE_HOME/.codex/skills/to-spec"
+printf '%s\n' "to-spec" > "$FAKE_HOME/.codex/skills/.omskills-managed-links"
+mkdir "$FAKE_HOME/.codex/skills/unrelated"
+
+HOME="$FAKE_HOME" "$REPO/scripts/link-skills.sh" >/dev/null
+[ -L "$FAKE_HOME/.agents/skills/to-spec" ] || {
+  echo "error: default installation did not use ~/.agents/skills" >&2
+  exit 1
+}
+[ ! -L "$FAKE_HOME/.codex/skills/to-spec" ] || {
+  echo "error: legacy managed link was not migrated" >&2
+  exit 1
+}
+[ ! -e "$FAKE_HOME/.codex/skills/.omskills-managed-links" ] || {
+  echo "error: legacy managed-link state was not removed" >&2
+  exit 1
+}
+[ -d "$FAKE_HOME/.codex/skills/unrelated" ] || {
+  echo "error: unrelated legacy content was removed" >&2
+  exit 1
+}
 
 export OMSKILLS_DEST="$DEST"
 

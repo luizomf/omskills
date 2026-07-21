@@ -1,11 +1,17 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Links active skills in the repository to ~/.codex/skills, so they
+# Links active skills in the repository to ~/.agents/skills, so they
 # can be used by local Codex sessions.
 
 REPO="$(cd "$(dirname "$0")/.." && pwd)"
-DEST="${OMSKILLS_DEST:-$HOME/.codex/skills}"
+if [ -n "${OMSKILLS_DEST+x}" ]; then
+  DEST="$OMSKILLS_DEST"
+  USE_DEFAULT_DEST=false
+else
+  DEST="$HOME/.agents/skills"
+  USE_DEFAULT_DEST=true
+fi
 STATE="$DEST/.omskills-managed-links"
 MODE="install"
 
@@ -140,4 +146,43 @@ if [ "$MODE" = "check" ]; then
   fi
 else
   cp "$manifest_names" "$STATE"
+fi
+
+# Codex previously used ~/.codex/skills for user skills. After a successful
+# default installation, remove only links recorded there that still point into
+# this repository. Preserve unrelated content and any path whose ownership is
+# no longer safe to infer.
+if [ "$MODE" = "install" ] && [ "$USE_DEFAULT_DEST" = true ]; then
+  legacy_dest="$HOME/.codex/skills"
+  legacy_state="$legacy_dest/.omskills-managed-links"
+  legacy_state_safe=true
+
+  if [ -f "$legacy_state" ]; then
+    while IFS= read -r name; do
+      [ -n "$name" ] || continue
+      target="$legacy_dest/$name"
+
+      if [ -L "$target" ]; then
+        existing="$(readlink "$target")"
+        case "$existing" in
+          "$REPO/skills"/*)
+            rm "$target"
+            echo "removed legacy Codex link $name -> $existing"
+            ;;
+          *)
+            echo "warning: preserving changed legacy link: $target -> $existing" >&2
+            legacy_state_safe=false
+            ;;
+        esac
+      elif [ -e "$target" ]; then
+        echo "warning: preserving changed legacy path: $target" >&2
+        legacy_state_safe=false
+      fi
+    done < "$legacy_state"
+
+    if [ "$legacy_state_safe" = true ]; then
+      rm "$legacy_state"
+      echo "removed legacy managed-link state $legacy_state"
+    fi
+  fi
 fi

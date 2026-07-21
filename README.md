@@ -111,7 +111,7 @@ The installer prunes only obsolete symlinks managed by this repository and refus
 ./scripts/link-skills.sh --check
 ```
 
-By default, the script writes to `~/.codex/skills`. To test another destination:
+By default, the script writes to `~/.agents/skills`, the shared user-level skills directory used by current Codex surfaces. On the first default installation, it safely removes this repository's managed links from the legacy `~/.codex/skills` location while preserving unrelated content. To test another destination:
 
 ```bash
 OMSKILLS_DEST=/tmp/omskills-test ./scripts/link-skills.sh
