@@ -1,12 +1,12 @@
 ---
 name: wormhole
-description: Move the current conversation into a fresh interactive Pi window while keeping the origin recoverable.
+description: Move the current conversation into a fresh interactive agent window while keeping the origin recoverable.
 disable-model-invocation: true
 ---
 
 # Wormhole
 
-Transfer control to a fresh Pi window in the current tmux session without closing the origin.
+Transfer control to a fresh interactive agent window in the current tmux session without closing the origin.
 
 1. Read the current socket, pane, and session as literal values:
 
@@ -24,14 +24,13 @@ tmux display-message -p '#{socket_path} #{pane_id} #{session_name}'
 - two literal callback commands that send `[PONG worm] jump complete; report: <handoff-path>` and then `Enter` to the origin pane;
 - instructions to confirm the jump briefly in the user's language and remain interactive for the next request.
 
-4. Choose a unique `worm-...` window name. Using the captured socket and session, open a detached named window in the current working directory running:
+4. Choose a unique `worm-...` window name. Using the captured socket and session, open a detached named window in the current working directory:
 
-```bash
-pi --no-skills --skill "${HOME}/.pi/agent/skills"
-```
+- In Pi, run `pi --no-skills --skill "${HOME}/.pi/agent/skills"`.
+- In another harness, run its supported command for a fresh interactive session. If that command cannot be identified safely, return the handoff path instead of guessing.
 
 Keep the origin window alive.
 
-5. Wait five seconds for Pi to become ready. Send a short instruction telling it to read and follow the bootstrap prompt. Send the literal instruction and `Enter` through separate `tmux send-keys` calls.
+5. Wait for the harness to become ready. Send a short instruction telling it to read and follow the bootstrap prompt. Send the literal instruction and `Enter` through separate `tmux send-keys` calls.
 
-6. Switch the captured tmux session to the new window. The jump is complete when the fresh Pi sends the callback, confirms the handoff to the user, and remains interactive; the origin stays available for recovery.
+6. Switch the captured tmux session to the new window. The jump is complete when the fresh agent sends the callback, confirms the handoff to the user, and remains interactive; the origin stays available for recovery.

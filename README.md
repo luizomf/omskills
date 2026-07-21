@@ -34,7 +34,7 @@ Before asking an agent to "build it", classify the moment:
 - The architecture is getting muddy: `/improve-codebase-architecture`
 - Want to learn a topic over multiple sessions: `/teach`
 - Need to pause without losing context: `/handoff`
-- Need a fresh Pi window without losing the current one: `/wormhole`
+- Need a fresh agent window without losing the current one: `/wormhole`
 
 The core habit is to ask: "Is this clear enough to become code?"
 
@@ -178,7 +178,7 @@ For mature projects, the queue should favor small, vertical, verifiable tickets.
 - **[grill-me](./skills/productivity/grill-me/SKILL.md)**: runs a grilling session without touching code or docs.
 - **[caveman](./skills/productivity/caveman/SKILL.md)**: uses ultra-compressed communication while preserving technical accuracy.
 - **[handoff](./skills/productivity/handoff/SKILL.md)**: compacts useful, undocumented conversation state for a fresh agent.
-- **[wormhole](./skills/productivity/wormhole/SKILL.md)**: moves the current conversation into a fresh interactive Pi window while keeping the origin recoverable.
+- **[wormhole](./skills/productivity/wormhole/SKILL.md)**: moves the current conversation into a fresh interactive agent window while keeping the origin recoverable.
 - **[tmux-worker](./skills/productivity/tmux-worker/SKILL.md)**: delegates independent work to a visible tmux window and receives a short completion callback.
 - **[teach](./skills/productivity/teach/SKILL.md)**: teaches a new skill or concept over multiple sessions, using the current directory as a stateful teaching workspace.
 - **[writing-great-skills](./skills/productivity/writing-great-skills/SKILL.md)**: reference for the vocabulary and design principles behind predictable skills.
