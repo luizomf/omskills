@@ -15,7 +15,7 @@ When no accepted intent exists outside the prompt, report the interpretation and
 
 ## Run two clean passes
 
-Use a new agent identity for each pass. Explicitly call `spawn_agent` with `fork_turns: "none"`; the default fork may copy the parent conversation and invalidate the audit. Never reuse an existing agent or continue the first agent for the second pass.
+Use the harness's delegation mechanism to start a fresh, independent agent for each pass. Neither agent may inherit the parent conversation; baseline system and project instructions are acceptable, but conversational turns, coordinator analysis, and desired answers must not carry over. Never reuse an existing agent or continue the first agent for the second pass. If the harness cannot guarantee this isolation, stop and report that the audit cannot be performed reliably.
 
 ### 1. Ask a clean interpreter
 
@@ -37,7 +37,7 @@ Missing release preparation, tests, artifacts, fallbacks, documentation, or impl
 
 ### 3. Ask a clean reviewer
 
-After the interpreter finishes, always call `spawn_agent` again with `fork_turns: "none"` for a different reviewer. Give it:
+After the interpreter finishes, start a second fresh, independent agent as the reviewer. Give it:
 
 - the original prompt;
 - the interpreter's response;
