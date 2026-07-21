@@ -21,6 +21,7 @@
     "./skills/productivity/prompt-comprehension-audits",
     "./skills/productivity/tmux-worker",
     "./skills/productivity/handoff",
+    "./skills/productivity/wormhole",
     "./skills/productivity/teach",
     "./skills/productivity/write-a-skill",
     "./skills/productivity/writing-great-skills"
