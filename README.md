@@ -157,7 +157,6 @@ For mature projects, the queue should favor small, vertical, verifiable tickets.
 - **[diagnosing-bugs](./skills/engineering/diagnosing-bugs/SKILL.md)**: disciplined loop for hard bugs and regressions: reproduce, minimise, hypothesise, instrument, fix, and regression-test.
 - **[research](./skills/engineering/research/SKILL.md)**: investigates a question against high-trust primary sources and saves cited findings in the repo.
 - **[tdd](./skills/engineering/tdd/SKILL.md)**: red -> green development at pre-agreed seams.
-- **[domain-modeling](./skills/engineering/domain-modeling/SKILL.md)**: actively builds and sharpens the project's domain model.
 - **[codebase-design](./skills/engineering/codebase-design/SKILL.md)**: shared vocabulary and principles for designing deep modules.
 - **[code-review](./skills/engineering/code-review/SKILL.md)**: reviews a diff along standards and spec axes.
 - **[resolving-merge-conflicts](./skills/engineering/resolving-merge-conflicts/SKILL.md)**: resolves an in-progress git merge or rebase conflict.
@@ -175,7 +174,6 @@ For mature projects, the queue should favor small, vertical, verifiable tickets.
 
 **Model-invoked**
 
-- **[grilling](./skills/productivity/grilling/SKILL.md)**: the reusable interview loop behind `grill-me`, `grill-with-docs`, `triage`, and `wayfinder`.
 - **[prompt-comprehension-audits](./skills/productivity/prompt-comprehension-audits/SKILL.md)**: checks an issue or execution prompt with two clean-context agents for exact semantic comprehension.
 - **[write-a-skill](./skills/productivity/write-a-skill/SKILL.md)**: creates new skills with structure, frontmatter, and supporting resources.
 

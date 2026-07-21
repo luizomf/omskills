@@ -1,8 +1,8 @@
 # ADR Format
 
-ADRs live in `docs/adr/` and use sequential numbering: `0001-slug.md`, `0002-slug.md`, etc.
+ADRs use sequential numbering: `0001-slug.md`, `0002-slug.md`, etc.
 
-Create the `docs/adr/` directory lazily — only when the first ADR is needed.
+In a single-context repository, place them in root `docs/adr/`. When `CONTEXT-MAP.md` defines multiple contexts, place context-specific decisions in that context's `docs/adr/` and reserve root `docs/adr/` for system-wide decisions. Create the appropriate directory lazily — only when the first ADR is needed.
 
 ## Template
 

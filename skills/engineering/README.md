@@ -19,7 +19,6 @@ Core skills for code work, issue workflow, and architecture decisions.
 - **[diagnosing-bugs](./diagnosing-bugs/SKILL.md)** - Disciplined diagnosis loop for hard bugs and performance regressions.
 - **[research](./research/SKILL.md)** - Investigate a question against high-trust primary sources and save cited findings in the repo.
 - **[tdd](./tdd/SKILL.md)** - Red -> green development at pre-agreed seams.
-- **[domain-modeling](./domain-modeling/SKILL.md)** - Actively build and sharpen the project's domain model.
 - **[codebase-design](./codebase-design/SKILL.md)** - Shared vocabulary and principles for designing deep modules.
 - **[code-review](./code-review/SKILL.md)** - Review a diff along standards and spec axes.
 - **[resolving-merge-conflicts](./resolving-merge-conflicts/SKILL.md)** - Resolve an in-progress git merge or rebase conflict.
