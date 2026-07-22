@@ -1,7 +1,6 @@
 ---
 name: caveman
 description: Use ultra-compressed communication while preserving technical accuracy.
-disable-model-invocation: true
 ---
 
 # Caveman

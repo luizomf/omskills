@@ -1,7 +1,6 @@
 ---
 name: codebase-design
 description: Shared vocabulary and principles for designing deep modules — a lot of behaviour behind a small interface, placed at a clean seam, testable through that interface. Use when designing or improving a module's interface, deepening modules, deciding where a seam goes, reducing coupling, designing for testability, or when another skill needs the deep-module vocabulary.
-disable-model-invocation: true
 ---
 
 # Codebase Design

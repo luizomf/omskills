@@ -1,7 +1,6 @@
 ---
 name: grill-with-docs
 description: Stress-test a repository plan or design while maintaining its domain glossary and durable architectural decisions.
-disable-model-invocation: true
 ---
 
 # Grill With Docs

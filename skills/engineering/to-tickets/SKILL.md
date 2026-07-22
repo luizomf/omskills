@@ -1,7 +1,6 @@
 ---
 name: to-tickets
 description: Break a plan, spec, or the current conversation into tracer-bullet tickets with blocking and conflict edges, published to the configured tracker.
-disable-model-invocation: true
 ---
 
 # To Tickets

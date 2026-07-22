@@ -117,7 +117,7 @@ By default, the script writes to `~/.agents/skills`, the shared user-level skill
 OMSKILLS_DEST=/tmp/omskills-test ./scripts/link-skills.sh
 ```
 
-All active skills are currently user-only (`disable-model-invocation: true`). Supporting harnesses may discover and register the catalog, but skill descriptions stay out of the agent's system context until the user explicitly invokes a skill.
+All active skills are agent-discoverable. Supporting harnesses include each skill's name, description, and location in the agent's system context, then load the full `SKILL.md` only when the task matches or the user invokes the skill directly.
 
 2. In each repo that will consume these skills, run:
 

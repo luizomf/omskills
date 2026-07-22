@@ -1,7 +1,6 @@
 ---
 name: writing-great-skills
 description: Reference for writing and editing skills well — the vocabulary and principles that make a skill predictable.
-disable-model-invocation: true
 ---
 
 A skill exists to wrangle determinism out of a stochastic system. **Predictability** — the agent taking the same _process_ every run, not producing the same output — is the root virtue; every lever below serves it.
@@ -17,7 +16,7 @@ Two choices, trading different costs:
 
 A user-only skill is not automatically discoverable, but another loaded skill may compose it explicitly through a direct **context pointer** to its `SKILL.md` or disclosed reference. Explicit composition is different from autonomous discovery: the pointer, not a globally visible description, makes the target reachable.
 
-Choose agent discovery only when autonomous selection earns its permanent context load. The current omskills catalog defaults every active skill to user-only until observed use justifies exposing a description.
+Choose agent discovery only when autonomous selection earns its permanent context load. The current active omskills catalog is agent-discoverable after observed use justified exposing its descriptions; new skills still default to user-only until the maintainer approves discovery.
 
 When user-only skills multiply past what the user can remember, that piled-up cognitive load is cured by a **router skill**: one user-only skill with explicit context pointers that names the others and when to load each one.
 

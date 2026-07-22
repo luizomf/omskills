@@ -1,7 +1,6 @@
 ---
 name: wormhole
 description: Move the current conversation into a fresh interactive agent window while keeping the origin recoverable.
-disable-model-invocation: true
 ---
 
 # Wormhole

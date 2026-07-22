@@ -1,7 +1,6 @@
 ---
 name: handoff
 description: Compact the useful, undocumented state of the current conversation for a fresh agent.
-disable-model-invocation: true
 ---
 
 # Handoff

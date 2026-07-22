@@ -1,7 +1,6 @@
 ---
 name: tmux-worker
 description: Delegate independent work to a visible tmux window and receive a short completion callback.
-disable-model-invocation: true
 ---
 
 # Tmux Worker

@@ -23,9 +23,17 @@ def fail(message: str) -> None:
     raise SystemExit(1)
 
 
+def frontmatter_text(skill_file: Path) -> str:
+    match = re.match(r"\A---\n(.*?)\n---", skill_file.read_text(), re.DOTALL)
+    if not match:
+        fail(f"missing frontmatter: {skill_file.relative_to(ROOT)}")
+    return match.group(1)
+
+
 def frontmatter_name(skill_file: Path) -> str:
-    text = skill_file.read_text()
-    match = re.search(r"(?m)^name:\s*['\"]?([^'\"\n]+)", text)
+    match = re.search(
+        r"(?m)^name:\s*['\"]?([^'\"\n]+)", frontmatter_text(skill_file)
+    )
     if not match:
         fail(f"missing frontmatter name: {skill_file.relative_to(ROOT)}")
     return match.group(1).strip()
@@ -71,6 +79,11 @@ def main() -> None:
         names.add(name)
         if frontmatter_name(skill_file) != name:
             fail(f"frontmatter name does not match directory: {entry}")
+        if re.search(
+            r"(?m)^disable-model-invocation:\s*true\s*$",
+            frontmatter_text(skill_file),
+        ):
+            fail(f"active skill is not agent-discoverable: {entry}")
 
         expected_root_link = f"(./{relative.as_posix()}/SKILL.md)"
         if expected_root_link not in root_readme:

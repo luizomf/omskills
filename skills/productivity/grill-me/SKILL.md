@@ -1,7 +1,6 @@
 ---
 name: grill-me
 description: Stress-test any plan, idea, or design through a relentless one-question-at-a-time interview.
-disable-model-invocation: true
 ---
 
 # Grill Me

@@ -1,7 +1,6 @@
 ---
 name: write-a-skill
 description: Create agent skills with proper structure, progressive disclosure, and bundled resources.
-disable-model-invocation: true
 ---
 
 # Writing Skills
