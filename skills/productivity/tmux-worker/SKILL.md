@@ -36,4 +36,4 @@ tmux -S <socket> send-keys -t <pane> -l \
 tmux -S <socket> send-keys -t <pane> Enter
 ```
 
-The callback starts a later turn and identifies the result artifact. Treat it as a resumption trigger, not a completion report: in that turn, read the artifact; only the root starts workers, decides what follows, and performs any correction it can — never use `tmux-worker` to repeat, correct, review, or delegate work. Keep the window open while the worker is running or further interaction is expected. Close it only after the worker exits and the result exists outside the window.
+The callback starts a later turn and identifies the result artifact. Treat it as a resumption trigger, not a completion report: in that turn, read the artifact. Only the root starts workers and decides whether to reply or stop; multi-turn conversation with the same worker is allowed, but neither side may hand off the task or start an autonomous work-review loop. Keep the window open while the worker is running or further interaction is expected. Close it only after the worker exits and the result exists outside the window.
