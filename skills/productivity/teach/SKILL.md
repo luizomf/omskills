@@ -11,7 +11,8 @@ Treat teaching as stateful work that may continue across multiple sessions.
 Use the current directory as the teaching workspace and store learning state in these locations:
 
 - `MISSION.md`: the user's reason for learning and the observable outcomes they seek. Base every lesson choice on it. Follow [MISSION-FORMAT.md](./MISSION-FORMAT.md).
-- `reference/*.html`: printable lookup material extracted from lessons, including cheat sheets, algorithms, syntax, poses, and glossaries.
+- `GLOSSARY.md`: canonical terminology for the workspace. Follow [GLOSSARY-FORMAT.md](./GLOSSARY-FORMAT.md).
+- `reference/*.html`: printable lookup material extracted from lessons, including cheat sheets, algorithms, syntax, and poses.
 - `RESOURCES.md`: sources for knowledge and communities for practice. Follow [RESOURCES-FORMAT.md](./RESOURCES-FORMAT.md).
 - `learning-records/*.md`: demonstrated learning, stated prior knowledge, corrected misconceptions, and mission changes used to select later lessons. Name files `0001-<dash-case-name>.md` and increment the highest existing number. Follow [LEARNING-RECORD-FORMAT.md](./LEARNING-RECORD-FORMAT.md).
 - `lessons/*.html`: self-contained lessons. Follow [Lessons](#lessons).
@@ -113,10 +114,9 @@ While creating a lesson, you should create or update a file under `reference/` w
 - programming syntax or code snippets;
 - process algorithms or flowcharts;
 - yoga poses or sequences;
-- exercise or fitness routines;
-- domain terminology.
+- exercise or fitness routines.
 
-The reference document should retain only the material needed for independent lookup. When a glossary exists, every later lesson should use its defined term for each concept.
+The reference document should retain only the material needed for independent lookup. When `GLOSSARY.md` exists, every later lesson should use its defined term for each concept.
 
 ## `NOTES.md`
 

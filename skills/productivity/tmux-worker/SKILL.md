@@ -16,7 +16,7 @@ tmux display-message -t "$TMUX_PANE" -p \
 
 Use the coordinator process's `$TMUX_PANE` as the callback target even when another window is active.
 
-2. Write a self-contained worker prompt to a temporary file or project scratch file. Include the assigned scope, paths to every artifact required by the task, completion criteria, and the literal callback socket and pane values.
+2. Write a self-contained worker prompt to a temporary file or project scratch file. Include the assigned scope, paths to every artifact required by the task, completion criteria, and the literal callback socket and pane values. State that the worker delivers its result only through the artifact and the callback, never as a reply to the user.
 
 3. In the current working directory, start an interactive Pi session in a detached tmux window. Limit skill discovery to the canonical Pi directory:
 
@@ -36,4 +36,4 @@ tmux -S <socket> send-keys -t <pane> -l \
 tmux -S <socket> send-keys -t <pane> Enter
 ```
 
-The callback starts a later turn and identifies the result artifact. After receiving it, read the artifact and continue the delegated task. Keep the window open while the worker is running or further interaction is expected. Close it only after the worker exits and the result exists outside the window.
+The callback starts a later turn and identifies the result artifact. Treat it as a resumption trigger, not a completion report: in that turn, read the artifact and continue the parent goal — the next step or the next worker — without waiting for user input, until the goal is complete or blocked. Keep the window open while the worker is running or further interaction is expected. Close it only after the worker exits and the result exists outside the window.

@@ -76,6 +76,7 @@ Show the count for each bucket and one line per item, then wait for the maintain
 
 3. **Verify.** Before grilling, test the claim:
    - for a bug, follow the reporter's reproduction steps;
+   - for an enhancement, confirm the current behavior or interface state that the request wants changed;
    - for a PR, check out the diff and run the commands or tests that exercise its stated behavior.
 
    Report one result: `confirmed`, with the exercised code path and observed result; `failed`, with the command or step that contradicted the claim; or `insufficient detail`, listing the exact missing input. Treat `insufficient detail` as evidence for `needs-info`, not as automatic authorization to change state.
