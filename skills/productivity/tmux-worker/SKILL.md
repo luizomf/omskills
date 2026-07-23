@@ -1,11 +1,11 @@
 ---
 name: tmux-worker
-description: Delegate independent work to a visible tmux window and receive a completion callback containing the result artifact path.
+description: Connect the root with an agent in a visible tmux window for multi-turn work across systems or harnesses.
 ---
 
 # Tmux Worker
 
-Use the current project's tmux session. Assign each worker one named window containing one pane so the user can observe and interact with the worker.
+Use the current project's tmux session when the root needs to work or converse with an agent through another system or harness. Assign each worker one named window containing one pane so the user can observe and interact with it.
 
 1. Capture the current socket, coordinator pane, and session as literal values:
 
@@ -36,4 +36,10 @@ tmux -S <socket> send-keys -t <pane> -l \
 tmux -S <socket> send-keys -t <pane> Enter
 ```
 
-The callback starts a later turn and identifies the result artifact. Treat it as a resumption trigger, not a completion report: in that turn, read the artifact. Only the root starts workers and decides whether to reply or stop; multi-turn conversation with the same worker is allowed, but neither side may hand off the task or start an autonomous work-review loop. Keep the window open while the worker is running or further interaction is expected. Close it only after the worker exits and the result exists outside the window.
+The callback resumes the root; it does not complete the task. On callback:
+
+- read the artifact;
+- let only the root decide whether to reply to the same worker or stop; and
+- never let either side hand off the task or start an autonomous work-review loop.
+
+Conversation with the same worker may continue normally. Leave its window open for the user to close.
