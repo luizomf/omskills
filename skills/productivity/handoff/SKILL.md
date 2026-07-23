@@ -15,7 +15,7 @@ Include only continuation state that the referenced artifacts do not establish:
 - unresolved questions and blockers;
 - relevant working-tree or external state that cannot be inferred safely from cited artifacts.
 
-Cite existing issues, specs, ADRs, documentation, commits, and diffs by path or URL instead of reproducing their content. Exclude tool logs, superseded exploration, conversational transitions, and facts recoverable from cited artifacts.
+Cite existing issues, specs, ADRs, documentation, commits, and diffs by path or URL instead of reproducing their content. Exclude tool logs, superseded exploration, and conversational transitions.
 
 Include no recommendation, requirement, task, or follow-up that the conversation did not establish.
 

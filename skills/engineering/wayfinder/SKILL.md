@@ -19,7 +19,7 @@ In narration and the map's **Decisions so far**, refer to every map and ticket b
 
 The map is the authoritative issue for the effort in the configured tracker, labelled `wayfinder:map`. Its tickets are child issues.
 
-The map indexes decisions; each decision's detail exists only in its ticket. **Decisions so far** contains a one-line gist and link, not a duplicate of the ticket's resolution.
+The map indexes decisions; each decision's detail exists only in its ticket. **Decisions so far** contains a one-line gist and link.
 
 Tracker storage, child relationships, blocking, and frontier queries are tracker-specific. Read the configured issue tracker's "Wayfinding operations" section. If the tracker configuration is missing, run [`setup-omskills`](../setup-omskills/SKILL.md). If no tracker is available after that, use local markdown.
 
@@ -67,7 +67,7 @@ Each ticket:
 <the decision or investigation this ticket resolves>
 ```
 
-Before performing any work, claim the ticket by assigning it to the developer driving the map. An open, unassigned ticket is unclaimed. Concurrent sessions skip claimed tickets.
+An open, unassigned ticket is unclaimed; assigning it to the developer driving the map claims it. Concurrent sessions skip claimed tickets.
 
 Use the tracker's native dependency relationship for blocking. Use a body convention only when the tracker has no native blocking relation. A ticket is **unblocked** when every ticket blocking it is closed. The **frontier** is the set of open, unblocked, unclaimed child tickets.
 

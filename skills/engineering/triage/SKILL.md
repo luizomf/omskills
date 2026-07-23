@@ -98,7 +98,7 @@ Outside a maintainer-approved quick state override, the item is triaged when it 
 
 When the maintainer explicitly requests a state, use that state without verification or grilling. Preserve the existing category. If no category exists, ask the maintainer to choose `bug` or `enhancement` before applying the state.
 
-Before acting, list the exact role changes, comment to be posted, and whether the item will close. For `ready-for-agent` without a grilling session, ask whether the maintainer wants to write an agent brief and wait for the answer. Then apply the listed changes without verification or grilling.
+Before acting, list the exact role changes, comment to be posted, and whether the item will close. For `ready-for-agent` without a grilling session, ask whether the maintainer wants to write an agent brief and wait for the answer. Then apply the listed changes.
 
 ## Needs-info template
 

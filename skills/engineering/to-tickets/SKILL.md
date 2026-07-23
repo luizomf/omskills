@@ -32,7 +32,7 @@ Each tracer-bullet ticket must:
 - be independently demonstrable or verifiable after completion; and
 - fit one fresh agent context window.
 
-Do not create separate tickets for individual layers of one behavior. Assign every ticket its blocking and conflict edges. A ticket with no blockers enters the frontier. It is eligible for concurrent work only when repository evidence shows no material conflict with active tickets; the absence of a blocking edge is not evidence of independence.
+Assign every ticket its blocking and conflict edges. A ticket with no blockers enters the frontier. It is eligible for concurrent work only when repository evidence shows no material conflict with active tickets.
 
 #### Wide-refactor exception
 
@@ -65,7 +65,7 @@ Revise and repeat until the user approves the breakdown. Do not publish before a
 
 Publish one artifact per approved ticket in blocker-first dependency order:
 
-- **Local markdown:** write each ticket to `.scratch/<feature-slug>/issues/<NN>-<slug>.md`, numbered from `01`. Record both edge types. Do not combine tickets into one file.
+- **Local markdown:** write each ticket to `.scratch/<feature-slug>/issues/<NN>-<slug>.md`, numbered from `01`. Record both edge types.
 - **GitHub, Linear, or another issue tracker:** create one issue per ticket so relationships use real identifiers. Use native blocking relations when available. Record conflicts in the issue body unless the tracker provides an equivalent native relation. Apply `ready-for-agent` unless instructed otherwise.
 
 Do not close or modify a parent issue.

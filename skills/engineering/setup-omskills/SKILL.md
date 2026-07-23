@@ -11,7 +11,7 @@ Configure:
 - the tracker strings mapped to the two triage category roles and five state roles; and
 - the locations and consumer rules for `CONTEXT.md` and ADRs.
 
-Use repository evidence to recommend values, obtain user confirmation, then write the configuration. This is an interactive process, not a fixed script.
+Use repository evidence to recommend values, obtain user confirmation, then write the configuration.
 
 ## Process
 
@@ -34,7 +34,7 @@ Summarize the observed and missing configuration. Process sections A–C in orde
 
 #### A. Issue tracker
 
-The issue tracker is where this repository stores specs, tickets, issues, and wayfinder maps. The configuration tells skills whether to call a tracker CLI, write local Markdown, or follow another recorded workflow.
+The configuration tells skills whether to call a tracker CLI, write local Markdown, or follow another recorded workflow.
 
 Recommend GitHub when a remote points to GitHub. Recommend GitLab when a remote points to `gitlab.com` or a self-hosted GitLab instance. When no supported remote determines the tracker, recommend local markdown if `.scratch/` establishes that convention. Otherwise present all alternatives and ask where work is tracked before recommending one:
 
@@ -43,7 +43,7 @@ Recommend GitHub when a remote points to GitHub. Recommend GitLab when a remote 
 - **Local markdown:** `.scratch/<feature>/` files in this repository.
 - **Other, such as Jira or Linear:** ask the user to describe the workflow in one paragraph and record it as freeform prose.
 
-Record the selection in `docs/agents/issue-tracker.md`. In GitHub and GitLab configurations, set external PRs or MRs as a request surface to off unless the user explicitly enables them.
+In GitHub and GitLab configurations, set external PRs or MRs as a request surface to off unless the user explicitly enables them.
 
 #### B. Triage label vocabulary
 
@@ -68,7 +68,7 @@ Ask: “Do you want to keep the default triage labels?” Recommend **yes**. By 
 
 #### C. Domain docs
 
-Engineering skills read domain terms from `CONTEXT.md` and durable architecture decisions from ADRs. The configuration identifies one global context or multiple contexts.
+Engineering skills read domain terms from `CONTEXT.md` and durable architecture decisions from ADRs.
 
 When inspection finds no genuine monorepo signals among the listed indicators, select **single-context** without asking. When inspection confirms a monorepo, ask the user to choose:
 
@@ -94,7 +94,7 @@ Select the instruction file with these rules, in order:
 2. Otherwise, if one or more of `GEMINI.md`, `CLAUDE.md`, or `CODEX.md` exists, list those files and ask which is canonical. Recommend creating `AGENTS.md` unless the repository intentionally uses a tool-specific file.
 3. If none exists, ask before creating `AGENTS.md` and recommend that name.
 
-Do not select an inherited or third-party `CLAUDE.md` as the user's instruction file without confirmation. If the user identifies it as upstream content, create or update `AGENTS.md` instead.
+If the user identifies a `CLAUDE.md` as inherited or third-party upstream content, create or update `AGENTS.md` instead.
 
 Replace an existing `## Agent skills` block in place. Otherwise append one without changing surrounding user content:
 

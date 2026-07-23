@@ -14,7 +14,7 @@ The `.out-of-scope/` directory in a repo stores persistent records of rejected f
 └── graphql-api.md
 ```
 
-One file per **concept**, not per issue. Multiple issues requesting the same thing are grouped under one file.
+One file per **concept**, not per issue.
 
 ## File format
 
@@ -98,8 +98,4 @@ The flow:
 
 ## Updating or removing out-of-scope files
 
-If the maintainer changes their mind about a previously rejected concept:
-
-- Delete the `.out-of-scope/` file
-- The skill does not need to reopen old issues — they're historical records
-- The new issue that triggered the reconsideration proceeds through normal triage
+If the maintainer changes their mind about a previously rejected concept, delete or update its `.out-of-scope/` file to match the new decision. Leave the old issues it lists closed — they're historical records.

@@ -10,7 +10,7 @@ Identify **deepening opportunities**: refactors that place more behavior behind 
 Use two authoritative vocabularies:
 
 - Read [`codebase-design`](../codebase-design/SKILL.md) for **module**, **interface**, **depth**, **seam**, **adapter**, **leverage**, **locality**, the deletion test, interface-as-test-surface, and adapter-count rules. Use those architecture terms in every candidate; do not substitute `component`, `service`, `API`, or `boundary`.
-- Use domain terms from applicable `CONTEXT.md` files. Treat ADRs in `docs/adr/` as decisions that remain in force unless the report supplies repository evidence for reopening one.
+- Use domain terms from applicable `CONTEXT.md` files; when the glossary defines `Order`, write `Order intake module`, not an implementation class name or `Order service`. Treat ADRs in `docs/adr/` as decisions that remain in force unless the report supplies repository evidence for reopening one.
 
 ## Process
 
@@ -38,7 +38,7 @@ Write one self-contained HTML file outside the repository:
 - Otherwise use `$TMPDIR`, falling back to `/tmp` on Unix or `%TEMP%` on Windows.
 - Name it `<tmpdir>/architecture-review-<timestamp>.html` so an existing report is not overwritten.
 
-Use Tailwind through its CDN for layout and styling. Use Mermaid through its CDN when call, dependency, flow, or sequence relationships form a graph. Use CSS, HTML, or SVG for non-graph comparisons such as module depth, cross-sections, or collapse views. Every candidate must have a before/after visualization.
+Use [HTML-REPORT.md](HTML-REPORT.md) for the HTML scaffold, diagram patterns, and styling constraints.
 
 For each candidate, render one card containing:
 
@@ -51,13 +51,9 @@ For each candidate, render one card containing:
 
 End with **Top recommendation**, naming the candidate to tackle first and explaining why.
 
-Use `CONTEXT.md` terms for domain concepts and `codebase-design` terms for architecture. For example, when the glossary defines `Order`, write `Order intake module`, not an implementation class name or `Order service`.
-
 If a candidate conflicts with an ADR, include it only when the observed friction is substantial enough to warrant revisiting that ADR. Add a warning naming the ADR and the supporting evidence.
 
-Use [HTML-REPORT.md](HTML-REPORT.md) for the HTML scaffold, diagram patterns, and styling constraints.
-
-Do not propose method signatures, parameter shapes, or other interfaces during the scan. After writing the file, open it with `xdg-open <path>` on Linux, `open <path>` on macOS, or `start <path>` on Windows. Report its absolute path and the top recommendation. If the invocation names a candidate to develop, continue to step 3. Otherwise stop; the report is the complete deliverable and no selection question is required.
+Do not propose method signatures, parameter shapes, or other interfaces before step 3. After writing the file, open it with `xdg-open <path>` on Linux, `open <path>` on macOS, or `start <path>` on Windows. Report its absolute path and the top recommendation. If the invocation names a candidate to develop, continue to step 3. Otherwise stop; the report is the complete deliverable and no selection question is required.
 
 ### 3. Develop a selected candidate
 

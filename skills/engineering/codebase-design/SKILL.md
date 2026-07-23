@@ -11,7 +11,7 @@ Design **deep modules**: modules whose callers can exercise multiple required be
 
 Use these architecture terms as defined here. Do not substitute `component`, `service`, `API`, or `boundary`, because those words identify different or narrower concepts.
 
-**Module** — any unit with an interface and an implementation, including a function, class, package, or tier-spanning slice. This term does not imply scale. Avoid `unit`, `component`, and `service` for this concept.
+**Module** — any unit with exactly one interface and an implementation, including a function, class, package, or tier-spanning slice. This term does not imply scale. Avoid `unit`, `component`, and `service` for this concept.
 
 **Interface** — every fact a caller must know to use a module correctly: type signatures, invariants, ordering constraints, error modes, required configuration, and performance characteristics. `API` and `signature` name only part of this surface.
 
@@ -91,25 +91,13 @@ function applyDiscount(cart): void {
 }
 ```
 
-Returning a result makes behavior observable without requiring a test to inspect mutation.
-
 ### Minimize the caller-visible surface
 
-A smaller caller-visible surface generally requires fewer tests and simpler setup. When comparing designs, ask whether methods or parameters can be reduced without losing required behavior.
-
-## Relationships
-
-- A **module** has exactly one **interface**.
-- **Depth** compares the module's behavior with the facts exposed by that interface.
-- A **seam** is the location where the interface can be satisfied by an adapter.
-- An **adapter** is a concrete module selected at that seam.
-- Increased **depth** produces **leverage** when callers share behavior and **locality** when rules and verification remain in the module.
+A smaller caller-visible surface generally requires fewer tests and simpler setup.
 
 ## Rejected framings
 
 - **Implementation-lines divided by interface-lines:** this metric can increase by adding implementation code without adding behavior. Evaluate depth by caller-visible facts and exercised behavior instead.
-- **Interface as only a TypeScript `interface` or public method list:** this omits invariants, ordering, errors, configuration, and performance obligations.
-- **Boundary:** this is overloaded with DDD bounded contexts. Use **seam** for location and **interface** for caller-visible facts.
 
 ## Progressive references
 

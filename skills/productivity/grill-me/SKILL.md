@@ -9,7 +9,7 @@ Interview the user one decision-tree branch at a time. Resolve each dependency b
 
 - Ask exactly one question, then wait for the user's answer before asking another.
 - With each question, state the recommended answer and explain why.
-- Determine facts available from the workspace, tools, or authoritative sources without asking the user. Present decisions to the user, do not decide on their behalf, and wait for confirmation.
+- Determine facts available from the workspace, tools, or authoritative sources without asking the user. Present decisions to the user and wait for confirmation.
 - Question assumptions, undefined or multiply defined terms, contradictions, boundary cases, and missing constraints when they could change the outcome or scope.
 - Keep the session read-only and do not execute the resulting plan.
 

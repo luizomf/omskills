@@ -1,8 +1,8 @@
 # Writing Agent Briefs
 
-An agent brief is a structured comment, or the configured tracker's equivalent, posted on an issue or PR when it moves to `ready-for-agent`. It is the authoritative specification that an AFK agent will work from. The original body and discussion are context — the agent brief is the contract.
+An agent brief is a structured comment, or the configured tracker's equivalent, posted on an issue or PR when it moves to `ready-for-agent`. The original body and discussion are context — the agent brief is the contract.
 
-The brief states **what the agent should do**, which stretches to both surfaces: for an issue, that's building the change from nothing; for a PR, it's what's left to do *to the existing diff* — finish it, close gaps, address review points. Same principles either way; the PR example below shows the difference.
+The brief states **what the agent should do**, which stretches to both surfaces: for an issue, that's building the change from nothing; for a PR, it's what's left to do *to the existing diff* — finish it, close gaps, address review points.
 
 ## Principles
 
@@ -12,9 +12,7 @@ The issue may sit in `ready-for-agent` for days or weeks. The codebase will chan
 
 - **Do** describe interfaces, types, and behavioral contracts
 - **Do** name specific types, function signatures, or config shapes that the agent should look for or modify
-- **Don't** reference file paths — they go stale
-- **Don't** reference line numbers
-- **Don't** assume the current implementation structure will remain the same
+- **Don't** reference file paths or line numbers — they go stale
 
 ### Behavioral, not procedural
 
@@ -27,7 +25,7 @@ Describe **what** the system should do, not **how** to implement it. The agent w
 
 ### Complete acceptance criteria
 
-The agent needs to know when it's done. Every agent brief must have concrete, testable acceptance criteria. Each criterion should be independently verifiable.
+Every agent brief must have concrete, testable acceptance criteria. Each criterion should be independently verifiable.
 
 - **Good:** "Running `gh issue list --label needs-triage` returns issues that have been through initial classification"
 - **Bad:** "Triage should work correctly"

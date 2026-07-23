@@ -30,8 +30,7 @@ After the command exists:
 
 - assert the reported symptom rather than only checking for process success;
 - reduce setup and unrelated initialization until a run takes seconds, not minutes;
-- pin time and random seeds and isolate filesystem and network dependencies when they affect the verdict;
-- make the command unattended, except for the structured human step in the HITL script.
+- pin time and random seeds and isolate filesystem and network dependencies when they affect the verdict.
 
 For a non-deterministic bug, run the trigger 100 times under recorded conditions. Use parallel execution, load, narrower timing windows, or injected delays to raise the reproduction rate. Continue until the reproduction rate is high enough to debug against; one reproduction per 100 is insufficient.
 

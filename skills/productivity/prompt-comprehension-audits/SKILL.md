@@ -5,7 +5,7 @@ description: Check whether clean-context agents understand an issue or execution
 
 # Audit Prompt Comprehension
 
-Test whether a fresh agent's interpretation is semantically equivalent to the intended request. Do not execute the prompt or add implementation planning.
+Test whether a fresh agent's interpretation is semantically equivalent to the intended request.
 
 ## Establish the reference intent
 
@@ -15,7 +15,7 @@ If no accepted intent exists outside the prompt, use only the prompt's explicit 
 
 ## Run two isolated agent passes
 
-Start one fresh, independent agent for the interpreter pass and another for the reviewer pass. Each agent may receive baseline system and project instructions but no parent conversational turns, coordinator analysis, or desired answer. Do not reuse an existing agent or continue the interpreter as the reviewer. If the harness cannot guarantee these isolation conditions, stop and report that the audit cannot meet its required isolation.
+Start one fresh, independent agent for the interpreter pass and another for the reviewer pass. Each agent may receive baseline system and project instructions but no parent conversational turns, coordinator analysis, or desired answer. If the harness cannot guarantee these isolation conditions, stop and report that the audit cannot meet its required isolation.
 
 ### 1. Run the interpreter pass
 
@@ -25,7 +25,7 @@ Give the interpreter only:
 - artifacts that the prompt explicitly requires;
 - this question: "What do you understand you are being asked to do?"
 
-Withhold the surrounding conversation, accepted intent, coordinator diagnosis, and desired answer. Require only a reconstruction of the requested outcome, scope boundaries, required actions and order, deliverables, completion point, and ambiguities that could change any of those items. Keep the interpreter read-only and non-delegating.
+Require only a reconstruction of the requested outcome, scope boundaries, required actions and order, deliverables, completion point, and ambiguities that could change any of those items. Keep the interpreter read-only and non-delegating.
 
 The interpreter must explain the prompt as written without executing it, revising it, or adding unstated requirements.
 
@@ -49,7 +49,7 @@ After the interpreter finishes, give the reviewer only:
 - the interpreter's response;
 - the reference intent recorded above.
 
-Withhold the coordinator assessment. Keep the reviewer read-only and non-delegating. Require `PASS` or `DIVERGENCE` and quoted or paraphrased evidence for every item added, omitted, or changed. The reviewer must compare semantic meaning and exclude requirements based only on its preferred implementation workflow.
+Withhold the coordinator assessment. Keep the reviewer read-only and non-delegating. Require `PASS` or `DIVERGENCE` and quoted or paraphrased evidence for every item added, omitted, or changed. The reviewer must compare semantic meaning and exclude requirements that arise only from its preferred implementation workflow.
 
 ### 4. Adjudicate
 

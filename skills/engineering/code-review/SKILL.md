@@ -37,7 +37,7 @@ Treat code smells as investigation prompts, not violations. Repository rules and
 
 ## Adjudicate and report
 
-The root must verify each reported finding against the diff and its cited source. Reject invented requirements, speculative hardening, style preferences, and claims contradicted by repository conventions. Do not add another reviewer.
+The root must verify each reported finding against the diff and its cited source. Reject invented requirements, speculative hardening, style preferences, and claims contradicted by repository conventions.
 
 Report blockers first, ordered by severity, and label each finding **Standards** or **Spec**. Then list non-blocking observations and a short verdict. If no concrete finding survives adjudication, report a pass and any verification limits.
 

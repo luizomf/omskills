@@ -12,11 +12,11 @@ description: Create agent skills with SKILL.md, progressive disclosure, and bund
    - Which use cases must it handle?
    - Does it require executable scripts, instructions, or both?
    - Which reference materials must it include?
-   - Will it remain user-only by default, or has observed use demonstrated a need for autonomous selection and led the maintainer to approve the permanent context load?
+   - Will it remain user-only by default, or does it qualify as agent-discoverable under [Description and Discovery](#description-and-discovery)?
 
 2. **Draft the skill.** Create:
    - a `SKILL.md` containing the instructions required by every branch;
-   - linked reference files when the draft would reach 100 lines or a condition under [When to Split Files](#when-to-split-files) applies;
+   - linked reference files when a condition under [When to Split Files](#when-to-split-files) applies;
    - utility scripts when any condition under [When to Add Scripts](#when-to-add-scripts) applies.
 
 3. **Review with the user.** Present the draft and ask whether it covers every required use case, contains missing or ambiguous instructions, or needs a specified section expanded or reduced.
@@ -82,7 +82,7 @@ Move content from `SKILL.md` into a linked file when at least one condition appl
 
 After drafting, verify every item:
 
-- [ ] `disable-model-invocation: true` is present unless observed use demonstrated a need for autonomous selection and the maintainer approved the permanent context load.
+- [ ] `disable-model-invocation: true` is present unless the skill qualifies as agent-discoverable under [Description and Discovery](#description-and-discovery).
 - [ ] The description satisfies the format rules; an agent-discoverable description contains one trigger per distinct branch.
 - [ ] `SKILL.md` contains fewer than 100 lines.
 - [ ] Instructions contain no time-sensitive information, including current-date statements, unpinned `latest` values, expiring URLs, or versions that require future manual revision.

@@ -12,7 +12,7 @@ They are the teaching equivalent of ADRs: they capture non-obvious lessons, key 
 {1-3 sentences: what was learned (or what prior knowledge was established), and why it matters for future sessions.}
 ```
 
-That is the whole format. A learning record can be a single paragraph. The value is recording _that_ this is now known and _why_ it changes what to teach next - not in filling out sections.
+That is the whole format.
 
 ## Optional sections
 
@@ -37,10 +37,10 @@ Write one when any of these is true:
 
 ### What does _not_ qualify
 
-- Material that was merely covered. Coverage is not learning. Wait for evidence.
-- Anything already captured tersely in [[GLOSSARY.md]] as a term definition. Don't duplicate.
+- Material that was merely covered. Wait for evidence.
+- Anything already captured tersely in [[GLOSSARY.md]] as a term definition.
 - Session-by-session activity logs. Learning records are not a journal - they are decision-grade insights.
 
 ## Supersession
 
-When a later record contradicts an earlier one (the user's understanding deepened or corrected), mark the old record `Status: superseded by LR-NNNN` rather than deleting it. The history of how understanding evolved is itself useful signal.
+When a later record contradicts an earlier one (the user's understanding deepened or corrected), mark the old record `Status: superseded by LR-NNNN` rather than deleting it.

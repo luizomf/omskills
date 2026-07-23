@@ -5,7 +5,7 @@ description: Move the current conversation into a fresh interactive agent window
 
 # Wormhole
 
-Transfer control to a fresh interactive agent window in the current tmux session while leaving the origin window open.
+Transfer control to a fresh interactive agent window in the current tmux session.
 
 1. Capture the current socket, coordinator pane, and session as literal values:
 
@@ -48,5 +48,3 @@ Keep the origin window open.
 - sends the callback;
 - confirms the handoff to the user; and
 - starts the authorized immediate next step recorded in the handoff, or remains interactive because the handoff records a user gate or no authorized action.
-
-A confirmation without the authorized next action does not complete the jump.

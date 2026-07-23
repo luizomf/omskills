@@ -11,10 +11,10 @@ Before applying a bold term below, read its complete definition and constraints 
 
 Choose one discovery mode:
 
-- **Agent-discoverable:** omit `disable-model-invocation`. The required **description** remains in system context and allows autonomous selection as well as direct user selection, adding **context load**.
+- **Agent-discoverable:** omit `disable-model-invocation`. The required **description** remains in system context and allows autonomous selection, adding **context load**.
 - **User-only:** set `disable-model-invocation: true`. The description remains command-facing metadata but is excluded from system context. The user selects the skill, adding **cognitive load** instead of context load.
 
-A loaded skill may compose a user-only skill through a direct **context pointer** to its `SKILL.md` or disclosed reference. The pointer enables composition but does not make the target autonomously discoverable.
+A loaded skill may compose a user-only skill through a direct **context pointer** to its `SKILL.md` or disclosed reference.
 
 Use agent discovery only when observed use demonstrates a need for autonomous selection and the maintainer approves the permanent context load. Existing active omskills have met both conditions; every new skill remains user-only until it does.
 
@@ -41,11 +41,11 @@ Classify content as **steps** or **reference** and place it on this hierarchy:
 2. Definitions, rules, and facts needed by every branch may remain as in-skill reference.
 3. Reference needed by only some branches moves behind a context pointer to a disclosed file or an external artifact.
 
-A skill may contain only steps, only reference, or both. A flat set of peer rules is valid reference and does not require artificial sequencing.
+A flat set of peer rules is valid reference and does not require artificial sequencing.
 
 End every step with a **completion criterion** that the agent can evaluate as true or false. When the task requires coverage, quantify the criterion over all required items, for example, "every modified model is accounted for." Apply an equivalent exhaustive criterion to flat reference when every rule must be checked. The criterion must require the **legwork** needed to satisfy every quantified item.
 
-Use **progressive disclosure** by keeping content required by every branch in `SKILL.md` and moving branch-specific reference behind a pointer. A pointer's wording determines when and how the target is loaded. Keep required execution steps in `SKILL.md`; do not hide them behind a pointer.
+Use **progressive disclosure** by keeping content required by every branch in `SKILL.md` and moving branch-specific reference behind a pointer.
 
 Within a file, apply **co-location**: put each concept's definition, rules, and exceptions under one heading.
 

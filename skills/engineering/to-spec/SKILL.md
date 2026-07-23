@@ -13,7 +13,7 @@ Read the configured issue tracker and triage-label vocabulary. If either is unav
 
 1. If the repository has not already been inspected in this context, inspect the current implementation in the affected area. Use the project's domain glossary terms throughout the spec and preserve applicable ADR decisions.
 
-2. Identify the seam or seams through which tests will verify the feature. Prefer an existing seam. Choose the seam closest to the feature's externally observable behavior that can exercise all specified behavior. When a new seam is needed, place it as close to that behavior as possible. Minimize the number of seams; use one when one seam can cover all specified behavior. Show the proposed seams and wait for the user to confirm them.
+2. Identify the seam or seams through which tests will verify the feature. Prefer an existing seam. Choose the seam closest to the feature's externally observable behavior that can exercise all specified behavior. When a new seam is needed, place it as close to that behavior as possible. Minimize the number of seams. Show the proposed seams and wait for the user to confirm them.
 
 3. Write the spec with the template below and publish it as one issue in the configured tracker. Apply `ready-for-agent`; do not perform additional triage.
 

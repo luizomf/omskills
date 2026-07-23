@@ -14,7 +14,7 @@ Use the current directory as the teaching workspace and store learning state in 
 - `reference/*.html`: printable lookup material extracted from lessons, including cheat sheets, algorithms, syntax, poses, and glossaries.
 - `RESOURCES.md`: sources for knowledge and communities for practice. Follow [RESOURCES-FORMAT.md](./RESOURCES-FORMAT.md).
 - `learning-records/*.md`: demonstrated learning, stated prior knowledge, corrected misconceptions, and mission changes used to select later lessons. Name files `0001-<dash-case-name>.md` and increment the highest existing number. Follow [LEARNING-RECORD-FORMAT.md](./LEARNING-RECORD-FORMAT.md).
-- `lessons/*.html`: self-contained lessons. Each lesson teaches one outcome tied to the mission.
+- `lessons/*.html`: self-contained lessons. Follow [Lessons](#lessons).
 - `assets/*`: reusable lesson components. Follow [Assets](#assets).
 - `NOTES.md`: teaching preferences and temporary working notes.
 
@@ -67,8 +67,6 @@ If code or styling would be used by a second lesson, place it in `assets/` and l
 
 ## Mission
 
-Every lesson target should trace to an outcome or constraint in `MISSION.md`.
-
 Before creating a lesson, interview the user about why they want to learn the topic when `MISSION.md` is absent, empty, or does not state both a concrete real-world goal and observable success criteria.
 
 When the user proposes a mission change or learning evidence indicates that the mission may have changed:
@@ -106,9 +104,7 @@ For multiple-choice quizzes, use the same word count for every answer. Also use 
 
 ## Acquiring Wisdom
 
-Treat a question as requiring wisdom when its answer depends on situational judgment or practitioner experience that published sources cannot verify. Provide the source-supported portion of the answer, then direct the user to an online or offline community where they can test it in practice unless `NOTES.md` records that the user declined community participation.
-
-When the user has not declined community participation, you should search for high-reputation online or offline communities the user can join. Include paid classes only when the user's budget permits. If the user declines community participation, record that preference in `NOTES.md` and stop recommending communities.
+Treat a question as requiring wisdom when its answer depends on situational judgment or practitioner experience that published sources cannot verify. Provide the source-supported portion of the answer, then direct the user to a high-reputation online or offline community where they can test it in practice, unless `NOTES.md` records that the user declined community participation. Include paid classes only when the user's budget permits. If the user declines community participation, record that preference in `NOTES.md` and stop recommending communities.
 
 ## Reference Documents
 

@@ -18,7 +18,7 @@ If both branches remain plausible and the user is unavailable, select logic for 
 
 ## Rules for both branches
 
-1. **Mark it as throwaway.** Put the prototype beside the module or page it evaluates, and name it so a casual reader can identify it as a prototype. For a UI route, use the repository's routing convention and existing top-level structure.
+1. **Mark it as throwaway.** Put the prototype beside the module or page it evaluates, and name it so a casual reader can identify it as a prototype.
 2. **Provide one run command.** Use the existing task runner, such as `pnpm <name>`, `python <path>`, or `bun <path>`.
 3. **Keep state in memory by default.** If the stated question explicitly involves a database, use a scratch database or a local file with a clear `PROTOTYPE — wipe me` name.
 4. **Implement only what is required to run the prototype and answer the question.** Do not add tests. Add no abstractions or error handling beyond what makes the prototype runnable.

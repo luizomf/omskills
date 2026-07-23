@@ -1,6 +1,6 @@
 # HTML Report Format
 
-The architectural review is rendered as a single self-contained HTML file in the OS temp directory. Tailwind and Mermaid both come from CDNs. Mermaid handles graph-shaped diagrams reliably; hand-built divs and inline SVG handle the more editorial visuals (mass diagrams, cross-sections). Mix the two — don't lean on Mermaid for everything, it'll start to look generic.
+The architectural review is rendered as a single self-contained HTML file in the OS temp directory.
 
 ## Scaffold
 
@@ -52,7 +52,7 @@ Each candidate is one `<article>`:
 - **Wins** — bullets, ≤6 words each. e.g. "Tests hit one interface", "Pricing logic stops leaking", "Delete 4 shallow wrappers".
 - **ADR callout** (if applicable) — one line in an amber-tinted box.
 
-No paragraphs of explanation. If the diagram needs a paragraph to be understood, redraw the diagram.
+If the diagram needs a paragraph to be understood, redraw the diagram.
 
 ## Diagram patterns
 
@@ -105,7 +105,7 @@ One larger card. Candidate name, one sentence on why, anchor link to its card. T
 
 ## Tone
 
-Plain English, concise — but the architectural nouns and verbs come straight from the `codebase-design` skill. Concision is not an excuse to drift.
+Plain English, concise — but the architectural nouns and verbs come straight from the `codebase-design` skill.
 
 **Use exactly:** module, interface, implementation, depth, deep, shallow, seam, adapter, leverage, locality.
 

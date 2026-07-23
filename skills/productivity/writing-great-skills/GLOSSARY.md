@@ -18,7 +18,7 @@ How a skill becomes available to the agent — and the two loads paid for that c
 
 ### Agent-Discoverable
 
-A skill whose required **description** is exposed in the agent's system context, allowing autonomous selection. The user can still invoke it directly. It pays permanent **context load** in exchange for discovery. Use agent discovery only when observed use justifies keeping that trigger visible every turn.
+A skill whose required **description** is exposed in the agent's system context, allowing autonomous selection. The user can still invoke it directly. It pays permanent **context load** in exchange for discovery.
 
 _Avoid_: model-invoked, ability, tool, capability
 
@@ -60,7 +60,7 @@ _Avoid_: dispatcher, menu, registry, index, router procedure
 
 ### Granularity
 
-How finely you divide skills. Finer division spends one of two loads: more **agent-discoverable** skills spend **context load**; more independently selected **user-only** skills spend **cognitive load**. Two cuts guide the division. By **discovery**, expose a separate skill only where a distinct **leading word** should trigger it autonomously. Explicit composition needs only a context pointer, not discovery. By **sequence**, split a run of **steps** only when a real fresh-context handoff is needed to hide **post-completion steps**. Merely loading another skill in the same conversation does not clear context.
+How finely you divide skills. Finer division spends one of two loads: more **agent-discoverable** skills spend **context load**; more independently selected **user-only** skills spend **cognitive load**.
 
 _Avoid_: chunking, modularity
 
@@ -76,7 +76,7 @@ A skill's content ranked by how immediately the agent needs it — a single ladd
 - **Reference**, in-file — secondary
 - **Reference**, disclosed — behind a **context pointer**
 
-A skill with no **steps** uses just the bottom two rungs — often a legitimately flat peer-set (e.g. every rule of a review on one rung), which is a fine arrangement, not a smell. The hierarchy is independent of discovery: a skill can be agent-discoverable or user-only whether it is all steps, all reference, or both. When a skill has steps, in-file reference that should be disclosed buries them and turns attending to them into a coin-flip — a variance lever, not just a legibility one. Keep the top of the ladder legible; push down it whatever you can.
+A skill with no **steps** uses just the bottom two rungs — often a legitimately flat peer-set (e.g. every rule of a review on one rung), which is a fine arrangement, not a smell. The hierarchy is independent of discovery: a skill can be agent-discoverable or user-only whether it is all steps, all reference, or both. When a skill has steps, in-file reference that should be disclosed buries them and turns attending to them into a coin-flip — a variance lever, not just a legibility one.
 
 _Avoid_: structure, organization, layout
 

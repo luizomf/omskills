@@ -1,6 +1,6 @@
 # Design It Twice
 
-When alternative interfaces would expose a real tradeoff, ask one clean designer to produce two or three genuinely different options in a single pass. The root compares them and recommends one. Do not create an agent per option.
+When alternative interfaces would expose a real tradeoff, ask one clean designer to produce two or three genuinely different options in a single pass. The root compares them and recommends one.
 
 ## Frame the problem
 
