@@ -1,65 +1,73 @@
 ---
 name: improve-codebase-architecture
-description: Scan a codebase for deepening opportunities, present them as a visual HTML report, then grill through whichever one you pick.
+description: Scan a codebase for deepening opportunities, write a visual HTML report, and develop a selected candidate through a decision interview.
 ---
 
 # Improve Codebase Architecture
 
-Surface architectural friction and propose **deepening opportunities** — refactors that turn shallow modules into deep ones. The aim is testability and AI-navigability.
+Identify **deepening opportunities**: refactors that place more behavior behind a smaller interface at a defined seam, improving testability and code navigation.
 
-This command is _informed_ by the project's domain model and built on a shared design vocabulary:
+Use two authoritative vocabularies:
 
-- Use the [`codebase-design`](../codebase-design/SKILL.md) skill for the architecture vocabulary (**module**, **interface**, **depth**, **seam**, **adapter**, **leverage**, **locality**) and its principles (the deletion test, "the interface is the test surface", "one adapter = hypothetical seam, two = real"). Use these terms exactly in every suggestion — don't drift into "component," "service," "API," or "boundary."
-- The domain language in `CONTEXT.md` gives names to good seams; ADRs in `docs/adr/` record decisions this command should not re-litigate.
+- Read [`codebase-design`](../codebase-design/SKILL.md) for **module**, **interface**, **depth**, **seam**, **adapter**, **leverage**, **locality**, the deletion test, interface-as-test-surface, and adapter-count rules. Use those architecture terms in every candidate; do not substitute `component`, `service`, `API`, or `boundary`.
+- Use domain terms from applicable `CONTEXT.md` files. Treat ADRs in `docs/adr/` as decisions that remain in force unless the report supplies repository evidence for reopening one.
 
 ## Process
 
-### 1. Explore
+### 1. Scan
 
-Read the project's domain glossary (`CONTEXT.md`) and any ADRs in the area you're touching first.
+Read the applicable domain glossary and ADRs before scanning code.
 
-Then delegate the scan to exactly one new Explore worker with clean context through the active harness's available isolated-worker mechanism. When running in Pi, follow the [Pi architecture scan runner](PI.md). Give it a compact, self-contained initial prompt with its role, repository, authoritative domain and architecture sources, scan scope, and expected findings. It is a leaf: it does not spawn or delegate, and no extra worker is created per candidate or alternative. Don't follow rigid heuristics — explore organically and note where you experience friction:
+Delegate the scan to exactly one new Explore worker with clean context through the active harness's isolated-worker mechanism. In Pi, follow [PI.md](PI.md). The initial prompt must let the worker execute without inherited conversation context and include the worker role, repository path, authoritative domain and architecture references, scan scope, and required finding fields. State that the worker is a leaf and must not delegate. Do not create separate workers for candidates or alternatives.
 
-- Where does understanding one concept require bouncing between many small modules?
-- Where are modules **shallow** — interface nearly as complex as the implementation?
-- Where have pure functions been extracted just for testability, but the real bugs hide in how they're called (no **locality**)?
-- Where do tightly-coupled modules leak across their seams?
-- Which parts of the codebase are untested, or hard to test through their current interface?
+The worker must follow repository references based on observed code rather than stop at a fixed directory or match quota. Use these categories to classify observed friction; they are neither an exhaustive navigation checklist nor a requirement to produce one finding per category:
 
-Apply the **deletion test** to anything you suspect is shallow: would deleting it concentrate complexity, or just move it? A "yes, concentrates" is the signal you want.
+- domain behavior that requires navigation across multiple modules;
+- modules whose caller-visible interface exposes nearly every implementation decision;
+- pure functions extracted for tests while defects can still arise in their call ordering or coordination;
+- coupled modules where a change to one requires callers to know another module's implementation; and
+- behavior with no test through the current interface, or whose tests must bypass that interface.
 
-### 2. Present candidates as an HTML report
+Apply the **deletion test** to each suspected shallow module: would deleting it concentrate complexity, or just move it? Treat concentration as a positive signal for a deepening candidate.
 
-Write a self-contained HTML file to the OS temp directory so nothing lands in the repo. In Pi, use the temp location from [PI.md](PI.md); otherwise resolve the temp dir from `$TMPDIR`, falling back to `/tmp` (or `%TEMP%` on Windows). Write to `<tmpdir>/architecture-review-<timestamp>.html` so each run gets a fresh file. Open it for the user — `xdg-open <path>` on Linux, `open <path>` on macOS, `start <path>` on Windows — and tell them the absolute path.
+### 2. Write and open the HTML report
 
-The report uses **Tailwind via CDN** for layout and styling, and **Mermaid via CDN** for diagrams where a graph/flow/sequence reliably communicates the structure. Mix Mermaid with hand-crafted CSS/SVG visuals — use Mermaid when relationships are graph-shaped (call graphs, dependencies, sequences), and hand-built divs/SVG when you want something more editorial (mass diagrams, cross-sections, collapse animations). Each candidate gets a **before/after visualisation**. Be visual.
+Write one self-contained HTML file outside the repository:
 
-For each candidate, render a card with:
+- In Pi, use the temp location specified by [PI.md](PI.md).
+- Otherwise use `$TMPDIR`, falling back to `/tmp` on Unix or `%TEMP%` on Windows.
+- Name it `<tmpdir>/architecture-review-<timestamp>.html` so an existing report is not overwritten.
 
-- **Files** — which files/modules are involved
-- **Problem** — why the current architecture is causing friction
-- **Solution** — plain English description of what would change
-- **Benefits** — explained in terms of locality and leverage, and how tests would improve
-- **Before / After diagram** — side-by-side, custom-drawn, illustrating the shallowness and the deepening
-- **Recommendation strength** — one of `Strong`, `Worth exploring`, `Speculative`, rendered as a badge
+Use Tailwind through its CDN for layout and styling. Use Mermaid through its CDN when call, dependency, flow, or sequence relationships form a graph. Use CSS, HTML, or SVG for non-graph comparisons such as module depth, cross-sections, or collapse views. Every candidate must have a before/after visualization.
 
-End the report with a **Top recommendation** section: which candidate you'd tackle first and why.
+For each candidate, render one card containing:
 
-**Use CONTEXT.md vocabulary for the domain, and the `codebase-design` vocabulary for the architecture.** If `CONTEXT.md` defines "Order," talk about "the Order intake module" — not "the FooBarHandler," and not "the Order service."
+- **Files:** every inspected file or module that supports the finding;
+- **Problem:** the observed navigation, coupling, interface, or testing evidence;
+- **Solution:** the behavior to concentrate and the proposed seam location, without defining an interface;
+- **Benefits:** the expected change in locality, leverage, and tests, tied to the listed evidence;
+- **Before / After:** side-by-side diagrams of the current and proposed responsibility distribution; and
+- **Recommendation strength:** one of `Strong`, `Worth exploring`, or `Speculative`, rendered as a badge.
 
-**ADR conflicts**: if a candidate contradicts an existing ADR, only surface it when the friction is real enough to warrant revisiting the ADR. Mark it clearly in the card (e.g. a warning callout: _"contradicts ADR-0007 — but worth reopening because…"_). Don't list every theoretical refactor an ADR forbids.
+End with **Top recommendation**, naming the candidate to tackle first and explaining why.
 
-See [HTML-REPORT.md](HTML-REPORT.md) for the full HTML scaffold, diagram patterns, and styling guidance.
+Use `CONTEXT.md` terms for domain concepts and `codebase-design` terms for architecture. For example, when the glossary defines `Order`, write `Order intake module`, not an implementation class name or `Order service`.
 
-Do NOT propose interfaces yet. After the file is written, identify the top recommendation and finish the scan. If the invocation already asks for a candidate to be developed further, continue with that candidate; otherwise leave the report as the complete deliverable without asking the user to choose.
+If a candidate conflicts with an ADR, include it only when the observed friction is substantial enough to warrant revisiting that ADR. Add a warning naming the ADR and the supporting evidence.
 
-### 3. Grilling loop
+Use [HTML-REPORT.md](HTML-REPORT.md) for the HTML scaffold, diagram patterns, and styling constraints.
 
-Once the user picks a candidate, use [`grill-with-docs`](../grill-with-docs/SKILL.md) to walk the design tree with them — constraints, dependencies, the shape of the deepened module, what sits behind the seam, what tests survive.
+Do not propose method signatures, parameter shapes, or other interfaces during the scan. After writing the file, open it with `xdg-open <path>` on Linux, `open <path>` on macOS, or `start <path>` on Windows. Report its absolute path and the top recommendation. If the invocation names a candidate to develop, continue to step 3. Otherwise stop; the report is the complete deliverable and no selection question is required.
 
-Keep the domain model current as decisions crystallize:
+### 3. Develop a selected candidate
 
-- **Naming a deepened module after a concept not in `CONTEXT.md`?** Add the term to `CONTEXT.md`. Create the file lazily if it doesn't exist.
-- **Sharpening a fuzzy term during the conversation?** Update `CONTEXT.md` right there.
-- **A load-bearing rejection is already present in the supplied context?** Record an ADR only when the invocation authorizes documentation changes and future agents need the reason to avoid repeating the proposal. Skip ephemeral or self-evident reasons.
-- **Want to explore alternative interfaces for the deepened module?** Use the [`codebase-design`](../codebase-design/SKILL.md) skill and its one-designer Design It Twice pattern.
+After the user selects a candidate, use [`grill-with-docs`](../grill-with-docs/SKILL.md) to resolve constraints, dependencies, the deepened module's ownership, what remains behind the seam, which existing tests remain unchanged, and which tests use the resulting interface.
+
+Maintain domain and decision docs while resolving the design:
+
+- When the module is named after a domain concept absent from `CONTEXT.md`, add the confirmed term. Create the file only when adding the first term.
+- When the user confirms a narrower or distinct meaning for an existing term, update that term in the same turn.
+- Record an already-established rejection as an ADR only when the invocation authorizes documentation changes, the rejection rules out one or more candidate architectures, and future agents could otherwise repeat the rejected proposal. Do not record a rejection whose reason is represented directly in code or the domain glossary, or applies only to the current session.
+- To compare alternative interfaces, follow [`codebase-design`](../codebase-design/SKILL.md) and its one-designer Design It Twice process.
+
+This step is complete when the selected candidate has confirmed behavior ownership, seam placement, interface test surface, and applicable domain or ADR updates. It does not implement the refactor.

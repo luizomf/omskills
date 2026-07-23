@@ -1,26 +1,26 @@
 ---
 name: prototype
-description: Build a throwaway prototype to answer a design question. Use when the user wants to sanity-check whether a state model or logic feels right, or explore what a UI should look like.
+description: Build a throwaway prototype to evaluate logic or state behavior, or to compare UI variants.
 ---
 
 # Prototype
 
-A prototype is **throwaway code that answers a question**. The question decides the shape.
+Build throwaway code that answers a design question.
 
-## Pick a branch
+## Select one branch
 
-Identify which question is being answered — from the user's prompt, the surrounding code, or by asking if the user is around:
+Determine the question from the user's prompt and the surrounding code. If both branches remain plausible and the user is available, ask which question to answer.
 
-- **"Does this logic / state model feel right?"** → [LOGIC.md](LOGIC.md). Build a tiny interactive terminal app that pushes the state machine through cases that are hard to reason about on paper.
-- **"What should this look like?"** → [UI.md](UI.md). Generate several radically different UI variations on a single route, switchable via a URL search param and a floating bottom bar.
+- **Logic or state-model question:** follow [LOGIC.md](LOGIC.md). Build a tiny interactive terminal app that pushes the state machine through cases that are hard to reason about on paper.
+- **UI appearance question:** follow [UI.md](UI.md). Build several radically different UI variants on one route, selectable through a URL search parameter and a floating bottom bar.
 
-The two branches produce very different artifacts — getting this wrong wastes the whole prototype. If the question is genuinely ambiguous and the user isn't reachable, default to whichever branch better matches the surrounding code (a backend module → logic; a page or component → UI) and state the assumption at the top of the prototype.
+If both branches remain plausible and the user is unavailable, select logic for a backend module or UI for a page or component, and record that assumption at the top of the prototype.
 
-## Rules that apply to both
+## Rules for both branches
 
-1. **Throwaway from day one, and clearly marked as such.** Locate the prototype code close to where it will actually be used (next to the module or page it's prototyping for) so context is obvious — but name it so a casual reader can see it's a prototype, not production. For throwaway UI routes, obey whatever routing convention the project already uses; don't invent a new top-level structure.
-2. **One command to run.** Whatever the project's existing task runner supports — `pnpm <name>`, `python <path>`, `bun <path>`, etc. The user must be able to start it without thinking.
-3. **No persistence by default.** State lives in memory. Persistence is the thing the prototype is _checking_, not something it should depend on. If the question explicitly involves a database, hit a scratch DB or a local file with a clear "PROTOTYPE — wipe me" name.
-4. **Skip the polish.** No tests, no error handling beyond what makes the prototype _runnable_, no abstractions. The point is to learn something fast.
-5. **Surface the state.** After every action (logic) or on every variant switch (UI), print or render the full relevant state so the user can see what changed.
-6. **Capture it when done.** Fold any validated decision into the real code, then capture the prototype itself as a **primary source**: commit it to a throwaway branch, out of main, and leave a context pointer to that branch on the implementation issue. Capture the answer too — the verdict and the question it settled — in the issue or a commit. The main branch keeps only the validated decision.
+1. **Mark it as throwaway.** Put the prototype beside the module or page it evaluates, and name it so a casual reader can identify it as a prototype. For a UI route, use the repository's routing convention and existing top-level structure.
+2. **Provide one run command.** Use the existing task runner, such as `pnpm <name>`, `python <path>`, or `bun <path>`.
+3. **Keep state in memory by default.** If the stated question explicitly involves a database, use a scratch database or a local file with a clear `PROTOTYPE — wipe me` name.
+4. **Implement only what is required to run the prototype and answer the question.** Do not add tests. Add no abstractions or error handling beyond what makes the prototype runnable.
+5. **Expose state.** After every logic action or UI variant switch, print or render the full state relevant to the prototype question, including state that can affect later transitions or output.
+6. **Capture the result.** Apply any validated decision to production code. Commit the prototype to a throwaway branch outside the main branch and add that branch reference to the implementation issue. Record the question and answer in the issue or a commit. Keep only the resulting production change on the main branch.

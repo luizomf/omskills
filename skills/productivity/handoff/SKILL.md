@@ -1,22 +1,22 @@
 ---
 name: handoff
-description: Compact the useful, undocumented state of the current conversation for a fresh agent.
+description: Compact undocumented continuation state from the current conversation for a fresh agent.
 ---
 
 # Handoff
 
-Write a concise handoff for a fresh agent, then save it as a uniquely named Markdown file in the OS temporary directory, outside the current workspace. Return the exact path.
+Write a handoff for a fresh agent. Save it under a unique Markdown filename in the OS temporary directory, outside the current workspace, and return the exact path.
 
-Capture only state needed to continue:
+Include only continuation state that the referenced artifacts do not establish:
 
-- current goal and immediate next step;
+- the current goal and immediate next step;
 - user intent, constraints, and preferences not recorded elsewhere;
-- decisions and reasoning not yet made durable;
-- unresolved questions or blockers;
-- relevant working-tree or external state that cannot be inferred safely.
+- decisions and reasoning not yet recorded in a durable artifact;
+- unresolved questions and blockers;
+- relevant working-tree or external state that cannot be inferred safely from cited artifacts.
 
-Reference existing issues, specs, ADRs, docs, commits, and diffs by path or URL. Do not duplicate them. Omit tool logs, superseded exploration, conversational filler, and facts recoverable from referenced artifacts.
+Cite existing issues, specs, ADRs, documentation, commits, and diffs by path or URL instead of reproducing their content. Exclude tool logs, superseded exploration, conversational transitions, and facts recoverable from cited artifacts.
 
-Preserve scope. Do not add recommendations, requirements, tasks, or speculative follow-up work that the conversation did not establish.
+Include no recommendation, requirement, task, or follow-up that the conversation did not establish.
 
-If the user provides a next-session focus, use it only to prioritize the summary. Redact secrets and unnecessary personal information.
+If the user provides a next-session focus, order the established state required for that focus first without changing scope. Replace secrets with `[REDACTED]` and omit personal information that is not required for continuation.

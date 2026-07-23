@@ -1,84 +1,90 @@
 # AGENTS.md
 
-This is the maintainer's personal skill collection. It started as a fork/adaptation of [mattpocock/skills](https://github.com/mattpocock/skills), first copied on May 24, 2026, and has since pulled in selected changes from later upstream snapshots. This is not the original repo; the original is [mattpocock/skills](https://github.com/mattpocock/skills). This repository is maintained independently: do not synchronize from the original, and implement useful ideas locally under omskills conventions.
+This repository is the maintainer's independently maintained skill collection. It originated from a May 24, 2026 copy of [mattpocock/skills](https://github.com/mattpocock/skills) and includes selected later changes. Adopt upstream changes only as individual local changes under omskills conventions; do not synchronize this repository with upstream.
 
-## Communication / Language
+## Communication and Language
 
-- Chat language: match the user's language.
-- Project language: English for code, git, GitHub, docs, issues, PRs, README,
-  skill names, skill descriptions, and agent-facing instructions.
+- Match the user's language in chat.
+- Use English for code, git and GitHub content, documentation, issues, pull requests, READMEs, skill names and descriptions, and agent-facing instructions.
 
-If you are not 100% sure what to do, ask for clarification.
+Ask for clarification when the requested action is not fully determined by the request and applicable artifacts.
 
-Always look for local instruction files in this order:
+Check local instruction files in this order:
 
 1. `./AGENTS.md`
 2. `./GEMINI.md`
 3. `./CLAUDE.md`
 4. `./CODEX.md`
 
-Use `rtk` for shell commands to keep context cleaner.
+Use `rtk` for supported shell commands.
 
-After completing a task that changes this repository, verify the intended diff,
-create a conventional commit, and push the current branch to `origin` unless
-the maintainer explicitly asks to keep the changes local. Treat the private remote as
-backup; do not leave finished work only in the worktree.
+After a task changes this repository:
 
-## Repo Purpose
+1. Verify that the diff contains only the intended changes.
+2. Create a conventional commit.
+3. Push the current branch to `origin`.
 
-`omskills` is not runtime application code. It is a curated set of agent skills, prompts, setup docs, and small helper scripts for the maintainer's workflow with Codex and other coding agents.
+Always verify and commit completed repository changes. Skip only the push when the maintainer explicitly requests local-only changes.
 
-The default workflow these skills should reinforce is:
+## Repository Purpose
+
+`omskills` contains agent skills, prompts, setup documentation, and helper scripts; it is not runtime application code.
+
+Skills should support this default sequence:
 
 `idea -> grill -> spec -> tickets -> implement -> review -> PR -> handoff`
 
-When a task touches architecture, shared behavior, Docker/runtime, AI runners, TTS, persistence, or publish flows, do not jump straight to implementation. First check for an existing issue, triage it, use `grill-with-docs` if there is ambiguity, and record durable decisions in `CONTEXT.md` or `docs/adr/`.
+For changes to architecture, shared behavior, Docker or runtime behavior, AI runners, TTS, persistence, or publishing:
 
-If there is a real tradeoff, unresolved dependency, architectural ambiguity, or two plausible options with different costs, stop and talk to the maintainer.
+1. Check for an existing issue and triage it if found.
+2. If any architectural, behavioral, scope, or implementation decision remains unresolved, use `grill-with-docs`.
+3. Record decisions that establish or change architecture, shared terminology, workflows, constraints, or interfaces in `CONTEXT.md` or `docs/adr/`.
+4. Begin implementation only after the issue check and each applicable conditional step are complete.
 
-## Agent skills
+Stop and consult the maintainer when a dependency is unresolved, an architectural decision remains ambiguous, or plausible options would produce materially different behavior or costs.
+
+## Agent Skills
 
 ### Issue tracker
 
-Specs, tickets, and issues are tracked in GitHub Issues. See `docs/agents/issue-tracker.md`.
+Track specs, tickets, and issues in GitHub Issues. See `docs/agents/issue-tracker.md`.
 
 ### Triage labels
 
-The two category roles and five state roles from omskills are used as GitHub labels. See `docs/agents/triage-labels.md`.
+Use the two category roles and five state roles from omskills as GitHub labels. See `docs/agents/triage-labels.md`.
 
 ### Domain docs
 
-This is a single-context repository with `CONTEXT.md` and root-level ADRs. See `docs/agents/domain.md`.
+This is a single-context repository. Use `CONTEXT.md` and root-level ADRs as described in `docs/agents/domain.md`.
 
 ## Skill Buckets
 
-Skills are organized under `skills/`:
+Store skills under:
 
-- `engineering/` - daily code work and issue/architecture workflows.
-- `productivity/` - non-code workflow tools.
+- `skills/engineering/` for code, issue, and architecture work;
+- `skills/productivity/` for non-code workflow tools.
 
-There are two plugin manifests, `.codex-plugin/plugin.json` and `.claude-plugin/plugin.json`. They are mirrors: the same skill list, in the same order. Any change to one must be made to the other.
+Keep `.codex-plugin/plugin.json` and `.claude-plugin/plugin.json` identical in skill entries and entry order. Apply every manifest change to both files.
 
-Core skills should appear in the top-level `README.md` and both plugin manifests. Optional skills may be documented in their bucket README without being part of the manifests.
+Core skills should appear in the top-level `README.md` and both plugin manifests. Optional skills may be documented in their bucket README without appearing in the plugin manifests.
 
-All active skills are agent-discoverable: omit `disable-model-invocation` so their names, descriptions, and locations enter supporting harnesses' system context. New skills remain user-only by default and must set `disable-model-invocation: true` until observed use justifies the permanent context load and the maintainer approves discovery.
+Omit `disable-model-invocation` from active skills so supporting harnesses receive their names, descriptions, and locations. Set `disable-model-invocation: true` on every new skill until observed use demonstrates a need for autonomous selection and the maintainer approves the permanent context load.
 
-Each active skill entry in the top-level `README.md` must link the skill name to its `SKILL.md`. Each bucket README should list the skills in that bucket with one-line descriptions.
+In the top-level `README.md`, each active skill entry must link its name to its `SKILL.md`. Each bucket README should list every skill in that bucket with a one-line description.
 
-When renaming a skill, update all of these together:
+When renaming a skill, update all of these in the same change:
 
-- folder name
-- frontmatter `name`
-- README references
-- bucket README references
-- `.codex-plugin/plugin.json`
-- `.claude-plugin/plugin.json`
-- hard-coded mentions in other skills, ADRs, scripts, and docs
+- folder name;
+- frontmatter `name`;
+- top-level and bucket README references;
+- `.codex-plugin/plugin.json`;
+- `.claude-plugin/plugin.json`;
+- hard-coded mentions in skills, ADRs, scripts, and documentation.
 
 ## Adaptation Rules
 
-Prefer Codex-oriented language and paths. Keep Claude-specific references only when a skill specifically targets Claude Code.
+Prefer Codex-oriented language and paths. Use Claude-specific references only in skills that target Claude Code.
 
-Do not delete inherited material just because it is not part of the first active set. Move or demote it only when the intent is clear.
+An item's absence from the first active set does not authorize its deletion. Move or demote inherited material only when its destination or status is established by the user or repository artifacts.
 
-Before installing or testing skills locally, verify the manifest and references first.
+Before installing or testing skills locally, verify both plugin manifests and all references to the affected skills.

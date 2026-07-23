@@ -5,54 +5,60 @@ description: Check whether clean-context agents understand an issue or execution
 
 # Audit Prompt Comprehension
 
-Test semantic comprehension without executing the prompt or turning it into a more complete plan. The question is narrow: did a fresh agent understand exactly what the user asked?
+Test whether a fresh agent's interpretation is semantically equivalent to the intended request. Do not execute the prompt or add implementation planning.
 
 ## Establish the reference intent
 
-State the accepted intent from the user's request, issue, or authoritative spec. Preserve its explicit boundaries, including work the user deferred or left for later.
+Record the accepted intent from the user's request, issue, or authoritative specification, including every explicit boundary and every item deferred to later work.
 
-When no accepted intent exists outside the prompt, report the interpretation and ambiguities without inventing the missing intent. Prompt edits remain read-only unless the user requested them.
+If no accepted intent exists outside the prompt, use only the prompt's explicit requirements as the reference and report each ambiguity without resolving it. Edit the prompt only when the user requested edits.
 
-## Run two clean passes
+## Run two isolated agent passes
 
-Use the harness's delegation mechanism to start a fresh, independent agent for each pass. Neither agent may inherit the parent conversation; baseline system and project instructions are acceptable, but conversational turns, coordinator analysis, and desired answers must not carry over. Never reuse an existing agent or continue the first agent for the second pass. If the harness cannot guarantee this isolation, stop and report that the audit cannot be performed reliably.
+Start one fresh, independent agent for the interpreter pass and another for the reviewer pass. Each agent may receive baseline system and project instructions but no parent conversational turns, coordinator analysis, or desired answer. Do not reuse an existing agent or continue the interpreter as the reviewer. If the harness cannot guarantee these isolation conditions, stop and report that the audit cannot meet its required isolation.
 
-### 1. Ask a clean interpreter
+### 1. Run the interpreter pass
 
-Give the first agent only:
+Give the interpreter only:
 
 - the original prompt;
-- artifacts the prompt explicitly requires;
+- artifacts that the prompt explicitly requires;
 - this question: "What do you understand you are being asked to do?"
 
-Withhold the surrounding conversation, accepted intent, coordinator diagnosis, and desired answer. Require a compact reconstruction of the requested outcome, scope boundaries, deliverables, completion point, and material ambiguities. Keep the agent read-only and non-delegating.
+Withhold the surrounding conversation, accepted intent, coordinator diagnosis, and desired answer. Require only a reconstruction of the requested outcome, scope boundaries, required actions and order, deliverables, completion point, and ambiguities that could change any of those items. Keep the interpreter read-only and non-delegating.
 
-The interpreter explains the prompt as written. It does not execute it, improve the task, or supply requirements that the prompt did not state.
+The interpreter must explain the prompt as written without executing it, revising it, or adding unstated requirements.
 
-### 2. Make the coordinator assessment
+### 2. Record the coordinator assessment
 
-Compare the interpreter response with the accepted intent. Record only behavioral differences: work omitted, work added, a boundary changed, a deliverable misunderstood, or wording that permits materially different executions.
+Compare the interpreter response with the reference intent. Record only these differences:
 
-Missing release preparation, tests, artifacts, fallbacks, documentation, or implementation detail is not a defect unless the accepted intent requires it. The audit measures fidelity to the request, not readiness or completeness for implementation.
+- requested work omitted or unrequested work added;
+- a scope boundary changed;
+- a required action or its order changed;
+- a deliverable or completion point changed;
+- wording interpreted in a way that changes the outcome, scope, required workflow, deliverables, or completion point.
 
-### 3. Ask a clean reviewer
+Do not report missing release work, tests, artifacts, fallbacks, documentation, or implementation details unless the reference intent requires them.
 
-After the interpreter finishes, start a second fresh, independent agent as the reviewer. Give it:
+### 3. Run the reviewer pass
+
+After the interpreter finishes, give the reviewer only:
 
 - the original prompt;
 - the interpreter's response;
-- the accepted intent or authoritative spec.
+- the reference intent recorded above.
 
-Withhold the coordinator assessment. Keep the reviewer read-only, non-delegating, and focused on semantic equivalence. Require `PASS` or `DIVERGENCE`, with evidence for any work added, omitted, or changed. The reviewer must reject requirements that come from its idea of a complete workflow rather than the accepted intent.
+Withhold the coordinator assessment. Keep the reviewer read-only and non-delegating. Require `PASS` or `DIVERGENCE` and quoted or paraphrased evidence for every item added, omitted, or changed. The reviewer must compare semantic meaning and exclude requirements based only on its preferred implementation workflow.
 
 ### 4. Adjudicate
 
-Use the prompt, interpreter response, reviewer judgment, and accepted intent to decide. The agents advise; the coordinator owns the result.
+Decide from the prompt, interpreter response, reviewer judgment, and reference intent; the coordinator, not either delegated agent, owns the result.
 
-Return `PASS` only when the interpreted task is materially equivalent to the accepted intent and adds no work. Otherwise return `DIVERGENCE` with the smallest evidence-backed correction. When prompt edits are in scope, change only wording needed to restore that equivalence and preserve every deferred or out-of-scope boundary.
+Return `PASS` only when the interpreted task has the same outcome, scope, required actions and order, deliverables, and completion point as the reference intent and adds no work. Otherwise, return `DIVERGENCE` with the smallest evidence-backed correction. If prompt edits are authorized, preserve every deferred and out-of-scope boundary.
 
-If the prompt changes, run one new interpreter/reviewer pair against the revised prompt. Stop with the remaining divergence instead of broadening the task to make it look complete.
+After changing the prompt, run exactly one new interpreter/reviewer pair against the revised text. If any divergence remains, report it and stop; do not add scope to obtain a pass.
 
 ## Audit boundary
 
-This audit answers whether the prompt communicates the intended request. It does not validate implementation readiness, execute the issue, inspect the application, run tests, prepare a release, or prove runtime behavior.
+The audit evaluates communication of intent only. It does not evaluate implementation readiness, execute the issue, inspect the application, run tests, prepare a release, or establish runtime behavior.

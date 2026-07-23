@@ -1,35 +1,34 @@
 ---
 name: tmux-worker
-description: Delegate independent work to a visible tmux window and receive a short completion callback.
+description: Delegate independent work to a visible tmux window and receive a completion callback containing the result artifact path.
 ---
 
 # Tmux Worker
 
-Use the current project's tmux session. Give each worker one named window and pane so the user can observe or interact with it.
+Use the current project's tmux session. Assign each worker one named window containing one pane so the user can observe and interact with the worker.
 
-1. Read the current socket, coordinator pane, and session:
+1. Capture the current socket, coordinator pane, and session as literal values:
 
 ```bash
 tmux display-message -t "$TMUX_PANE" -p \
   '#{socket_path} #{pane_id} #{session_name}'
 ```
 
-Targeting the coordinator process's `$TMUX_PANE` keeps the callback stable when
-the user views another window.
+Use the coordinator process's `$TMUX_PANE` as the callback target even when another window is active.
 
-2. Write a self-contained worker prompt to a temporary or project scratch file. Include scope, relevant artifact paths, completion criteria, and literal callback socket and pane values.
+2. Write a self-contained worker prompt to a temporary file or project scratch file. Include the assigned scope, paths to every artifact required by the task, completion criteria, and the literal callback socket and pane values.
 
-3. Start an interactive Pi session in a detached tmux window, keeping the current working directory and limiting skill discovery to the canonical Pi directory:
+3. In the current working directory, start an interactive Pi session in a detached tmux window. Limit skill discovery to the canonical Pi directory:
 
 ```bash
 pi --no-skills --skill "${HOME}/.pi/agent/skills"
 ```
 
-Wait until Pi is visibly ready, then submit a short instruction with `tmux send-keys` telling it to read the prompt file. Send the literal text and `Enter` separately. Do not use `pi -p`: the worker must remain interactive so the user can observe or contact it.
+After Pi displays an input-ready interface, use `tmux send-keys` to submit one instruction telling it to read the prompt file. Send the literal instruction and `Enter` in separate calls. Do not use `pi -p`; the session must remain interactive for user observation and input.
 
-After successfully submitting the instruction, yield control back to the user by returning from the current response and making no further tool calls for this worker. Do not poll, sleep, monitor the worker pane, inspect partial output, or wait for completion. This yields the current turn; it does not complete the delegated task, terminate the delegating process, close its window or session, or mark a long-running goal complete or blocked.
+After the instruction is submitted, return from the current response and make no further tool calls for this worker. Do not poll, sleep, read the worker pane, inspect partial output, or wait for completion. At this point the delegated task remains in progress, and the delegating process, window, and session remain open. Do not mark the delegated task or its parent goal complete or blocked.
 
-4. Require detailed results in an artifact. The worker's final action sends only a short callback:
+4. Require the worker to write its detailed result to an artifact and make the callback its final action:
 
 ```bash
 tmux -S <socket> send-keys -t <pane> -l \
@@ -37,4 +36,4 @@ tmux -S <socket> send-keys -t <pane> -l \
 tmux -S <socket> send-keys -t <pane> Enter
 ```
 
-The callback resumes the delegating conversation in a later turn; only then read the artifact and continue. It does not carry the result. Leave the window available when continued observation or interaction is useful. Close it only when the worker has exited and its result is preserved.
+The callback starts a later turn and identifies the result artifact; it does not contain the result. After receiving it, read the artifact and continue the delegated task. Keep the window open while the worker is running or further interaction is expected. Close it only after the worker exits and the result exists outside the window.

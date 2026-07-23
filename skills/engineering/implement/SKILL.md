@@ -1,14 +1,12 @@
 ---
 name: implement
-description: "Implement a piece of work based on a spec, issue, or set of tickets."
+description: "Implement requested behavior from a specification, issue, or set of tickets."
 ---
 
-Implement the work described by the user in the spec, issue, or tickets.
+# Implement
 
-Use test-driven development where possible, at pre-agreed seams.
-
-Run typechecking regularly, single test files regularly, and the full test suite once at the end.
-
-Verify the completed work against its acceptance criteria. Review is a separate, explicitly requested operation.
-
-Only commit when the user explicitly asked for a commit, or when the repo's recorded workflow says this invocation should commit. If committing, use a conventional commit.
+1. Identify the requested behavior and every acceptance criterion in the supplied spec, issue, or tickets. Implement only that work.
+2. Use test-driven development when the behavior can be exercised at a seam already agreed in the request, specification, issue, tickets, or conversation.
+3. Run typechecking regularly, single test files regularly, and the full test suite once after implementation is complete.
+4. Verify the completed work against its acceptance criteria. Code review is outside this skill unless the user explicitly requests it.
+5. Commit only when the user explicitly requested a commit or the repository's recorded workflow says this invocation should commit. Use a conventional commit when committing.

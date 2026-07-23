@@ -5,12 +5,8 @@ description: Resolves an in-progress git merge or rebase conflict by understandi
 
 # Resolving Merge Conflicts
 
-1. **See the current state** of the merge/rebase. Check git history and the conflicting files.
-
-2. **Find the primary sources** for each conflict. Understand deeply why each change was made and what the original intent was. Read the commit messages, check the PRs, check original issues/tickets.
-
-3. **Resolve each hunk.** Preserve both intents where possible. Where incompatible, pick the one matching the merge's stated goal and note the trade-off. Do **not** invent new behaviour. Always resolve; never `--abort`.
-
-4. Discover the project's **automated checks** and run them — typically typecheck, then tests, then format. Fix anything the merge broke.
-
-5. **Finish the merge/rebase.** Stage everything and commit. If rebasing, continue the rebase process until all commits are rebased.
+1. **Inspect the operation state.** Check Git status, the merge or rebase todo state, the commit ranges on both sides, and every file Git reports as conflicted.
+2. **Trace each side's intent.** For every conflict, inspect the commits that introduced both sides and locate the originating PRs, issues, or tickets from links, commit messages, or repository history.
+3. **Resolve every hunk.** When both intended behaviors can coexist, preserve both. When they cannot, preserve the behavior that matches the stated goal of the merge or rebase and report the discarded behavior as a trade-off. Do not add behavior absent from both sides. Always resolve the conflict; never abort the operation.
+4. **Run automated checks.** Use the repository-defined commands and order; when no order is defined, typically run typecheck, then tests, then formatting. Fix anything the merge or rebase broke.
+5. **Finish the operation.** Stage everything. Run `git merge --continue` or `git rebase --continue` as applicable; if Git requires a direct merge commit, create it. For a rebase, repeat these steps for each subsequent conflict until Git reports that all commits have been rebased.

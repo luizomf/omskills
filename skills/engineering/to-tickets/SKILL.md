@@ -1,83 +1,84 @@
 ---
 name: to-tickets
-description: Break a plan, spec, or the current conversation into tracer-bullet tickets with blocking and conflict edges, published to the configured tracker.
+description: Break a plan, spec, or conversation into tracer-bullet tickets with explicit blocking and conflict edges, then publish them to the configured tracker.
 ---
 
 # To Tickets
 
-Break a plan, spec, or conversation into **tickets** — tracer-bullet vertical slices with explicit scheduling edges:
+Create **tracer-bullet tickets** with two scheduling relations:
 
-- A **blocking edge** requires another ticket to complete before this one can start or integrate.
-- A **conflict edge** means two otherwise unblocked tickets should not have active writers at the same time because they overlap in files, contracts, artifacts, or integration assumptions.
+- A **blocking edge** means the blocked ticket cannot start or integrate until the blocker is complete.
+- A **conflict edge** means two otherwise unblocked tickets should not have active writers concurrently because they materially overlap in files, contracts, artifacts, or integration assumptions.
 
-The issue tracker and triage label vocabulary should have been provided to you — use the [`setup-omskills`](../setup-omskills/SKILL.md) skill first if not.
+Read the configured issue tracker and triage-label vocabulary. If either is unavailable, run [`setup-omskills`](../setup-omskills/SKILL.md) first.
 
 ## Process
 
-### 1. Gather context
+### 1. Gather source context
 
-Work from whatever is already in the conversation context. If the user passes a reference (a spec path, an issue number or URL) as an argument, fetch it and read its full body and comments.
+Use the plan, spec, or conversation already in context. If the user provides a path, issue number, or URL, read its complete body and comments before drafting tickets.
 
-### 2. Explore the codebase (optional)
+### 2. Inspect the repository when needed
 
-If you have not already explored the codebase, do so to understand the current state of the code. Ticket titles and descriptions should use the project's domain glossary vocabulary, and respect ADRs in the area you're touching.
+If the repository's current implementation has not already been inspected in this context, inspect the affected area. Use terms from the project domain glossary in ticket titles and bodies, and preserve applicable ADR decisions.
 
-Look for opportunities to prefactor the code to make the implementation easier. "Make the change easy, then make the easy change."
+Identify opportunities to prefactor the code so later tickets can make smaller changes. Schedule any such prefactoring before the tickets it enables.
 
 ### 3. Draft vertical slices
 
-Break the work into **tracer bullet** tickets.
+Each tracer-bullet ticket must:
 
-<vertical-slice-rules>
+- deliver one user-visible behavior through every layer that behavior affects, such as schema, API, UI, and tests;
+- be independently demonstrable or verifiable after completion; and
+- fit one fresh agent context window.
 
-- Each slice cuts a narrow but COMPLETE path through every layer (schema, API, UI, tests) — vertical, NOT a horizontal slice of one layer
-- A completed slice is demoable or verifiable on its own
-- Each slice is sized to fit in a single fresh context window
-- Any prefactoring should be done first
+Do not create separate tickets for individual layers of one behavior. Assign every ticket its blocking and conflict edges. A ticket with no blockers enters the frontier. It is eligible for concurrent work only when repository evidence shows no material conflict with active tickets; the absence of a blocking edge is not evidence of independence.
 
-</vertical-slice-rules>
+#### Wide-refactor exception
 
-Give each ticket its blocking and conflict edges. A ticket with no blockers enters the frontier. It is eligible for parallel work only when repository evidence also shows no material conflict with active tickets; missing declared dependencies alone does not prove independence.
+Use **expand–contract** instead of vertical slices when one mechanical change, such as renaming a column or retyping a shared symbol, has a whole-codebase blast radius and no partial vertical slice can keep CI passing:
 
-**Wide refactors are the exception to vertical slicing.** A **wide refactor** is one mechanical change — rename a column, retype a shared symbol — whose **blast radius** fans across the whole codebase, so a single edit breaks thousands of call sites at once and no vertical slice can land green. Don't force it into a tracer bullet; sequence it as **expand–contract**. First expand: add the new form beside the old so nothing breaks. Then migrate the call sites over in batches sized by blast radius (per package, per directory), each batch its own ticket blocked by the expand, keeping CI green batch to batch because the old form still exists. Finally contract: delete the old form once no caller remains, in a ticket blocked by every migrate batch. When even the batches can't stay green alone, keep the sequence but let them share an integration branch that all block a final integrate-and-verify ticket — green is promised only there.
+1. **Expand:** add the new form beside the old form without breaking current callers.
+2. **Migrate:** move callers in batches sized by blast radius, such as one package or directory per ticket. Each migration ticket is blocked by expansion, and the old form remains available so each batch can pass CI independently.
+3. **Contract:** remove the old form only after every migration ticket is complete; block contraction on all migration tickets.
 
-### 4. Quiz the user
+If no migration batch can pass CI independently, retain this sequence on an integration branch and block a final integrate-and-verify ticket on all batches. In that case, the green completion gate applies to the final ticket rather than each batch.
 
-Present the proposed breakdown as a numbered list. For each ticket, show:
+### 4. Obtain breakdown approval
 
-- **Title**: short descriptive name
-- **Blocked by**: which other tickets (if any) must complete first
-- **What it delivers**: the end-to-end behaviour this ticket makes work
+Present a numbered draft. For each ticket, include:
 
-Ask the user:
+- **Title:** one line naming the delivered behavior;
+- **Blocked by:** every ticket that must complete first, or none; and
+- **What it delivers:** the end-to-end behavior that becomes demonstrable or verifiable.
 
-- Does the granularity feel right? (too coarse / too fine)
-- Are the blocking edges correct — does each ticket only depend on tickets that genuinely gate it?
-- Are the conflict edges correct — which unblocked tickets still share a contract, artifact, or integration surface?
-- Should any tickets be merged or split further?
+Ask the user to identify:
 
-Iterate until the user approves the breakdown.
+- any ticket that does not fit one fresh context or cannot be verified independently;
+- any blocking edge that does not gate start or integration, and any missing blocker;
+- any conflict edge without a shared surface, and any missing conflict; and
+- tickets to merge or split.
 
-### 5. Publish the tickets to the configured tracker
+Revise and repeat until the user approves the breakdown. Do not publish before approval.
 
-Publish the approved tickets. **How** depends on the tracker configured by [`setup-omskills`](../setup-omskills/SKILL.md) — the tickets are the same either way, only the shape of the blocking edges changes:
+### 5. Publish to the configured tracker
 
-- **Local markdown** → write one file per ticket under `.scratch/<feature-slug>/issues/<NN>-<slug>.md`, numbered from `01` in dependency order (blockers first). Each file lists both edge types. Use the per-ticket template below — never combine all tickets into one file.
-- **A real issue tracker (GitHub, Linear, …)** → publish one issue per ticket in dependency order (blockers first) so edges can reference real identifiers. Use native blocking relationships where available; record conflict edges in the issue body unless the tracker has an equivalent native relation. Apply the `ready-for-agent` triage label unless instructed otherwise — the tickets are agent-grabbable by construction.
+Publish one artifact per approved ticket in blocker-first dependency order:
 
-Do NOT close or modify any parent issue.
+- **Local markdown:** write each ticket to `.scratch/<feature-slug>/issues/<NN>-<slug>.md`, numbered from `01`. Record both edge types. Do not combine tickets into one file.
+- **GitHub, Linear, or another issue tracker:** create one issue per ticket so relationships use real identifiers. Use native blocking relations when available. Record conflicts in the issue body unless the tracker provides an equivalent native relation. Apply `ready-for-agent` unless instructed otherwise.
 
-Work the **frontier**: tickets whose blockers are all done. Multiple frontier tickets may run concurrently only when their independence is demonstrated and each has exclusive ownership, branch, and worktree.
+Do not close or modify a parent issue.
 
 <local-ticket-template>
 
 # <NN> — <Ticket title>
 
-**What to build:** the end-to-end behaviour this ticket makes work, from the user's perspective — not a layer-by-layer implementation list.
+**What to build:** <the end-to-end behavior this ticket makes work from the user's perspective>
 
-**Blocked by:** the numbers/titles of the tickets that gate this one, or "None — can start immediately".
+**Blocked by:** <ticket numbers/titles, or "None — can start immediately">
 
-**Conflicts with:** the numbers/titles of unblocked tickets that must not have active writers concurrently, or "None — independent".
+**Conflicts with:** <ticket numbers/titles, or "None — independent">
 
 **Status:** ready-for-agent
 
@@ -90,11 +91,11 @@ Work the **frontier**: tickets whose blockers are all done. Multiple frontier ti
 
 ## Parent
 
-A reference to the parent issue on the tracker (if the source was an existing issue, otherwise omit this section).
+<parent issue reference when the source was an existing issue; otherwise omit this section>
 
 ## What to build
 
-The end-to-end behaviour this ticket makes work, from the user's perspective — not layer-by-layer implementation.
+<the end-to-end behavior this ticket makes work from the user's perspective>
 
 ## Acceptance criteria
 
@@ -103,14 +104,18 @@ The end-to-end behaviour this ticket makes work, from the user's perspective —
 
 ## Blocked by
 
-- A reference to each blocking ticket, or "None — can start immediately".
+- <each blocking ticket reference, or "None — can start immediately">
 
 ## Conflicts with
 
-- A reference to each conflicting ticket and the shared surface, or "None — independent".
+- <each conflicting ticket reference plus the shared surface, or "None — independent">
 
 </issue-template>
 
-In either form, avoid specific file paths or code snippets — they go stale fast. Exception: if a prototype produced a snippet that encodes a decision more precisely than prose can (state machine, reducer, schema, type shape), inline it and note briefly that it came from a prototype. Trim to the decision-rich parts — not a working demo, just the important bits.
+Describe behavior and acceptance criteria without file paths, layer-by-layer implementation lists, or code snippets. Exception: when prototype output contains a state machine, reducer, schema, type shape, or other snippet that encodes an established decision more precisely than prose can, include only its decision-bearing parts and identify it as prototype output.
 
-Work each frontier ticket with the [`implement`](../implement/SKILL.md) skill, clearing context between tickets. Parallel writers require exclusive worktrees and demonstrated independence; integrate completed tickets one at a time and revalidate the remaining branches after every merge.
+The publish step is complete when every approved ticket exists separately, every blocking and conflict edge is recorded, and every non-overridden ticket has `ready-for-agent`.
+
+## Execution guidance
+
+Work frontier tickets whose blockers are complete. Use [`implement`](../implement/SKILL.md) with a fresh context for each ticket. Concurrent tickets require demonstrated independence plus exclusive owners, branches, and worktrees. Integrate completed tickets one at a time, then revalidate every remaining branch after each merge.
