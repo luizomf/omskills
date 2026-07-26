@@ -9,9 +9,9 @@ Test whether a fresh agent's interpretation is semantically equivalent to the in
 
 ## Establish the reference intent
 
-Record the accepted intent from the user's request, issue, or authoritative specification, including every explicit boundary and every item deferred to later work.
+Before delegation, record the complete accepted intent from the original execution prompt, accepted user direction, accepted conversation decisions, and every applicable authoritative issue, specification, document, ADR, and repository rule. Include every explicit boundary and every item deferred to later work.
 
-If no accepted intent exists outside the prompt, use only the prompt's explicit requirements as the reference and report each ambiguity without resolving it. Edit the prompt only when the user requested edits.
+If no accepted intent exists beyond the execution prompt, use only its explicit requirements as the reference. Record ambiguities that could materially change the outcome, scope, required workflow, deliverables, or completion point; do not infer adjacent work.
 
 ## Run two isolated agent passes
 
@@ -55,10 +55,22 @@ Withhold the coordinator assessment. Keep the reviewer read-only and non-delegat
 
 Decide from the prompt, interpreter response, reviewer judgment, and reference intent; the coordinator, not either delegated agent, owns the result.
 
-Return `PASS` only when the interpreted task has the same outcome, scope, required actions and order, deliverables, and completion point as the reference intent and adds no work. Otherwise, return `DIVERGENCE` with the smallest evidence-backed correction. If prompt edits are authorized, preserve every deferred and out-of-scope boundary.
+Treat a difference as semantic only when it changes the understood outcome, scope, required workflow, deliverables, or completion point. Do not fail an audit merely because an interpretation compresses or omits an enumeration while preserving its governing boundary.
 
-After changing the prompt, run exactly one new interpreter/reviewer pair against the revised text. If any divergence remains, report it and stop; do not add scope to obtain a pass.
+When the reference sources leave an in-scope choice whose plausible options do not materially differ in behavior, scope, security, compatibility, cost, or reversibility, select the smallest safe and reversible option consistent with repository conventions—the option you would recommend if asked. Record the choice in the reference intent and execution prompt when needed, then continue.
+
+If no semantic divergence survives adjudication, record `PASS` and resume the invoking workflow.
+
+For each semantic divergence, consult the complete reference intent:
+
+- If it determines one safe meaning and the prompt is already clear, record the coordinator adjudication and continue without editing.
+- If it determines the meaning but the execution prompt or an authoritative request artifact permits the wrong reading, minimally clarify the execution prompt and each affected authoritative artifact. Within accepted scope, the coordinator may edit any such artifact needed to express already-established intent. Preserve approved scope and deferred work; do not create acceptance criteria.
+- If a material decision remains unresolved, the required change would leave approved scope, or external authority is required, report the unresolved decision to the user and stop.
+
+After repairing an execution prompt or authoritative request artifact, use exactly one fresh clean-context confirmation reviewer. Give it only the revised prompt or request artifact and the authoritative sources that artifact explicitly requires or cites; withhold the conversation, previous responses, coordinator analysis, and a desired answer. Require it to reconstruct the requested outcome, scope boundaries, required workflow, deliverables, and completion point, then report `PASS` or `DIVERGENCE` with evidence about whether the request is self-contained and aligned with the supplied sources.
+
+The coordinator adjudicates the confirmation once. If no concrete divergence survives, record `PASS` and resume the invoking workflow. If a concrete remaining defect is resolved by the reference intent, apply one final minimal correction and resume without another reviewer. Apply the escalation rule above only when a material decision remains unresolved. Exhausting the isolated-review budget transfers the result to coordinator adjudication; it is not a reason to stop or start a reviewer loop.
 
 ## Audit boundary
 
-The audit evaluates communication of intent only. It does not evaluate implementation readiness, execute the issue, inspect the application, run tests, prepare a release, or establish runtime behavior.
+The audit evaluates communication of intent only. It does not implement the issue, inspect runtime readiness, run tests, prepare a release, or establish runtime behavior.
