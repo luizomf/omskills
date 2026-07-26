@@ -11,6 +11,7 @@ Core skills for code work, issue workflow, and architecture decisions.
 - **[to-spec](./to-spec/SKILL.md)** - Turn the current conversation context into a spec and publish it to the issue tracker.
 - **[to-tickets](./to-tickets/SKILL.md)** - Break a plan, spec, or conversation into tracer-bullet tickets with blocking and conflict edges.
 - **[implement](./implement/SKILL.md)** - Implement a spec, issue, or ticket and verify it against its acceptance criteria.
+- **[orchestrate](./orchestrate/SKILL.md)** - Deliver prepared issues through single-pass writer and reviewer agents with coordinator-owned completion.
 - **[wayfinder](./wayfinder/SKILL.md)** - Map a huge or foggy effort into investigation tickets on the issue tracker.
 
 ## Model-invoked

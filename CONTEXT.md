@@ -5,7 +5,7 @@ A personal collection of agent skills adapted for the maintainer's Codex workflo
 ## Language
 
 **Issue tracker**:
-The tool that hosts a repo's specs, tickets, and issues — GitHub Issues, Linear, a local `.scratch/` markdown convention, or similar. Skills like `to-spec`, `to-tickets`, `triage`, `code-review`, and `wayfinder` read from and write to it.
+The tool that hosts a repo's specs, tickets, and issues — GitHub Issues, Linear, a local `.scratch/` markdown convention, or similar. Skills like `to-spec`, `to-tickets`, `triage`, `code-review`, `orchestrate`, and `wayfinder` read from and write to it.
 _Avoid_: backlog manager, backlog backend, issue host
 
 **Ticket**:

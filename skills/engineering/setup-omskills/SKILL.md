@@ -1,6 +1,6 @@
 ---
 name: setup-omskills
-description: Configure repository instructions, issue-tracker operations, triage-label mappings, and domain-doc locations. Run before first use of `to-spec`, `to-tickets`, `triage`, `code-review`, `wayfinder`, `diagnosing-bugs`, `tdd`, `improve-codebase-architecture`, or `grill-with-docs`, or when their required repository configuration is missing.
+description: Configure repository instructions, issue-tracker operations, triage-label mappings, and domain-doc locations. Run before first use of `to-spec`, `to-tickets`, `triage`, `code-review`, `orchestrate`, `wayfinder`, `diagnosing-bugs`, `tdd`, `improve-codebase-architecture`, or `grill-with-docs`, or when their required repository configuration is missing.
 ---
 
 # Setup Omskills
@@ -138,4 +138,4 @@ Label setup is complete only when each canonical triage role resolves to an exis
 
 ### 5. Report completion
 
-Setup is complete when the approved instruction block and required `docs/agents/*.md` files exist and, when applicable, every mapped tracker label exists. Report the files written and state that `to-spec`, `to-tickets`, `triage`, `code-review`, `wayfinder`, `diagnosing-bugs`, `tdd`, `improve-codebase-architecture`, and `grill-with-docs` will read this configuration. State that users may edit `docs/agents/*.md` directly; rerun this setup only to change trackers or replace the configuration from the beginning.
+Setup is complete when the approved instruction block and required `docs/agents/*.md` files exist and, when applicable, every mapped tracker label exists. Report the files written and state that `to-spec`, `to-tickets`, `triage`, `code-review`, `orchestrate`, `wayfinder`, `diagnosing-bugs`, `tdd`, `improve-codebase-architecture`, and `grill-with-docs` will read this configuration. State that users may edit `docs/agents/*.md` directly; rerun this setup only to change trackers or replace the configuration from the beginning.

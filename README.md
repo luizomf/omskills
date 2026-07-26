@@ -28,6 +28,7 @@ Before asking an agent to "build it", classify the moment:
 - The work is too large or foggy for one session: `/wayfinder`
 - Know the goal, but not the queue: `/to-spec`, then `/to-tickets`
 - Have a mature ticket or issue: `/implement`
+- Have a prepared issue queue to deliver autonomously: `/orchestrate`
 - Want the diff checked before it ships: `/code-review`
 - Something broke: `/diagnosing-bugs`
 - Need high-trust reading legwork: `/research`
@@ -159,6 +160,7 @@ For mature projects, the queue should favor small, vertical, verifiable tickets.
 - **[to-spec](./skills/engineering/to-spec/SKILL.md)**: turns the current conversation context into a spec and publishes it to the issue tracker.
 - **[to-tickets](./skills/engineering/to-tickets/SKILL.md)**: breaks a plan, spec, or conversation into tracer-bullet tickets with blocking and conflict edges.
 - **[implement](./skills/engineering/implement/SKILL.md)**: implements a spec, issue, or ticket and verifies it against its acceptance criteria.
+- **[orchestrate](./skills/engineering/orchestrate/SKILL.md)**: delivers prepared issues through single-pass writer and reviewer agents with coordinator-owned completion.
 - **[wayfinder](./skills/engineering/wayfinder/SKILL.md)**: maps a huge or foggy effort into investigation tickets on the issue tracker.
 
 **Model-invoked**
