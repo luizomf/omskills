@@ -5,7 +5,9 @@ description: Move the current conversation into a fresh interactive agent window
 
 # Wormhole
 
-Transfer control to a fresh interactive agent window in the current tmux session.
+## Objective
+
+Move the current conversation into a fresh interactive agent context through a make-before-break handoff: the fresh agent restores every needed continuation detail before the origin retires, then continues from the handoff.
 
 1. Capture the current socket, coordinator pane, and session as literal values:
 
