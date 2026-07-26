@@ -10,7 +10,7 @@ Create **tracer-bullet tickets** with two scheduling relations:
 - A **blocking edge** means the blocked ticket cannot start or integrate until the blocker is complete.
 - A **conflict edge** means two otherwise unblocked tickets should not have active writers concurrently because they materially overlap in files, contracts, artifacts, or integration assumptions.
 
-Read the configured issue tracker and triage-label vocabulary. If either is unavailable, run [`setup-omskills`](../setup-omskills/SKILL.md) first.
+Read the configured issue tracker and triage-label vocabulary. If either is unavailable, run `setup-omskills` first.
 
 ## Process
 
@@ -118,4 +118,4 @@ The publish step is complete when every approved ticket exists separately, every
 
 ## Execution guidance
 
-Work frontier tickets whose blockers are complete. Use [`implement`](../implement/SKILL.md) with a fresh context for each ticket. Concurrent tickets require demonstrated independence plus exclusive owners, branches, and worktrees. Integrate completed tickets one at a time, then revalidate every remaining branch after each merge.
+Work frontier tickets whose blockers are complete. Use `implement` with a fresh context for each ticket. Concurrent tickets require demonstrated independence plus exclusive owners, branches, and worktrees. Integrate completed tickets one at a time, then revalidate every remaining branch after each merge.

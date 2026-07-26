@@ -103,6 +103,18 @@ def main() -> None:
                 "frontmatter name does not match directory: "
                 f"{skill_dir.relative_to(ROOT)}"
             )
+        for markdown_file in skill_dir.rglob("*.md"):
+            for match in re.finditer(
+                r"\]\(((?:\./|\.\./)[^)]+/SKILL\.md)\)",
+                markdown_file.read_text(),
+            ):
+                reference = match.group(1)
+                referenced_skill = (markdown_file.parent / reference).resolve()
+                if referenced_skill.parent != skill_dir:
+                    fail(
+                        "cross-skill links must use installed skill names, not paths: "
+                        f"{markdown_file.relative_to(ROOT)} -> {reference}"
+                    )
         bucket_readme_path = skill_dir.parent / "README.md"
         if not bucket_readme_path.is_file():
             fail(f"missing bucket README: {bucket_readme_path.relative_to(ROOT)}")

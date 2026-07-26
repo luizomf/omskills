@@ -88,3 +88,5 @@ Prefer Codex-oriented language and paths. Use Claude-specific references only in
 An item's absence from the first active set does not authorize its deletion. Move or demote inherited material only when its destination or status is established by the user or repository artifacts.
 
 Before installing or testing skills locally, verify both plugin manifests and all references to the affected skills.
+
+Refer to another skill by its installed name, not by a relative filesystem link. Relative links are only for files bundled inside the current skill directory; some harness tools normalize paths lexically before following installed skill symlinks.

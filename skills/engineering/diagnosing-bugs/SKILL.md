@@ -110,4 +110,4 @@ Before reporting completion:
 - [ ] Remove throwaway prototypes created during diagnosis or move them to a location whose path marks them as debug artifacts.
 - [ ] State the confirmed hypothesis in any commit or PR message produced for the fix.
 
-After the fix, ask what would have prevented the bug. If prevention requires an architectural change, such as adding a valid test seam or removing demonstrated caller coupling, pass those findings to [`improve-codebase-architecture`](../improve-codebase-architecture/SKILL.md). Make this recommendation only after the fix is complete.
+After the fix, ask what would have prevented the bug. If prevention requires an architectural change, such as adding a valid test seam or removing demonstrated caller coupling, pass those findings to `improve-codebase-architecture`. Make this recommendation only after the fix is complete.

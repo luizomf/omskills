@@ -9,7 +9,7 @@ Identify **deepening opportunities**: refactors that place more behavior behind 
 
 Use two authoritative vocabularies:
 
-- Read [`codebase-design`](../codebase-design/SKILL.md) for **module**, **interface**, **depth**, **seam**, **adapter**, **leverage**, **locality**, the deletion test, interface-as-test-surface, and adapter-count rules. Use those architecture terms in every candidate; do not substitute `component`, `service`, `API`, or `boundary`.
+- Read `codebase-design` for **module**, **interface**, **depth**, **seam**, **adapter**, **leverage**, **locality**, the deletion test, interface-as-test-surface, and adapter-count rules. Use those architecture terms in every candidate; do not substitute `component`, `service`, `API`, or `boundary`.
 - Use domain terms from applicable `CONTEXT.md` files; when the glossary defines `Order`, write `Order intake module`, not an implementation class name or `Order service`. Treat ADRs in `docs/adr/` as decisions that remain in force unless the report supplies repository evidence for reopening one.
 
 ## Process
@@ -57,13 +57,13 @@ Do not propose method signatures, parameter shapes, or other interfaces before s
 
 ### 3. Develop a selected candidate
 
-After the user selects a candidate, use [`grill-with-docs`](../grill-with-docs/SKILL.md) to resolve constraints, dependencies, the deepened module's ownership, what remains behind the seam, which existing tests remain unchanged, and which tests use the resulting interface.
+After the user selects a candidate, use `grill-with-docs` to resolve constraints, dependencies, the deepened module's ownership, what remains behind the seam, which existing tests remain unchanged, and which tests use the resulting interface.
 
 Maintain domain and decision docs while resolving the design:
 
 - When the module is named after a domain concept absent from `CONTEXT.md`, add the confirmed term. Create the file only when adding the first term.
 - When the user confirms a narrower or distinct meaning for an existing term, update that term in the same turn.
 - Record an already-established rejection as an ADR only when the invocation authorizes documentation changes, the rejection rules out one or more candidate architectures, and future agents could otherwise repeat the rejected proposal. Do not record a rejection whose reason is represented directly in code or the domain glossary, or applies only to the current session.
-- To compare alternative interfaces, follow [`codebase-design`](../codebase-design/SKILL.md) and its one-designer Design It Twice process.
+- To compare alternative interfaces, follow `codebase-design` and its one-designer Design It Twice process.
 
 This step is complete when the selected candidate has confirmed behavior ownership, seam placement, interface test surface, and applicable domain or ADR updates. It does not implement the refactor.

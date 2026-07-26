@@ -7,7 +7,7 @@ description: Orchestrate delivery of prepared issues through one isolated writer
 
 Own delivery inside the fixed mission envelope established by accepted user direction, repository instructions, issues, specifications, documentation, ADRs, and repository evidence. Use the harness's available isolated-subagent mechanism; tool names and transport details belong to the harness.
 
-Read the configured issue tracker and domain-document locations. If either configuration is unavailable, run [`setup-omskills`](../setup-omskills/SKILL.md) first.
+Read the configured issue tracker and domain-document locations. If either configuration is unavailable, run `setup-omskills` first.
 
 The delivery graph is acyclic:
 
@@ -57,7 +57,7 @@ This step is complete when the issue is delivered at a durable verified state, r
 
 ## 6. Continue in a fresh coordinator context
 
-An already-authorized next work unit continues through [`wormhole`](../../productivity/wormhole/SKILL.md). Its handoff must identify this `orchestrate` `SKILL.md` as the governing contract, cite the completed issue and durable state, identify the queue source and next authorized unit or selection instruction, and require the fresh coordinator to read this skill completely before acting. With no next work unit, report completion.
+An already-authorized next work unit continues through `wormhole`. Its handoff must identify this `orchestrate` `SKILL.md` as the governing contract, cite the completed issue and durable state, identify the queue source and next authorized unit or selection instruction, and require the fresh coordinator to read this skill completely before acting. With no next work unit, report completion.
 
 This step is complete when the fresh coordinator starts the next authorized unit under this contract or the completed mission has been reported.
 

@@ -7,7 +7,7 @@ description: Synthesize the current conversation and repository context into a s
 
 Produce a spec, also called a PRD, from information already established in the conversation and repository. Do not conduct a requirements interview. The only user confirmation in this process is the testing-seam check in step 2.
 
-Read the configured issue tracker and triage-label vocabulary. If either is unavailable, run [`setup-omskills`](../setup-omskills/SKILL.md) first.
+Read the configured issue tracker and triage-label vocabulary. If either is unavailable, run `setup-omskills` first.
 
 ## Process
 

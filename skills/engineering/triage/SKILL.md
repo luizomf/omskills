@@ -35,7 +35,7 @@ Assign exactly one state role:
 
 For a PR, evaluate the states against its attached code: `ready-for-agent` means an agent brief identifies the next action on the diff; `ready-for-human` means a human can merge it without another triage step.
 
-These are canonical role names. Read their tracker-specific label mapping. If the mapping is missing, run [`setup-omskills`](../setup-omskills/SKILL.md). If an item has multiple category roles or multiple state roles, report the conflict and obtain maintainer direction before any other triage action.
+These are canonical role names. Read their tracker-specific label mapping. If the mapping is missing, run `setup-omskills`. If an item has multiple category roles or multiple state roles, report the conflict and obtain maintainer direction before any other triage action.
 
 Normal transitions are:
 
@@ -81,7 +81,7 @@ Show the count for each bucket and one line per item, then wait for the maintain
 
    Report one result: `confirmed`, with the exercised code path and observed result; `failed`, with the command or step that contradicted the claim; or `insufficient detail`, listing the exact missing input. Treat `insufficient detail` as evidence for `needs-info`, not as automatic authorization to change state.
 
-4. **Grill when required.** Use [`grill-with-docs`](../grill-with-docs/SKILL.md) whenever the request needs fleshing out, including when an unresolved answer could change scope, externally observable behavior, acceptance criteria, or a durable architecture decision. Ask one question at a time and update `CONTEXT.md` or ADRs as that skill requires.
+4. **Grill when required.** Use `grill-with-docs` whenever the request needs fleshing out, including when an unresolved answer could change scope, externally observable behavior, acceptance criteria, or a durable architecture decision. Ask one question at a time and update `CONTEXT.md` or ADRs as that skill requires.
 
 5. **Apply the maintainer-approved outcome:**
    - `ready-for-agent` — post a brief that satisfies [AGENT-BRIEF.md](AGENT-BRIEF.md).

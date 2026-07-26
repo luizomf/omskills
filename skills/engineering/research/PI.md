@@ -1,6 +1,6 @@
 # Pi Background Research Runner
 
-Follow the [`tmux-worker`](../../productivity/tmux-worker/SKILL.md) workflow to launch a visible, interactive Pi worker. Give it a self-contained research brief, the final Markdown artifact path, and the callback target.
+Follow the `tmux-worker` workflow to launch a visible, interactive Pi worker. Give it a self-contained research brief, the final Markdown artifact path, and the callback target.
 
 The worker brief must state that it is the delegated researcher and must perform the research directly, without invoking `research` or delegating again.
 

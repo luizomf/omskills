@@ -103,4 +103,4 @@ A smaller caller-visible surface generally requires fewer tests and simpler setu
 
 - For deepening a cluster with known dependencies, read [DEEPENING.md](./DEEPENING.md) for dependency categories, seam discipline, and replace-don't-layer testing.
 - For comparing alternative interfaces, read [DESIGN-IT-TWICE.md](./DESIGN-IT-TWICE.md) for the one-designer comparison process.
-- To scan an entire repository for candidates, use [`improve-codebase-architecture`](../improve-codebase-architecture/SKILL.md).
+- To scan an entire repository for candidates, use `improve-codebase-architecture`.

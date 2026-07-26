@@ -41,4 +41,4 @@ For each vertical slice, in this order:
 2. **Green:** add only the implementation required to make that test pass, then run it until it passes. Do not implement behavior reserved for a later test.
 3. Start the next slice only after the current test passes.
 
-Do not refactor during this loop. Refactoring belongs to the review stage; see [`code-review`](../code-review/SKILL.md).
+Do not refactor during this loop. Refactoring belongs to the review stage; see `code-review`.

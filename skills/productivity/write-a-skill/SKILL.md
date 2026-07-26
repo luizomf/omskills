@@ -92,4 +92,4 @@ After drafting, verify every item:
 
 ## Design Reference
 
-See [writing-great-skills](../writing-great-skills/SKILL.md) for discovery, hierarchy, leading words, and pruning rules.
+See `writing-great-skills` for discovery, hierarchy, leading words, and pruning rules.
