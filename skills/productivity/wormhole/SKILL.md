@@ -21,7 +21,7 @@ Use the coordinator process's `$TMUX_PANE` as the callback target even when anot
 ```md
 ## Wormhole context
 
-You are the fresh continuation of a conversation transferred through a wormhole, not an independent worker. The origin Pi remains alive only until you restore the handoff, then you retire that Pi process while preserving its tmux window.
+You are the fresh continuation of a conversation transferred through a wormhole, not an independent worker. The origin Pi remains alive only until you restore the handoff, then you retire that Pi process. `/quit` exits Pi; it does not manage tmux. An origin started inside an existing shell normally returns to that shell and leaves its window open. An origin running as the pane's top-level command normally lets tmux remove the pane and its one-pane window. Tmux configuration may change either result, and both are valid transfer outcomes.
 ```
 
 Use this file as the only continuation context.
@@ -33,20 +33,20 @@ Use this file as the only continuation context.
 - the literal origin socket and pane values;
 - four literal completion commands that send `[PONG worm] jump complete; report: <handoff-path>` and `Enter`, then `/quit` and `Enter` to the origin pane;
 - instructions to run those completion commands only after restoring every needed detail from the handoff;
-- instructions to confirm the jump briefly in the user's language, state that the origin Pi exited while its tmux window remained open, then, in the same turn, either start the authorized immediate next step from the handoff or remain interactive when the handoff records a user gate or no authorized action.
+- instructions to confirm the jump briefly in the user's language, state that the origin Pi exited, report the resulting origin pane or window state when observable without treating either outcome as an error, then, in the same turn, either start the authorized immediate next step from the handoff or remain interactive when the handoff records a user gate or no authorized action.
 
 4. Choose an unused `worm-...` window name. Using the captured socket and session, open a detached named window in the current working directory:
 
 - In Pi, run `pi --no-skills --skill "${HOME}/.pi/agent/skills"`.
 - In another harness, run its supported command for a fresh interactive session. If that command cannot be identified safely, return the handoff path instead of guessing.
 
-Keep the origin Pi running until the fresh agent completes the transfer. Preserve the origin tmux window after Pi exits.
+Keep the origin Pi running until the fresh agent completes the transfer. Do not separately kill or preserve the origin pane or window after `/quit`; let tmux apply the lifecycle implied by how the origin was launched and configured.
 
 5. After the new harness displays an input-ready interface, tell it to read and follow the bootstrap prompt. Send the literal instruction and `Enter` in separate `tmux send-keys` calls.
 
 6. Switch the captured tmux session to the new window. The jump is complete only when the fresh agent, in one turn:
 
 - restores every needed detail from the handoff outside the origin pane;
-- sends the callback and then retires the origin Pi with literal `/quit` and `Enter` in separate `tmux send-keys` calls without closing its tmux window;
-- confirms the handoff, exited origin Pi, and preserved origin window to the user; and
+- sends the callback and then retires the origin Pi with literal `/quit` and `Enter` in separate `tmux send-keys` calls;
+- confirms the handoff and exited origin Pi, and reports the resulting origin pane or window state when observable without treating either outcome as an error; and
 - starts the authorized immediate next step recorded in the handoff, or remains interactive because the handoff records a user gate or no authorized action.

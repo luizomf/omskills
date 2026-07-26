@@ -49,4 +49,6 @@ tmux -S <socket> send-keys -t <worker-pane> -l '/quit'
 tmux -S <socket> send-keys -t <worker-pane> Enter
 ```
 
+`/quit` exits Pi; it does not manage tmux. Because step 3 starts Pi as the worker pane's top-level command, tmux normally removes that pane and its one-pane window when Pi exits. If Pi was instead started from an existing shell, that shell and window remain; tmux configuration may also change either result. Do not separately kill or preserve the pane or window. Treat its resulting lifecycle as tmux behavior, not worker success or failure.
+
 Keep the worker running after intermediate callbacks; retire it only after the final transfer.
