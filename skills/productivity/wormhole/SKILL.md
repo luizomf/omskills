@@ -1,6 +1,6 @@
 ---
 name: wormhole
-description: Move the current conversation into a fresh interactive agent window while keeping the origin recoverable.
+description: Move the current conversation into a fresh interactive agent window and retire the origin after a successful transfer.
 ---
 
 # Wormhole
@@ -21,7 +21,7 @@ Use the coordinator process's `$TMUX_PANE` as the callback target even when anot
 ```md
 ## Wormhole context
 
-You are the fresh continuation of a conversation transferred through a wormhole, not an independent worker. The origin session remains alive and recoverable.
+You are the fresh continuation of a conversation transferred through a wormhole, not an independent worker. The origin remains alive only until you restore the handoff, then you retire it.
 ```
 
 Use this file as the only continuation context.
@@ -31,20 +31,22 @@ Use this file as the only continuation context.
 - the exact handoff path;
 - instructions to restore only the context recorded in that file;
 - the literal origin socket and pane values;
-- two literal callback commands that send `[PONG worm] jump complete; report: <handoff-path>` and then `Enter` to the origin pane;
-- instructions to confirm the jump briefly in the user's language, then, in the same turn, either start the authorized immediate next step from the handoff or remain interactive when the handoff records a user gate or no authorized action.
+- four literal completion commands that send `[PONG worm] jump complete; report: <handoff-path>` and `Enter`, then `/quit` and `Enter` to the origin pane;
+- instructions to run those completion commands only after restoring every needed detail from the handoff;
+- instructions to confirm the jump briefly in the user's language, state that the retired origin window closed, then, in the same turn, either start the authorized immediate next step from the handoff or remain interactive when the handoff records a user gate or no authorized action.
 
 4. Choose an unused `worm-...` window name. Using the captured socket and session, open a detached named window in the current working directory:
 
 - In Pi, run `pi --no-skills --skill "${HOME}/.pi/agent/skills"`.
 - In another harness, run its supported command for a fresh interactive session. If that command cannot be identified safely, return the handoff path instead of guessing.
 
-Keep the origin window open.
+Keep the origin window open until the fresh agent completes the transfer.
 
 5. After the new harness displays an input-ready interface, tell it to read and follow the bootstrap prompt. Send the literal instruction and `Enter` in separate `tmux send-keys` calls.
 
 6. Switch the captured tmux session to the new window. The jump is complete only when the fresh agent, in one turn:
 
-- sends the callback;
-- confirms the handoff to the user; and
+- restores every needed detail from the handoff outside the origin pane;
+- sends the callback and then retires the origin with literal `/quit` and `Enter` in separate `tmux send-keys` calls;
+- confirms the handoff and closed origin window to the user; and
 - starts the authorized immediate next step recorded in the handoff, or remains interactive because the handoff records a user gate or no authorized action.
