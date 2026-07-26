@@ -175,6 +175,10 @@ For mature projects, the queue should favor small, vertical, verifiable tickets.
 
 ### Productivity
 
+**Supporting**
+
+- **[model-routing](./skills/productivity/model-routing/SKILL.md)**: routes direction-setting, coordination, implementation, review, audit, and utility work across model vendors.
+
 **User-invoked**
 
 - **[grill-me](./skills/productivity/grill-me/SKILL.md)**: runs a grilling session without touching code or docs.

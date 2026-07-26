@@ -7,7 +7,7 @@ description: Orchestrate delivery of prepared issues through one isolated writer
 
 Own delivery inside the fixed mission envelope established by accepted user direction, repository instructions, issues, specifications, documentation, ADRs, and repository evidence. Use the harness's available isolated-subagent mechanism; tool names and transport details belong to the harness.
 
-Read the configured issue tracker and domain-document locations. If either configuration is unavailable, run `setup-omskills` first.
+Read the configured issue tracker and domain-document locations. If either configuration is unavailable, run `setup-omskills` first. Read `model-routing`; apply its **Coordinator** route to the active session when the harness permits selection, and pass its **Writer** and **Reviewer** routes explicitly when dispatching those agents.
 
 The delivery graph is acyclic:
 

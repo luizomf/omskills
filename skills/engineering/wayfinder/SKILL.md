@@ -5,6 +5,8 @@ description: Plan work that exceeds one agent session as a shared map of investi
 
 # Wayfinder
 
+Read `model-routing` and use its **Direction setter** route when the harness permits active-model selection.
+
 Use a **shared map** to determine the route from a loose idea to a named **destination**. The destination may be a spec, a decision required before planning, or an in-place change such as a data-structure migration. The map may cover engineering, course content, or another domain.
 
 ## Plan by default

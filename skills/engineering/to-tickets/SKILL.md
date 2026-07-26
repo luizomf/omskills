@@ -5,6 +5,8 @@ description: Break a plan, spec, or conversation into tracer-bullet tickets with
 
 # To Tickets
 
+Read `model-routing` and use its **Direction setter** route when the harness permits active-model selection.
+
 Create **tracer-bullet tickets** with two scheduling relations:
 
 - A **blocking edge** means the blocked ticket cannot start or integrate until the blocker is complete.

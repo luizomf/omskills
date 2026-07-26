@@ -5,6 +5,8 @@ description: Stress-test a repository plan or design one decision question at a 
 
 # Grill With Docs
 
+Read `model-routing` and use its **Direction setter** route when the harness permits active-model selection.
+
 Resolve a plan or design's decision tree with the user. Resolve prerequisites before dependent decisions.
 
 For each turn:

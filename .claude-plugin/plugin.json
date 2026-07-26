@@ -18,6 +18,7 @@
     "./skills/engineering/code-review",
     "./skills/engineering/resolving-merge-conflicts",
     "./skills/productivity/grill-me",
+    "./skills/productivity/model-routing",
     "./skills/productivity/caveman",
     "./skills/productivity/prompt-comprehension-audits",
     "./skills/productivity/tmux-worker",
