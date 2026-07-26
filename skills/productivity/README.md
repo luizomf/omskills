@@ -12,10 +12,6 @@ General workflow tools, not code-specific.
 - **[teach](./teach/SKILL.md)** - Teach the user a new skill or concept over multiple sessions, using the current directory as a stateful teaching workspace.
 - **[writing-great-skills](./writing-great-skills/SKILL.md)** - Reference for the vocabulary and design principles behind predictable skills.
 
-## Supporting
-
-- **[model-routing](./model-routing/SKILL.md)** - Route direction-setting, coordination, implementation, review, audit, and utility work across model vendors.
-
 ## Model-invoked
 
 - **[prompt-comprehension-audits](./prompt-comprehension-audits/SKILL.md)** - Check an issue or execution prompt with two clean-context agents for exact semantic comprehension.

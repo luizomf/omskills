@@ -7,8 +7,6 @@ description: Check whether clean-context agents understand an issue or execution
 
 Test whether a fresh agent's interpretation is semantically equivalent to the intended request.
 
-Read `model-routing`. Run each interpreter with the exact model and effort intended for the audited executor. Run audit and confirmation reviewers through its **Audit reviewer** route.
-
 ## Establish the reference intent
 
 Before delegation, record the complete accepted intent from the original execution prompt, accepted user direction, accepted conversation decisions, and every applicable authoritative issue, specification, document, ADR, and repository rule. Include every explicit boundary and every item deferred to later work.

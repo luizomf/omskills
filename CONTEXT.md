@@ -19,12 +19,6 @@ _Avoid_: PRD (use only when quoting external systems that call them PRDs)
 **Triage role**:
 A canonical category or state label applied to a **Ticket** during triage. Category roles are `bug` and `enhancement`; state roles include `needs-triage` and `ready-for-agent`. Each role maps to a real label string in the **Issue tracker** via `docs/agents/triage-labels.md`.
 
-**Model route**:
-A vendor-specific model and reasoning-effort pairing selected by the consequence of the work. `model-routing` defines routes for direction setting, coordination, writing, review, audit review, and utility work.
-
-**Direction-setting work**:
-Work whose output governs downstream agents, including grilling, wayfinding, Specs, and Ticket creation. It is distinct from local planning performed while implementing a prepared Ticket.
-
 ## Relationships
 
 - An **Issue tracker** holds many **Specs** and **Tickets**

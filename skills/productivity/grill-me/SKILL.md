@@ -5,8 +5,6 @@ description: Stress-test any plan, idea, or design through a relentless one-ques
 
 # Grill Me
 
-Read `model-routing` and use its **Direction setter** route when the harness permits active-model selection.
-
 Interview the user one decision-tree branch at a time. Resolve each dependency before asking about a decision that depends on it.
 
 - Ask exactly one question, then wait for the user's answer before asking another.
