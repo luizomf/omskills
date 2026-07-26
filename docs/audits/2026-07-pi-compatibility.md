@@ -1,6 +1,6 @@
 # Pi compatibility audit
 
-Issue: [#17 — Audit active skills for Pi compatibility](https://github.com/luizomf/omskills/issues/17)
+Issue: #17 — Audit active skills for Pi compatibility
 
 ## Scope and baseline
 
