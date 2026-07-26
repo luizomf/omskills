@@ -18,7 +18,7 @@ Use the coordinator process's `$TMUX_PANE` as the callback target even when anot
 
 2. Write a self-contained worker prompt to a temporary file or project scratch file. Include the assigned scope, paths to every artifact required by the task, completion criteria, and the literal callback socket and pane values. State that the worker delivers its result only through the artifact and the callback, never as a reply to the user.
 
-3. In the current working directory, start an interactive Pi session in a detached tmux window. Limit skill discovery to the canonical Pi directory:
+3. In the current working directory, start an interactive Pi session in a detached tmux window and retain that worker pane's literal ID. Limit skill discovery to the canonical Pi directory:
 
 ```bash
 pi --no-skills --skill "${HOME}/.pi/agent/skills"
@@ -42,4 +42,11 @@ The callback resumes the root; it does not complete the task. On callback:
 - let only the root decide whether to reply to the same worker or stop; and
 - never let either side hand off the task or start an autonomous work-review loop.
 
-Conversation with the same worker may continue normally. Leave its window open for the user to close.
+Conversation with the same worker may continue normally. When the root accepts a callback as the final transfer, first read the artifact and preserve every needed result outside the worker pane. Then retire the old Pi session by sending literal `/quit` and `Enter` in separate calls to the recorded worker pane:
+
+```bash
+tmux -S <socket> send-keys -t <worker-pane> -l '/quit'
+tmux -S <socket> send-keys -t <worker-pane> Enter
+```
+
+Keep the worker running after intermediate callbacks; retire it only after the final transfer.
