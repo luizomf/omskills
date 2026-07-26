@@ -36,11 +36,7 @@ tmux -S <socket> send-keys -t <pane> -l \
 tmux -S <socket> send-keys -t <pane> Enter
 ```
 
-The callback resumes the root; it does not complete the task. On callback:
-
-- read the artifact;
-- let only the root decide whether to reply to the same worker or stop; and
-- never let either side hand off the task or start an autonomous work-review loop.
+The callback completes the transport handshake. The user or invoking skill determines the work and what follows; `tmux-worker` does not.
 
 Conversation with the same worker may continue normally. When the root accepts a callback as the final transfer, first read the artifact and preserve every needed result outside the worker pane. Then retire the old Pi session by sending literal `/quit` and `Enter` in separate calls to the recorded worker pane:
 
