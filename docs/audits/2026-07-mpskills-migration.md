@@ -3,6 +3,8 @@
 > Historical record: the optional, personal, in-progress, and deprecated skills
 > described below were removed on July 16, 2026. Omskills is now maintained
 > independently and does not track or synchronize with the original repository.
+> Issue and pull-request numbers below refer to pre-publication tracker history,
+> not to items in the current public repository.
 
 ## Scope
 

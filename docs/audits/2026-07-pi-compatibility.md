@@ -1,6 +1,6 @@
 # Pi compatibility audit
 
-Issue: #17 — Audit active skills for Pi compatibility
+Pre-publication tracker item 17: Audit active skills for Pi compatibility
 
 ## Scope and baseline
 
