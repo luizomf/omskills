@@ -1,6 +1,6 @@
 # Issue tracker: GitHub
 
-Specs, tickets, and issues for this repo live as GitHub issues. Use `gh`, inferring `luizomf/omskills` from the repository remote.
+Specs, tickets, and issues for this repository live as GitHub issues. Use `gh` and infer the repository from the current remote.
 
 ## Conventions
 

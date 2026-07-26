@@ -19,7 +19,7 @@ Authoritative comparison points:
 - Added the new `spec -> tickets -> implement -> review` workflow skills.
 - Renamed `diagnose` to `diagnosing-bugs`, `to-prd` to `to-spec`, and `to-issues` to `to-tickets` consistently inside the repository.
 - Graduated `code-review` and `wayfinder`, removed unused active skills, mirrored the Codex and Claude manifests, and aligned the top-level documentation.
-- Preserved deliberate omskills adaptations around Codex, the maintainer's vocabulary, explicit setup, and conservative commit behavior.
+- Preserved deliberate omskills adaptations around Codex, repository vocabulary, explicit setup, and conservative commit behavior.
 
 ## Omissions from the pre-merge upstream snapshot
 

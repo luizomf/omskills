@@ -1,6 +1,6 @@
 # Omskills
 
-A personal collection of agent skills adapted for the maintainer's Codex workflow. Skills are organized into buckets and consumed by per-repo configuration emitted by `/setup-omskills`.
+A curated collection of agent skills for structured Codex and coding-agent workflows. Skills are organized into buckets and consumed by per-repository configuration emitted by `/setup-omskills`.
 
 ## Language
 

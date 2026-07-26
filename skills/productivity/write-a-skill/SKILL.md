@@ -47,7 +47,7 @@ disable-model-invocation: true
 Every skill requires a description.
 
 - **User-only** is the default. Set `disable-model-invocation: true`. Write one command-facing sentence that identifies the capability; this metadata is excluded from the agent's system context.
-- **Agent-discoverable** requires observed use that demonstrates a need for autonomous selection plus the maintainer's approval of the permanent context load. Omit `disable-model-invocation`. State the capability first, followed by one trigger for each distinct branch that should select the skill.
+- **Agent-discoverable** requires observed use that demonstrates a need for autonomous selection plus maintainer approval of the permanent context load. Omit `disable-model-invocation`. State the capability first, followed by one trigger for each distinct branch that should select the skill.
 
 A loaded skill may compose a user-only skill by linking directly to its `SKILL.md`; composition does not require agent discovery.
 

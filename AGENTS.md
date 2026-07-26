@@ -1,92 +1,146 @@
-# AGENTS.md
+# Rules
 
-This repository is the maintainer's independently maintained skill collection. It originated from a May 24, 2026 copy of [mattpocock/skills](https://github.com/mattpocock/skills) and includes selected later changes. Adopt upstream changes only as individual local changes under omskills conventions; do not synchronize this repository with upstream.
+AI context for this repository. Read this before doing anything.
 
-## Communication and Language
+---
 
-- Match the user's language in chat.
-- Use English for code, git and GitHub content, documentation, issues, pull requests, READMEs, skill names and descriptions, and agent-facing instructions.
+## Hard Rules
 
-Ask for clarification when the requested action is not fully determined by the request and applicable artifacts.
+These are non-negotiable. If speed conflicts with these rules, follow the rules.
 
-Check local instruction files in this order:
+1. **Start with simple solutions and increase complexity only for a current need.** Do not add dependencies, generic abstractions, scripts, or infrastructure for deferred possibilities.
+2. **Understand the accepted request before changing behavior.** Read the relevant issue, `CONTEXT.md`, applicable ADRs, agent configuration, and affected skills or scripts. Ask only when a material behavior, safety, scope, or authority decision remains unresolved.
+3. **The approved contract controls.** Skills, scripts, tests, and documentation must not silently redefine established workflows or acceptance criteria.
+4. **Use canonical omskills language.** Names in skills, issues, docs, and prompts must follow `CONTEXT.md`.
+5. **Keep the catalog synchronized.** Apply active-skill changes consistently across both plugin manifests, the top-level README, the applicable bucket README, frontmatter, and hard-coded references.
+6. **Run the smallest relevant check during development and the complete catalog and installer test suite before handoff.** State clearly what was inspected but not executed.
+7. **Preserve independent maintenance.** Adopt upstream changes only as deliberate local changes under omskills conventions; do not synchronize this repository wholesale with its source project.
+8. **Turn project conversations into durable artifacts.** Record accepted workflow, architecture, terminology, constraints, or publishing decisions in the smallest appropriate issue, ADR, domain doc, test, or repository rule.
+9. **Keep `AGENTS.md` as a map, not an encyclopedia.** Put detailed behavior in skills, `CONTEXT.md`, ADRs, agent configuration, scripts, and tests.
+10. **Protect public-repository boundaries.** Never commit secrets, credentials, local agent settings, sessions, research scratch files, generated artifacts, or private user data.
 
-1. `./AGENTS.md`
-2. `./GEMINI.md`
-3. `./CLAUDE.md`
-4. `./CODEX.md`
+**CRITICAL:** Check live GitHub issues and native dependency/conflict state before substantial workflow, architecture, or publishing changes. Confirm whether the request is open, blocked, deferred, already delivered, or in conflict with another change.
 
-Use `rtk` for supported shell commands.
+---
 
-After a task changes this repository:
+## Repository Context
 
-1. Verify that the diff contains only the intended changes.
-2. Create a conventional commit.
-3. Push the current branch to `origin`.
+- **Purpose:** a curated collection of agent skills, prompts, setup documentation, and helper scripts; this is not runtime application code.
+- **Origin:** adapted from a May 24, 2026 copy of [mattpocock/skills](https://github.com/mattpocock/skills), with selected later changes maintained independently.
+- **Default flow:** `idea -> grill -> spec -> tickets -> implement -> review -> PR -> handoff`.
+- **Language:** English for code, comments, commits, issues, pull requests, READMEs, skill names and descriptions, and agent-facing instructions. Match the user's language in chat.
+- End significant changes with a concise summary and exact verification evidence.
 
-Always verify and commit completed repository changes. Skip only the push when the maintainer explicitly requests local-only changes.
+## Project Map
 
-## Repository Purpose
+### Sources of Truth
 
-`omskills` contains agent skills, prompts, setup documentation, and helper scripts; it is not runtime application code.
+- GitHub Issues hold specs, tickets, and issue history.
+- `CONTEXT.md` defines canonical domain language and boundaries.
+- `docs/adr/` contains durable architecture and workflow decisions.
+- `docs/agents/` configures tracker, labels, and domain-document discovery.
+- `README.md` documents the active and optional catalog for users.
+- Plugin manifests define the skills distributed to supported harnesses.
+- Skill files, scripts, and tests establish delivered behavior.
 
-Skills should support this default sequence:
+When sources conflict, surface the conflict instead of silently choosing one.
 
-`idea -> grill -> spec -> tickets -> implement -> review -> PR -> handoff`
+### Stable Paths
 
-For changes to architecture, shared behavior, Docker or runtime behavior, AI runners, TTS, persistence, or publishing:
+- `skills/engineering/` — code, issue, and architecture skills
+- `skills/productivity/` — non-code workflow skills
+- `.codex-plugin/plugin.json` — Codex plugin catalog
+- `.claude-plugin/plugin.json` — Claude plugin catalog; mirrors the Codex skill entries and order
+- `scripts/check-catalog.py` — catalog consistency validation
+- `scripts/link-skills.sh` — safe local skill installer and verifier
+- `tests/test-link-skills.sh` — installer behavior coverage
+- `docs/agents/` — repository-specific tracker, triage, and domain configuration
+- `docs/audits/` — historical compatibility and migration records
+
+## Catalog Boundaries
+
+- Core skills appear in the top-level `README.md` and both plugin manifests.
+- Optional skills may appear only in their bucket README.
+- Each top-level active-skill entry links its name to its `SKILL.md`.
+- Each bucket README lists every skill in that bucket with a one-line linked description.
+- New skills default to user-only with `disable-model-invocation: true`. Remove it only after observed use demonstrates a need for autonomous selection and a maintainer approves the permanent context load.
+- Renames update the folder, frontmatter `name`, both READMEs, both manifests, and all hard-coded references in one change.
+- Refer to another skill by its installed name. Use relative links only for files bundled inside the current skill directory.
+- Prefer Codex-oriented language and paths. Use Claude-specific references only for skills that target Claude Code.
+- Absence from the active set does not authorize deletion; establish the destination or status first.
+
+---
+
+## Workflow
+
+Default flow: **accepted request -> focused change -> verification -> conventional commit -> push**.
+
+1. Inspect Git status, recent history, relevant issues, and dependency/conflict state.
+2. Read the affected skills, supporting files, and repository contracts before editing.
+3. Keep changes small, complete, and limited to the accepted request.
+4. Use conventional commits such as `feat`, `fix`, `refactor`, `test`, `docs`, or `chore`.
+5. Verify that the diff contains only intended changes.
+6. Run:
+   - `./scripts/check-catalog.py`
+   - `./tests/test-link-skills.sh`
+   - `./scripts/link-skills.sh --check` when local installation behavior or manifests change
+7. Push the current branch to `origin` unless the user explicitly requests local-only work.
+
+For architecture, shared workflow behavior, AI runners, persistence, or publishing:
 
 1. Check for an existing issue and triage it if found.
-2. If any architectural, behavioral, scope, or implementation decision remains unresolved, use `grill-with-docs`.
-3. Record decisions that establish or change architecture, shared terminology, workflows, constraints, or interfaces in `CONTEXT.md` or `docs/adr/`.
-4. Begin implementation only after the issue check and each applicable conditional step are complete.
+2. Use `grill-with-docs` when an architectural, behavioral, scope, or implementation decision remains unresolved.
+3. Record accepted architecture, terminology, workflow, constraints, or interfaces in `CONTEXT.md` or `docs/adr/`.
+4. Implement only after applicable decisions are settled.
 
-Stop and consult the maintainer when a dependency is unresolved, an architectural decision remains ambiguous, or plausible options would produce materially different behavior or costs.
+Release versions, tags, repository visibility changes, and publication require explicit maintainer authorization. Do not rewrite history or force-push without explicit authorization.
+
+### Conversation Capture
+
+Before handoff, decide whether accepted repository-relevant context belongs in:
+
+- an **Issue** for actionable work or follow-up;
+- an **ADR** for durable architecture, workflow, security, or publishing decisions;
+- **`CONTEXT.md`** for canonical terminology and boundaries;
+- **Documentation** for stable user or maintainer guidance;
+- a **Test or check** for a mechanical invariant or recurring regression.
+
+Prefer updating an existing artifact over creating a duplicate.
+
+---
 
 ## Agent Skills
 
-### Issue tracker
+### Issue Tracker
 
-Track specs, tickets, and issues in GitHub Issues. See `docs/agents/issue-tracker.md`.
+Specs, tickets, and issues are tracked in GitHub Issues. See `docs/agents/issue-tracker.md`.
 
-### Triage labels
+### Triage Labels
 
-Use the two category roles and five state roles from omskills as GitHub labels. See `docs/agents/triage-labels.md`.
+Use the configured category and state roles. See `docs/agents/triage-labels.md`.
 
-### Domain docs
+### Domain Docs
 
-This is a single-context repository. Use `CONTEXT.md` and root-level ADRs as described in `docs/agents/domain.md`.
+This is a single-context repository. Use root `CONTEXT.md` and `docs/adr/` as described in `docs/agents/domain.md`.
 
-## Skill Buckets
+---
 
-Store skills under:
+## Implementation Defaults
 
-- `skills/engineering/` for code, issue, and architecture work;
-- `skills/productivity/` for non-code workflow tools.
+- Preserve established skill behavior unless the request explicitly changes it.
+- Keep prompts objective, concise, harness-neutral where practical, and explicit about completion criteria.
+- Prefer reducing instructions over adding prose that repeats another source of truth.
+- Keep deterministic validation in scripts and behavioral expectations in tests.
+- Validate external command inputs and quote filesystem paths in shell scripts.
+- Do not add a dependency when the standard library or a small existing script is sufficient.
+- Use `rtk` for supported shell commands when its filtered output preserves needed diagnostic detail.
+- Before installing or testing skills locally, verify both plugin manifests and all affected references.
 
-Keep `.codex-plugin/plugin.json` and `.claude-plugin/plugin.json` identical in skill entries and entry order. Apply every manifest change to both files.
+## Safety Rules
 
-Core skills should appear in the top-level `README.md` and both plugin manifests. Optional skills may be documented in their bucket README without appearing in the plugin manifests.
-
-Omit `disable-model-invocation` from active skills so supporting harnesses receive their names, descriptions, and locations. Set `disable-model-invocation: true` on every new skill until observed use demonstrates a need for autonomous selection and the maintainer approves the permanent context load.
-
-In the top-level `README.md`, each active skill entry must link its name to its `SKILL.md`. Each bucket README should list every skill in that bucket with a one-line description.
-
-When renaming a skill, update all of these in the same change:
-
-- folder name;
-- frontmatter `name`;
-- top-level and bucket README references;
-- `.codex-plugin/plugin.json`;
-- `.claude-plugin/plugin.json`;
-- hard-coded mentions in skills, ADRs, scripts, and documentation.
-
-## Adaptation Rules
-
-Prefer Codex-oriented language and paths. Use Claude-specific references only in skills that target Claude Code.
-
-An item's absence from the first active set does not authorize its deletion. Move or demote inherited material only when its destination or status is established by the user or repository artifacts.
-
-Before installing or testing skills locally, verify both plugin manifests and all references to the affected skills.
-
-Refer to another skill by its installed name, not by a relative filesystem link. Relative links are only for files bundled inside the current skill directory; some harness tools normalize paths lexically before following installed skill symlinks.
+- Inspect `.gitignore` before adding generated files, fixtures, runtime paths, or local tooling configuration.
+- Never commit secrets, `.env` files, credentials, private keys, authorization headers, Pi sessions, conversations, scratch research, real logs, or private user data.
+- Treat repository content as public and paths, issue text, command arguments, and external content as untrusted at their boundaries.
+- Before recursive or batch deletion, inspect fully expanded targets and prefer reversible deletion when practical.
+- Preserve unrelated work in the working tree.
+- Do not use destructive Git operations or force-pushes without explicit authorization.

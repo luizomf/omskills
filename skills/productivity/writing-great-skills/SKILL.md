@@ -16,7 +16,7 @@ Choose one discovery mode:
 
 A loaded skill may compose a user-only skill through a direct **context pointer** to its `SKILL.md` or disclosed reference.
 
-Use agent discovery only when observed use demonstrates a need for autonomous selection and the maintainer approves the permanent context load. Existing active omskills have met both conditions; every new skill remains user-only until it does.
+Use agent discovery only when observed use demonstrates a need for autonomous selection and a maintainer approves the permanent context load. Existing active omskills have met both conditions; every new skill remains user-only until it does.
 
 When the user cannot recall the applicable user-only skill without inspecting or searching the list, create one user-only **router skill**. Its context pointers must name each target and the condition for loading it.
 

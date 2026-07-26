@@ -1,1 +1,12 @@
+# macOS
 .DS_Store
+
+# Local agent configuration and scratch work
+.claude/settings.local.json
+.pi/
+.tmp-research/
+
+# Local environment files
+.env
+.env.*
+!.env.example
