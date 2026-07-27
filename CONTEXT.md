@@ -19,11 +19,16 @@ _Avoid_: PRD (use only when quoting external systems that call them PRDs)
 **Triage role**:
 A canonical category or state label applied to a **Ticket** during triage. Category roles are `bug` and `enhancement`; state roles include `needs-triage` and `ready-for-agent`. Each role maps to a real label string in the **Issue tracker** via `docs/agents/triage-labels.md`.
 
+**Prompt audit status**:
+A durable result attached to an audited execution contract in the **Issue tracker**. `PASS` means no semantic divergence survived audit-coordinator adjudication; `BYPASS` means a maintainer explicitly authorized autonomous delivery without a pass; `FAIL` means the audit did not establish equivalent clean-context comprehension. A material change to the execution contract makes its prior status stale.
+
 ## Relationships
 
 - An **Issue tracker** holds many **Specs** and **Tickets**
 - A **Spec** is broken down into many **Tickets**
 - A triaged **Ticket** carries one category **Triage role** and one state **Triage role**
+- A **Ticket** may retain multiple historical **Prompt audit statuses**, but only its newest applicable status governs autonomous delivery
+- `orchestrate` accepts only a current `PASS` or `BYPASS` **Prompt audit status**
 
 ## Flagged ambiguities
 

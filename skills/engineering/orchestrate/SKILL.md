@@ -21,9 +21,18 @@ Writer and reviewer are single-pass leaf agents. Every result returns only to th
 
 Read the repository instructions, live tracker state, complete issue, governing sources, dependency and conflict edges, base branch, and relevant code. Select one open, authorized, unblocked issue from the supplied prepared queue. Live state wins over handoffs and snapshots.
 
+Locate the newest applicable `Prompt Audit` status for that issue:
+
+- `PASS` — proceed when no material change to the audited execution contract occurred afterward.
+- `BYPASS` — proceed only when its basis records explicit maintainer authorization for unaudited orchestration.
+- `FAIL` — stop and report its basis; a newer applicable `PASS` or `BYPASS` may supersede it.
+- Missing or stale — stop and ask the maintainer to run `prompt-comprehension-audits` or explicitly authorize a bypass.
+
+Never infer bypass authorization from a general request to implement or orchestrate. When the maintainer explicitly authorizes bypass in the current invocation, post a `Prompt Audit` comment with `Status: BYPASS`, the issue or agent-brief reference, and the authorization basis before continuing.
+
 When the sources leave an in-scope choice whose plausible options do not materially differ in behavior, scope, security, compatibility, cost, or reversibility, choose the smallest safe and reversible option consistent with repository conventions—the option you would recommend if asked—record it, and continue. Ask the user only when a material decision remains unresolved, the required change would leave approved scope, or external authority is required.
 
-This step is complete when the coordinator has one exact issue, fixed scope and deferrals, acceptance criteria, an exact base fixed point, and an executable writer assignment.
+This step is complete when the coordinator has one exact issue with a current `PASS` or `BYPASS`, fixed scope and deferrals, acceptance criteria, an exact base fixed point, and an executable writer assignment.
 
 ## 2. Dispatch one writer
 

@@ -28,7 +28,7 @@ Before asking an agent to "build it", classify the moment:
 - The work is too large or foggy for one session: `/wayfinder`
 - Know the goal, but not the queue: `/to-spec`, then `/to-tickets`
 - Have a mature ticket or issue: `/implement`
-- Have a prepared issue queue to deliver autonomously: `/orchestrate`
+- Have a prepared issue queue to deliver autonomously: audit its execution prompts, then use `/orchestrate`
 - Want the diff checked before it ships: `/code-review`
 - Something broke: `/diagnosing-bugs`
 - Need high-trust reading legwork: `/research`
