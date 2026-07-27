@@ -27,7 +27,7 @@ Third-party services (Stripe, Twilio, etc.) you don't control. The deepened modu
 ## Seam discipline
 
 - **One adapter means a hypothetical seam. Two adapters means a real one.** Introduce a port only when at least two adapters are justified (typically production + test).
-- **Internal seams vs external seams.** A deep module can have internal seams (private to its implementation, used by its own tests) as well as the external seam at its interface. Don't expose internal seams through the interface just because tests use them.
+- **Internal seams vs external seams.** A deep module can have internal seams (private to its implementation, used by its own implementation-level tests) as well as the external test seam at its interface. Don't expose internal seams through the interface just because implementation-level tests use them.
 
 ## Testing strategy: replace, don't layer
 

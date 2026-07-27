@@ -5,6 +5,8 @@ description: Review changes from a fixed point against both repository standards
 
 # Code Review
 
+Read the configured issue tracker and domain-document locations. If either configuration is unavailable, run `setup-omskills` first.
+
 Review `git diff <fixed-point>...HEAD` once against two separately reported criteria sets:
 
 - **Standards:** applicable repository instructions and conventions, maintainability, and relevant code smells.

@@ -5,7 +5,7 @@ description: Synthesize the current conversation and repository context into a s
 
 # To Spec
 
-Produce a spec, also called a PRD, from information already established in the conversation and repository. Do not conduct a requirements interview. The only user confirmation in this process is the testing-seam check in step 2.
+Produce a spec from information already established in the conversation and repository. Do not conduct a requirements interview. The only user confirmation in this process is the test-seam check in step 2.
 
 Read the configured issue tracker and triage-label vocabulary. If either is unavailable, run `setup-omskills` first.
 
@@ -13,7 +13,7 @@ Read the configured issue tracker and triage-label vocabulary. If either is unav
 
 1. If the repository has not already been inspected in this context, inspect the current implementation in the affected area. Use the project's domain glossary terms throughout the spec and preserve applicable ADR decisions.
 
-2. Identify the seam or seams through which tests will verify the feature. Prefer an existing seam. Choose the seam closest to the feature's externally observable behavior that can exercise all specified behavior. When a new seam is needed, place it as close to that behavior as possible. Minimize the number of seams. Show the proposed seams and wait for the user to confirm them.
+2. Identify the **test seam** or test seams through which tests will verify the feature: caller-visible interfaces shared by production callers and behavior tests. Prefer an existing test seam. Choose the one closest to the feature's externally observable behavior that can exercise all specified behavior. When a new test seam is needed, place it as close to that behavior as possible. Minimize their number. Show the proposed test seams and wait for the user to confirm them.
 
 3. Write the spec with the template below and publish it as one issue in the configured tracker. Apply `ready-for-agent`; do not perform additional triage.
 
@@ -45,8 +45,8 @@ Do not include file paths or code snippets. Exception: when prototype output con
 
 ## Testing Decisions
 
-- **Test rule:** assert behavior observable through the confirmed seam, not implementation details.
-- **Modules:** <the modules exercised through that seam>
+- **Test rule:** assert behavior observable through the confirmed test seam, not implementation details.
+- **Modules:** <the modules exercised through that test seam>
 - **Prior art:** <existing repository tests that provide the pattern to follow>
 
 ## Out of Scope
@@ -59,4 +59,4 @@ Do not include file paths or code snippets. Exception: when prototype output con
 
 </spec-template>
 
-Publishing is complete when the issue contains every established requirement and decision, introduces no new requirement, uses the confirmed testing seams, and has `ready-for-agent`.
+Publishing is complete when the issue contains every established requirement and decision, introduces no new requirement, uses the confirmed test seams, and has `ready-for-agent`.

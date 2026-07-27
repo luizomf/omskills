@@ -19,7 +19,9 @@ Use these architecture terms as defined here. Do not substitute `component`, `se
 
 **Depth** — behavior a caller or test can exercise relative to the interface facts it must learn. A module is **deeper** than an alternative when it preserves required behavior while exposing fewer methods, parameters, invariants, ordering constraints, error modes, configuration requirements, or performance obligations. It is **shallow** when callers must supply or coordinate the implementation's intermediate states and steps.
 
-**Seam** _(Michael Feathers)_ — a location where behavior can be altered without editing code at that location. Seam placement and the behavior behind the seam are separate decisions. Avoid `boundary`, which also refers to a DDD bounded context.
+**Seam** _(Michael Feathers)_ — a location where behavior can be altered without editing code at that location. Seam placement and the behavior behind the seam are separate decisions. A seam may be internal to a module. Avoid `boundary`, which also refers to a DDD bounded context.
+
+**Test seam** — a seam exposed through the caller-visible interface that production callers and behavior tests share. Tests may use a different adapter at that seam, but do not bypass the interface to reach an internal seam.
 
 **Adapter** — a concrete module that satisfies an interface at a seam. The term identifies the role, not the implementation technology.
 
@@ -60,9 +62,9 @@ When comparing interface designs, check:
 
 ## Principles
 
-- **Depth is a property of a module relative to its interface.** Internal composition does not make an external interface shallow. A module may use internal seams available only to its implementation and tests while exposing one external seam to callers.
+- **Depth is a property of a module relative to its interface.** Internal composition does not make an external interface shallow. A module may use internal seams available only to its implementation and implementation-level tests while exposing one external seam to callers.
 - **Deletion test.** Model deleting the module while preserving required behavior. If no caller must absorb rules or knowledge, the module was a pass-through. If rules or knowledge must be copied or coordinated across callers, the module provides locality or leverage.
-- **The interface is the test surface.** Production callers and behavior tests use the same seam. A test that must bypass the interface is evidence that the interface does not expose required behavior or that the tested behavior belongs to another module.
+- **The interface is the test surface.** Production callers and behavior tests use the same test seam. A test that must bypass the interface is evidence that the interface does not expose required behavior or that the tested behavior belongs to another module.
 - **One adapter is a hypothetical seam; two adapters make variation observable.** Treat a seam as worth designing only when at least two adapters exist.
 
 ## Designing for testability

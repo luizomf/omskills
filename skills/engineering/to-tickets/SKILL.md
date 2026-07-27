@@ -116,6 +116,6 @@ Describe behavior and acceptance criteria without file paths, layer-by-layer imp
 
 The publish step is complete when every approved ticket exists separately, every blocking and conflict edge is recorded, and every non-overridden ticket has `ready-for-agent`.
 
-## Execution guidance
+## Next-phase handoff
 
-Work frontier tickets whose blockers are complete. Use `implement` with a fresh context for each ticket. Concurrent tickets require demonstrated independence plus exclusive owners, branches, and worktrees. Integrate completed tickets one at a time, then revalidate every remaining branch after each merge.
+Ticket creation does not require implementation. When execution begins later, work frontier tickets whose blockers are complete and use `implement` with a fresh context for each ticket. Concurrent tickets require demonstrated independence plus exclusive owners, branches, and worktrees. Integrate completed tickets one at a time, then revalidate every remaining branch after each merge.
