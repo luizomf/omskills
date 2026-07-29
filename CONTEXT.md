@@ -20,7 +20,7 @@ _Avoid_: PRD (use only when quoting external systems that call them PRDs)
 A canonical category or state label applied to a **Ticket** during triage. Category roles are `bug` and `enhancement`; state roles include `needs-triage` and `ready-for-agent`. Each role maps to a real label string in the **Issue tracker** via `docs/agents/triage-labels.md`.
 
 **Prompt audit status**:
-A durable result attached to an audited execution contract in the **Issue tracker**. `PASS` means no semantic divergence survived audit-coordinator adjudication; `BYPASS` means a maintainer explicitly authorized autonomous delivery without a pass; `FAIL` means the audit did not establish equivalent clean-context comprehension. A material change to the execution contract makes its prior status stale.
+A durable result attached to an audited execution contract in the **Issue tracker**. `PASS` means no semantic divergence survived audit-coordinator adjudication and any repository implementation unit satisfied the applicable tracer-bullet fit check; `BYPASS` means a maintainer explicitly authorized autonomous delivery without a pass; `FAIL` means the audit did not establish equivalent clean-context comprehension or implementation-unit fit. A material change to the execution contract makes its prior status stale.
 
 ## Relationships
 

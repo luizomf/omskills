@@ -1,6 +1,6 @@
 ---
 name: prompt-comprehension-audits
-description: Check whether clean-context agents understand an issue or execution prompt exactly as intended before costly or autonomous work.
+description: Audit whether clean-context agents understand text as intended; for repository implementation units, also check tracer-bullet fit before autonomous work.
 ---
 
 # Audit Prompt Comprehension
@@ -74,6 +74,10 @@ After adjudicating every divergence, choose `PASS` when none remains and no arti
 After repairing an execution prompt or authoritative request artifact, use exactly one fresh clean-context confirmation reviewer. Give it only the revised prompt or request artifact and the authoritative sources that artifact explicitly requires or cites; withhold the conversation, previous responses, coordinator analysis, and a desired answer. Require it to reconstruct the requested outcome, scope boundaries, required workflow, deliverables, and completion point, then report `PASS` or `DIVERGENCE` with evidence about whether the request is self-contained and aligned with the supplied sources.
 
 The coordinator adjudicates the confirmation once. If no concrete divergence survives, choose `PASS`. If a concrete remaining defect is resolved by the reference intent, apply one final minimal correction and choose `PASS` without another reviewer. Apply the escalation rule above only when a material decision remains unresolved. Exhausting the isolated-review budget transfers the result to coordinator adjudication; it is not a reason to stop or start a reviewer loop.
+
+## Check implementation-unit fit when applicable
+
+Treat any semantic `PASS` above as provisional. When the audited contract is one repository code implementation unit, read `to-tickets` and confirm that it satisfies the tracer-bullet rules, including fit in one fresh agent context with room to understand the relevant code, implement the end-to-end behavior, and verify it. If it does not, choose `FAIL` and report that decomposition is required before autonomous delivery. For every other audited text, this check does not apply.
 
 ## Record the prompt audit status
 
