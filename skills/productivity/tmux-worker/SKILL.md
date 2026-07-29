@@ -24,7 +24,14 @@ Use the coordinator process's `$TMUX_PANE` as the callback target even when anot
 pi --no-skills --skill "${HOME}/.pi/agent/skills"
 ```
 
-After Pi displays an input-ready interface, use `tmux send-keys` to submit one instruction telling it to read the prompt file. Send the literal instruction and `Enter` in separate calls. Do not use `pi -p`; the session must remain interactive for user observation and input.
+Use `tmux send-keys` to submit one instruction telling Pi to read the prompt file. Send the literal instruction first, wait five seconds for Pi to finish opening, and only then send `Enter` in a separate call. The delay is required even when Pi already appears input-ready; without it, an early `Enter` can interrupt startup before Pi accepts the instruction. Do not use `pi -p`; the session must remain interactive for user observation and input.
+
+```bash
+tmux -S <socket> send-keys -t <worker-pane> -l \
+  'Read and follow the worker prompt at <prompt-path>.'
+sleep 5
+tmux -S <socket> send-keys -t <worker-pane> Enter
+```
 
 After the instruction is submitted, return from the current response and make no further tool calls for this worker. Do not poll, read the worker pane, or wait for completion. Do not mark the delegated task or its parent goal complete or blocked.
 
