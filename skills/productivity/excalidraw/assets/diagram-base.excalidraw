@@ -1,0 +1,38 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "omskills",
+  "elements": [],
+  "appState": {
+    "theme": "light",
+    "viewBackgroundColor": "#0f0f14",
+    "currentItemStrokeColor": "#ffffff",
+    "currentItemBackgroundColor": "#151b6f",
+    "currentItemFillStyle": "solid",
+    "currentItemStrokeWidthKey": "thin",
+    "currentItemStrokeVariability": "constant",
+    "currentItemStrokeStyle": "solid",
+    "currentItemRoughness": 2,
+    "currentItemOpacity": 100,
+    "currentItemFontFamily": 5,
+    "currentItemFontSize": 20,
+    "currentItemTextAlign": "left",
+    "currentItemStartArrowhead": "arrow",
+    "currentItemEndArrowhead": null,
+    "currentItemArrowType": "round",
+    "currentItemRoundness": "round",
+    "gridSize": 20,
+    "gridStep": 5,
+    "gridModeEnabled": false,
+    "gridColor": {
+      "Bold": "rgba(48, 48, 64, 0.4)",
+      "Regular": "rgba(37, 37, 49, 0.4)"
+    },
+    "objectsSnapModeEnabled": true,
+    "bindingPreference": "enabled",
+    "isBindingEnabled": true,
+    "isMidpointSnappingEnabled": true,
+    "boxSelectionMode": "contain"
+  },
+  "files": {}
+}

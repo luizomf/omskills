@@ -192,7 +192,7 @@ For mature projects, the queue should favor small, vertical, verifiable tickets.
 
 ## Optional Skills
 
-There are no optional skills currently.
+User-only optional skills are listed in their bucket README and stay out of the active plugin manifests.
 
 ## Maintenance
 
