@@ -11,34 +11,47 @@ A standard scene contains `type: "excalidraw"`, `version: 2`, `elements`, `appSt
 Every new element needs:
 
 ```json
-{"id":"unique-id","type":"rectangle","x":100,"y":100,"width":200,"height":80,"angle":0,"strokeColor":"#ffffff","backgroundColor":"#151b6f","fillStyle":"solid","strokeWidth":1,"strokeStyle":"solid","roughness":1,"opacity":100,"groupIds":[],"frameId":null,"roundness":{"type":3},"seed":123456,"version":1,"versionNonce":654321,"isDeleted":false,"boundElements":[],"updated":1700000000000,"link":null,"locked":false}
+{"id":"unique-id","type":"rectangle","x":100,"y":100,"width":200,"height":80,"angle":0,"strokeColor":"#88aaf2","backgroundColor":"#495b81","fillStyle":"solid","strokeWidth":1,"strokeStyle":"solid","roughness":1,"opacity":100,"groupIds":[],"frameId":null,"roundness":{"type":3},"seed":123456,"version":1,"versionNonce":654321,"index":null,"isDeleted":false,"boundElements":[],"updated":1700000000000,"link":null,"locked":false}
 ```
 
 Generate distinct nonzero `seed` and `versionNonce` integers. Keep `version` at `1` for new elements and use a current millisecond timestamp for `updated`. Preserve fractional coordinates only when they improve alignment.
 
 ## Text
 
-A shape label is a separate text element. Start from the common fields, set `type: "text"`, `backgroundColor: "transparent"`, `roundness: null`, and add:
+A shape label is a separate text element. Start from the common fields, set `type: "text"`, `strokeColor: "#f0f0ff"`, `backgroundColor: "transparent"`, `roundness: null`, and add:
 
 ```json
-{"text":"Step A","rawText":"Step A","fontSize":20,"fontFamily":5,"textAlign":"center","verticalAlign":"middle","containerId":"shape-a","originalText":"Step A","autoResize":true,"lineHeight":1.25}
+{"text":"Step A","fontSize":20,"fontFamily":5,"textAlign":"center","verticalAlign":"middle","containerId":"shape-a","originalText":"Step A","autoResize":true,"lineHeight":1.25}
 ```
 
-The container must include `{"id":"text-a","type":"text"}` in `boundElements`. Keep `text`, `rawText`, and `originalText` equal. Estimate text bounds generously; the editor may recalculate them.
+The container must include `{"id":"text-a","type":"text"}` in `boundElements`. Keep `text` and `originalText` equal. Estimate text bounds generously; the editor may recalculate them.
 
 ## Arrows
 
-Start from the common fields, set `type: "arrow"`, `roundness: {"type":2}`, and add:
+Start from the common fields, set `type: "arrow"`, `backgroundColor: "transparent"`, `roundness: {"type":2}`, and add:
 
 ```json
-{"points":[[0,0],[200,0]],"startBinding":{"elementId":"shape-a","mode":"orbit","fixedPoint":[1,0.5]},"endBinding":{"elementId":"shape-b","mode":"orbit","fixedPoint":[0,0.5]},"startArrowhead":null,"endArrowhead":"arrow","elbowed":false,"moveMidPointsWithElement":false}
+{"points":[[0,0],[200,0]],"startBinding":{"elementId":"shape-a","mode":"orbit","fixedPoint":[1,0.5]},"endBinding":{"elementId":"shape-b","mode":"orbit","fixedPoint":[0,0.5]},"startArrowhead":null,"endArrowhead":"arrow","elbowed":false}
 ```
 
 Set arrow `width` and `height` to the bounding size of `points`. Add `{"id":"arrow-a-b","type":"arrow"}` to both endpoint shapes. An arrow label uses the text rules with the arrow ID as `containerId`, and the arrow reciprocally lists that text ID.
 
 ## Visual profile
 
-The bundled base uses a near-black canvas (`#0f0f14`), white strokes and text, solid rounded shapes, 20px font family `5`, and round arrows. Reuse these observed fill colors by role without assigning a universal meaning: `#9c36b5`, `#1971c2`, `#167461`, `#3d138b`, `#aa6f1d`, and `#151b6f`. Maintain strong contrast and use one color consistently for the same concept within a diagram.
+The bundled visual profile uses a near-black canvas (`#0f0f14`), light text (`#f0f0ff`), solid rounded shapes, 20px font family `5`, and round arrows. Prefer simple labeled rectangles and direct connectors.
+
+Use the paired `omtheme` palette below. Apply the dark color as a shape's solid fill and its bright counterpart as the stroke, connector, or small accent. Keep text `#f0f0ff`; do not use the bright colors as fills behind light text.
+
+| Role | Fill | Stroke or accent |
+| --- | --- | --- |
+| Red | `#8c4555` | `#ff7e9a` |
+| Green | `#16684b` | `#37feb7` |
+| Yellow | `#695a31` | `#ffda76` |
+| Blue | `#495b81` | `#88aaf2` |
+| Magenta | `#864763` | `#ff87bc` |
+| Cyan | `#336078` | `#6bccff` |
+
+Use one pair consistently for the same concept. Use `#3b4fa6` as a neutral or primary fill when no semantic color is needed.
 
 ## Exhaustive check
 
