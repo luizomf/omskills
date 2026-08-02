@@ -34,7 +34,15 @@ Start from the common fields, set `type: "arrow"`, `backgroundColor: "transparen
 {"points":[[0,0],[200,0]],"startBinding":{"elementId":"shape-a","mode":"orbit","fixedPoint":[1,0.5]},"endBinding":{"elementId":"shape-b","mode":"orbit","fixedPoint":[0,0.5]},"startArrowhead":null,"endArrowhead":"arrow","elbowed":false}
 ```
 
-Set arrow `width` and `height` to the bounding size of `points`. Add `{"id":"arrow-a-b","type":"arrow"}` to both endpoint shapes. An arrow label uses the text rules with the arrow ID as `containerId`, and the arrow reciprocally lists that text ID.
+Set arrow `width` and `height` to the bounding size of `points`. Add `{"id":"arrow-a-b","type":"arrow"}` to both endpoint shapes.
+
+Bind every arrow label to its arrow instead of placing independent text nearby. Use the text rules with the arrow ID as `containerId`:
+
+```json
+{"id":"text-a-b","type":"text","text":"HTTP","originalText":"HTTP","containerId":"arrow-a-b","fontSize":20,"fontFamily":5,"textAlign":"center","verticalAlign":"middle","autoResize":true,"lineHeight":1.25}
+```
+
+The arrow must reciprocally include `{"id":"text-a-b","type":"text"}` in `boundElements`. This binding makes the label move and edit with the arrow.
 
 ## Visual profile
 

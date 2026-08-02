@@ -44,11 +44,13 @@ requested transformation are unambiguous.
 3. **Build or edit elements.** Read [`REFERENCE.md`](REFERENCE.md) before
    creating elements. Use unique stable IDs and preserve existing IDs for
    elements that retain their identity. Keep labels as text elements, not custom
-   `label` properties. For container labels, set the text's `containerId` and
-   add the text ID to the container's `boundElements`. For connected arrows,
-   set `startBinding` and `endBinding` and add the arrow ID to both endpoint
-   shapes. Every new element must satisfy the reference schema, and every
-   binding must be reciprocal and reference an existing, non-deleted element.
+   `label` properties. Bind every shape label to its shape and every arrow label
+   to its arrow: set the text's `containerId` and add the text ID to the
+   container's `boundElements`. Do not place an arrow's label as independent
+   text near the arrow. For connected arrows, set `startBinding` and
+   `endBinding` and add the arrow ID to both endpoint shapes. Every new element
+   must satisfy the reference schema, and every binding must be reciprocal and
+   reference an existing, non-deleted element.
 
 4. **Lay out the scene.** Prevent overlaps, leave clear gaps, keep labels inside
    their containers, and route arrows so direction is obvious. Order elements
@@ -63,10 +65,12 @@ requested transformation are unambiguous.
 
 6. **Verify.** Parse the produced scene and check every element ID for
    uniqueness, every reference for a live target, every reciprocal binding in
-   both directions, and every requested concept for coverage. Render and inspect
-   visually when that capability is available. Otherwise state that verification
-   was structural only. Completion requires all structural checks to pass and
-   the inspection level to be reported.
+   both directions, every arrow label for a live arrow `containerId` and the
+   reciprocal text entry in that arrow's `boundElements`, and every requested
+   concept for coverage. Render and inspect visually when that capability is
+   available. Otherwise state that verification was structural only. Completion
+   requires all structural checks to pass and the inspection level to be
+   reported.
 
 ## Example
 
