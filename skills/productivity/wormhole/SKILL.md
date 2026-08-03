@@ -35,10 +35,19 @@ Use this file as the only continuation context.
 - instructions to run those completion commands only after restoring every needed detail from the handoff;
 - instructions to confirm the jump briefly in the user's language, state that the origin Pi exited, report the resulting origin pane or window state when observable without treating either outcome as an error, then, in the same turn, either start the authorized immediate next step from the handoff or remain interactive when the handoff records a user gate or no authorized action.
 
-4. Choose an unused `worm-...` window name. Using the captured socket and session, open a detached named window in the current working directory:
+4. Choose an unused `worm-...` window name. Using the captured socket and session, open a detached named window in the current working directory.
 
-- In Pi, run `pi --no-skills --skill "${HOME}/.pi/agent/skills"`.
-- In another harness, run its supported command for a fresh interactive session. If that command cannot be identified safely, return the handoff path instead of guessing.
+In Pi, immediately before launch, read `PI_PROVIDER`, `PI_MODEL`, and `PI_REASONING_LEVEL` from the origin's current bash-tool environment. Unless the user explicitly requested a routing override, pass the active `provider/model` and reasoning level to the fresh Pi as explicit CLI arguments; a new Pi process otherwise uses global defaults rather than the origin's route. When the user overrides only model or reasoning, preserve the active value for the omitted component. Quote every captured value and stop instead of launching if an inherited value is empty:
+
+```bash
+pi \
+  --model "${PI_PROVIDER}/${PI_MODEL}" \
+  --thinking "${PI_REASONING_LEVEL}" \
+  --no-skills \
+  --skill "${HOME}/.pi/agent/skills"
+```
+
+In another harness, use its supported mechanism to preserve the active route unless the user requested an override. If that mechanism or the command for a fresh interactive session cannot be identified safely, return the handoff path instead of guessing.
 
 Keep the origin Pi running until the fresh agent completes the transfer. Do not separately kill or preserve the origin pane or window after `/quit`; let tmux apply the lifecycle implied by how the origin was launched and configured.
 

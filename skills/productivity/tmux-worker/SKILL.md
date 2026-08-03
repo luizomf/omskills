@@ -18,10 +18,16 @@ Use the coordinator process's `$TMUX_PANE` as the callback target even when anot
 
 2. Write a self-contained worker prompt to a temporary file or project scratch file. Include the assigned scope, paths to every artifact required by the task, completion criteria, and the literal callback socket and pane values. State that the worker delivers its result only through the artifact and the callback, never as a reply to the user.
 
-3. In the current working directory, start an interactive Pi session in a detached tmux window and retain that worker pane's literal ID. Limit skill discovery to the canonical Pi directory:
+3. In the current working directory, start an interactive Pi session in a detached tmux window and retain that worker pane's literal ID. Immediately before launch, read `PI_PROVIDER`, `PI_MODEL`, and `PI_REASONING_LEVEL` from the coordinator's current bash-tool environment. Unless the user explicitly requested a routing override, pass the active `provider/model` and reasoning level to the worker as explicit CLI arguments; a new Pi process otherwise uses global defaults rather than the coordinator's route. When the user overrides only model or reasoning, preserve the active value for the omitted component. Quote every captured value and stop instead of launching if an inherited value is empty.
+
+Limit skill discovery to the canonical Pi directory:
 
 ```bash
-pi --no-skills --skill "${HOME}/.pi/agent/skills"
+pi \
+  --model "${PI_PROVIDER}/${PI_MODEL}" \
+  --thinking "${PI_REASONING_LEVEL}" \
+  --no-skills \
+  --skill "${HOME}/.pi/agent/skills"
 ```
 
 Use `tmux send-keys` to submit one instruction telling Pi to read the prompt file. Send the literal instruction first, wait five seconds for Pi to finish opening, and only then send `Enter` in a separate call. The delay is required even when Pi already appears input-ready; without it, an early `Enter` can interrupt startup before Pi accepts the instruction. Do not use `pi -p`; the session must remain interactive for user observation and input.
