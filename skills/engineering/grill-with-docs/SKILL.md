@@ -40,3 +40,5 @@ Offer an ADR only when all three conditions hold:
 Create an accepted ADR only after the user approves both the decision and recording it. Follow [ADR-FORMAT.md](./ADR-FORMAT.md).
 
 Stop when no material ambiguity remains and the user confirms the shared understanding.
+
+If no document, ticket, issue, or plan has been generated, provide a detailed handoff to the user.

@@ -14,3 +14,7 @@ Interview the user one decision-tree branch at a time. Resolve each dependency b
 - Keep the session read-only and do not execute the resulting plan.
 
 Stop only when no unresolved question could change the outcome or scope and the user confirms the resulting understanding.
+
+If no document, ticket, issue, or plan has been generated, provide a detailed handoff to the user.
+
+
