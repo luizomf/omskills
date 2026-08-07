@@ -36,7 +36,7 @@ _Avoid_: frontmatter, summary
 
 ### Context Pointer
 
-A reference held in the agent's current context that names out-of-context material and encodes the condition for loading it. An agent-discoverable **description** is a top-level context pointer; an explicit path from one loaded skill to another skill or disclosed file is the same object one level down. Its wording, not only its target, decides _when_ the agent follows it and how reliably. A must-have target behind a weakly worded pointer is a variance bug: sharpen the wording first, and inline the material only if sharpening fails.
+A reference held in the agent's current context that names out-of-context material and encodes the condition for loading it. An agent-discoverable **description** is a top-level context pointer; an installed skill name or a direct path to a disclosed file bundled with the current skill is the same object one level down. Its wording, not only its target, decides _when_ the agent follows it and how reliably. A must-have target behind a weakly worded pointer is a variance bug: sharpen the wording first, and inline the material only if sharpening fails.
 
 _Avoid_: link, reference, import
 
