@@ -5,20 +5,31 @@ description: Stress-test a repository plan or design one decision question at a 
 
 # Grill With Docs
 
-Resolve a plan or design's decision tree with the user. Resolve prerequisites before dependent decisions.
+Resolve a plan or design's decision tree with the user. Resolve prerequisites before dependent decisions, and do not enact the resulting plan.
 
-For each turn:
+Maintain an exhaustive material-decision inventory throughout the interview. Include every decision that could change the outcome, scope, behavior, ownership, constraints, deliverables, or completion point; record its prerequisites and mark it `unresolved`, `resolved`, or `explicitly deferred`. Only the user can explicitly defer an item.
 
-1. Inspect the repository for facts that can answer the next question. Do not ask the user for discoverable facts.
-2. Ask exactly one unresolved decision question and wait for the answer.
-3. Include one recommended answer and the repository evidence or trade-off that supports it. The user makes the decision; do not treat the recommendation as approval.
-4. Check asserted premises and the current answer against glossary terms, repository evidence, earlier answers, stated constraints, edge cases, error behavior, and omitted constraints. Surface a conflict before moving to a dependent question.
+## Start the interview
 
-Do not enact the resulting plan.
+Read the applicable `CONTEXT.md`, `CONTEXT-MAP.md`, ADRs, plan, and repository evidence. Their absence requires no user action. Build the initial material-decision inventory, remove questions answered by discoverable facts, and order unresolved items by prerequisite.
+
+Inspect the evidence for the first unresolved item, then ask exactly one decision question and wait. Include one recommended answer and the repository evidence or trade-off that supports it. The user makes the decision; the recommendation is not approval.
+
+This step is complete when the exhaustive initial inventory exists and exactly one evidence-backed question with a recommendation is awaiting an answer.
+
+## Process every reply
+
+On each user reply, perform this order before asking anything else:
+
+1. Validate the previous answer against glossary terms, repository evidence, earlier answers, stated constraints, edge cases, error behavior, and omitted constraints. Report contradictions and keep the affected item unresolved until they are reconciled.
+2. Persist every accepted part of the previous answer under the domain and ADR rules below. Complete applicable updates in the same turn before moving to a dependent item.
+3. Refresh the complete material-decision inventory. Add newly exposed material items, preserve prerequisites, and mark an item resolved or explicitly deferred only when the validated answer supports that state.
+4. Inspect repository evidence for the next prerequisite-ready unresolved item. Do not ask the user for discoverable facts.
+5. Ask exactly one next question and wait. Include one recommended answer and the evidence or trade-off supporting it. If every material item is resolved or explicitly deferred, ask instead for final confirmation of the shared understanding, with the recommendation to confirm only when the recorded inventory is accurate.
+
+Surface a conflict through the one next question before moving to a dependent decision. This step is complete for a reply when the prior answer has been validated and persisted, the exhaustive inventory is current, and exactly one evidence-backed next question with a recommendation is awaiting an answer, or the validated final confirmation permits completion.
 
 ## Use repository domain language
-
-Read the applicable `CONTEXT.md`, `CONTEXT-MAP.md`, and ADRs when they exist. Their absence requires no user action.
 
 During the interview:
 
@@ -27,7 +38,7 @@ During the interview:
 - use concrete scenarios to determine which side of a domain boundary owns behavior; and
 - verify claims about current behavior against the code and report contradictions.
 
-## Record resolved decisions
+## Persist resolved decisions
 
 When a domain term's meaning, ownership, or distinction is confirmed, update the applicable `CONTEXT.md` in the same turn. If no applicable file exists, create it when the resolved term defines shared domain meaning, ownership, or distinction that later work must use. Include domain definitions and relationships, not implementation plans, tasks, or session notes. Follow [CONTEXT-FORMAT.md](./CONTEXT-FORMAT.md).
 
@@ -37,8 +48,8 @@ Offer an ADR only when all three conditions hold:
 2. the result would surprise a future reader unless the rationale were recorded; and
 3. the decision is the result of a genuine trade-off.
 
-Create an accepted ADR only after the user approves both the decision and recording it. Follow [ADR-FORMAT.md](./ADR-FORMAT.md).
+Create an accepted ADR only after the user approves both the decision and recording it. Follow [ADR-FORMAT.md](./ADR-FORMAT.md). Treat required recording approval as an unresolved inventory item and ask it through the same one-question order.
 
-Stop when no material ambiguity remains and the user confirms the shared understanding.
+## Finish
 
-If no document, ticket, issue, or plan has been generated, provide a detailed handoff to the user.
+Stop only after every material inventory item is resolved or explicitly deferred, all required persistence is complete, and the user has confirmed the shared understanding. If no document, Ticket, issue, or plan has been generated, provide a detailed handoff to the user.

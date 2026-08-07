@@ -17,6 +17,8 @@ When the maintainer explicitly authorizes the invoking autonomous workflow to pr
 
 ## Run two isolated agent passes
 
+The fixed interpreter, reviewer, and confirmation prompts in this protocol are read-only audit mechanics: they do not authorize code and do not require another Prompt Audit. This non-recursive exception applies only to those fixed protocol prompts.
+
 Start one fresh, independent agent for the interpreter pass and another for the reviewer pass. Each agent may receive baseline system and project instructions but no parent conversational turns, coordinator analysis, or desired answer. If the harness cannot guarantee these isolation conditions, choose `FAIL`, report that the audit cannot meet its required isolation, and stop after recording the status as specified below.
 
 ### 1. Run the interpreter pass
@@ -99,7 +101,7 @@ When the execution contract is a tracked issue or an agent brief on one, post a 
 
 For an untracked prompt, report the same fields to the invoking workflow. A newer status supersedes an older one only when it applies to the same execution contract. A material change to the requested outcome, scope, required workflow, deliverables, acceptance criteria, or completion point makes the prior status stale.
 
-Resume the invoking workflow after `PASS` or `BYPASS`. Stop after `FAIL`.
+An execution contract can authorize writer dispatch or code only when its newest applicable status is a current `PASS` or explicit maintainer-authorized `BYPASS`. On a missing, stale, or `FAIL` status, the invoking workflow stops before writer dispatch or code and reports the choices to run this audit or obtain an explicit maintainer-authorized bypass. Resume the invoking workflow only after `PASS` or `BYPASS`.
 
 ## Audit boundary
 
