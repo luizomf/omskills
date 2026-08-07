@@ -1,8 +1,8 @@
 # Productivity
 
-General workflow tools, not code-specific.
+General workflow tools, not code-specific. Active skills are grouped by their typical selection path; the optional skill is user-only.
 
-## User-invoked
+## Typically user-selected
 
 - **[grill-me](./grill-me/SKILL.md)** - Run a grilling session without touching code or docs.
 - **[caveman](./caveman/SKILL.md)** - Use ultra-compressed communication while preserving technical accuracy.
@@ -16,7 +16,7 @@ General workflow tools, not code-specific.
 
 - **[excalidraw](./excalidraw/SKILL.md)** - Create and edit clear, editable Excalidraw diagrams from text or an existing scene.
 
-## Model-invoked
+## Typically agent-selected
 
-- **[prompt-comprehension-audits](./prompt-comprehension-audits/SKILL.md)** - Check an issue or execution prompt with two clean-context agents for exact semantic comprehension.
+- **[prompt-comprehension-audits](./prompt-comprehension-audits/SKILL.md)** - Use two isolated passes, plus one confirmation after repairs, to test a prompt's semantic equivalence.
 - **[write-a-skill](./write-a-skill/SKILL.md)** - Create new skills with SKILL.md, progressive disclosure, and bundled resources.

@@ -1,6 +1,6 @@
 # HTML Report Format
 
-The architectural review is rendered as a single self-contained HTML file in the OS temp directory.
+The architectural review is rendered as a single HTML file in the OS temp directory, with styling and diagram dependencies loaded from the CDNs in the scaffold.
 
 ## Scaffold
 

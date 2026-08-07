@@ -32,7 +32,7 @@ Apply the **deletion test** to each suspected shallow module: would deleting it 
 
 ### 2. Write and open the HTML report
 
-Write one self-contained HTML file outside the repository:
+Write one HTML file outside the repository:
 
 - In Pi, use the temp location specified by [PI.md](PI.md).
 - Otherwise use `$TMPDIR`, falling back to `/tmp` on Unix or `%TEMP%` on Windows.

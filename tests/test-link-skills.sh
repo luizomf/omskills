@@ -67,7 +67,7 @@ echo "stale-managed" >> "$DEST/.omskills-managed-links"
 }
 
 external="$(mktemp -d)"
-trap 'rm -rf "$DEST" "$external"' EXIT
+trap 'rm -rf "$DEST" "$FAKE_HOME" "$external"' EXIT
 ln -s "$external" "$DEST/external-link"
 "$REPO/scripts/link-skills.sh" >/dev/null
 [ "$(readlink "$DEST/external-link")" = "$external" ] || {
@@ -80,6 +80,19 @@ ln -s "$external" "$DEST/external-link"
   echo "error: manual optional skill link was removed" >&2
   exit 1
 }
+
+rm "$DEST/to-spec"
+ln -s "$external" "$DEST/to-spec"
+if "$REPO/scripts/link-skills.sh" >/dev/null 2>&1; then
+  echo "error: installer replaced an external symlink at an active skill name" >&2
+  exit 1
+fi
+[ "$(readlink "$DEST/to-spec")" = "$external" ] || {
+  echo "error: installer modified an external symlink at an active skill name" >&2
+  exit 1
+}
+rm "$DEST/to-spec"
+"$REPO/scripts/link-skills.sh" >/dev/null
 
 rm "$DEST/to-spec"
 mkdir "$DEST/to-spec"

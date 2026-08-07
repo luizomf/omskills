@@ -42,7 +42,7 @@ Use **expand–contract** instead of vertical slices when one mechanical change,
 2. **Migrate:** move callers in batches sized by blast radius, such as one package or directory per ticket. Each migration ticket is blocked by expansion, and the old form remains available so each batch can pass CI independently.
 3. **Contract:** remove the old form only after every migration ticket is complete; block contraction on all migration tickets.
 
-If no migration batch can pass CI independently, retain this sequence on an integration branch and block a final integrate-and-verify ticket on all batches. In that case, the green completion gate applies to the final ticket rather than each batch.
+If no migration batch can pass CI independently, retain this sequence on an integration branch and block a final integrate-and-verify ticket on all batches. In that case, the requirement to leave CI passing applies to the final ticket rather than each batch.
 
 ### 4. Obtain breakdown approval
 

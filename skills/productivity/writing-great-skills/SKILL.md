@@ -14,7 +14,7 @@ Choose one discovery mode:
 - **Agent-discoverable:** omit `disable-model-invocation`. The required **description** remains in system context and allows autonomous selection, adding **context load**.
 - **User-only:** set `disable-model-invocation: true`. The description remains command-facing metadata but is excluded from system context. The user selects the skill, adding **cognitive load** instead of context load.
 
-A loaded skill may compose a user-only skill through a direct **context pointer** to its `SKILL.md` or disclosed reference.
+A loaded skill may compose a user-only skill through a **context pointer** that names the installed skill and the condition for loading it. Use direct paths only for disclosed references bundled with the current skill.
 
 Use agent discovery only when observed use demonstrates a need for autonomous selection and a maintainer approves the permanent context load. Existing active omskills have met both conditions; every new skill remains user-only until it does.
 

@@ -1,8 +1,8 @@
 # Engineering
 
-Core skills for code work, issue workflow, and architecture decisions.
+Core skills for code work, issue workflow, and architecture decisions. The groups describe the typical selection path; every skill in this bucket remains agent-discoverable.
 
-## User-invoked
+## Typically user-selected
 
 - **[grill-with-docs](./grill-with-docs/SKILL.md)** - Run a grilling session while maintaining domain language and ADRs.
 - **[triage](./triage/SKILL.md)** - Move issues and external PRs through a state machine of triage roles.
@@ -14,7 +14,7 @@ Core skills for code work, issue workflow, and architecture decisions.
 - **[orchestrate](./orchestrate/SKILL.md)** - Deliver prepared issues through single-pass writer and reviewer agents with coordinator-owned completion.
 - **[wayfinder](./wayfinder/SKILL.md)** - Map a huge or foggy effort into investigation tickets on the issue tracker.
 
-## Model-invoked
+## Typically agent-selected
 
 - **[prototype](./prototype/SKILL.md)** - Build a throwaway prototype to validate logic, state, or UI alternatives.
 - **[diagnosing-bugs](./diagnosing-bugs/SKILL.md)** - Disciplined diagnosis loop for hard bugs and performance regressions.

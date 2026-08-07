@@ -99,7 +99,7 @@ Follow the repo instructions, read the issue, and tell me whether it is ready fo
 
 ## Local Quickstart
 
-1. Link the active skills into local Codex:
+1. Link the active skills into local Codex. This requires Bash, `jq`, and Python 3.9 or newer:
 
 ```bash
 ./scripts/link-skills.sh
@@ -122,7 +122,7 @@ By default, the script writes to `~/.agents/skills`, the shared user-level skill
 OMSKILLS_DEST=/tmp/omskills-test ./scripts/link-skills.sh
 ```
 
-All active skills are agent-discoverable. Supporting harnesses include each skill's name, description, and location in the agent's system context, then load the full `SKILL.md` only when the task matches or the user invokes the skill directly.
+All active skills are agent-discoverable. Supporting harnesses include each skill's name, description, and location in the agent's system context, then load the full `SKILL.md` only when the task matches or the user selects the skill directly. The groupings below describe the typical selection path, not discovery status.
 
 2. In each repo that will consume these skills, run:
 
@@ -155,7 +155,7 @@ For mature projects, the queue should favor small, vertical, verifiable tickets.
 
 ### Engineering
 
-**User-invoked**
+**Typically user-selected**
 
 - **[grill-with-docs](./skills/engineering/grill-with-docs/SKILL.md)**: runs a grilling session while maintaining domain language and ADRs.
 - **[triage](./skills/engineering/triage/SKILL.md)**: moves issues and external PRs through a state machine based on triage roles.
@@ -167,7 +167,7 @@ For mature projects, the queue should favor small, vertical, verifiable tickets.
 - **[orchestrate](./skills/engineering/orchestrate/SKILL.md)**: delivers prepared issues through single-pass writer and reviewer agents with coordinator-owned completion.
 - **[wayfinder](./skills/engineering/wayfinder/SKILL.md)**: maps a huge or foggy effort into investigation tickets on the issue tracker.
 
-**Model-invoked**
+**Typically agent-selected**
 
 - **[prototype](./skills/engineering/prototype/SKILL.md)**: creates throwaway prototypes to validate logic, state, or UI alternatives.
 - **[diagnosing-bugs](./skills/engineering/diagnosing-bugs/SKILL.md)**: disciplined loop for hard bugs and regressions: reproduce, minimise, hypothesise, instrument, fix, and regression-test.
@@ -179,7 +179,7 @@ For mature projects, the queue should favor small, vertical, verifiable tickets.
 
 ### Productivity
 
-**User-invoked**
+**Typically user-selected**
 
 - **[grill-me](./skills/productivity/grill-me/SKILL.md)**: runs a grilling session without touching code or docs.
 - **[caveman](./skills/productivity/caveman/SKILL.md)**: uses ultra-compressed communication while preserving technical accuracy.
@@ -189,9 +189,9 @@ For mature projects, the queue should favor small, vertical, verifiable tickets.
 - **[teach](./skills/productivity/teach/SKILL.md)**: teaches a new skill or concept over multiple sessions, using the current directory as a stateful teaching workspace.
 - **[writing-great-skills](./skills/productivity/writing-great-skills/SKILL.md)**: reference for the vocabulary and design principles behind predictable skills.
 
-**Model-invoked**
+**Typically agent-selected**
 
-- **[prompt-comprehension-audits](./skills/productivity/prompt-comprehension-audits/SKILL.md)**: checks an issue or execution prompt with two clean-context agents for exact semantic comprehension.
+- **[prompt-comprehension-audits](./skills/productivity/prompt-comprehension-audits/SKILL.md)**: uses two isolated passes, plus one confirmation after repairs, to test a prompt's semantic equivalence.
 - **[write-a-skill](./skills/productivity/write-a-skill/SKILL.md)**: creates new skills with structure, frontmatter, and supporting resources.
 
 ## Optional Skills

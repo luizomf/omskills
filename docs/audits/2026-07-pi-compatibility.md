@@ -1,5 +1,7 @@
 # Pi compatibility audit
 
+> **Historical snapshot:** This audit records the catalog and Pi 0.80.10 compatibility state introduced by commit `50cf110` on July 19, 2026. Skill names and active status below may differ from the current catalog.
+
 Pre-publication tracker item 17: Audit active skills for Pi compatibility
 
 ## Scope and baseline
