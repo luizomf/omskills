@@ -105,7 +105,11 @@ Follow the repo instructions, read the issue, and tell me whether it is ready fo
 ./scripts/link-skills.sh
 ```
 
-The installer prunes only obsolete symlinks managed by this repository and refuses to overwrite real paths or external symlinks. Verify the current installation without changing it:
+The installer creates relative symlinks, prunes only obsolete symlinks
+managed by this repository, and refuses to overwrite real paths or external
+symlinks. Relative targets avoid embedding a username or absolute home path
+when the same checkout layout is used across macOS and Linux. Verify the
+current installation without changing it:
 
 ```bash
 ./scripts/check-catalog.py

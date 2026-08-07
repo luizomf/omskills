@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Links active skills in the repository to ~/.agents/skills, so they
-# can be used by local Codex sessions.
+# Links active skills into a user-level skill directory for local agent sessions.
 
-REPO="$(cd "$(dirname "$0")/.." && pwd)"
+REPO="$(cd "$(dirname "$0")/.." && pwd -P)"
 if [ -n "${OMSKILLS_DEST+x}" ]; then
   DEST="$OMSKILLS_DEST"
   USE_DEFAULT_DEST=false
@@ -12,7 +11,6 @@ else
   DEST="$HOME/.agents/skills"
   USE_DEFAULT_DEST=true
 fi
-STATE="$DEST/.omskills-managed-links"
 MODE="install"
 
 if [ "${1:-}" = "--check" ]; then
@@ -22,11 +20,50 @@ elif [ "$#" -ne 0 ]; then
   exit 2
 fi
 
+if ! command -v jq >/dev/null 2>&1; then
+  echo "error: jq is required to read .codex-plugin/plugin.json" >&2
+  exit 1
+fi
+
+if ! command -v python3 >/dev/null 2>&1; then
+  echo "error: python3 is required to create portable relative links" >&2
+  exit 1
+fi
+
+resolve_link_target() {
+  python3 - "$1" <<'PY'
+import os
+import sys
+
+link = sys.argv[1]
+target = os.path.join(os.path.dirname(link), os.readlink(link))
+print(os.path.realpath(target))
+PY
+}
+
+relative_link_target() {
+  python3 - "$1" "$2" <<'PY'
+import os
+import sys
+
+print(os.path.relpath(sys.argv[1], start=sys.argv[2]))
+PY
+}
+
+link_points_into_repo_skills() {
+  local resolved
+  resolved="$(resolve_link_target "$1")"
+  case "$resolved" in
+    "$REPO/skills"/*) return 0 ;;
+    *) return 1 ;;
+  esac
+}
+
 # If the destination is a symlink that resolves into this repo, we'd end up
 # writing the per-skill symlinks back into the repo's own skills/ tree. Detect
 # and bail out instead of polluting the working copy.
 if [ -L "$DEST" ]; then
-  resolved="$(readlink -f "$DEST")"
+  resolved="$(python3 -c 'import os, sys; print(os.path.realpath(sys.argv[1]))' "$DEST")"
   case "$resolved" in
     "$REPO"|"$REPO"/*)
       echo "error: $DEST is a symlink into this repo ($resolved)." >&2
@@ -36,11 +73,6 @@ if [ -L "$DEST" ]; then
   esac
 fi
 
-if ! command -v jq >/dev/null 2>&1; then
-  echo "error: jq is required to read .codex-plugin/plugin.json" >&2
-  exit 1
-fi
-
 if [ "$MODE" = "install" ]; then
   mkdir -p "$DEST"
 elif [ ! -d "$DEST" ]; then
@@ -48,13 +80,18 @@ elif [ ! -d "$DEST" ]; then
   exit 1
 fi
 
+# Relative symlinks must be calculated from the destination's physical path.
+# This matters on macOS, where /var resolves to /private/var.
+DEST="$(cd "$DEST" && pwd -P)"
+STATE="$DEST/.omskills-managed-links"
+
 # One-time migration from the state-less installer used before the July 2026
 # catalog rename. Remove only the exact obsolete links that installer created.
 if [ "$MODE" = "install" ] && [ ! -f "$STATE" ]; then
   while IFS='|' read -r name relative; do
     target="$DEST/$name"
     expected="$REPO/skills/$relative"
-    if [ -L "$target" ] && [ "$(readlink "$target")" = "$expected" ]; then
+    if [ -L "$target" ] && [ "$(resolve_link_target "$target")" = "$expected" ]; then
       rm "$target"
       echo "removed legacy link $name -> $expected"
     fi
@@ -82,31 +119,29 @@ while IFS= read -r skill_path; do
 
   name="$(basename "$src")"
   target="$DEST/$name"
+  relative_src="$(relative_link_target "$src" "$DEST")"
   echo "$name" >> "$manifest_names"
 
   if [ -L "$target" ]; then
     existing="$(readlink "$target")"
-    case "$existing" in
-      "$REPO/skills"/*) ;;
-      *)
-        echo "error: refusing to replace external symlink: $target -> $existing" >&2
-        exit 1
-        ;;
-    esac
+    if ! link_points_into_repo_skills "$target"; then
+      echo "error: refusing to replace external symlink: $target -> $existing" >&2
+      exit 1
+    fi
   elif [ -e "$target" ]; then
     echo "error: refusing to replace non-symlink path: $target" >&2
     exit 1
   fi
 
   if [ "$MODE" = "check" ]; then
-    if [ ! -L "$target" ] || [ "$(readlink "$target")" != "$src" ]; then
-      echo "error: missing or incorrect link: $target -> $src" >&2
+    if [ ! -L "$target" ] || [ "$(readlink "$target")" != "$relative_src" ]; then
+      echo "error: missing or incorrect link: $target -> $relative_src" >&2
       exit 1
     fi
-    echo "ok $name -> $src"
+    echo "ok $name -> $relative_src"
   else
-    ln -sfn "$src" "$target"
-    echo "linked $name -> $src"
+    ln -sfn "$relative_src" "$target"
+    echo "linked $name -> $relative_src"
   fi
 done
 
@@ -122,13 +157,10 @@ if [ -f "$STATE" ]; then
         exit 1
       fi
       existing="$(readlink "$target")"
-      case "$existing" in
-        "$REPO/skills"/*) ;;
-        *)
-          echo "error: stale managed link now points outside this repo: $target -> $existing" >&2
-          exit 1
-          ;;
-      esac
+      if ! link_points_into_repo_skills "$target"; then
+        echo "error: stale managed link now points outside this repo: $target -> $existing" >&2
+        exit 1
+      fi
       if [ "$MODE" = "check" ]; then
         echo "error: stale managed link: $target -> $existing" >&2
         exit 1
@@ -164,16 +196,13 @@ if [ "$MODE" = "install" ] && [ "$USE_DEFAULT_DEST" = true ]; then
 
       if [ -L "$target" ]; then
         existing="$(readlink "$target")"
-        case "$existing" in
-          "$REPO/skills"/*)
-            rm "$target"
-            echo "removed legacy Codex link $name -> $existing"
-            ;;
-          *)
-            echo "warning: preserving changed legacy link: $target -> $existing" >&2
-            legacy_state_safe=false
-            ;;
-        esac
+        if link_points_into_repo_skills "$target"; then
+          rm "$target"
+          echo "removed legacy Codex link $name -> $existing"
+        else
+          echo "warning: preserving changed legacy link: $target -> $existing" >&2
+          legacy_state_safe=false
+        fi
       elif [ -e "$target" ]; then
         echo "warning: preserving changed legacy path: $target" >&2
         legacy_state_safe=false

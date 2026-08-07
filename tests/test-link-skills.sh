@@ -16,6 +16,12 @@ HOME="$FAKE_HOME" "$REPO/scripts/link-skills.sh" >/dev/null
   echo "error: default installation did not use ~/.agents/skills" >&2
   exit 1
 }
+case "$(readlink "$FAKE_HOME/.agents/skills/to-spec")" in
+  /*)
+    echo "error: installer created an absolute skill link" >&2
+    exit 1
+    ;;
+esac
 [ ! -L "$FAKE_HOME/.codex/skills/to-spec" ] || {
   echo "error: legacy managed link was not migrated" >&2
   exit 1
