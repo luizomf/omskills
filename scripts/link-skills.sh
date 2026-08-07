@@ -3,6 +3,16 @@ set -euo pipefail
 
 # Links active skills into a user-level skill directory for local agent sessions.
 
+MODE="install"
+if [ "$#" -eq 0 ]; then
+  :
+elif [ "$#" -eq 1 ] && [ "$1" = "--check" ]; then
+  MODE="check"
+else
+  echo "usage: $0 [--check]" >&2
+  exit 2
+fi
+
 REPO="$(cd "$(dirname "$0")/.." && pwd -P)"
 if [ -n "${OMSKILLS_DEST+x}" ]; then
   DEST="$OMSKILLS_DEST"
@@ -10,14 +20,6 @@ if [ -n "${OMSKILLS_DEST+x}" ]; then
 else
   DEST="$HOME/.agents/skills"
   USE_DEFAULT_DEST=true
-fi
-MODE="install"
-
-if [ "${1:-}" = "--check" ]; then
-  MODE="check"
-elif [ "$#" -ne 0 ]; then
-  echo "usage: $0 [--check]" >&2
-  exit 2
 fi
 
 if ! command -v jq >/dev/null 2>&1; then
@@ -29,6 +31,171 @@ if ! command -v python3 >/dev/null 2>&1; then
   echo "error: python3 is required to create portable relative links" >&2
   exit 1
 fi
+
+physical_path() {
+  python3 - "$1" <<'PY'
+import os
+import sys
+
+print(os.path.realpath(sys.argv[1]))
+PY
+}
+
+path_is_within() {
+  case "$1" in
+    "$2"|"$2"/*) return 0 ;;
+    *) return 1 ;;
+  esac
+}
+
+path_is_descendant() {
+  case "$1" in
+    "$2"/*) return 0 ;;
+    *) return 1 ;;
+  esac
+}
+
+is_safe_name() {
+  local LC_ALL=C
+  [[ "$1" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]]
+}
+
+validate_managed_state() {
+  local state="$1"
+  local validated_names="$2"
+  local description="$3"
+
+  : > "$validated_names"
+  if [ -L "$state" ]; then
+    echo "error: $description managed state must not be a symlink: $state" >&2
+    return 1
+  fi
+  if [ ! -e "$state" ]; then
+    return 0
+  fi
+  if [ ! -f "$state" ]; then
+    echo "error: $description managed state is not a regular file: $state" >&2
+    return 1
+  fi
+
+  if ! python3 - "$state" "$validated_names" <<'PY'
+import re
+import sys
+from pathlib import Path
+
+source = Path(sys.argv[1])
+destination = Path(sys.argv[2])
+data = source.read_bytes()
+if not data:
+    names = []
+elif data.endswith(b"\n"):
+    names = data[:-1].split(b"\n")
+else:
+    names = data.split(b"\n")
+
+pattern = re.compile(rb"[a-z0-9]+(?:-[a-z0-9]+)*")
+if any(pattern.fullmatch(name) is None for name in names):
+    raise SystemExit(1)
+if len(names) != len(set(names)):
+    raise SystemExit(1)
+
+destination.write_bytes(b"".join(name + b"\n" for name in names))
+PY
+  then
+    echo "error: invalid $description managed-state entry" >&2
+    return 1
+  fi
+}
+
+WORK_DIR="$(mktemp -d)"
+STATE_TEMP=""
+cleanup() {
+  if [ -n "$STATE_TEMP" ]; then
+    rm -f "$STATE_TEMP"
+  fi
+  rm -rf "$WORK_DIR"
+}
+trap cleanup EXIT
+
+manifest_entries="$WORK_DIR/manifest-entries"
+manifest_records="$WORK_DIR/manifest-records"
+manifest_names="$WORK_DIR/manifest-names"
+: > "$manifest_records"
+: > "$manifest_names"
+
+if ! jq -ce '.skills | if type == "array" then .[] else error("skills must be an array") end' \
+  "$REPO/.codex-plugin/plugin.json" > "$manifest_entries"; then
+  echo "error: invalid skills manifest" >&2
+  exit 1
+fi
+
+REPO_SKILLS="$(physical_path "$REPO/skills")"
+if [ ! -d "$REPO_SKILLS" ] || ! path_is_descendant "$REPO_SKILLS" "$REPO"; then
+  echo "error: repository skills root is not a directory inside this repo" >&2
+  exit 1
+fi
+
+while IFS= read -r encoded_entry; do
+  if ! skill_path="$(printf '%s\n' "$encoded_entry" | jq -er '
+    if type == "string"
+      and (contains("\n") | not)
+      and test("^\\./skills/(engineering|productivity|misc)/[a-z0-9]+(-[a-z0-9]+)*$")
+    then .
+    else error("invalid canonical skill path")
+    end
+  ')"; then
+    echo "error: invalid manifest skill path" >&2
+    exit 1
+  fi
+
+  if [[ ! "$skill_path" =~ ^\./skills/(engineering|productivity|misc)/([a-z0-9]+(-[a-z0-9]+)*)$ ]]; then
+    echo "error: invalid manifest skill path: $skill_path" >&2
+    exit 1
+  fi
+
+  bucket="${BASH_REMATCH[1]}"
+  name="${BASH_REMATCH[2]}"
+  bucket_path="$REPO/skills/$bucket"
+  src="$bucket_path/$name"
+  skill_file="$src/SKILL.md"
+
+  if [ ! -d "$bucket_path" ]; then
+    echo "error: missing skill bucket: $bucket_path" >&2
+    exit 1
+  fi
+  bucket_root="$(physical_path "$bucket_path")"
+  if ! path_is_descendant "$bucket_root" "$REPO_SKILLS"; then
+    echo "error: skill bucket escapes the repository skills root: $bucket_path" >&2
+    exit 1
+  fi
+
+  if [ ! -d "$src" ]; then
+    echo "error: missing skill directory: $src" >&2
+    exit 1
+  fi
+  src_root="$(physical_path "$src")"
+  if ! path_is_descendant "$src_root" "$bucket_root"; then
+    echo "error: skill directory escapes its approved bucket: $src" >&2
+    exit 1
+  fi
+
+  if [ ! -f "$skill_file" ]; then
+    echo "error: missing skill file: $skill_file" >&2
+    exit 1
+  fi
+  skill_file_root="$(physical_path "$skill_file")"
+  if ! path_is_descendant "$skill_file_root" "$src_root"; then
+    echo "error: skill file escapes its skill directory: $skill_file" >&2
+    exit 1
+  fi
+
+  if grep -Fqx "$name" "$manifest_names"; then
+    echo "error: duplicate installed skill name: $name" >&2
+    exit 1
+  fi
+  printf '%s/%s\n' "$bucket" "$name" >> "$manifest_records"
+  printf '%s\n' "$name" >> "$manifest_names"
+done < "$manifest_entries"
 
 resolve_link_target() {
   python3 - "$1" <<'PY'
@@ -53,24 +220,20 @@ PY
 link_points_into_repo_skills() {
   local resolved
   resolved="$(resolve_link_target "$1")"
-  case "$resolved" in
-    "$REPO/skills"/*) return 0 ;;
-    *) return 1 ;;
-  esac
+  path_is_descendant "$resolved" "$REPO_SKILLS"
 }
 
-# If the destination is a symlink that resolves into this repo, we'd end up
-# writing the per-skill symlinks back into the repo's own skills/ tree. Detect
-# and bail out instead of polluting the working copy.
-if [ -L "$DEST" ]; then
-  resolved="$(python3 -c 'import os, sys; print(os.path.realpath(sys.argv[1]))' "$DEST")"
-  case "$resolved" in
-    "$REPO"|"$REPO"/*)
-      echo "error: $DEST is a symlink into this repo ($resolved)." >&2
-      echo "Remove it (rm \"$DEST\") and re-run; the script will recreate it as a real dir." >&2
-      exit 1
-      ;;
-  esac
+if [ -z "$DEST" ]; then
+  echo "error: skills destination must not be empty" >&2
+  exit 1
+fi
+
+# Resolve existing ancestors before creation so a symlink in any component
+# cannot redirect installer mutations into this checkout.
+resolved="$(physical_path "$DEST")"
+if path_is_within "$resolved" "$REPO"; then
+  echo "error: skills destination resolves into this repo: $DEST -> $resolved" >&2
+  exit 1
 fi
 
 if [ "$MODE" = "install" ]; then
@@ -81,16 +244,111 @@ elif [ ! -d "$DEST" ]; then
 fi
 
 # Relative symlinks must be calculated from the destination's physical path.
-# This matters on macOS, where /var resolves to /private/var.
+# This matters on macOS, where /var resolves to /private/var. Repeat the
+# containment check after opening the destination and use only this root.
 DEST="$(cd "$DEST" && pwd -P)"
+if path_is_within "$DEST" "$REPO"; then
+  echo "error: physical skills destination is inside this repo: $DEST" >&2
+  exit 1
+fi
 STATE="$DEST/.omskills-managed-links"
+CURRENT_STATE_EXISTS=false
+if [ -e "$STATE" ] || [ -L "$STATE" ]; then
+  CURRENT_STATE_EXISTS=true
+fi
+current_state_names="$WORK_DIR/current-state-names"
+validate_managed_state "$STATE" "$current_state_names" "current"
+
+LEGACY_DEST=""
+LEGACY_STATE=""
+LEGACY_STATE_EXISTS=false
+legacy_state_names="$WORK_DIR/legacy-state-names"
+: > "$legacy_state_names"
+if [ "$MODE" = "install" ] && [ "$USE_DEFAULT_DEST" = true ]; then
+  legacy_requested="$HOME/.codex/skills"
+  if [ -e "$legacy_requested" ] || [ -L "$legacy_requested" ]; then
+    if [ ! -d "$legacy_requested" ]; then
+      echo "error: legacy skills destination is not a directory: $legacy_requested" >&2
+      exit 1
+    fi
+    LEGACY_DEST="$(cd "$legacy_requested" && pwd -P)"
+    if path_is_within "$LEGACY_DEST" "$REPO"; then
+      echo "error: legacy skills destination resolves into this repo: $LEGACY_DEST" >&2
+      exit 1
+    fi
+    if [ "$LEGACY_DEST" = "$DEST" ]; then
+      echo "error: current and legacy skills destinations resolve to the same root" >&2
+      exit 1
+    fi
+
+    LEGACY_STATE="$LEGACY_DEST/.omskills-managed-links"
+    if [ -e "$LEGACY_STATE" ] || [ -L "$LEGACY_STATE" ]; then
+      LEGACY_STATE_EXISTS=true
+    fi
+    validate_managed_state "$LEGACY_STATE" "$legacy_state_names" "legacy"
+  fi
+fi
+
+# Preflight every manifest-derived and state-derived target before changing
+# any link. All names in these files were validated before reaching this point.
+while IFS= read -r relative; do
+  name="${relative#*/}"
+  target="$DEST/$name"
+
+  if [ -L "$target" ]; then
+    existing="$(readlink "$target")"
+    if ! link_points_into_repo_skills "$target"; then
+      echo "error: refusing to replace external symlink: $target -> $existing" >&2
+      exit 1
+    fi
+  elif [ -e "$target" ]; then
+    echo "error: refusing to replace non-symlink path: $target" >&2
+    exit 1
+  fi
+done < "$manifest_records"
+
+if [ "$CURRENT_STATE_EXISTS" = true ]; then
+  while IFS= read -r name; do
+    if ! grep -Fqx "$name" "$manifest_names"; then
+      target="$DEST/$name"
+      if [ ! -L "$target" ]; then
+        echo "error: stale managed path is no longer a symlink: $target" >&2
+        exit 1
+      fi
+      existing="$(readlink "$target")"
+      if ! link_points_into_repo_skills "$target"; then
+        echo "error: stale managed link now points outside this repo: $target -> $existing" >&2
+        exit 1
+      fi
+    fi
+  done < "$current_state_names"
+fi
+
+if [ "$MODE" = "install" ]; then
+  STATE_TEMP="$(umask 077 && mktemp "$DEST/.omskills-managed-links.tmp.XXXXXX")"
+  if [ -L "$STATE_TEMP" ] || [ ! -f "$STATE_TEMP" ]; then
+    echo "error: could not create regular temporary managed state in $DEST" >&2
+    exit 1
+  fi
+  chmod 600 "$STATE_TEMP"
+  cat "$manifest_names" > "$STATE_TEMP"
+fi
 
 # One-time migration from the state-less installer used before the July 2026
 # catalog rename. Remove only the exact obsolete links that installer created.
-if [ "$MODE" = "install" ] && [ ! -f "$STATE" ]; then
+if [ "$MODE" = "install" ] && [ "$CURRENT_STATE_EXISTS" = false ]; then
   while IFS='|' read -r name relative; do
+    if ! is_safe_name "$name" ||
+      [[ ! "$relative" =~ ^(engineering|productivity|misc)/[a-z0-9]+(-[a-z0-9]+)*$ ]]; then
+      echo "error: invalid built-in migration path: $name -> $relative" >&2
+      exit 1
+    fi
     target="$DEST/$name"
-    expected="$REPO/skills/$relative"
+    expected="$(physical_path "$REPO/skills/$relative")"
+    if ! path_is_descendant "$expected" "$REPO_SKILLS"; then
+      echo "error: built-in migration target escapes repository skills: $relative" >&2
+      exit 1
+    fi
     if [ -L "$target" ] && [ "$(resolve_link_target "$target")" = "$expected" ]; then
       rm "$target"
       echo "removed legacy link $name -> $expected"
@@ -105,22 +363,11 @@ zoom-out|engineering/zoom-out
 LEGACY_LINKS
 fi
 
-manifest_names="$(mktemp)"
-trap 'rm -f "$manifest_names"' EXIT
-
-jq -r '.skills[]' "$REPO/.codex-plugin/plugin.json" |
-while IFS= read -r skill_path; do
-  src="$REPO/${skill_path#./}"
-
-  if [ ! -f "$src/SKILL.md" ]; then
-    echo "error: missing skill file: $src/SKILL.md" >&2
-    exit 1
-  fi
-
-  name="$(basename "$src")"
+while IFS= read -r relative; do
+  src="$REPO/skills/$relative"
+  name="${relative#*/}"
   target="$DEST/$name"
   relative_src="$(relative_link_target "$src" "$DEST")"
-  echo "$name" >> "$manifest_names"
 
   if [ -L "$target" ]; then
     existing="$(readlink "$target")"
@@ -143,13 +390,12 @@ while IFS= read -r skill_path; do
     ln -sfn "$relative_src" "$target"
     echo "linked $name -> $relative_src"
   fi
-done
+done < "$manifest_records"
 
 # Remove only stale links recorded by a previous installer run. A manually
 # linked optional skill from this repository is not owned unless listed here.
-if [ -f "$STATE" ]; then
+if [ "$CURRENT_STATE_EXISTS" = true ]; then
   while IFS= read -r name; do
-    [ -n "$name" ] || continue
     target="$DEST/$name"
     if ! grep -Fqx "$name" "$manifest_names"; then
       if [ ! -L "$target" ]; then
@@ -168,50 +414,46 @@ if [ -f "$STATE" ]; then
       rm "$target"
       echo "removed stale link $name -> $existing"
     fi
-  done < "$STATE"
+  done < "$current_state_names"
 fi
 
 if [ "$MODE" = "check" ]; then
-  if [ ! -f "$STATE" ] || ! cmp -s "$manifest_names" "$STATE"; then
+  if [ "$CURRENT_STATE_EXISTS" = false ] || ! cmp -s "$manifest_names" "$STATE"; then
     echo "error: managed-link state is missing or differs from the manifest" >&2
     exit 1
   fi
 else
-  cp "$manifest_names" "$STATE"
+  mv -f "$STATE_TEMP" "$STATE"
+  STATE_TEMP=""
 fi
 
 # Codex previously used ~/.codex/skills for user skills. After a successful
 # default installation, remove only links recorded there that still point into
 # this repository. Preserve unrelated content and any path whose ownership is
 # no longer safe to infer.
-if [ "$MODE" = "install" ] && [ "$USE_DEFAULT_DEST" = true ]; then
-  legacy_dest="$HOME/.codex/skills"
-  legacy_state="$legacy_dest/.omskills-managed-links"
+if [ "$MODE" = "install" ] && [ "$LEGACY_STATE_EXISTS" = true ]; then
   legacy_state_safe=true
 
-  if [ -f "$legacy_state" ]; then
-    while IFS= read -r name; do
-      [ -n "$name" ] || continue
-      target="$legacy_dest/$name"
+  while IFS= read -r name; do
+    target="$LEGACY_DEST/$name"
 
-      if [ -L "$target" ]; then
-        existing="$(readlink "$target")"
-        if link_points_into_repo_skills "$target"; then
-          rm "$target"
-          echo "removed legacy Codex link $name -> $existing"
-        else
-          echo "warning: preserving changed legacy link: $target -> $existing" >&2
-          legacy_state_safe=false
-        fi
-      elif [ -e "$target" ]; then
-        echo "warning: preserving changed legacy path: $target" >&2
+    if [ -L "$target" ]; then
+      existing="$(readlink "$target")"
+      if link_points_into_repo_skills "$target"; then
+        rm "$target"
+        echo "removed legacy Codex link $name -> $existing"
+      else
+        echo "warning: preserving changed legacy link: $target -> $existing" >&2
         legacy_state_safe=false
       fi
-    done < "$legacy_state"
-
-    if [ "$legacy_state_safe" = true ]; then
-      rm "$legacy_state"
-      echo "removed legacy managed-link state $legacy_state"
+    elif [ -e "$target" ]; then
+      echo "warning: preserving changed legacy path: $target" >&2
+      legacy_state_safe=false
     fi
+  done < "$legacy_state_names"
+
+  if [ "$legacy_state_safe" = true ]; then
+    rm "$LEGACY_STATE"
+    echo "removed legacy managed-link state $LEGACY_STATE"
   fi
 fi
