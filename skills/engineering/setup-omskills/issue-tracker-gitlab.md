@@ -46,6 +46,21 @@ Do not infer GitHub-style author associations on GitLab. Project membership is t
 - **Publish to the issue tracker:** use the noninteractive create operation above with explicit title and description arguments.
 - **Fetch the relevant Ticket:** use the JSON read operation and paginated comments operation above; read the full description, labels, author, timestamps, and comments.
 
+## Planning publication operations
+
+Use these operations for `to-spec` and `to-tickets` in addition to the conventions above:
+
+- **Publish a planning Spec:** create the complete issue with explicit title and description fields and no configured state-role label. Record its Prompt Audit only after the complete description is stable.
+- **Discover approved Ticket identities:** list issues with the configured paginated JSON operation, first scope candidates to the Spec parent fallback below, then match the exact `## Planning identity` value. Reconcile one match, create no match, and stop on multiple matches. Do not use repository-wide title search as identity.
+- **Create a non-ready Ticket:** `glab api --hostname <host> --method POST 'projects/<project-id>/issues' --raw-field title=<title> --raw-field description=<description> --raw-field labels=<category-label>,<needs-triage-label>`. The labels must resolve to exactly one configured category role and exactly the configured `needs-triage` state role.
+- **Documented fallback for parentage:** this configured flow has no native parent relation. Only because that native capability is unavailable, make `Part of #<spec-iid>` the Ticket description's first line and maintain an approved `## Tickets` checklist on the Spec. Reconcile descriptions with `glab issue update <iid> --repo https://<host>/<namespace>/<project> --description <complete-description>` without duplicating checklist entries.
+- **Add a native blocker:** use the configured `is_blocked_by` Issue Links API operation from Wayfinding below and inspect the child's complete links response before adding a missing relation. Use a `Blocked by: #<iid>, ...` description fallback only when native issue links are unavailable.
+- **Record direct conflicts:** no native conflict relation is configured. Record each edge on both Ticket descriptions with its shared file, contract, artifact, or integration surface, and reconcile the complete descriptions.
+- **Audit a final Ticket:** use the note operation after its final description, parent fallback, blockers, and conflicts have been reconciled. A later material contract or relation change makes that status stale.
+- **Transition one audited Ticket to ready:** remove `<needs-triage-label>` and every other configured state role with `glab issue update <iid> --repo https://<host>/<namespace>/<project> --unlabel <label>`, then apply `<ready-for-agent-label>` with the corresponding `--label` operation. Remove any extra configured category role so exactly one configured category role and exactly the configured `ready-for-agent` state role remain. A missing, stale, or `FAIL` audit instead keeps or restores the single category plus `needs-triage` pair.
+
+Create or reconcile every approved identity and parent fallback before adding identifier-dependent blockers or conflicts. A partial attempt reports exact completed and missing identities, parents, relations, audits, and readiness transitions. Resume by repeating discovery and reconciliation rather than creating replacements.
+
 ## Wayfinding operations
 
 The **map** is one issue labelled `wayfinder:map`; its **Tickets** are issues whose first description line is the exact map parent reference.

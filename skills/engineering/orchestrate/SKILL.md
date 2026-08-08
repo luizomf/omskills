@@ -21,6 +21,15 @@ Writer and reviewer are single-pass leaf agents. Every result returns only to th
 
 Read the repository instructions, live tracker state, complete issue, governing sources, dependency and conflict edges, base branch, and relevant code. Select one open, authorized, unblocked issue from the supplied prepared queue. Live state wins over handoffs and snapshots.
 
+For each candidate Ticket, read its complete comments, configured native or fallback blockers, and labels. Reject it from selection and writer dispatch when any of these conditions holds:
+
+- the Ticket is closed;
+- any configured native or fallback relation identifies an open blocker;
+- its newest applicable Prompt Audit status is missing, stale, or `FAIL`; or
+- it does not carry exactly one configured category role and exactly the configured `ready-for-agent` state role, with no other configured state role.
+
+A current explicit maintainer-authorized `BYPASS` satisfies the Ticket audit condition; an inferred or unrecorded bypass does not. Recheck every live Ticket invariant immediately before writer dispatch and stop if any changed.
+
 Locate the newest applicable `Prompt Audit` status for that issue:
 
 - `PASS` — proceed when no material change to the audited execution contract occurred afterward.

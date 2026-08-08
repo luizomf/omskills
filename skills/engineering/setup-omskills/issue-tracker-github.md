@@ -44,6 +44,23 @@ Do not request `authorAssociation` from `gh pr list`; it is not a supported JSON
 - **Publish to the issue tracker:** use the noninteractive create operation above with an explicit title and body file.
 - **Fetch the relevant Ticket:** use the read operation and complete-comments operation above; read the full body, labels, author, timestamps, and comments.
 
+## Planning publication operations
+
+Use these operations for `to-spec` and `to-tickets` in addition to the conventions above. Prefer each native relation and use its documented fallback only when that native capability is unavailable:
+
+- **Publish a planning Spec:** create the complete issue with explicit `--title` and `--body-file` and no configured state-role label. Record its Prompt Audit with the comment operation only after the complete body is stable.
+- **Discover approved Ticket identities:** prefer the paginated native child scope at `repos/<owner>/<repo>/issues/<spec-number>/sub_issues?per_page=100` and match the exact `## Planning identity` value in each body. One match is reconciled, no match is created, and multiple matches stop publication as a duplicate. Do not use repository-wide title search as identity.
+- **Create a non-ready Ticket with its native parent:** `gh issue create --repo <host>/<owner>/<repo> --title <title> --body-file <body-file> --label <category-label> --label <needs-triage-label> --parent <spec-number>`. The two labels must resolve to exactly one configured category role and exactly the configured `needs-triage` state role.
+- **Reconcile a native parent:** `gh issue edit <ticket-number> --repo <host>/<owner>/<repo> --parent <spec-number>`. Inspect it with `gh api --hostname <host> 'repos/<owner>/<repo>/issues/<ticket-number>/parent'`.
+- **Documented fallback for parentage:** use only when the native parent relation is unavailable. Prepend `Part of #<spec-number>` to the Ticket body and maintain a `## Tickets` checklist of approved Ticket identifiers on the Spec. Reconcile the checklist with `gh issue edit <spec-number> --repo <host>/<owner>/<repo> --body-file <spec-body-file>`; never append a duplicate entry.
+- **Add a native blocker:** `gh issue edit <ticket-number> --repo <host>/<owner>/<repo> --add-blocked-by <blocker-number>`. Inspect all blockers with `gh api --hostname <host> --paginate 'repos/<owner>/<repo>/issues/<ticket-number>/dependencies/blocked_by?per_page=100' --jq '.[]'`. Add only a missing relation.
+- **Documented fallback for blockers:** use only when native dependencies are unavailable. Maintain the identifiers under the Ticket's `## Blocked by` section and inspect every referenced issue's current state.
+- **Record direct conflicts:** no native conflict relation is configured. Record each edge under `## Conflicts with` on both Ticket bodies, including the shared file, contract, artifact, or integration surface, and reconcile with `gh issue edit <ticket-number> --repo <host>/<owner>/<repo> --body-file <body-file>`.
+- **Audit a final Ticket:** use the comment operation after its final body, parent, blockers, and conflicts have been reconciled. A later material body or relation change makes that status stale.
+- **Transition one audited Ticket to ready:** `gh issue edit <ticket-number> --repo <host>/<owner>/<repo> --remove-label <needs-triage-label> --add-label <ready-for-agent-label>`. Remove every other configured category or state label as needed so the Ticket finishes with exactly one configured category role and exactly the configured `ready-for-agent` state role. A missing, stale, or `FAIL` audit instead keeps or restores the single category plus `needs-triage` pair.
+
+Create or reconcile every approved identity and parent before adding identifier-dependent blockers or conflicts. A partial attempt reports exact completed and missing identities, parents, relations, audits, and readiness transitions. Resume by repeating discovery and reconciliation rather than creating replacements.
+
 ## Wayfinding operations
 
 The **map** is one issue labelled `wayfinder:map`; its **Tickets** are child issues.

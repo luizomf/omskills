@@ -31,6 +31,18 @@ Before recommending triage mappings, inventory the category and state strings al
 - **Publish to the Issue tracker:** create the complete Markdown file with explicit title, body, author, created timestamp, and updated timestamp.
 - **Fetch the relevant Ticket:** read the complete file, including role fields, author/timestamps, and every comment.
 
+## Planning publication operations
+
+Use these operations for `to-spec` and `to-tickets` in addition to the conventions above:
+
+- **Publish a planning Spec:** write the complete `.scratch/<feature-slug>/spec.md` without a `Status:` state role, then append its current Prompt Audit under `## Comments`. A planning Spec never receives `ready-for-agent` or another implementation-ready state.
+- **Create or reconcile a Ticket identity:** use the approved numbered path and exact `Planning identity: <source-identity>/ticket-<NN>` field. Search the feature's direct `issues/` children for that field before writing. Reconcile one match, create no match, and stop on multiple matches or a different identity at the approved path.
+- **Record the parent and initial roles:** every Ticket records `Parent: <spec-path>`, `Category: <configured-category-role>`, and `Status: needs-triage`. Keep exactly one configured category role and this one configured state role until audit authorizes readiness.
+- **Record blockers and conflicts:** use `Blocked by: <identities>` and `Conflicts with: <identities plus each shared file, contract, artifact, or integration surface>`. Write all approved identity files and `Parent:` fields before replacing symbolic references with final numbered identities.
+- **Audit and transition:** append the Ticket's Prompt Audit under `## Comments` only after its complete body, parent, blockers, and conflicts are final. A current `PASS` or explicit maintainer-authorized `BYPASS` changes `Status:` from `needs-triage` to `ready-for-agent`. A missing, stale, or `FAIL` status keeps or restores `needs-triage`.
+
+Publication succeeds only after every file and field is re-read and all authorizing audits and exact role invariants hold. On interruption, report exact completed and missing identities, parents, blockers, conflicts, audits, and readiness transitions. Resume by reconciling exact `Planning identity:` values rather than creating duplicate files.
+
 ## Wayfinding operations
 
 The **map** is one Markdown file; its **Tickets** are child files in that map's dedicated issues directory.

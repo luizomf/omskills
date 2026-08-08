@@ -5,82 +5,127 @@ description: Break a plan, spec, or conversation into tracer-bullet tickets with
 
 # To Tickets
 
-Create **tracer-bullet tickets** with two scheduling relations:
+Create **tracer-bullet Tickets** with two scheduling relations:
 
-- A **blocking edge** means the blocked ticket cannot start or integrate until the blocker is complete.
-- A **conflict edge** means two otherwise unblocked tickets should not have active writers concurrently because they materially overlap in files, contracts, artifacts, or integration assumptions.
+- A **blocking edge** means the blocked Ticket cannot start or integrate until the blocker is complete.
+- A **conflict edge** records a direct write-conflict between otherwise unblocked Tickets. It means they must not have active writers concurrently because they share a file, contract, artifact, or integration surface.
 
-Read the configured issue tracker and triage-label vocabulary. If either is unavailable, run `setup-omskills` first.
+Read the configured Issue tracker and triage-label vocabulary. If either is unavailable, run `setup-omskills` first.
 
 ## Process
 
 ### 1. Gather source context
 
-Use the plan, spec, or conversation already in context. If the user provides a path, issue number, or URL, read its complete body and comments before drafting tickets.
+Use the plan, Spec, or conversation already in context. If the user provides a path, issue number, or URL, read its complete body and comments before drafting Tickets.
+
+#### Validate the source Prompt Audit
+
+Locate the source planning contract's newest applicable Prompt Audit status before accepting it for breakdown:
+
+- a current `PASS` authorizes the breakdown;
+- `BYPASS` authorizes it only when the status records explicit maintainer authorization for that source contract; and
+- a missing, stale, or `FAIL` status stops before Ticket drafting or publication and reports the choices to run `prompt-comprehension-audits` or obtain an explicit maintainer-authorized bypass.
+
+Never infer bypass from a request to create Tickets. A material source-contract change makes an older status stale.
 
 ### 2. Inspect the repository when needed
 
-If the repository's current implementation has not already been inspected in this context, inspect the affected area. Use terms from the project domain glossary in ticket titles and bodies, and preserve applicable ADR decisions.
+If the repository's current implementation has not already been inspected in this context, inspect the affected area. Use terms from the project domain glossary in Ticket titles and bodies, and preserve applicable ADR decisions.
 
-Identify opportunities to prefactor the code so later tickets can make smaller changes. Schedule any such prefactoring before the tickets it enables.
+Identify prefactoring that would make later slices smaller. Fold ordinary prefactoring into the first behavior slice that needs it rather than publishing a standalone prefactor Ticket.
 
 ### 3. Draft vertical slices
 
-Each tracer-bullet ticket must:
+Each tracer-bullet Ticket must:
 
 - deliver one user-visible behavior through every layer that behavior affects, such as schema, API, UI, and tests;
 - be independently demonstrable or verifiable after completion; and
-- fit one fresh agent context window.
+- fit one fresh agent context with room to understand, implement, and verify the behavior.
 
-Assign every ticket its blocking and conflict edges. A ticket with no blockers enters the frontier. It is eligible for concurrent work only when repository evidence shows no material conflict with active tickets.
+Assign every real blocking edge and every direct write-conflict edge. For each conflict, name the shared file, contract, artifact, or integration surface. A Ticket with no blockers enters the frontier. It is eligible for concurrent work only when repository evidence shows no direct conflict with active Tickets.
 
 #### Wide-refactor exception
 
-Use **expand–contract** instead of vertical slices when one mechanical change, such as renaming a column or retyping a shared symbol, has a whole-codebase blast radius and no partial vertical slice can keep CI passing:
+Use **expand–contract** instead of vertical slices only when one mechanical change, such as renaming a column or retyping a shared symbol, has a whole-codebase blast radius and no partial vertical slice can keep CI passing:
 
 1. **Expand:** add the new form beside the old form without breaking current callers.
-2. **Migrate:** move callers in batches sized by blast radius, such as one package or directory per ticket. Each migration ticket is blocked by expansion, and the old form remains available so each batch can pass CI independently.
-3. **Contract:** remove the old form only after every migration ticket is complete; block contraction on all migration tickets.
+2. **Migrate:** move callers in batches sized by blast radius, such as one package or directory per Ticket. Each migration Ticket is blocked by expansion, and the old form remains available so each batch can pass CI independently.
+3. **Contract:** remove the old form only after every migration Ticket is complete; block contraction on all migration Tickets.
 
-If no migration batch can pass CI independently, retain this sequence on an integration branch and block a final integrate-and-verify ticket on all batches. In that case, the requirement to leave CI passing applies to the final ticket rather than each batch.
+If no migration batch can pass CI independently, retain this sequence on an integration branch and block a final integrate-and-verify Ticket on all batches. In that case, the requirement to leave CI passing applies to the final Ticket rather than each batch.
+
+Do not use this exception to justify ordinary standalone prefactoring.
 
 ### 4. Obtain breakdown approval
 
-Present a numbered draft. For each ticket, include:
+Present a numbered draft. The number becomes part of the Ticket's stable Planning identity for duplicate-free publication and resume. For each Ticket, include:
 
 - **Title:** one line naming the delivered behavior;
-- **Blocked by:** every ticket that must complete first, or none; and
+- **Category:** exactly one configured category role, `bug` or `enhancement`;
+- **Blocked by:** every Ticket that must complete first, or none;
+- **Conflicts with:** every direct write-conflict plus its shared file, contract, artifact, or integration surface, or none; and
 - **What it delivers:** the end-to-end behavior that becomes demonstrable or verifiable.
 
 Ask the user to identify:
 
-- any ticket that does not fit one fresh context or cannot be verified independently;
+- any Ticket that does not fit one fresh context or cannot be verified independently;
 - any blocking edge that does not gate start or integration, and any missing blocker;
-- any conflict edge without a shared surface, and any missing conflict; and
-- tickets to merge or split.
+- any conflict edge without a direct shared surface, and any missing conflict; and
+- Tickets to merge or split.
 
-Revise and repeat until the user approves the breakdown. Do not publish before approval.
+Revise and repeat until the user approves the breakdown. Do not publish before approval. This is the established breakdown-approval gate; do not add another publication confirmation.
 
-### 5. Publish to the configured tracker
+### 5. Publish transactionally and resumably
 
-Publish one artifact per approved ticket in blocker-first dependency order:
+Treat the approved source identity plus each approved draft number as that Ticket's stable **Planning identity**. Before mutating the tracker, inspect the source's configured child scope and all candidate artifacts for those exact identities. Reconcile one existing match in place, create a missing identity, and stop on multiple matches or an identity collision. Never create a replacement merely because an earlier attempt is incomplete.
 
-- **Local markdown:** write each ticket to `.scratch/<feature-slug>/issues/<NN>-<slug>.md`, numbered from `01`. Record both edge types.
-- **GitHub, Linear, or another issue tracker:** create one issue per ticket so relationships use real identifiers. Use native blocking relations when available. Record conflicts in the issue body unless the tracker provides an equivalent native relation. Apply `ready-for-agent` unless instructed otherwise.
+Maintain a publication ledger of every approved identity, parent, blocker, conflict, final contract, Prompt Audit status, and readiness transition. Run the phases in this order.
 
-Do not close or modify a parent issue.
+#### Phase A — identities and parents
+
+1. Create or reconcile every approved Ticket identity with its complete behavior and acceptance criteria, using symbolic approved-draft references until all real identifiers exist.
+2. Give every Ticket exactly one configured category role and the configured `needs-triage` state role. Remove any other configured category or state roles from a reconciled identity. No Ticket starts ready.
+3. Create or reconcile every parent relationship to the source Spec. Prefer the configured native parent relation. Use the configured documented fallback only when that native relation is unavailable.
+4. Verify that all approved identities and parents exist before adding any identifier-dependent blocker or conflict relation.
+
+#### Phase B — final contracts and relations
+
+1. Replace symbolic references with the reconciled identifiers and write each final Ticket contract.
+2. Create or reconcile every blocking edge. Prefer the configured native blocker relation; use its documented body or file fallback only when the native relation is unavailable.
+3. Create or reconcile every direct write-conflict edge on both endpoints, using a native equivalent when configured or the Ticket contract otherwise. Include the shared file, contract, artifact, or integration surface.
+4. Re-read every final contract and configured relation. Do not audit a Ticket until its identity, parent, complete body, blockers, and conflicts are final.
+
+#### Phase C — audit and readiness
+
+For each final Ticket, run `prompt-comprehension-audits` against that exact complete contract and append the status without rewriting audit history.
+
+- On a current `PASS` or explicit maintainer-authorized `BYPASS`, remove `needs-triage` and every other configured state role, apply the configured `ready-for-agent` state role, and verify that exactly one configured category role and exactly the configured `ready-for-agent` state role remain.
+- On a missing, stale, or `FAIL` status, keep or restore exactly one configured category role plus the configured `needs-triage` state role, remove `ready-for-agent` and every other configured state role, and report that the Ticket is non-ready.
+- A material edit after audit makes that status stale and requires the non-ready state until a new audit authorizes readiness.
+
+Do not report publication success until every approved identity, parent, blocker, direct conflict, current authorizing audit, and exact readiness invariant has been re-read and verified. On interruption, unavailable native capability without its configured fallback, failed audit, or any partial result, report success as false and list the exact completed and missing artifacts from the ledger. Resume from Phase A by reconciling approved identities and relations; never duplicate them.
+
+### Tracker artifact shapes
+
+Follow the configured Issue tracker operations for native relations, fallbacks, comments, and labels.
 
 <local-ticket-template>
 
 # <NN> — <Ticket title>
 
-**What to build:** <the end-to-end behavior this ticket makes work from the user's perspective>
+Planning identity: <source identity>/ticket-<NN>
+Parent: <source Spec path>
+Category: <configured bug|enhancement role>
+Status: needs-triage
+Author: <configured author identity>
+Created: <ISO 8601 timestamp>
+Updated: <ISO 8601 timestamp>
 
-**Blocked by:** <ticket numbers/titles, or "None — can start immediately">
+**What to build:** <the end-to-end behavior this Ticket makes work from the user's perspective>
 
-**Conflicts with:** <ticket numbers/titles, or "None — independent">
+**Blocked by:** <Ticket Planning identities/numbers/titles, or "None — can start immediately">
 
-**Status:** ready-for-agent
+**Conflicts with:** <each conflicting Ticket and shared surface, or "None — independent">
 
 - [ ] Acceptance criterion 1
 - [ ] Acceptance criterion 2
@@ -89,13 +134,17 @@ Do not close or modify a parent issue.
 
 <issue-template>
 
+## Planning identity
+
+<source identity>/ticket-<NN>
+
 ## Parent
 
-<parent issue reference when the source was an existing issue; otherwise omit this section>
+<parent issue reference>
 
 ## What to build
 
-<the end-to-end behavior this ticket makes work from the user's perspective>
+<the end-to-end behavior this Ticket makes work from the user's perspective>
 
 ## Acceptance criteria
 
@@ -104,18 +153,16 @@ Do not close or modify a parent issue.
 
 ## Blocked by
 
-- <each blocking ticket reference, or "None — can start immediately">
+- <each blocking Ticket reference, or "None — can start immediately">
 
 ## Conflicts with
 
-- <each conflicting ticket reference plus the shared surface, or "None — independent">
+- <each conflicting Ticket reference plus its shared file, contract, artifact, or integration surface, or "None — independent">
 
 </issue-template>
 
-Describe behavior and acceptance criteria without file paths, layer-by-layer implementation lists, or code snippets. Exception: when prototype output contains a state machine, reducer, schema, type shape, or other snippet that encodes an established decision more precisely than prose can, include only its decision-bearing parts and identify it as prototype output.
-
-The publish step is complete when every approved ticket exists separately, every blocking and conflict edge is recorded, and every non-overridden ticket has `ready-for-agent`.
+Describe behavior and acceptance criteria without layer-by-layer implementation lists or code snippets. File paths are allowed only where needed to identify a direct conflict surface. Prototype output may include only the decision-bearing part of a state machine, reducer, schema, type shape, or similar artifact, identified as prototype output.
 
 ## Next-phase handoff
 
-Ticket creation does not require implementation. When execution begins later, work frontier tickets whose blockers are complete and use `implement` with a fresh context for each ticket. Concurrent tickets require demonstrated independence plus exclusive owners, branches, and worktrees. Integrate completed tickets one at a time, then revalidate every remaining branch after each merge.
+Ticket creation does not require implementation. When execution begins later, `implement` and `orchestrate` must fetch live Ticket state and reject a Ticket that is closed, has an open blocker, has a missing, stale, or `FAIL` Prompt Audit status, or lacks exactly one configured category role plus exactly the configured `ready-for-agent` state role. Concurrent Tickets additionally require demonstrated independence and exclusive owners, branches, and worktrees. Integrate completed Tickets one at a time, then revalidate every remaining branch after each merge.

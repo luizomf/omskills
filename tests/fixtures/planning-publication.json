@@ -1,0 +1,84 @@
+{
+  "triage_roles": {
+    "categories": ["bug", "enhancement"],
+    "states": ["needs-triage", "needs-info", "ready-for-agent", "ready-for-human", "wontfix"]
+  },
+  "audit_histories": [
+    {"id": "missing", "current_version": 1, "history": [], "authorizes": false},
+    {"id": "pass", "current_version": 1, "history": [{"version": 1, "status": "PASS", "maintainer_authorized": false}], "authorizes": true},
+    {"id": "explicit-bypass", "current_version": 1, "history": [{"version": 1, "status": "BYPASS", "maintainer_authorized": true}], "authorizes": true},
+    {"id": "unauthorized-bypass", "current_version": 1, "history": [{"version": 1, "status": "BYPASS", "maintainer_authorized": false}], "authorizes": false},
+    {"id": "fail-after-pass", "current_version": 1, "history": [{"version": 1, "status": "PASS", "maintainer_authorized": false}, {"version": 1, "status": "FAIL", "maintainer_authorized": false}], "authorizes": false},
+    {"id": "stale-pass", "current_version": 2, "history": [{"version": 1, "status": "PASS", "maintainer_authorized": false}], "authorizes": false}
+  ],
+  "local_publication": {
+    "author": "fixture-maintainer",
+    "created": "2026-04-01T00:00:00Z",
+    "updated": "2026-04-01T00:00:00Z",
+    "spec": {
+      "identity": "spec-fixture-42",
+      "title": "Publish fixture behavior",
+      "body": "## Problem Statement\n\nFixture planning contract.\n\n## Testing Decisions\n\n- **Confirmed caller-visible test seam:** disposable local publication\n",
+      "audit": {"version": 1, "status": "PASS", "maintainer_authorized": false}
+    },
+    "tickets": [
+      {
+        "identity": "spec-fixture-42/ticket-01",
+        "number": 1,
+        "slug": "publish-first-slice",
+        "title": "Publish the first behavior slice",
+        "category": "enhancement",
+        "blocked_by": [],
+        "conflicts": [{"identity": "spec-fixture-42/ticket-02", "surface": "shared planning contract"}],
+        "audit": {"version": 1, "status": "PASS", "maintainer_authorized": false}
+      },
+      {
+        "identity": "spec-fixture-42/ticket-02",
+        "number": 2,
+        "slug": "publish-second-slice",
+        "title": "Publish the second behavior slice",
+        "category": "bug",
+        "blocked_by": ["spec-fixture-42/ticket-01"],
+        "conflicts": [{"identity": "spec-fixture-42/ticket-01", "surface": "shared planning contract"}],
+        "audit": {"version": 1, "status": "BYPASS", "maintainer_authorized": true}
+      }
+    ],
+    "interrupt_after_relations": 1
+  },
+  "hosted_relations": [
+    {
+      "id": "github-native-preferred",
+      "native_parent_available": true,
+      "native_parent": 42,
+      "fallback_parent": 999,
+      "native_blockers_available": true,
+      "native_blockers": [101],
+      "fallback_blockers": [998],
+      "expected_parent": 42,
+      "expected_blockers": [101]
+    },
+    {
+      "id": "documented-fallback",
+      "native_parent_available": false,
+      "native_parent": null,
+      "fallback_parent": 42,
+      "native_blockers_available": false,
+      "native_blockers": [],
+      "fallback_blockers": [101],
+      "expected_parent": 42,
+      "expected_blockers": [101]
+    }
+  ],
+  "downstream_cases": [
+    {"id": "valid-pass", "state": "OPEN", "blocker_states": ["CLOSED"], "audit": {"version": 1, "status": "PASS", "maintainer_authorized": false}, "current_version": 1, "labels": ["enhancement", "ready-for-agent"], "eligible": true},
+    {"id": "valid-bypass", "state": "OPEN", "blocker_states": [], "audit": {"version": 1, "status": "BYPASS", "maintainer_authorized": true}, "current_version": 1, "labels": ["bug", "ready-for-agent"], "eligible": true},
+    {"id": "closed", "state": "CLOSED", "blocker_states": [], "audit": {"version": 1, "status": "PASS", "maintainer_authorized": false}, "current_version": 1, "labels": ["enhancement", "ready-for-agent"], "eligible": false},
+    {"id": "open-blocker", "state": "OPEN", "blocker_states": ["OPEN"], "audit": {"version": 1, "status": "PASS", "maintainer_authorized": false}, "current_version": 1, "labels": ["enhancement", "ready-for-agent"], "eligible": false},
+    {"id": "missing-audit", "state": "OPEN", "blocker_states": [], "audit": null, "current_version": 1, "labels": ["enhancement", "ready-for-agent"], "eligible": false},
+    {"id": "stale-audit", "state": "OPEN", "blocker_states": [], "audit": {"version": 1, "status": "PASS", "maintainer_authorized": false}, "current_version": 2, "labels": ["enhancement", "ready-for-agent"], "eligible": false},
+    {"id": "failed-audit", "state": "OPEN", "blocker_states": [], "audit": {"version": 1, "status": "FAIL", "maintainer_authorized": false}, "current_version": 1, "labels": ["enhancement", "ready-for-agent"], "eligible": false},
+    {"id": "wrong-state", "state": "OPEN", "blocker_states": [], "audit": {"version": 1, "status": "PASS", "maintainer_authorized": false}, "current_version": 1, "labels": ["enhancement", "needs-triage"], "eligible": false},
+    {"id": "duplicate-category", "state": "OPEN", "blocker_states": [], "audit": {"version": 1, "status": "PASS", "maintainer_authorized": false}, "current_version": 1, "labels": ["bug", "enhancement", "ready-for-agent"], "eligible": false},
+    {"id": "duplicate-state", "state": "OPEN", "blocker_states": [], "audit": {"version": 1, "status": "PASS", "maintainer_authorized": false}, "current_version": 1, "labels": ["enhancement", "needs-triage", "ready-for-agent"], "eligible": false}
+  ]
+}

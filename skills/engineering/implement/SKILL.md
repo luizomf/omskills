@@ -11,6 +11,15 @@ Deliver exactly one repository implementation unit. The invoking agent is the co
 
 Read the accepted request and its governing sources. Identify the requested behavior, every acceptance criterion, and one execution contract that fits a single implementation unit. If the request combines independent units or a blocked or conflicting set of Tickets, stop before writer dispatch or code and report that one unit must be selected or decomposed.
 
+When the unit is a tracked Ticket, fetch its live state, complete comments, configured native or fallback blockers, and labels. Reject it before writer dispatch or code when any of these conditions holds:
+
+- the Ticket is closed;
+- any configured native or fallback relation identifies an open blocker;
+- its newest applicable Prompt Audit status is missing, stale, or `FAIL`; or
+- it does not carry exactly one configured category role and exactly the configured `ready-for-agent` state role, with no other configured state role.
+
+A current explicit maintainer-authorized `BYPASS` satisfies the Ticket audit condition; an inferred or unrecorded bypass does not. Recheck these live Ticket invariants immediately before writer dispatch and stop if any changed.
+
 Locate the newest applicable `Prompt Audit` status for the exact execution contract:
 
 - `PASS` authorizes code only while it is current.
