@@ -99,14 +99,16 @@ def check_remote_inspection() -> None:
             "printf '%s\\n' \"$@\" > \"$FAKE_GIT_LOG\"\n"
             "[ \"$1\" = remote ] && [ \"$2\" = get-url ] && "
             "[ \"$3\" = -- ] && [ \"$4\" = origin ] || exit 73\n"
-            "printf '%s\\n' "
-            "'https://oauth2:fixture-secret@github.com/acme/widgets.git?transport=fixture'\n"
+            "printf '%s\\n' \"$FAKE_REMOTE_URL\"\n"
         )
         fake_git.chmod(0o755)
         log = root / "git-arguments"
         environment = os.environ.copy()
         environment["PATH"] = f"{fake_bin}{os.pathsep}{environment['PATH']}"
         environment["FAKE_GIT_LOG"] = str(log)
+        environment["FAKE_REMOTE_URL"] = (
+            "https://oauth2:fixture-secret@github.com/acme/widgets.git?transport=fixture"
+        )
         result = subprocess.run(
             [sys.executable, str(helper), "origin"],
             cwd=root,
@@ -126,6 +128,23 @@ def check_remote_inspection() -> None:
             "remote helper inspected anything other than the selected remote URL",
         )
 
+        environment["FAKE_REMOTE_URL"] = (
+            "https://oauth2:fixture-secret@exam／ple.com/acme/widgets.git"
+        )
+        malformed = subprocess.run(
+            [sys.executable, str(helper), "origin"],
+            cwd=root,
+            env=environment,
+            check=False,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        diagnostics = malformed.stdout + malformed.stderr
+        expect(malformed.returncode != 0, "malformed credential-bearing URL was accepted")
+        expect("fixture-secret" not in diagnostics, "remote credentials reached diagnostics")
+        expect("Traceback" not in diagnostics, "remote parser exposed an exception traceback")
+
 
 def check_documented_commands() -> None:
     setup_skill = read(SETUP / "SKILL.md")
@@ -134,6 +153,7 @@ def check_documented_commands() -> None:
     local = read(SETUP / "issue-tracker-local.md")
     domain = read(SETUP / "domain.md")
     current = read(ROOT / "docs/agents/issue-tracker.md")
+    wayfinder = read(ROOT / "skills/engineering/wayfinder/SKILL.md")
 
     expected_current = github
     for old, new in [
@@ -164,13 +184,17 @@ def check_documented_commands() -> None:
             f"{document_name} uses unsupported gh PR association output",
         )
 
-    gitlab_creates = re.findall(r"`(glab issue create [^`]+)`", gitlab)
+    gitlab_creates = re.findall(
+        r"`(glab api --hostname <host> --method POST 'projects/<project-id>/issues' [^`]+)`",
+        gitlab,
+    )
     expect(len(gitlab_creates) >= 3, "GitLab template does not document all creation paths")
     for command in gitlab_creates:
         expect(
-            "--title" in command and "--description" in command and "--yes" in command,
+            "--raw-field title=" in command and "--raw-field description=" in command,
             f"interactive GitLab creation path: {command}",
         )
+    expect("glab issue create" not in gitlab, "GitLab creation can still open an editor")
     expect("glab issue list --repo" in gitlab and "-O json" in gitlab, "GitLab issue JSON syntax is missing")
     expect("--repo https://<host>/<namespace>/<project>" in gitlab, "GitLab repository target is ambiguous")
     expect("glab repo view https://<host>/<namespace>/<project> -F json --jq '.id'" in gitlab, "GitLab project ID lookup is missing")
@@ -180,13 +204,22 @@ def check_documented_commands() -> None:
     )
     expect("/notes?per_page=100" in gitlab and "--paginate" in gitlab, "GitLab comment pagination is missing")
     expect("members/all?per_page=100" in gitlab, "GitLab project-membership evidence is missing")
-    expect("glab api --hostname <host> user --jq '.username'" in gitlab, "GitLab authenticated user lookup is missing")
+    expect("glab api --hostname <host> user" in gitlab, "GitLab authenticated user lookup is missing")
+    expect("standard-library JSON parser" in gitlab, "GitLab username response is not parsed safely")
+    expect("glab api --hostname <host> user --jq" not in gitlab, "GitLab API uses unsupported --jq")
     expect(
         not re.search(r"glab issue update[^`\n]*--assignee @me", gitlab),
         "GitLab claim still sends literal @me",
     )
+    expect("glab mr note create --message" in gitlab, "GitLab MR comments use a stale command")
+    expect("--order created_at --sort asc" in gitlab, "GitLab issue listing is not oldest first")
     expect("link_type` is `is_blocked_by" in gitlab, "GitLab blocker semantics are missing")
     expect("First retain only open issues" in gitlab and "Only after that" in gitlab, "GitLab filters before parent scoping")
+
+    expect(
+        "documented task-list fallback" in wayfinder and "task list is the child index" in wayfinder,
+        "Wayfinder conflicts with the configured GitHub task-list fallback",
+    )
 
     expect("Author:" in local and "Created:" in local and "Updated:" in local, "local tracker drops triage metadata")
     expect("explicit `# <title>`" in local and "noninteractive body" in local, "local creation input is incomplete")
@@ -212,6 +245,19 @@ def check_documented_commands() -> None:
 
 def check_fixture_responses() -> None:
     github = FIXTURE["github"]
+    github_creation = github["creation"]
+    github_arguments = [
+        "gh",
+        "issue",
+        "create",
+        "--title",
+        github_creation["title"],
+        "--body-file",
+        github_creation["body_file"],
+    ]
+    expect(github_creation["title"] in github_arguments, "GitHub title is not one direct argument")
+    expect("--body-file" in github_arguments, "GitHub creation can prompt for a body")
+
     internal = {"OWNER", "MEMBER", "COLLABORATOR"}
     for pull_request in github["pull_requests"]:
         external = pull_request["author_association"] not in internal
@@ -232,6 +278,28 @@ def check_fixture_responses() -> None:
     expect(998 not in fallback and 999 not in fallback, "non-checklist issue leaked into fallback frontier")
 
     gitlab = FIXTURE["gitlab"]
+    gitlab_creation = gitlab["creation"]
+    gitlab_arguments = [
+        "glab",
+        "api",
+        "--method",
+        "POST",
+        "projects/42/issues",
+        "--raw-field",
+        f"title={gitlab_creation['title']}",
+        "--raw-field",
+        f"description={gitlab_creation['description']}",
+    ]
+    expect(
+        f"title={gitlab_creation['title']}" in gitlab_arguments,
+        "GitLab title is not one direct API field",
+    )
+    expect(
+        f"description={gitlab_creation['description']}" in gitlab_arguments,
+        "GitLab description is not one direct API field",
+    )
+    expect(gitlab_arguments[:2] == ["glab", "api"], "GitLab creation can still invoke an editor")
+
     for issue in gitlab["issue_list"]:
         for field in ("author", "created_at", "updated_at"):
             expect(field in issue, f"GitLab issue fixture lost {field}")

@@ -21,9 +21,12 @@ def repository_identity(remote_url: str) -> tuple[str, str]:
         fail("selected remote has an invalid URL")
 
     if "://" in value:
-        parsed = urlsplit(value)
-        host = parsed.hostname
-        path = parsed.path
+        try:
+            parsed = urlsplit(value)
+            host = parsed.hostname
+            path = parsed.path
+        except ValueError:
+            fail("selected remote has an invalid URL")
     else:
         match = re.fullmatch(r"(?:[^@/:]+@)?([^/:]+):(.+)", value)
         if not match:
