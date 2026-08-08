@@ -1,0 +1,201 @@
+{
+  "prompt_action_cases": [
+    {
+      "id": "prototype-only-autonomous",
+      "prompt": "Build and run a throwaway settings UI to compare three variants; do not implement production behavior.",
+      "mode": "prototype-only",
+      "separate_promotion_unit": false,
+      "prompt_audit_status": null,
+      "wayfinder_execution_authorized": false,
+      "requested_actions": [
+        "create_throwaway_artifact",
+        "run_throwaway_artifact",
+        "record_decision",
+        "edit_production",
+        "write_tracker",
+        "create_commit",
+        "create_branch"
+      ],
+      "contract_authorizations": [
+        "create_throwaway_artifact",
+        "run_throwaway_artifact",
+        "record_decision"
+      ],
+      "expected_allowed": [
+        "create_throwaway_artifact",
+        "run_throwaway_artifact",
+        "record_decision"
+      ]
+    },
+    {
+      "id": "separately-audited-promotion",
+      "prompt": "In this separately authorized PASS implementation unit, implement and test the validated settings behavior for production without copying prototype code.",
+      "mode": "promotion",
+      "separate_promotion_unit": true,
+      "prompt_audit_status": "PASS",
+      "wayfinder_execution_authorized": true,
+      "requested_actions": [
+        "implement_behavior_anew",
+        "add_production_tests",
+        "disconnect_ui_prototype",
+        "verify_production_exclusion",
+        "copy_prototype_code"
+      ],
+      "contract_authorizations": [
+        "implement_behavior_anew",
+        "add_production_tests",
+        "disconnect_ui_prototype",
+        "verify_production_exclusion",
+        "copy_prototype_code"
+      ],
+      "expected_allowed": [
+        "implement_behavior_anew",
+        "add_production_tests",
+        "disconnect_ui_prototype",
+        "verify_production_exclusion"
+      ]
+    },
+    {
+      "id": "maintainer-bypassed-promotion",
+      "prompt": "The maintainer explicitly BYPASS-authorized this separate production promotion unit; reimplement and test the validated behavior.",
+      "mode": "promotion",
+      "separate_promotion_unit": true,
+      "prompt_audit_status": "BYPASS",
+      "wayfinder_execution_authorized": true,
+      "requested_actions": [
+        "implement_behavior_anew",
+        "add_production_tests"
+      ],
+      "contract_authorizations": [
+        "implement_behavior_anew",
+        "add_production_tests"
+      ],
+      "expected_allowed": [
+        "implement_behavior_anew",
+        "add_production_tests"
+      ]
+    },
+    {
+      "id": "unaudited-promotion-stops",
+      "prompt": "Promote the prototype even though the separate implementation unit has a current FAIL Prompt Audit.",
+      "mode": "promotion",
+      "separate_promotion_unit": true,
+      "prompt_audit_status": "FAIL",
+      "wayfinder_execution_authorized": true,
+      "requested_actions": [
+        "implement_behavior_anew",
+        "add_production_tests"
+      ],
+      "contract_authorizations": [
+        "implement_behavior_anew",
+        "add_production_tests"
+      ],
+      "expected_allowed": []
+    },
+    {
+      "id": "wayfinder-planning-only-composition",
+      "prompt": "Use prototype while resolving this Wayfinder decision; the map Notes do not authorize destination execution.",
+      "mode": "wayfinder",
+      "separate_promotion_unit": false,
+      "prompt_audit_status": "PASS",
+      "wayfinder_execution_authorized": false,
+      "requested_actions": [
+        "create_throwaway_artifact",
+        "run_throwaway_artifact",
+        "record_decision",
+        "edit_production",
+        "write_tracker",
+        "create_commit",
+        "create_branch"
+      ],
+      "contract_authorizations": [
+        "create_throwaway_artifact",
+        "run_throwaway_artifact",
+        "record_decision",
+        "edit_production",
+        "write_tracker",
+        "create_commit",
+        "create_branch"
+      ],
+      "expected_allowed": [
+        "create_throwaway_artifact",
+        "run_throwaway_artifact",
+        "record_decision"
+      ]
+    }
+  ],
+  "ui_source_graph": {
+    "modules": {
+      "production-route": {
+        "source_set": "production",
+        "role": "production-route",
+        "imports": ["production-view"]
+      },
+      "production-view": {
+        "source_set": "production",
+        "role": "production-view",
+        "imports": []
+      },
+      "prototype-route-registration": {
+        "source_set": "prototype",
+        "role": "route-registration",
+        "imports": ["prototype-route"]
+      },
+      "prototype-route": {
+        "source_set": "prototype",
+        "role": "throwaway-route",
+        "imports": [
+          "production-view",
+          "prototype-url-selection",
+          "prototype-variant-a",
+          "prototype-variant-b",
+          "prototype-variant-c",
+          "prototype-switcher"
+        ]
+      },
+      "prototype-url-selection": {
+        "source_set": "prototype",
+        "role": "url-variant-selection",
+        "imports": []
+      },
+      "prototype-variant-a": {
+        "source_set": "prototype",
+        "role": "variant-subtree",
+        "imports": []
+      },
+      "prototype-variant-b": {
+        "source_set": "prototype",
+        "role": "variant-subtree",
+        "imports": []
+      },
+      "prototype-variant-c": {
+        "source_set": "prototype",
+        "role": "variant-subtree",
+        "imports": []
+      },
+      "prototype-switcher": {
+        "source_set": "prototype",
+        "role": "switcher",
+        "imports": ["prototype-keyboard-controls"]
+      },
+      "prototype-keyboard-controls": {
+        "source_set": "prototype",
+        "role": "keyboard-controls",
+        "imports": []
+      }
+    },
+    "production_build": {
+      "entries": ["production-route"],
+      "route_manifest": [
+        {"path": "/settings", "entry": "production-route"}
+      ],
+      "expected_modules": ["production-route", "production-view"]
+    },
+    "prototype_build": {
+      "entries": ["prototype-route-registration"],
+      "route_manifest": [
+        {"path": "/prototype/settings", "entry": "prototype-route"}
+      ]
+    }
+  }
+}
