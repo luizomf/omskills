@@ -251,6 +251,10 @@ def check_hostile_report_rendering() -> None:
     )
 
     values = FIXTURE["hostile_report_values"]
+    expect(
+        any("%%{" in item["value"] for item in values),
+        "hostile fixture does not exercise Mermaid directive injection",
+    )
     fragment = render_hostile_fragment(values)
     for item in values:
         expect(

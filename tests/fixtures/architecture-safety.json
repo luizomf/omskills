@@ -14,6 +14,10 @@
       "value": "Orders\"] --> injected[\"owned"
     },
     {
+      "name": "mermaid-directive",
+      "value": "%%{init: {'securityLevel': 'loose'}}%%"
+    },
+    {
       "name": "path",
       "value": "src/<img src=x onerror=\"alert(1)\"> & docs"
     },
