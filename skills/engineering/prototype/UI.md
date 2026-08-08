@@ -1,6 +1,6 @@
 # UI Prototype
 
-Generate **several radically different UI variations** in a prototype-only entrypoint, switchable through a URL search parameter and a floating bottom bar.
+Generate **several radically different UI variations** on a single route, switchable from a floating bottom bar.
 
 If the question is about logic/state rather than what something looks like — wrong branch. Use [LOGIC.md](LOGIC.md).
 
@@ -11,29 +11,21 @@ If the question is about logic/state rather than what something looks like — w
 - "Try a different layout for the settings screen."
 - Any time the user would otherwise spend a day picking between three vague mockups in their head.
 
-## Establish the source/build boundary first
-
-Put every prototype-only element behind a source/build boundary that excludes it from the production module and route graph. This includes all variant components and subtrees, URL variant-selection logic, the switcher, keyboard controls, and any throwaway route and route registration. The production page and router must not import that boundary.
-
-Use an existing prototype source set, excluded entrypoint, or build target whose files are omitted from production build inputs. A hidden control, unreachable route, dynamic runtime check, or `NODE_ENV !== 'production'` condition is insufficient: those approaches can leave prototype modules in production output.
-
-If the host cannot provide this exclusion without changing production code outside the accepted contract, use a standalone prototype-only harness or entrypoint. It may consume public production components or fixture data, but it must not register itself in the production source or route graph.
-
 ## Two sub-shapes — strongly prefer sub-shape A
 
-A UI prototype is much easier to judge when it is **butting up against the rest of the app** — real header, real sidebar, representative data, real density. Default to sub-shape A whenever an existing prototype-only boundary can compose the relevant page safely.
+A UI prototype is much easier to judge when it's **butting up against the rest of the app** — real header, real sidebar, real data, real density. Default to sub-shape A whenever there's a plausible existing page to host the variants.
 
 ### Sub-shape A — adjustment to an existing page (preferred)
 
-Use the prototype-only entrypoint to render the variants at the same logical URL with `?variant=` selection. Reuse read-only production components or data adapters where the boundary permits it, but keep the production page unchanged and keep every variant-selection import in the prototype source graph.
+The route already exists. Variants are rendered **on the same route**, gated by a `?variant=` URL search param. The existing data fetching, params, and auth all stay — only the rendering swaps.
 
-If the proposed UI would naturally live inside an existing page, mount it in the prototype entrypoint's representation of that page rather than editing the production route to host it.
+If the prototype is for something that doesn't yet have a page but *would naturally live inside one* (a new section of the dashboard, a new card on the settings screen, a new step in an existing flow) — that's still sub-shape A. Mount the variants inside the host page.
 
 ### Sub-shape B — a new page (last resort)
 
-Use this only when the thing being prototyped genuinely has no existing page to live inside, such as an entirely new top-level surface or a flow that cannot be embedded anywhere sensible.
+Only use this when the thing being prototyped genuinely has no existing page to live inside — e.g. an entirely new top-level surface, or a flow that can't be embedded anywhere sensible.
 
-Create an obviously named throwaway route only in the prototype route graph. Follow the host's routing conventions inside that graph, and use the same `?variant=` pattern. Do not add the route or its registration to production routing.
+Create a **throwaway route** following whatever routing convention the project already uses — don't invent a new top-level structure. Name it so it's obviously a prototype (e.g. include the word `prototype` in the path or filename). Same `?variant=` pattern.
 
 ## Process
 
@@ -57,7 +49,7 @@ Variants must be **structurally different** — different layout, different info
 
 ### 3. Wire them together
 
-Inside the prototype-only source set, create a single switcher component on the prototype route or entrypoint:
+Create a single switcher component on the route:
 
 ```tsx
 // pseudo-code — adapt to the project's framework
@@ -72,9 +64,9 @@ return (
 );
 ```
 
-For sub-shape A (existing page): compose the needed read-only data in the prototype entrypoint above the switcher; only its rendered subtree changes per variant. The production route remains unchanged.
+For sub-shape A (existing page): keep all the existing data fetching above the switcher; only the rendered subtree changes per variant.
 
-For sub-shape B (new page): the throwaway route mounts the same switcher inside the prototype route graph.
+For sub-shape B (new page): the throwaway route mounts the same switcher.
 
 ### 4. Build the floating switcher
 
@@ -89,9 +81,9 @@ Behaviour:
 - Clicking an arrow updates the URL search param (use the framework's router — `router.replace` on Next, `navigate` on React Router, etc) so the variant is shareable and reload-stable.
 - Keyboard: `←` and `→` arrow keys also cycle. Don't intercept arrow keys when an `<input>`, `<textarea>`, or `[contenteditable]` is focused.
 - Visually distinct from the page (e.g. high-contrast pill, subtle shadow) so it's obviously not part of the design being evaluated.
-- Present only in the prototype build. Source/build exclusion, not a runtime condition, must keep it and its imports out of production output.
+- Hidden in production builds — gate on `process.env.NODE_ENV !== 'production'` or an equivalent check, so a stray prototype merge can't ship the bar to users.
 
-Put the switcher in one prototype-only shared component so both sub-shapes can reuse it. Do not place it in a shared production UI barrel or another module reachable from a production entry.
+Put the switcher in a single shared component so both sub-shapes can reuse it. Locate it wherever shared UI lives in the project.
 
 ### 5. Hand it over
 
@@ -99,13 +91,13 @@ Surface the URL (and the `?variant=` keys). The user will flip through whenever 
 
 ### 6. Capture the answer and clean up
 
-Once a variant has won, record which variant won and why through an action already authorized by the current contract. Preserve or remove the throwaway files only as that contract permits; do not promote them automatically.
+Once a variant has won, capture the answer — which variant and why — then capture the prototype the way the [SKILL](SKILL.md) describes. Fold the winner into the real code and move the rest onto the throwaway branch, not into main:
 
-If a separately audited production unit later promotes the decision, follow the [SKILL](SKILL.md): reimplement the behavior under production constraints and add applicable tests rather than copying a winning variant. Before that unit is complete, remove or disconnect the whole prototype-only subtree and route machinery. Run the host's production build and inspect its route manifest, bundle/module graph, or closest deterministic equivalent to prove the variant components, URL selection, switcher, keyboard controls, and throwaway route registration are absent.
+- **Sub-shape A** — fold the winner into the existing page; drop the losing variants and the switcher from main.
+- **Sub-shape B** — promote the winning variant to a real route; drop the throwaway route and the switcher from main.
 
 ## Anti-patterns
 
 - **Sharing too much code between variants.** A shared `<Header>` is fine; a shared `<Layout>` defeats the point. Each variant should be free to throw out the layout.
 - **Wiring variants to real mutations.** Read-only prototypes are fine. If a variant needs to mutate, point it at a stub — the question is "what should this look like", not "does the backend work".
-- **Runtime-disabling prototype modules.** Hiding the switcher or making its route unreachable still permits the complete subtree to enter production output; exclude it at the source/build boundary.
-- **Promoting the prototype directly to production.** The variant code was written under prototype constraints (no tests, minimal error handling). Promotion is a separate audited implementation unit that rewrites and tests the validated behavior.
+- **Promoting the prototype directly to production.** The variant code was written under prototype constraints (no tests, minimal error handling). Rewrite it properly when you fold it in.

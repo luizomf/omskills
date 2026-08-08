@@ -163,7 +163,7 @@ For mature projects, the queue should favor small, vertical, verifiable tickets.
 - **[setup-omskills](./skills/engineering/setup-omskills/SKILL.md)**: configures issue tracker, triage labels, and docs layout per repo.
 - **[to-spec](./skills/engineering/to-spec/SKILL.md)**: turns the current conversation context into a spec and publishes it to the issue tracker.
 - **[to-tickets](./skills/engineering/to-tickets/SKILL.md)**: breaks a plan, spec, or conversation into tracer-bullet tickets with blocking and conflict edges.
-- **[implement](./skills/engineering/implement/SKILL.md)**: implements one authorized code unit through clean-context execution and coordinator-owned completion.
+- **[implement](./skills/engineering/implement/SKILL.md)**: implements a spec, issue, or ticket and verifies it against its acceptance criteria.
 - **[orchestrate](./skills/engineering/orchestrate/SKILL.md)**: delivers prepared issues through single-pass writer and reviewer agents with coordinator-owned completion.
 - **[wayfinder](./skills/engineering/wayfinder/SKILL.md)**: maps a huge or foggy effort into investigation tickets on the issue tracker.
 
@@ -175,7 +175,7 @@ For mature projects, the queue should favor small, vertical, verifiable tickets.
 - **[tdd](./skills/engineering/tdd/SKILL.md)**: red -> green -> refactor development at confirmed test seams.
 - **[codebase-design](./skills/engineering/codebase-design/SKILL.md)**: shared vocabulary and principles for designing deep modules.
 - **[code-review](./skills/engineering/code-review/SKILL.md)**: reviews a diff along standards and spec axes.
-- **[resolving-merge-conflicts](./skills/engineering/resolving-merge-conflicts/SKILL.md)**: resolves active merge/rebase conflicts or standalone conflict markers without losing source intent or unrelated work.
+- **[resolving-merge-conflicts](./skills/engineering/resolving-merge-conflicts/SKILL.md)**: resolves an in-progress git merge or rebase conflict.
 
 ### Productivity
 

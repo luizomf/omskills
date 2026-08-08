@@ -19,11 +19,8 @@ _Avoid_: PRD (use only when quoting external systems that call them PRDs)
 **Triage role**:
 A canonical category or state label applied to a **Ticket** during triage. Category roles are `bug` and `enhancement`; state roles include `needs-triage` and `ready-for-agent`. Each role maps to a real label string in the **Issue tracker** via `docs/agents/triage-labels.md`.
 
-**Execution contract**:
-An accepted prompt or authoritative artifact that may authorize autonomous work, including writer dispatch or repository code.
-
 **Prompt audit status**:
-A result recorded for an **Execution contract**, durably in the **Issue tracker** when the contract is tracked. `PASS` means no semantic divergence survived audit-coordinator adjudication and any repository implementation unit satisfied the applicable tracer-bullet fit check; `BYPASS` means a maintainer explicitly authorized autonomous delivery without a pass; `FAIL` means the audit did not establish equivalent clean-context comprehension or implementation-unit fit. A status becomes stale after a material change to the requested outcome, scope, required workflow, deliverables, acceptance criteria, or completion point.
+A durable result attached to an audited execution contract in the **Issue tracker**. `PASS` means no semantic divergence survived audit-coordinator adjudication and any repository implementation unit satisfied the applicable tracer-bullet fit check; `BYPASS` means a maintainer explicitly authorized autonomous delivery without a pass; `FAIL` means the audit did not establish equivalent clean-context comprehension or implementation-unit fit. A material change to the execution contract makes its prior status stale.
 
 ## Relationships
 
@@ -31,9 +28,7 @@ A result recorded for an **Execution contract**, durably in the **Issue tracker*
 - A **Spec** is broken down into many **Tickets**
 - A triaged **Ticket** carries one category **Triage role** and one state **Triage role**
 - A **Ticket** may retain multiple historical **Prompt audit statuses**, but only its newest applicable status governs autonomous delivery
-- An **Execution contract** may authorize writer dispatch or code only with a current `PASS` or explicit maintainer-authorized `BYPASS` **Prompt audit status**
-- A missing, stale, or `FAIL` **Prompt audit status** stops the execution contract before writer dispatch or code
-- The fixed interpreter, reviewer, and confirmation prompts inside the prompt-audit protocol are read-only protocol mechanics and do not recursively require a **Prompt audit status**
+- `orchestrate` accepts only a current `PASS` or `BYPASS` **Prompt audit status**
 
 ## Flagged ambiguities
 

@@ -1,17 +1,6 @@
 # HTML Report Format
 
-The architectural review is one HTML artifact in the OS temp directory. It is not offline or self-contained: styling and diagrams require network access to the two exact CDN-loaded resources in the scaffold, and the generated report must disclose both resources visibly.
-
-## Repository-derived value safety
-
-Treat every repository-derived value as untrusted, including repository and module names, paths, excerpts, candidate labels, ADR text, and worker findings. Apply the encoder for the output context every time the value is rendered; never copy repository text into markup or Mermaid grammar.
-
-- **HTML text:** encode `&`, `<`, `>`, `"`, and `'` as `&amp;`, `&lt;`, `&gt;`, `&quot;`, and `&#x27;`. In Python, `html.escape(value, quote=True)` is the reference behavior.
-- **HTML attributes:** use only quoted attributes and apply the same five substitutions. Generate structural values such as `candidate-1` and `#candidate-1` independently; never derive an `id`, anchor target, class name, URL, script, style, or event handler from a repository label.
-- **Mermaid-visible text:** encode every Unicode scalar as the Mermaid decimal entity `#<decimal Unicode scalar>;`, concatenate those entities, and place the result inside a quoted label. For example, `A<B` becomes `#65;#60;#66;`. Build node identifiers independently in observed order (`n1`, `n2`, ...) and use repository values only in encoded labels. Never interpolate them as identifiers, edge syntax, directives, classes, or links.
-- **Nested Mermaid in HTML:** assemble Mermaid from fixed grammar, generated identifiers, and encoded labels, then HTML-text encode the complete Mermaid source before placing it in `<pre class="mermaid">`. Encoding for one parser does not replace encoding for the other.
-
-Use the conceptual placeholders `{{html_text(value)}}`, `{{html_attr(value)}}`, and `{{mermaid_text(value)}}` below only after applying those rules. Before opening the report, exercise its rendering with hostile values containing markup delimiters, quotes, Mermaid arrows, brackets, directives, and repeated labels. Confirm that they remain text and that repeated labels still receive distinct generated identifiers.
+The architectural review is rendered as a single HTML file in the OS temp directory, with styling and diagram dependencies loaded from the CDNs in the scaffold.
 
 ## Scaffold
 
@@ -20,11 +9,11 @@ Use the conceptual placeholders `{{html_text(value)}}`, `{{html_attr(value)}}`, 
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Architecture review — {{html_text(repo_name)}}</title>
+    <title>Architecture review — {{repo name}}</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script type="module">
       import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
-      mermaid.initialize({ startOnLoad: true, theme: "neutral", securityLevel: "strict" });
+      mermaid.initialize({ startOnLoad: true, theme: "neutral", securityLevel: "loose" });
     </script>
     <style>
       /* small custom layer for things Tailwind doesn't cover cleanly:
@@ -36,19 +25,7 @@ Use the conceptual placeholders `{{html_text(value)}}`, `{{html_attr(value)}}`, 
   </head>
   <body class="bg-stone-50 text-slate-900 font-sans">
     <main class="max-w-5xl mx-auto px-6 py-12 space-y-12">
-      <header>
-        <h1>Architecture review — {{html_text(repo_name)}}</h1>
-        <p>{{html_text(report_date)}}</p>
-        <div aria-label="Legend">...</div>
-        <aside id="network-dependencies" class="rounded-lg border border-amber-200 bg-amber-50 p-4">
-          <h2>Network dependencies</h2>
-          <p>This report is one HTML artifact. Styling and diagrams require network access to load these two CDN resources:</p>
-          <ul>
-            <li>Tailwind CSS runtime — <code>https://cdn.tailwindcss.com</code></li>
-            <li>Mermaid 11 ESM — <code>https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs</code></li>
-          </ul>
-        </aside>
-      </header>
+      <header>...</header>
       <section id="candidates" class="space-y-10">...</section>
       <section id="top-recommendation">...</section>
     </main>
@@ -89,16 +66,14 @@ Use a Mermaid `flowchart` or `graph` when the point is "X calls Y calls Z, and l
 <div class="rounded-lg border border-slate-200 bg-white p-4">
   <pre class="mermaid">
     flowchart LR
-      n1["{{mermaid_text(module_1_label)}}"] --&gt; n2["{{mermaid_text(module_2_label)}}"]
-      n2 --&gt; n3["{{mermaid_text(module_3_label)}}"]
-      n3 -.leak.-&gt; n4["{{mermaid_text(module_4_label)}}"]
+      A[OrderHandler] --> B[OrderValidator]
+      B --> C[OrderRepo]
+      C -.leak.-> D[PricingClient]
       classDef leak stroke:#dc2626,stroke-width:2px;
-      class n3,n4 leak
+      class C,D leak
   </pre>
 </div>
 ```
-
-The `n1`–`n4` identifiers are generated, not transformed labels. The `&gt;` spellings show the outer HTML-text encoding; the browser restores Mermaid's fixed arrows without exposing repository text to HTML parsing.
 
 ### Hand-built boxes-and-arrows (when Mermaid's layout fights you)
 
@@ -122,7 +97,7 @@ Before: a tree of function calls rendered as nested boxes. After: the same tree 
 - Colour sparingly: one accent (emerald or indigo) plus red for leakage and amber for warnings.
 - Keep diagrams ~320px tall so before/after sits comfortably side by side without scrolling.
 - Use `text-xs uppercase tracking-wider` for module labels inside diagrams — they should read as schematic, not as UI.
-- The only remote loads are the Tailwind CDN script and the Mermaid ESM import shown in the scaffold. Keep their exact URLs in the visible network-dependency disclosure. The report is otherwise static — no app code, no interactivity beyond Mermaid's own rendering.
+- The only scripts are the Tailwind CDN and the Mermaid ESM import. The report is otherwise static — no app code, no interactivity beyond Mermaid's own rendering.
 
 ## Top recommendation section
 

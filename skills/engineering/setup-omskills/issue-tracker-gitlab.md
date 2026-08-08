@@ -1,77 +1,46 @@
 # Issue tracker: GitLab
 
-Specs, Tickets, issues, and Wayfinder maps for this repository live as GitLab issues. Use `glab` for all operations.
+Specs, tickets, and issues for this repo live as GitLab issues. Use the [`glab`](https://gitlab.com/gitlab-org/cli) CLI for all operations.
 
-## Repository selection
+## Conventions
 
-- **Selected remote:** `<remote-name>`
-- **Repository target:** `https://<host>/<namespace>/<project>`
-- **API host:** `<host>`
-- **GitLab project ID:** `<project-id>`
+- **Create an issue**: `glab issue create --title "..." --description "..."`. Use a heredoc for multi-line descriptions.
+- **Read an issue**: `glab issue view <number> --comments`. Use `-F json` for machine-readable output.
+- **List issues**: `glab issue list -F json` with appropriate `--label` filters.
+- **Comment on an issue**: `glab issue note <number> --message "..."`. GitLab calls comments "notes".
+- **Apply / remove labels**: `glab issue update <number> --label "..."` / `--unlabel "..."`. Multiple labels can be comma-separated or by repeating the flag.
+- **Close**: `glab issue close <number>`. `glab issue close` does not accept a closing comment, so post the explanation first with `glab issue note <number> --message "..."`, then close.
+- **Merge requests**: GitLab calls PRs "merge requests". Use `glab mr create`, `glab mr view`, `glab mr note`, etc. — the same shape as `gh pr ...` with `mr` in place of `pr` and `note`/`--message` in place of `comment`/`--body`.
 
-Pass `--repo https://<host>/<namespace>/<project>` to every project-scoped `glab issue`, `glab mr`, and `glab label` command. Pass `--hostname <host>` and an explicit `projects/<project-id>/...` path to every project API call. Resolve the numeric project ID during setup with `glab repo view https://<host>/<namespace>/<project> -F json --jq '.id'`. This is a read-only request against the selected project; do not rely on ambient remote inference.
-
-Pass tracker values as direct command arguments. The command snippets below are argument shapes, not permission to interpolate tracker values into a shell command. When only a shell tool is available, use a standard-library subprocess argument array with shell execution disabled. Do not construct or evaluate shell command strings from issue titles, descriptions, notes, labels, usernames, or other tracker content.
-
-## Conventions and triage metadata
-
-- **Create an issue noninteractively:** `glab api --hostname <host> --method POST 'projects/<project-id>/issues' --raw-field title=<title> --raw-field description=<description>`. Both raw fields are required. The API operation has no editor or confirmation path, including when a description is the literal `-`.
-- **Read an issue:** `glab issue view <iid> --repo https://<host>/<namespace>/<project> -F json`.
-- **List issues as JSON:** `glab issue list --repo https://<host>/<namespace>/<project> -O json --per-page 100 --page <page> --order created_at --sort asc`. Iterate pages until a page contains fewer than 100 records. Use `-O json`, not `-F json`, because `-F` selects the human output format for `glab issue list`. The explicit order is oldest first. Retain `author.username`, `created_at`, and `updated_at` until oldest-first and reporter-activity decisions are complete.
-- **Read complete issue comments:** `glab api --hostname <host> --paginate 'projects/<project-id>/issues/<iid>/notes?per_page=100&sort=asc'`. Preserve each note's `author.username`, `created_at`, and `updated_at`.
-- **Read complete MR comments:** `glab api --hostname <host> --paginate 'projects/<project-id>/merge_requests/<iid>/notes?per_page=100&sort=asc'`. Do not rely on the default page from `glab issue view --comments` or `glab mr view --comments` for triage activity.
-- **Comment:** `glab issue note <iid> --repo https://<host>/<namespace>/<project> --message <comment>`.
-- **Apply / remove labels:** `glab issue update <iid> --repo https://<host>/<namespace>/<project> --label <label>` / `--unlabel <label>`.
-- **Close:** post the durable note first, then run `glab issue close <iid> --repo https://<host>/<namespace>/<project>`.
-- **Inventory labels:** page through `glab label list --repo https://<host>/<namespace>/<project> --output json --per-page 100 --page <page>` until the final short page, retaining each exact name, color, and description.
-- **Create one approved missing label:** `glab label create --repo https://<host>/<namespace>/<project> --name <label> --color <hex-color> --description <description>`. Inventory before mapping, inventory again before creation, create only approved missing mapped labels, and run a final inventory.
-
-GitLab numbers issues and MRs separately, so `#42` is unambiguous only after the request surface is known.
+Infer the repo from `git remote -v` — `glab` does this automatically when run inside a clone.
 
 ## Merge requests as a triage surface
 
-**MRs as a request surface: no.** _(Set to `yes` only when this repository treats external MRs as feature requests.)_
+**MRs as a request surface: no.** _(Set to `yes` if this repo treats external merge requests as feature requests; the `triage` skill reads this flag.)_
 
-When set to `yes`, MRs use the same triage roles as issues:
+When set to `yes`, MRs run through the same labels and states as issues, using the `glab mr` equivalents:
 
-- **Read an MR:** `glab mr view <iid> --repo https://<host>/<namespace>/<project> -F json` and `glab mr diff <iid> --repo https://<host>/<namespace>/<project>`.
-- **List MRs:** page through `glab mr list --repo https://<host>/<namespace>/<project> -F json --per-page 100 --page <page>` and retain each MR's `author.username`, `created_at`, and `updated_at`.
-- **Inventory project members:** `glab api --hostname <host> --paginate 'projects/<project-id>/members/all?per_page=100'`. This endpoint supplies direct and inherited project membership. An MR is internal only when its author's username appears in that complete membership response; every other author is external. If complete membership cannot be read, report the capability as unavailable instead of guessing which MRs are external.
-- **Comment / label / close:** use `glab mr note create --message`, `glab mr update --label` / `--unlabel`, and `glab mr close`, always with the explicit `--repo` target.
+- **Read an MR**: `glab mr view <number> --comments` and `glab mr diff <number>` for the diff.
+- **List external MRs for triage**: `glab mr list -F json`, then keep only MRs whose author is not a project member/owner (a contributor's MR, not a maintainer's in-flight work).
+- **Comment / label / close**: `glab mr note`, `glab mr update --label`/`--unlabel`, `glab mr close`.
 
-Do not infer GitHub-style author associations on GitLab. Project membership is the configured evidence.
+Unlike GitHub, GitLab numbers issues and MRs separately, so `#42` is unambiguous once you know which surface the maintainer means.
 
-## Publishing and fetching
+## When a skill says "publish to the issue tracker"
 
-- **Publish to the issue tracker:** use the noninteractive create operation above with explicit title and description arguments.
-- **Fetch the relevant Ticket:** use the JSON read operation and paginated comments operation above; read the full description, labels, author, timestamps, and comments.
+Create a GitLab issue.
 
-## Planning publication operations
+## When a skill says "fetch the relevant ticket"
 
-Use these operations for `to-spec` and `to-tickets` in addition to the conventions above:
-
-- **Publish a planning Spec:** create the complete issue with explicit title and description fields and no configured state-role label. Record its Prompt Audit only after the complete description is stable.
-- **Discover approved Ticket identities:** before assuming parentage, page through `glab api --hostname <host> --paginate 'projects/<project-id>/issues?scope=all&per_page=100'` and match the exact `## Planning identity` value in each description. Reconcile one match even when its parent fallback is missing, create no match, and stop on multiple matches. This project-wide read is only for the exact stable identity marker; never use a title or incidental issue reference as identity.
-- **Create a non-ready Ticket:** `glab api --hostname <host> --method POST 'projects/<project-id>/issues' --raw-field title=<title> --raw-field description=<description> --raw-field labels=<category-label>,<needs-triage-label>`. The labels must resolve to exactly one configured category role and exactly the configured `needs-triage` state role.
-- **Documented fallback for parentage:** this configured flow has no native parent relation. Only because that native capability is unavailable, make `Part of #<spec-iid>` the Ticket description's first line and reconcile the complete description with `glab issue update <iid> --repo https://<host>/<namespace>/<project> --description <complete-description>`. Do not modify the audited Spec merely to maintain a fallback child index; exact Planning identity discovery provides duplicate-free resume.
-- **Add a native blocker:** use the configured `is_blocked_by` Issue Links API operation from Wayfinding below and inspect the child's complete links response before adding a missing relation. Use a `Blocked by: #<iid>, ...` description fallback only when native issue links are unavailable.
-- **Record direct conflicts:** no native conflict relation is configured. Record each edge on both Ticket descriptions with its shared file, contract, artifact, or integration surface, and reconcile the complete descriptions.
-- **Audit a final Ticket:** use the note operation after its final description, parent fallback, blockers, and conflicts have been reconciled. A later material contract or relation change makes that status stale.
-- **Transition one audited Ticket to ready:** remove `<needs-triage-label>` and every other configured state role with `glab issue update <iid> --repo https://<host>/<namespace>/<project> --unlabel <label>`, then apply `<ready-for-agent-label>` with the corresponding `--label` operation. Remove any extra configured category role so exactly one configured category role and exactly the configured `ready-for-agent` state role remain. A missing, stale, or `FAIL` audit instead keeps or restores the single category plus `needs-triage` pair.
-
-Create or reconcile every approved identity and parent fallback before adding identifier-dependent blockers or conflicts. A partial attempt reports exact completed and missing identities, parents, relations, audits, and readiness transitions. Resume by repeating discovery and reconciliation rather than creating replacements.
+Run `glab issue view <number> --comments`.
 
 ## Wayfinding operations
 
-The **map** is one issue labelled `wayfinder:map`; its **Tickets** are issues whose first description line is the exact map parent reference.
+Used by the `wayfinder` skill. The **map** is a single issue with **child** issues as tickets.
 
-- **Create a map noninteractively:** `glab api --hostname <host> --method POST 'projects/<project-id>/issues' --raw-field title=<title> --raw-field description=<map-description> --raw-field labels=wayfinder:map`.
-- **Create a child noninteractively:** make `Part of #<map-iid>` the first line of the complete description, then run `glab api --hostname <host> --method POST 'projects/<project-id>/issues' --raw-field title=<title> --raw-field description=<ticket-description> --raw-field labels=wayfinder:<type>`. Create all children before adding blocker links.
-- **Add a native blocker:** `glab api --hostname <host> --method POST 'projects/<project-id>/issues/<child-iid>/links' -F target_project_id=<project-id> -F target_issue_iid=<blocker-iid> -f link_type=is_blocked_by`. If issue links are unavailable, use a `Blocked by: #<iid>, ...` description line and check each referenced issue's current state.
-- **Inspect blockers:** `glab api --hostname <host> 'projects/<project-id>/issues/<child-iid>/links'`. A native blocker is a link whose `link_type` is `is_blocked_by`; it blocks the child only while the linked issue's `state` is `opened`.
-- **Compute the frontier:** page through the JSON issue-list operation in ascending `created_at` order. First retain only open issues whose first description line exactly equals `Part of #<map-iid>`. Only after that parent-reference scope exists, inspect each scoped child's links or fallback blocker line and remove blocked children, then remove children with any assignee. Repository-wide open issues and issues that merely mention the map elsewhere are never frontier candidates.
-- **Resolve the authenticated username:** run `glab api --hostname <host> user` and parse the response's `username` field with a standard-library JSON parser. `glab api` does not provide a `--jq` flag.
-- **Claim:** pass the resolved username as one direct argument to `glab issue update <iid> --repo https://<host>/<namespace>/<project> --assignee <authenticated-username>`. Do not pass the unsupported literal `@me` to `glab issue update`.
-- **Resolve:** `glab issue note <iid> --repo https://<host>/<namespace>/<project> --message <answer>`, close the Ticket, then update the map with `glab issue update <map-iid> --repo https://<host>/<namespace>/<project> --description <updated-map-description>`.
-
-The fixed Wayfinder label inventory and provisioning policy belongs to the `wayfinder` consumer. This configuration provides the supported label inventory and creation operations it uses.
+- **Map**: a single issue labelled `wayfinder:map`, holding the **Notes** / **Decisions so far** / **Not yet specified** body. `glab issue create --label wayfinder:map`.
+- **Child ticket**: an issue carrying `Part of #<map>` at the top of its description and labels `wayfinder:<type>` (`research`/`prototype`/`grilling`/`task`). Once claimed, the ticket is assigned to the driving dev.
+- **Blocking**: GitLab's **native blocking link** — the canonical, UI-visible representation. Add it with the `/blocked_by #<n>` quick action, posted as a note (`glab issue note <child> --message "/blocked_by #<blocker>"`). Native blocking links are a Premium/Ultimate feature; on the free tier (or where unavailable) fall back to a `Blocked by: #<n>, #<n>` line at the top of the description. A ticket is unblocked when every blocker is closed.
+- **Frontier query**: `glab issue list -F json` scoped to the map's children, drop any with an open blocker — a native `blocked_by` link to an open issue (`glab api projects/:id/issues/:iid/links`), or an open issue in the `Blocked by` line — or an assignee; first in map order wins.
+- **Claim**: `glab issue update <n> --assignee @me` — the session's first write.
+- **Resolve**: `glab issue note <n> --message "<answer>"`, then `glab issue close <n>`, then append a context pointer (gist + link) to the map's **Decisions so far**.

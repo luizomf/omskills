@@ -31,11 +31,7 @@ Third-party services (Stripe, Twilio, etc.) you don't control. The deepened modu
 
 ## Testing strategy: replace, don't layer
 
-Replace-don't-layer describes the target test surface, not permission to delete tests early.
-
-1. Inventory the observable behavior covered by each old test before changing it.
-2. Write and run behavior tests through the resulting caller-visible interface. Coverage through an internal seam, direct implementation access, or a failing test does not establish equivalence.
-3. Map every behavior in an old test to passing coverage through that interface. Delete the old test only when the complete mapping demonstrates equivalent observable behavior.
-4. Preserve an old test while any behavior it covers remains unique. If the behavior cannot be exercised through the resulting interface, either the interface is missing required behavior or the test belongs to a different module; resolve that before deletion.
-
-The **interface is the test surface**. Assert observable outcomes rather than internal state so the replacement tests survive internal refactors. The final suite should avoid redundant implementation-level tests, but unique behavior coverage survives until an equivalent interface-level replacement passes.
+- Old unit tests on shallow modules become waste once tests at the deepened module's interface exist — delete them.
+- Write new tests at the deepened module's interface. The **interface is the test surface**.
+- Tests assert on observable outcomes through the interface, not internal state.
+- Tests should survive internal refactors — they describe behaviour, not implementation. If a test has to change when the implementation changes, it's testing past the interface.

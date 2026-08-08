@@ -23,9 +23,9 @@ Use whatever the host project uses. If the project has no obvious runtime (e.g. 
 
 Match the project's existing conventions for tooling — don't add a new package manager or runtime just for the prototype.
 
-### 3. Isolate the throwaway logic behind a clear interface
+### 3. Isolate the logic in a portable module
 
-Put the actual logic — the bit answering the question — behind a small, pure interface so its behavior and API decision are easy to evaluate. The entire prototype remains throwaway, including this module. Do not lift or copy its source into production; a separately authorized promotion reimplements the validated behavior under production constraints.
+Put the actual logic — the bit that's answering the question — behind a small, pure interface that could be lifted out and dropped into the real codebase later. The TUI around it is throwaway; the logic module shouldn't be.
 
 The right shape depends on the question:
 
@@ -56,9 +56,9 @@ The whole frame should fit on one screen.
 
 ### 5. Make it runnable in one command
 
-Use an existing task-runner command when one already fits. Add a disposable entry to shared runner configuration (`package.json`, `Makefile`, `justfile`, or `pyproject.toml`) only when the current execution contract authorizes editing that file.
+Add a script to the project's existing task runner (`package.json` scripts, `Makefile`, `justfile`, `pyproject.toml`). The user should run `pnpm run <prototype-name>` or equivalent — never need to remember a path.
 
-Otherwise put the direct one-line command at the top of the prototype's README; do not expand a prototype-only contract to edit shared project configuration.
+If the host project has no task runner, just put the command at the top of the prototype's README.
 
 ### 6. Hand it over
 
@@ -66,7 +66,7 @@ Give the user the run command. They'll drive it themselves; the interesting mome
 
 ### 7. Capture the answer and the prototype
 
-Once the prototype has answered its question, record the validated behavior, rejected cases, and useful API shape through an action already authorized by the current contract. Preserve or remove the throwaway logic and TUI only as the [SKILL](SKILL.md) permits. Do not create a branch, mutate a tracker item, or turn the answer into production code unless the current execution contract separately authorizes that action.
+Once the prototype has answered its question, capture the answer, then capture the prototype the way the [SKILL](SKILL.md) describes. The logic-specific mapping: the validated reducer / machine / function set lifts into the real module (the decision, absorbed); the TUI shell rides along to the throwaway branch that keeps the prototype as a primary source.
 
 ## Anti-patterns
 

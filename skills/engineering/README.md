@@ -10,7 +10,7 @@ Core skills for code work, issue workflow, and architecture decisions. The group
 - **[setup-omskills](./setup-omskills/SKILL.md)** - Configure per-repo tracker, triage-label, and domain-document operations.
 - **[to-spec](./to-spec/SKILL.md)** - Turn the current conversation context into a spec and publish it to the issue tracker.
 - **[to-tickets](./to-tickets/SKILL.md)** - Break a plan, spec, or conversation into tracer-bullet tickets with blocking and conflict edges.
-- **[implement](./implement/SKILL.md)** - Implement one authorized code unit through clean-context execution and coordinator-owned completion.
+- **[implement](./implement/SKILL.md)** - Implement a spec, issue, or ticket and verify it against its acceptance criteria.
 - **[orchestrate](./orchestrate/SKILL.md)** - Deliver prepared issues through single-pass writer and reviewer agents with coordinator-owned completion.
 - **[wayfinder](./wayfinder/SKILL.md)** - Map a huge or foggy effort into investigation tickets on the issue tracker.
 
@@ -22,4 +22,4 @@ Core skills for code work, issue workflow, and architecture decisions. The group
 - **[tdd](./tdd/SKILL.md)** - Red -> green -> refactor development at confirmed test seams.
 - **[codebase-design](./codebase-design/SKILL.md)** - Shared vocabulary and principles for designing deep modules.
 - **[code-review](./code-review/SKILL.md)** - Review a diff along standards and spec axes.
-- **[resolving-merge-conflicts](./resolving-merge-conflicts/SKILL.md)** - Resolve active merge/rebase conflicts or standalone conflict markers without losing source intent or unrelated work.
+- **[resolving-merge-conflicts](./resolving-merge-conflicts/SKILL.md)** - Resolve an in-progress git merge or rebase conflict.

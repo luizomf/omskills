@@ -1,41 +1,51 @@
 # Domain Docs
 
-How engineering skills should consume this repository's domain documentation.
+How the engineering skills should consume this repo's domain documentation when exploring the codebase.
 
 ## Before exploring, read these
 
-- In a single-context repository, read root `CONTEXT.md` and applicable records under root `docs/adr/`.
-- In a multi-context repository, read root `CONTEXT-MAP.md`, the linked `CONTEXT.md` files relevant to the topic, their derived ADR roots listed below, and applicable system-wide records under root `docs/adr/`.
+- **`CONTEXT.md`** at the repo root, or
+- **`CONTEXT-MAP.md`** at the repo root if it exists — it points at one `CONTEXT.md` per context. Read each one relevant to the topic.
+- **`docs/adr/`** — read ADRs that touch the area you're about to work in. In multi-context repos, also check `src/<context>/docs/adr/` for context-scoped decisions.
 
-If a listed file or directory does not exist, proceed silently. The producer skill (`grill-with-docs`) creates domain and ADR files lazily when terms or decisions are resolved.
+If any of these files don't exist, **proceed silently**. The producer skill (`grill-with-docs`) creates them lazily when terms or decisions actually get resolved.
 
-## Configured layout
+## File structure
 
-**Layout:** `<single-context|multi-context>`
+Single-context repo (most repos):
 
-For single-context repositories:
+```
+/
+├── CONTEXT.md
+├── docs/adr/
+│   ├── 0001-event-sourced-orders.md
+│   └── 0002-postgres-for-write-model.md
+└── src/
+```
 
-- **Context glossary:** `CONTEXT.md`
-- **ADR root:** `docs/adr/`
+Multi-context repo (presence of `CONTEXT-MAP.md` at the root):
 
-For multi-context repositories, replace this example table with one row for every local Markdown link under `CONTEXT-MAP.md`'s `## Contexts` section:
-
-| Context | Glossary from `CONTEXT-MAP.md` | Derived ADR root |
-| ------- | ------------------------------ | ---------------- |
-| `<name>` | `<actual/path/CONTEXT.md>` | `<actual/path/docs/adr/>` |
-
-Resolve each linked glossary path relative to the repository root and keep it inside the repository. Derive its ADR root by appending `docs/adr/` to the directory containing that `CONTEXT.md`. The table is authoritative; do not scan or assume `src/*`, `packages/*`, or another workspace layout. Root `docs/adr/` remains the system-wide ADR root.
-
-If `CONTEXT-MAP.md` has no valid local context links, report the configuration gap instead of inventing context or ADR paths.
+```
+/
+├── CONTEXT-MAP.md
+├── docs/adr/                          ← system-wide decisions
+└── src/
+    ├── ordering/
+    │   ├── CONTEXT.md
+    │   └── docs/adr/                  ← context-specific decisions
+    └── billing/
+        ├── CONTEXT.md
+        └── docs/adr/
+```
 
 ## Use the glossary's vocabulary
 
-When output names a domain concept in an issue title, refactor proposal, hypothesis, test name, or similar artifact, use the term defined by the applicable `CONTEXT.md`.
+When your output names a domain concept (in an issue title, a refactor proposal, a hypothesis, a test name), use the term as defined in `CONTEXT.md`.
 
-If the concept is absent, reconsider whether the output is inventing project language or note the genuine gap for `grill-with-docs`.
+If the concept you need isn't in the glossary yet, that's a signal — either you're inventing language the project doesn't use (reconsider) or there's a real gap (note it for `grill-with-docs`).
 
 ## Flag ADR conflicts
 
-Surface a contradiction with an existing ADR instead of silently overriding it:
+If your output contradicts an existing ADR, surface it explicitly rather than silently overriding:
 
 > _Contradicts ADR-0007 (event-sourced orders) — but worth reopening because…_
