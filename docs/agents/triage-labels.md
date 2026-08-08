@@ -11,3 +11,5 @@
 | State    | `wontfix`             | `wontfix`         | Will not be actioned                         |
 
 Use exactly one category-role label and one state-role label on a triaged issue.
+
+Before changing this mapping, inventory all repository labels with their exact names, colors, and descriptions. Prefer an existing semantic equivalent over creating a duplicate label. Re-inventory immediately before provisioning, create only approved mapped labels that remain missing, and verify afterward that all seven configured labels exist.
