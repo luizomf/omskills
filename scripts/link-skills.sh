@@ -37,22 +37,72 @@ physical_path() {
 import os
 import sys
 
-print(os.path.realpath(sys.argv[1]))
+resolved = os.path.realpath(sys.argv[1])
+if "\n" in resolved or "\r" in resolved:
+    print("error: physical path must not contain line breaks", file=sys.stderr)
+    raise SystemExit(1)
+print(resolved)
+PY
+}
+
+path_relation() {
+  python3 - "$1" "$2" "$3" <<'PY'
+import os
+import sys
+
+candidate = os.path.realpath(sys.argv[1])
+root = os.path.realpath(sys.argv[2])
+strict = sys.argv[3] == "strict"
+
+try:
+    root_stat = os.stat(root)
+except OSError:
+    raise SystemExit(1)
+
+probe = candidate
+missing_suffix = False
+while True:
+    try:
+        probe_stat = os.stat(probe)
+        break
+    except (FileNotFoundError, NotADirectoryError):
+        parent = os.path.dirname(probe)
+        if parent == probe:
+            raise SystemExit(1)
+        probe = parent
+        missing_suffix = True
+    except OSError:
+        raise SystemExit(1)
+
+current = probe
+current_stat = probe_stat
+while True:
+    if os.path.samestat(current_stat, root_stat):
+        if strict and not missing_suffix:
+            try:
+                if os.path.samestat(os.stat(candidate), root_stat):
+                    raise SystemExit(1)
+            except OSError:
+                pass
+        raise SystemExit(0)
+
+    parent = os.path.dirname(current)
+    if parent == current:
+        raise SystemExit(1)
+    current = parent
+    try:
+        current_stat = os.stat(current)
+    except OSError:
+        raise SystemExit(1)
 PY
 }
 
 path_is_within() {
-  case "$1" in
-    "$2"|"$2"/*) return 0 ;;
-    *) return 1 ;;
-  esac
+  path_relation "$1" "$2" within
 }
 
 path_is_descendant() {
-  case "$1" in
-    "$2"/*) return 0 ;;
-    *) return 1 ;;
-  esac
+  path_relation "$1" "$2" strict
 }
 
 is_safe_name() {
@@ -107,8 +157,57 @@ PY
   fi
 }
 
-WORK_DIR="$(mktemp -d)"
+if [ -z "$DEST" ]; then
+  echo "error: skills destination must not be empty" >&2
+  exit 1
+fi
+case "$DEST" in
+  *$'\n'*|*$'\r'*)
+    echo "error: skills destination must not contain line breaks" >&2
+    exit 1
+    ;;
+esac
+
+requested_dest="$DEST"
+DEST="$(physical_path "$DEST")"
+if path_is_within "$DEST" "$REPO"; then
+  echo "error: skills destination resolves into this repo: $requested_dest -> $DEST" >&2
+  exit 1
+fi
+
+WORK_DIR=""
 STATE_TEMP=""
+create_work_dir() {
+  local candidate parent
+
+  for candidate in "${TMPDIR:-}" /tmp /var/tmp "$(dirname "$REPO")" "${HOME:-}"; do
+    [ -n "$candidate" ] || continue
+    case "$candidate" in
+      *$'\n'*|*$'\r'*) continue ;;
+    esac
+    [ -d "$candidate" ] || continue
+    parent="$(physical_path "$candidate")"
+
+    # The scratch parent must be disjoint from both the requested destination
+    # and the repository. This keeps check mode destination-local mutation free
+    # even when GNU mktemp honors an adversarial TMPDIR.
+    if path_is_within "$parent" "$DEST" || path_is_within "$DEST" "$parent" ||
+      path_is_within "$parent" "$REPO" || path_is_within "$REPO" "$parent"; then
+      continue
+    fi
+
+    if WORK_DIR="$(umask 077 && mktemp -d "$parent/omskills.XXXXXX" 2>/dev/null)"; then
+      return 0
+    fi
+  done
+  return 1
+}
+
+if ! create_work_dir; then
+  echo "error: no secure temporary workspace is available outside the destination" >&2
+  exit 1
+fi
+
 cleanup() {
   if [ -n "$STATE_TEMP" ]; then
     rm -f "$STATE_TEMP"
@@ -197,17 +296,6 @@ while IFS= read -r encoded_entry; do
   printf '%s\n' "$name" >> "$manifest_names"
 done < "$manifest_entries"
 
-resolve_link_target() {
-  python3 - "$1" <<'PY'
-import os
-import sys
-
-link = sys.argv[1]
-target = os.path.join(os.path.dirname(link), os.readlink(link))
-print(os.path.realpath(target))
-PY
-}
-
 relative_link_target() {
   python3 - "$1" "$2" <<'PY'
 import os
@@ -218,26 +306,76 @@ PY
 }
 
 link_points_into_repo_skills() {
-  local resolved
-  resolved="$(resolve_link_target "$1")"
-  path_is_descendant "$resolved" "$REPO_SKILLS"
+  python3 - "$1" "$REPO_SKILLS" <<'PY'
+import os
+import sys
+
+link = sys.argv[1]
+root = os.path.realpath(sys.argv[2])
+target = os.path.realpath(os.path.join(os.path.dirname(link), os.readlink(link)))
+
+try:
+    root_stat = os.stat(root)
+except OSError:
+    raise SystemExit(1)
+
+probe = target
+missing_suffix = False
+while True:
+    try:
+        probe_stat = os.stat(probe)
+        break
+    except (FileNotFoundError, NotADirectoryError):
+        parent = os.path.dirname(probe)
+        if parent == probe:
+            raise SystemExit(1)
+        probe = parent
+        missing_suffix = True
+    except OSError:
+        raise SystemExit(1)
+
+current = probe
+current_stat = probe_stat
+while True:
+    if os.path.samestat(current_stat, root_stat):
+        if not missing_suffix:
+            try:
+                if os.path.samestat(os.stat(target), root_stat):
+                    raise SystemExit(1)
+            except OSError:
+                pass
+        raise SystemExit(0)
+    parent = os.path.dirname(current)
+    if parent == current:
+        raise SystemExit(1)
+    current = parent
+    try:
+        current_stat = os.stat(current)
+    except OSError:
+        raise SystemExit(1)
+PY
 }
 
-if [ -z "$DEST" ]; then
-  echo "error: skills destination must not be empty" >&2
-  exit 1
-fi
+link_points_to() {
+  python3 - "$1" "$2" <<'PY'
+import os
+import sys
 
-# Resolve existing ancestors before creation so a symlink in any component
-# cannot redirect installer mutations into this checkout.
-resolved="$(physical_path "$DEST")"
-if path_is_within "$resolved" "$REPO"; then
-  echo "error: skills destination resolves into this repo: $DEST -> $resolved" >&2
-  exit 1
-fi
+link = sys.argv[1]
+expected = os.path.realpath(sys.argv[2])
+target = os.path.realpath(os.path.join(os.path.dirname(link), os.readlink(link)))
+try:
+    matches = os.path.samefile(target, expected)
+except OSError:
+    matches = target == expected
+raise SystemExit(0 if matches else 1)
+PY
+}
 
+# Create only the already-resolved destination. Using the raw request here
+# would let mkdir create cancelled intermediate components inside the repo.
 if [ "$MODE" = "install" ]; then
-  mkdir -p "$DEST"
+  mkdir -p -- "$DEST"
 elif [ ! -d "$DEST" ]; then
   echo "error: skills destination does not exist: $DEST" >&2
   exit 1
@@ -266,6 +404,12 @@ legacy_state_names="$WORK_DIR/legacy-state-names"
 : > "$legacy_state_names"
 if [ "$MODE" = "install" ] && [ "$USE_DEFAULT_DEST" = true ]; then
   legacy_requested="$HOME/.codex/skills"
+  case "$legacy_requested" in
+    *$'\n'*|*$'\r'*)
+      echo "error: legacy skills destination must not contain line breaks" >&2
+      exit 1
+      ;;
+  esac
   if [ -e "$legacy_requested" ] || [ -L "$legacy_requested" ]; then
     if [ ! -d "$legacy_requested" ]; then
       echo "error: legacy skills destination is not a directory: $legacy_requested" >&2
@@ -349,7 +493,7 @@ if [ "$MODE" = "install" ] && [ "$CURRENT_STATE_EXISTS" = false ]; then
       echo "error: built-in migration target escapes repository skills: $relative" >&2
       exit 1
     fi
-    if [ -L "$target" ] && [ "$(resolve_link_target "$target")" = "$expected" ]; then
+    if [ -L "$target" ] && link_points_to "$target" "$expected"; then
       rm "$target"
       echo "removed legacy link $name -> $expected"
     fi

@@ -162,6 +162,75 @@ if OMSKILLS_DEST="$FIXTURES/existing-repo-destination" \
 fi
 [ ! -e "$fixture/existing-destination/safe-skill" ] || fail "existing destination mutated the fixture repo"
 
+# Identity checks, rather than case-sensitive spelling, must catch aliases on
+# case-insensitive filesystems. Skip only when the fixture filesystem is
+# genuinely case-sensitive.
+fixture="$(make_valid_fixture_repo)"
+case_alias="$(python3 - "$fixture" <<'PY'
+import os
+import sys
+
+path = os.path.abspath(sys.argv[1])
+parts = path.split(os.sep)
+for part_index, part in enumerate(parts):
+    for char_index, char in enumerate(part):
+        if not char.isalpha():
+            continue
+        replacement = char.upper() if char.islower() else char.lower()
+        changed = list(parts)
+        changed[part_index] = part[:char_index] + replacement + part[char_index + 1:]
+        alias = os.sep.join(changed)
+        try:
+            if alias != path and os.path.samefile(alias, path):
+                print(alias)
+                raise SystemExit(0)
+        except OSError:
+            pass
+raise SystemExit(0)
+PY
+)"
+if [ -n "$case_alias" ]; then
+  case_destination="$case_alias/case-alias-destination"
+  if OMSKILLS_DEST="$case_destination" "$fixture/scripts/link-skills.sh" >/dev/null 2>&1; then
+    fail "installer accepted a differently cased alias into its repo"
+  fi
+  [ ! -e "$fixture/case-alias-destination" ] || fail "case alias mutated the fixture repo"
+fi
+
+# Resolve and use the final destination before mkdir so cancelled components
+# cannot create an intermediate directory inside the repository.
+fixture="$(make_valid_fixture_repo)"
+cancelled_outside="$FIXTURES/cancelled-outside"
+mkdir "$cancelled_outside"
+cancelled_destination="$fixture/created-in-repo/../../cancelled-outside/destination"
+OMSKILLS_DEST="$cancelled_destination" "$fixture/scripts/link-skills.sh" >/dev/null
+[ ! -e "$fixture/created-in-repo" ] || fail "cancelled path component mutated the fixture repo"
+[ -L "$cancelled_outside/destination/safe-skill" ] || fail "resolved outside destination was not installed"
+
+# Reject line-breaking destination spellings rather than silently stripping
+# them during command substitution and mutating a sibling path.
+fixture="$(make_valid_fixture_repo)"
+newline_sibling="$FIXTURES/newline-sibling"
+mkdir "$newline_sibling"
+newline_destination="${newline_sibling}"$'\n'
+if OMSKILLS_DEST="$newline_destination" "$fixture/scripts/link-skills.sh" >/dev/null 2>&1; then
+  fail "installer accepted a line-breaking destination"
+fi
+[ ! -e "$newline_sibling/safe-skill" ] || fail "line-breaking destination mutated its sibling"
+[ ! -e "$newline_sibling/.omskills-managed-links" ] || fail "line-breaking destination wrote sibling state"
+[ ! -e "$newline_destination" ] || fail "line-breaking destination was created"
+
+# A normally spelled alias can still resolve to a line-breaking physical name.
+newline_physical="${FIXTURES}/newline-physical"$'\n'
+newline_alias="$FIXTURES/newline-physical-alias"
+mkdir "$newline_physical"
+ln -s "$newline_physical" "$newline_alias"
+if OMSKILLS_DEST="$newline_alias" "$fixture/scripts/link-skills.sh" >/dev/null 2>&1; then
+  fail "installer accepted a destination resolving to a line-breaking path"
+fi
+[ ! -e "$newline_physical/safe-skill" ] || fail "line-breaking physical destination was mutated"
+[ ! -e "$newline_physical/.omskills-managed-links" ] || fail "line-breaking physical state was written"
+
 # Every current managed-state entry is validated before an entry derives a
 # path or any active link is changed.
 state_payloads=(
@@ -327,9 +396,20 @@ OMSKILLS_DEST="$check_destination" "$fixture/scripts/link-skills.sh" >/dev/null
 check_state_before="$(cat "$check_destination/.omskills-managed-links")"
 check_link_before="$(readlink "$check_destination/safe-skill")"
 OMSKILLS_DEST="$check_destination" "$fixture/scripts/link-skills.sh" --check >/dev/null
+real_mktemp="$(command -v mktemp)"
+gnu_like_bin="$FIXTURES/gnu-like-mktemp-bin"
+mkdir "$gnu_like_bin"
+cat > "$gnu_like_bin/mktemp" <<'SH'
+#!/bin/sh
+if [ "$#" -eq 1 ] && [ "$1" = "-d" ]; then
+  exit 73
+fi
+exec "$REAL_MKTEMP" "$@"
+SH
+chmod +x "$gnu_like_bin/mktemp"
 chmod 555 "$check_destination"
-TMPDIR="$check_destination" OMSKILLS_DEST="$check_destination" \
-  "$fixture/scripts/link-skills.sh" --check >/dev/null
+REAL_MKTEMP="$real_mktemp" PATH="$gnu_like_bin:$PATH" TMPDIR="$check_destination" \
+  OMSKILLS_DEST="$check_destination" "$fixture/scripts/link-skills.sh" --check >/dev/null
 chmod 755 "$check_destination"
 [ "$(cat "$check_destination/.omskills-managed-links")" = "$check_state_before" ] ||
   fail "successful check changed managed state"
