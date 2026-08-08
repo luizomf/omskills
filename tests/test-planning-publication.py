@@ -63,6 +63,14 @@ def field(body: str, name: str) -> str | None:
     return match.group(1) if match else None
 
 
+def planning_identity(body: str) -> str | None:
+    match = re.search(
+        r"(?m)^## Planning identity[ \t]*$\n(?:[ \t]*\n)*([^\n]+)$",
+        body,
+    )
+    return match.group(1).strip() if match else None
+
+
 class DisposableLocalPublisher:
     """Small executable model of the local Markdown publication contract."""
 
@@ -272,6 +280,18 @@ def check_audit_transitions() -> None:
         )
 
 
+def check_identity_reconciliation() -> None:
+    for case in FIXTURE["identity_reconciliation"]:
+        matches = [
+            int(issue["number"])
+            for issue in case["issues"]
+            if planning_identity(str(issue["body"])) == case["approved_identity"]
+        ]
+        action = "reconcile" if len(matches) == 1 else "create" if not matches else "stop"
+        expect(matches == case["expected_matches"], f"wrong identity matches for {case['id']}")
+        expect(action == case["expected_action"], f"wrong reconciliation action for {case['id']}")
+
+
 def check_disposable_local_publication() -> None:
     plan = FIXTURE["local_publication"]
     with tempfile.TemporaryDirectory() as temporary:
@@ -365,6 +385,8 @@ def check_skill_and_tracker_contracts() -> None:
         "expand–contract",
         "missing, stale, or `FAIL`",
         "completed and missing artifacts",
+        "Do not limit discovery to already-parented children",
+        "Do not mutate the audited source Spec",
     ):
         expect(phrase in to_tickets, f"to-tickets omits {phrase!r}")
 
@@ -375,19 +397,24 @@ def check_skill_and_tracker_contracts() -> None:
             "exactly one configured category role",
             "configured `ready-for-agent` state role",
             "missing, stale, or `FAIL`",
+            "configured triage-role metadata",
         ):
             expect(phrase in contract, f"{name} downstream gate omits {phrase!r}")
 
     expect("do not require another Prompt Audit" in audits, "audit protocol became recursive")
     for name, document in (("GitHub", github), ("current GitHub", current)):
         expect("## Planning publication operations" in document, f"{name} planning operations are missing")
+        expect("issues?state=all&per_page=100" in document, f"{name} unparented identity discovery is missing")
         expect("--parent <spec-number>" in document, f"{name} native parent operation is missing")
         expect("--add-blocked-by <blocker-number>" in document, f"{name} native blocker operation is missing")
         expect("documented fallback" in document, f"{name} documented relation fallback is missing")
+        expect("Do not modify the audited Spec" in document, f"{name} fallback mutates the audited Spec")
         expect("--remove-label <needs-triage-label>" in document, f"{name} readiness transition is missing")
     expect("## Planning publication operations" in gitlab, "GitLab planning operations are missing")
+    expect("projects/<project-id>/issues?scope=all&per_page=100" in gitlab, "GitLab unparented identity discovery is missing")
     expect("is_blocked_by" in gitlab, "GitLab native blocker relation is missing")
     expect("native parent relation" in gitlab and "fallback" in gitlab, "GitLab parent fallback is missing")
+    expect("Do not modify the audited Spec" in gitlab, "GitLab fallback mutates the audited Spec")
     expect("## Planning publication operations" in local, "local planning operations are missing")
     for field_name in ("Planning identity:", "Parent:", "Category:", "Status:", "Author:", "Created:", "Updated:", "Blocked by:", "Conflicts with:"):
         expect(field_name in local, f"local planning contract omits {field_name}")
@@ -395,6 +422,7 @@ def check_skill_and_tracker_contracts() -> None:
 
 def main() -> None:
     check_audit_transitions()
+    check_identity_reconciliation()
     check_disposable_local_publication()
     check_hosted_relation_fixtures()
     check_downstream_selection()

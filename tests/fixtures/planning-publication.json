@@ -11,6 +11,45 @@
     {"id": "fail-after-pass", "current_version": 1, "history": [{"version": 1, "status": "PASS", "maintainer_authorized": false}, {"version": 1, "status": "FAIL", "maintainer_authorized": false}], "authorizes": false},
     {"id": "stale-pass", "current_version": 2, "history": [{"version": 1, "status": "PASS", "maintainer_authorized": false}], "authorizes": false}
   ],
+  "identity_reconciliation": [
+    {
+      "id": "unparented-exact-identity",
+      "approved_identity": "spec-fixture-42/ticket-01",
+      "issues": [
+        {"number": 501, "parent": null, "title": "Interrupted Ticket", "body": "## Planning identity\n\nspec-fixture-42/ticket-01\n"}
+      ],
+      "expected_matches": [501],
+      "expected_action": "reconcile"
+    },
+    {
+      "id": "title-is-not-identity",
+      "approved_identity": "spec-fixture-42/ticket-01",
+      "issues": [
+        {"number": 502, "parent": 42, "title": "spec-fixture-42/ticket-01", "body": "## What to build\n\nNo identity marker.\n"}
+      ],
+      "expected_matches": [],
+      "expected_action": "create"
+    },
+    {
+      "id": "incidental-reference-is-not-identity",
+      "approved_identity": "spec-fixture-42/ticket-01",
+      "issues": [
+        {"number": 503, "parent": 42, "title": "Related Ticket", "body": "## Notes\n\nMentions spec-fixture-42/ticket-01 incidentally.\n"}
+      ],
+      "expected_matches": [],
+      "expected_action": "create"
+    },
+    {
+      "id": "duplicate-exact-identity",
+      "approved_identity": "spec-fixture-42/ticket-01",
+      "issues": [
+        {"number": 504, "parent": null, "title": "First duplicate", "body": "## Planning identity\n\nspec-fixture-42/ticket-01\n"},
+        {"number": 505, "parent": 42, "title": "Second duplicate", "body": "## Planning identity\n\nspec-fixture-42/ticket-01\n"}
+      ],
+      "expected_matches": [504, 505],
+      "expected_action": "stop"
+    }
+  ],
   "local_publication": {
     "author": "fixture-maintainer",
     "created": "2026-04-01T00:00:00Z",

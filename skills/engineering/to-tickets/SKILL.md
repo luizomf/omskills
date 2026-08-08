@@ -77,7 +77,9 @@ Revise and repeat until the user approves the breakdown. Do not publish before a
 
 ### 5. Publish transactionally and resumably
 
-Treat the approved source identity plus each approved draft number as that Ticket's stable **Planning identity**. Before mutating the tracker, inspect the source's configured child scope and all candidate artifacts for those exact identities. Reconcile one existing match in place, create a missing identity, and stop on multiple matches or an identity collision. Never create a replacement merely because an earlier attempt is incomplete.
+Treat the approved source identity plus each approved draft number as that Ticket's stable **Planning identity**. Before mutating the tracker, use its configured identity-discovery operation across every artifact that can contain one of those exact identities. Do not limit discovery to already-parented children: an interrupted attempt may have created an identity without completing its parent relation. Match only the exact Planning identity marker, never a title or incidental reference. Reconcile one existing match in place, create a missing identity, and stop on multiple matches or an identity collision. Never create a replacement merely because an earlier attempt is incomplete.
+
+Do not mutate the audited source Spec merely to maintain a fallback identity index. The exact Planning identity marker is the resume key. If an unavoidable material source-contract edit occurs, its prior audit becomes stale and publication stops until that exact revised source receives a new authorizing audit.
 
 Maintain a publication ledger of every approved identity, parent, blocker, conflict, final contract, Prompt Audit status, and readiness transition. Run the phases in this order.
 

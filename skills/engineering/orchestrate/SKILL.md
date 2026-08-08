@@ -21,7 +21,7 @@ Writer and reviewer are single-pass leaf agents. Every result returns only to th
 
 Read the repository instructions, live tracker state, complete issue, governing sources, dependency and conflict edges, base branch, and relevant code. Select one open, authorized, unblocked issue from the supplied prepared queue. Live state wins over handoffs and snapshots.
 
-For each candidate Ticket, read its complete comments, configured native or fallback blockers, and labels. Reject it from selection and writer dispatch when any of these conditions holds:
+For each candidate Ticket, read its complete comments, configured native or fallback blockers, and configured triage-role metadata. Reject it from selection and writer dispatch when any of these conditions holds:
 
 - the Ticket is closed;
 - any configured native or fallback relation identifies an open blocker;

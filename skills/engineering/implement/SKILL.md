@@ -11,7 +11,7 @@ Deliver exactly one repository implementation unit. The invoking agent is the co
 
 Read the accepted request and its governing sources. Identify the requested behavior, every acceptance criterion, and one execution contract that fits a single implementation unit. If the request combines independent units or a blocked or conflicting set of Tickets, stop before writer dispatch or code and report that one unit must be selected or decomposed.
 
-When the unit is a tracked Ticket, fetch its live state, complete comments, configured native or fallback blockers, and labels. Reject it before writer dispatch or code when any of these conditions holds:
+When the unit is a tracked Ticket, fetch its live state, complete comments, configured native or fallback blockers, and configured triage-role metadata. Reject it before writer dispatch or code when any of these conditions holds:
 
 - the Ticket is closed;
 - any configured native or fallback relation identifies an open blocker;
