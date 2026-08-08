@@ -31,6 +31,14 @@ UNSAFE_PUBLIC_MARKERS = {
     "secret identifier:",
     "private session identifier:",
 }
+UNSAFE_PUBLIC_PATTERNS = (
+    r"(?:^|\s)/(?:users|home|private)(?:/|\b)",
+    r"\b(?:localhost|127\.0\.0\.1|10(?:\.\d{1,3}){3}|192\.168(?:\.\d{1,3}){2})\b",
+    r"\b(?:sk|ghp|glpat)-[a-z0-9_-]+\b",
+    r"\bvault://",
+    r"\bsecret[-_ ](?:id|identifier)\s*[:=]",
+    r"\bsession[-_ ](?:id|identifier)\s*[:=]",
+)
 
 
 def expect(condition: bool, message: str) -> None:
@@ -41,7 +49,43 @@ def expect(condition: bool, message: str) -> None:
 
 def public_safe(text: str) -> bool:
     lowered = text.lower()
-    return not any(marker in lowered for marker in UNSAFE_PUBLIC_MARKERS)
+    return not any(
+        marker in lowered for marker in UNSAFE_PUBLIC_MARKERS
+    ) and not any(re.search(pattern, lowered) for pattern in UNSAFE_PUBLIC_PATTERNS)
+
+
+def provision_labels(
+    case: dict[str, Any], managed: list[str]
+) -> tuple[str, list[str], list[str]]:
+    initial_inventory = list(case["initial_inventory"])
+    reinventory = list(case["reinventory"])
+    events = [
+        f"inventory:{','.join(initial_inventory)}",
+        f"reinventory:{','.join(reinventory)}",
+    ]
+    created: list[str] = []
+    for label in managed:
+        if label in reinventory:
+            continue
+        events.append(f"configured-create:{label}")
+        if not case["create_results"].get(label, False):
+            return (
+                f"STOP: configured label creation failed for {label}",
+                created,
+                events,
+            )
+        created.append(label)
+
+    events.append("verify")
+    final_inventory = list(case["final_inventory"])
+    if not all(label in final_inventory for label in managed):
+        return "STOP: final Wayfinder label verification failed", created, events
+    return "ready", created, events
+
+
+def distinct_preclaims_are_safe(case: dict[str, Any]) -> bool:
+    allocated = list(map(int, case["allocated_tickets"]))
+    return len(allocated) >= 2 and len(allocated) == len(set(allocated))
 
 
 def tracker_preflight(case: dict[str, Any]) -> str:
@@ -240,12 +284,26 @@ def check_fixed_labels_and_tracker_preflight() -> None:
     managed = FIXTURE["labels"]["managed"]
     table_labels = re.findall(r"(?m)^\| `(wayfinder:[^`]+)` \|", WAYFINDER)
     expect(table_labels == managed, "Wayfinder does not own the exact five-label inventory")
-    inventory = FIXTURE["labels"]["hosted_inventory"]
-    missing = [label for label in managed if label not in inventory]
-    expect(missing == FIXTURE["labels"]["missing"], "hosted label inventory is wrong")
-    final_inventory = inventory + missing
-    expect(all(label in final_inventory for label in managed), "missing labels were not provisioned")
-    expect("bug" in final_inventory and "documentation" in final_inventory, "unrelated labels were removed")
+    for case in FIXTURE["label_provisioning_cases"]:
+        status, created, events = provision_labels(case, managed)
+        expect(status == case["expected_status"], f"wrong label status for {case['id']}")
+        expect(created == case["expected_created"], f"wrong created labels for {case['id']}")
+        expect(
+            events[0].startswith("inventory:")
+            and events[1].startswith("reinventory:"),
+            f"creation preceded re-inventory for {case['id']}",
+        )
+        reinventory = set(case["reinventory"])
+        expect(
+            all(label not in reinventory for label in created),
+            f"existing label was recreated for {case['id']}",
+        )
+        if status == "ready":
+            expect(events[-1] == "verify", f"final inventory was not verified for {case['id']}")
+            expect(
+                reinventory.issubset(set(case["final_inventory"])),
+                f"unrelated label was removed for {case['id']}",
+            )
     expect(
         FIXTURE["labels"]["local_types"]
         == ["research", "prototype", "grilling", "task"],
@@ -279,6 +337,11 @@ def check_selection_and_claims() -> None:
         selected, reason = select_and_claim(case)
         expect(selected == case["expected"], f"wrong selection for {case['id']}")
         expect(reason == case["expected_reason"], f"wrong stop reason for {case['id']}: {reason}")
+    for case in FIXTURE["concurrent_preclaim_cases"]:
+        expect(
+            distinct_preclaims_are_safe(case) == case["expected_safe"],
+            f"wrong concurrent preclaim result for {case['id']}",
+        )
 
 
 def check_reconciliation() -> None:
@@ -405,6 +468,8 @@ def check_documented_contract() -> None:
             expect(phrase in document, f"{name} configuration omits {phrase!r}")
     expect("Type: research|prototype|grilling|task" in local, "local tracker type field is missing")
     expect("No hosted label operation applies" in local, "local tracker can invent hosted labels")
+    expect("configured `map.md` identity when local Markdown is selected" in WAYFINDER, "Wayfinder requires a hosted map label for local Markdown")
+    expect("apply `wayfinder:map` only when" in WAYFINDER, "Wayfinder applies a map label unconditionally")
     expect("## Comments" in local and "Closing an item" in local, "local comments or closure are missing")
 
 

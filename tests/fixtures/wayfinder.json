@@ -7,19 +7,74 @@
       "wayfinder:grilling",
       "wayfinder:task"
     ],
-    "hosted_inventory": [
-      "bug",
-      "documentation",
-      "wayfinder:map",
-      "wayfinder:task"
-    ],
-    "missing": [
-      "wayfinder:research",
-      "wayfinder:prototype",
-      "wayfinder:grilling"
-    ],
     "local_types": ["research", "prototype", "grilling", "task"]
   },
+  "label_provisioning_cases": [
+    {
+      "id": "successful-reinventory-and-verification",
+      "initial_inventory": ["bug", "documentation", "wayfinder:map"],
+      "reinventory": ["bug", "documentation", "wayfinder:map", "wayfinder:task"],
+      "create_results": {
+        "wayfinder:research": true,
+        "wayfinder:prototype": true,
+        "wayfinder:grilling": true
+      },
+      "final_inventory": [
+        "bug",
+        "documentation",
+        "wayfinder:map",
+        "wayfinder:research",
+        "wayfinder:prototype",
+        "wayfinder:grilling",
+        "wayfinder:task"
+      ],
+      "expected_status": "ready",
+      "expected_created": [
+        "wayfinder:research",
+        "wayfinder:prototype",
+        "wayfinder:grilling"
+      ]
+    },
+    {
+      "id": "configured-creation-failure",
+      "initial_inventory": ["bug", "wayfinder:map"],
+      "reinventory": ["bug", "wayfinder:map"],
+      "create_results": {
+        "wayfinder:research": true,
+        "wayfinder:prototype": false,
+        "wayfinder:grilling": true,
+        "wayfinder:task": true
+      },
+      "final_inventory": ["bug", "wayfinder:map", "wayfinder:research"],
+      "expected_status": "STOP: configured label creation failed for wayfinder:prototype",
+      "expected_created": ["wayfinder:research"]
+    },
+    {
+      "id": "final-verification-failure",
+      "initial_inventory": ["bug", "wayfinder:map"],
+      "reinventory": ["bug", "wayfinder:map"],
+      "create_results": {
+        "wayfinder:research": true,
+        "wayfinder:prototype": true,
+        "wayfinder:grilling": true,
+        "wayfinder:task": true
+      },
+      "final_inventory": [
+        "bug",
+        "wayfinder:map",
+        "wayfinder:research",
+        "wayfinder:prototype",
+        "wayfinder:grilling"
+      ],
+      "expected_status": "STOP: final Wayfinder label verification failed",
+      "expected_created": [
+        "wayfinder:research",
+        "wayfinder:prototype",
+        "wayfinder:grilling",
+        "wayfinder:task"
+      ]
+    }
+  ],
   "tracker_preflight": [
     {
       "id": "configured-hosted",
@@ -408,6 +463,23 @@
       "expected_reason": "session already resolved one Ticket"
     }
   ],
+  "concurrent_preclaim_cases": [
+    {
+      "id": "separate-ticket-allocations",
+      "allocated_tickets": [118, 119],
+      "expected_safe": true
+    },
+    {
+      "id": "duplicate-ticket-allocation",
+      "allocated_tickets": [120, 120],
+      "expected_safe": false
+    },
+    {
+      "id": "missing-second-allocation",
+      "allocated_tickets": [121],
+      "expected_safe": false
+    }
+  ],
   "reconciliation": {
     "resolved": {
       "number": 201,
@@ -460,7 +532,13 @@
       "private filesystem location: SYNTHETIC_FIXTURE_HOST_PATH",
       "private network location: SYNTHETIC_FIXTURE_NETWORK",
       "secret identifier: SYNTHETIC_FIXTURE_SECRET_ID",
-      "private session identifier: SYNTHETIC_FIXTURE_SESSION"
+      "private session identifier: SYNTHETIC_FIXTURE_SESSION",
+      "Use /Users/example/.config/tool/credentials for access.",
+      "Internal endpoint: http://192.168.1.5/api",
+      "Credential token: sk-fixture-do-not-use",
+      "Vault reference: vault://team/private",
+      "Secret resource: secret-id=fixture-resource",
+      "Session allocation: session-id=fixture-42"
     ],
     "allowed_task_fields": [
       "capability availability",

@@ -17,7 +17,7 @@ In narration and the map's **Decisions so far**, refer to every map and ticket b
 
 ## Map structure
 
-The map is the authoritative issue for the effort in the configured tracker, labelled `wayfinder:map`. Its tickets are child issues.
+The map is the authoritative item for the effort in the configured Issue tracker. On a hosted label-backed tracker it uses `wayfinder:map`; on a deliberately selected local Markdown tracker it uses the configured `map.md` path and no hosted label. Its Tickets are children through the selected tracker's configured relationship.
 
 The map indexes decisions; each decision's detail exists only in its ticket. **Decisions so far** contains a one-line gist and link.
 
@@ -144,7 +144,7 @@ Use when the user provides a loose idea.
 
 1. **Name the destination.** Use `grill-with-docs` to identify the spec, decision, or change that ends the effort. Confirm it before continuing because it sets scope.
 2. **Map breadth-first.** Grill across the full scope to identify currently stateable decisions, immediate actions, and fog before exploring any one branch in depth. If no fog remains and the route fits one session, stop without creating a map and ask the user how to proceed.
-3. **Verify types and create the map.** Complete the fixed-type inventory policy when the selected tracker uses hosted labels. Create the authoritative map with the configured operation, apply `wayfinder:map`, fill **Destination**, **Notes**, **Not yet specified**, and **Out of scope**, and leave **Decisions so far** empty.
+3. **Verify types and create the map.** Complete the fixed-type inventory policy when the selected tracker uses hosted labels. Create the authoritative map with the configured operation; apply `wayfinder:map` only when the selected tracker represents maps with hosted labels, or use the configured `map.md` identity when local Markdown is selected. Fill **Destination**, **Notes**, **Not yet specified**, and **Out of scope**, and leave **Decisions so far** empty.
 4. **Create stateable Tickets.** Create all current children through the configured child operation first, then add blockers in a second pass so every relationship uses a real tracker identity. Leave questions that cannot yet be stated in **Not yet specified**.
 5. Stop after the map and initial Tickets exist; resolve no Ticket in the charting session.
 
