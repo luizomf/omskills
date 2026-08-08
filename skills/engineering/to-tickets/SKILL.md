@@ -18,9 +18,13 @@ Read the configured Issue tracker and triage-label vocabulary. If either is unav
 
 Use the plan, Spec, or conversation already in context. If the user provides a path, issue number, or URL, read its complete body and comments before drafting Tickets.
 
+#### Establish a publishable parent Spec
+
+A plan or conversation may supply the source context, but it is not itself a publishable parent identity. When the source is not already a durable Spec in the configured Issue tracker, run `to-spec` from that established context first. Resume this process only with the resulting complete Spec, its configured tracker identity or path, and its current authorizing Prompt Audit status. Do not invent a source identity or publish parentless implementation Tickets.
+
 #### Validate the source Prompt Audit
 
-Locate the source planning contract's newest applicable Prompt Audit status before accepting it for breakdown:
+Locate the parent Spec's newest applicable Prompt Audit status before accepting it for breakdown:
 
 - a current `PASS` authorizes the breakdown;
 - `BYPASS` authorizes it only when the status records explicit maintainer authorization for that source contract; and
@@ -123,11 +127,11 @@ Author: <configured author identity>
 Created: <ISO 8601 timestamp>
 Updated: <ISO 8601 timestamp>
 
-**What to build:** <the end-to-end behavior this Ticket makes work from the user's perspective>
+What to build: <the end-to-end behavior this Ticket makes work from the user's perspective>
 
-**Blocked by:** <Ticket Planning identities/numbers/titles, or "None — can start immediately">
+Blocked by: <Ticket Planning identities/numbers/titles, or "None — can start immediately">
 
-**Conflicts with:** <each conflicting Ticket and shared surface, or "None — independent">
+Conflicts with: <each conflicting Ticket and shared surface, or "None — independent">
 
 - [ ] Acceptance criterion 1
 - [ ] Acceptance criterion 2

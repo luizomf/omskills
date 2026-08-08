@@ -56,6 +56,7 @@
     "updated": "2026-04-01T00:00:00Z",
     "spec": {
       "identity": "spec-fixture-42",
+      "path": ".scratch/planning-publication/spec.md",
       "title": "Publish fixture behavior",
       "body": "## Problem Statement\n\nFixture planning contract.\n\n## Testing Decisions\n\n- **Confirmed caller-visible test seam:** disposable local publication\n",
       "audit": {"version": 1, "status": "PASS", "maintainer_authorized": false}

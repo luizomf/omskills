@@ -77,14 +77,14 @@ class DisposableLocalPublisher:
     def __init__(self, root: Path, plan: dict[str, Any]):
         self.root = root
         self.plan = plan
-        self.feature = root / ".scratch" / "planning-publication"
+        self.spec_path = root / str(plan["spec"]["path"])
+        self.feature = self.spec_path.parent
         self.issues = self.feature / "issues"
         self.observed_initial_states: list[str] = []
 
     def publish_spec(self) -> None:
         self.feature.mkdir(parents=True, exist_ok=True)
         spec = self.plan["spec"]
-        path = self.feature / "spec.md"
         expected_prefix = (
             f"# {spec['title']}\n\n"
             f"Planning identity: {spec['identity']}\n"
@@ -93,16 +93,16 @@ class DisposableLocalPublisher:
             f"Updated: {self.plan['updated']}\n\n"
             f"{spec['body']}"
         )
-        if path.exists():
+        if self.spec_path.exists():
             expect(
-                path.read_text().startswith(expected_prefix),
+                self.spec_path.read_text().startswith(expected_prefix),
                 "resume found a different Spec at the approved identity",
             )
         else:
-            path.write_text(expected_prefix)
+            self.spec_path.write_text(expected_prefix)
         audit = spec["audit"]
-        if "### Prompt Audit" not in path.read_text():
-            with path.open("a") as handle:
+        if "### Prompt Audit" not in self.spec_path.read_text():
+            with self.spec_path.open("a") as handle:
                 handle.write(
                     "\n## Comments\n\n"
                     "### Prompt Audit\n\n"
@@ -116,7 +116,7 @@ class DisposableLocalPublisher:
 
     def spec_authorizes_tickets(self) -> bool:
         spec = self.plan["spec"]
-        body = (self.feature / "spec.md").read_text()
+        body = self.spec_path.read_text()
         match = re.search(
             r"(?ms)^### Prompt Audit\n\nAuthor: .+\nCreated: .+\nUpdated: .+\n"
             r"Status: (PASS|BYPASS|FAIL)\nContract version: (\d+)\n"
@@ -145,58 +145,84 @@ class DisposableLocalPublisher:
                 result.setdefault(identity, []).append(path)
         return result
 
-    def reconcile_identities_and_parents(self) -> None:
+    def reconcile_identities_and_parents(
+        self,
+        interrupt_after_identity: int | None = None,
+    ) -> None:
         self.issues.mkdir(parents=True, exist_ok=True)
         identity_paths = self._approved_identity_paths()
         for identity, paths in identity_paths.items():
             expect(len(paths) == 1, f"duplicate planning identity exists: {identity}")
 
+        created = 0
         for ticket in self.plan["tickets"]:
             identity = ticket["identity"]
             existing = identity_paths.get(identity, [])
             path = self._ticket_path(ticket)
             if existing:
                 expect(existing[0] == path, f"approved identity moved: {identity}")
-                expect(
-                    field(path.read_text(), "Parent") == self.plan["spec"]["identity"],
-                    f"parent is incomplete for {identity}",
-                )
                 continue
             expect(not path.exists(), f"ticket path has an unapproved identity: {path}")
-            path.write_text(self._render_ticket(ticket, relations_complete=False))
+            path.write_text(
+                self._render_ticket(
+                    ticket,
+                    parent_complete=False,
+                    relations_complete=False,
+                )
+            )
             identity_paths[identity] = [path]
             self.observed_initial_states.append(field(path.read_text(), "Status") or "")
+            created += 1
+            if interrupt_after_identity is not None and created == interrupt_after_identity:
+                raise InterruptedPublication
+
+        for ticket in self.plan["tickets"]:
+            path = self._ticket_path(ticket)
+            if field(path.read_text(), "Parent") == self.plan["spec"]["path"]:
+                continue
+            path.write_text(
+                self._render_ticket(
+                    ticket,
+                    parent_complete=True,
+                    relations_complete=False,
+                )
+            )
 
     def _render_ticket(
         self,
         ticket: dict[str, Any],
         *,
         relations_complete: bool,
+        parent_complete: bool = True,
         audit: dict[str, Any] | None = None,
     ) -> str:
-        ready = relations_complete and audit_authorizes(audit, 1)
+        ready = parent_complete and relations_complete and audit_authorizes(audit, 1)
         status = "ready-for-agent" if ready else "needs-triage"
-        blockers = ", ".join(ticket["blocked_by"]) or "None — can start immediately"
-        conflicts = (
-            "; ".join(
-                f"{conflict['identity']} — {conflict['surface']}"
-                for conflict in ticket["conflicts"]
+        if relations_complete:
+            blockers = ", ".join(ticket["blocked_by"]) or "None — can start immediately"
+            conflicts = (
+                "; ".join(
+                    f"{conflict['identity']} — {conflict['surface']}"
+                    for conflict in ticket["conflicts"]
+                )
+                or "None — independent"
             )
-            or "None — independent"
-        )
+        else:
+            blockers = "Pending — reconcile after all identities and parents"
+            conflicts = "Pending — reconcile after all identities and parents"
+        parent = f"Parent: {self.plan['spec']['path']}\n" if parent_complete else ""
         body = (
             f"# {int(ticket['number']):02d} — {ticket['title']}\n\n"
             f"Planning identity: {ticket['identity']}\n"
-            f"Parent: {self.plan['spec']['identity']}\n"
+            f"{parent}"
             f"Category: {ticket['category']}\n"
             f"Status: {status}\n"
+            f"Blocked by: {blockers}\n"
+            f"Conflicts with: {conflicts}\n"
             f"Author: {self.plan['author']}\n"
             f"Created: {self.plan['created']}\n"
-            f"Updated: {self.plan['updated']}\n"
-            f"Relations complete: {'yes' if relations_complete else 'no'}\n\n"
-            "## What to build\n\nFixture tracer-bullet behavior.\n\n"
-            f"## Blocked by\n\n{blockers}\n\n"
-            f"## Conflicts with\n\n{conflicts}\n"
+            f"Updated: {self.plan['updated']}\n\n"
+            "What to build: Fixture tracer-bullet behavior.\n"
         )
         if audit:
             body += (
@@ -211,11 +237,22 @@ class DisposableLocalPublisher:
             )
         return body
 
+    def _relations_complete(self, ticket: dict[str, Any], body: str) -> bool:
+        blockers = ", ".join(ticket["blocked_by"]) or "None — can start immediately"
+        conflicts = (
+            "; ".join(
+                f"{conflict['identity']} — {conflict['surface']}"
+                for conflict in ticket["conflicts"]
+            )
+            or "None — independent"
+        )
+        return field(body, "Blocked by") == blockers and field(body, "Conflicts with") == conflicts
+
     def reconcile_relations(self, interrupt_after: int | None = None) -> None:
         completed = 0
         for ticket in self.plan["tickets"]:
             path = self._ticket_path(ticket)
-            if field(path.read_text(), "Relations complete") == "yes":
+            if self._relations_complete(ticket, path.read_text()):
                 continue
             path.write_text(self._render_ticket(ticket, relations_complete=True))
             completed += 1
@@ -226,7 +263,7 @@ class DisposableLocalPublisher:
         for ticket in self.plan["tickets"]:
             path = self._ticket_path(ticket)
             expect(
-                field(path.read_text(), "Relations complete") == "yes",
+                self._relations_complete(ticket, path.read_text()),
                 f"audit ran before final relations for {ticket['identity']}",
             )
             path.write_text(
@@ -242,30 +279,71 @@ class DisposableLocalPublisher:
         missing: list[str] = []
         for ticket in self.plan["tickets"]:
             identity = ticket["identity"]
+            blocker_artifacts = (
+                [f"blocker:{identity}<-{blocker}" for blocker in ticket["blocked_by"]]
+                or [f"blockers:{identity}:none"]
+            )
+            conflict_artifacts = (
+                [
+                    f"conflict:{identity}<->{conflict['identity']}:{conflict['surface']}"
+                    for conflict in ticket["conflicts"]
+                ]
+                or [f"conflicts:{identity}:none"]
+            )
             path = self._ticket_path(ticket)
             if not path.exists():
                 missing.extend(
-                    f"{kind}:{identity}"
-                    for kind in ("identity", "parent", "relations", "audit", "readiness")
+                    [f"identity:{identity}", f"parent:{identity}"]
+                    + blocker_artifacts
+                    + conflict_artifacts
+                    + [f"audit:{identity}", f"readiness:{identity}"]
                 )
                 continue
+
             body = path.read_text()
-            for kind, condition in (
-                ("identity", field(body, "Planning identity") == identity),
-                ("parent", field(body, "Parent") == self.plan["spec"]["identity"]),
-                ("relations", field(body, "Relations complete") == "yes"),
-                ("audit", "### Prompt Audit" in body),
-                ("readiness", field(body, "Status") == "ready-for-agent"),
+            relations_complete = self._relations_complete(ticket, body)
+            blocked_by = field(body, "Blocked by") or ""
+            conflicts = field(body, "Conflicts with") or ""
+            for artifact, condition in (
+                (f"identity:{identity}", field(body, "Planning identity") == identity),
+                (f"parent:{identity}", field(body, "Parent") == self.plan["spec"]["path"]),
+                (f"audit:{identity}", "### Prompt Audit" in body),
+                (f"readiness:{identity}", field(body, "Status") == "ready-for-agent"),
             ):
-                (completed if condition else missing).append(f"{kind}:{identity}")
+                (completed if condition else missing).append(artifact)
+
+            if ticket["blocked_by"]:
+                for artifact, blocker in zip(blocker_artifacts, ticket["blocked_by"]):
+                    condition = relations_complete and blocker in blocked_by
+                    (completed if condition else missing).append(artifact)
+            else:
+                condition = relations_complete and blocked_by == "None — can start immediately"
+                (completed if condition else missing).append(blocker_artifacts[0])
+
+            if ticket["conflicts"]:
+                for artifact, conflict in zip(conflict_artifacts, ticket["conflicts"]):
+                    condition = (
+                        relations_complete
+                        and conflict["identity"] in conflicts
+                        and conflict["surface"] in conflicts
+                    )
+                    (completed if condition else missing).append(artifact)
+            else:
+                condition = relations_complete and conflicts == "None — independent"
+                (completed if condition else missing).append(conflict_artifacts[0])
         return {"success": not missing, "completed": completed, "missing": missing}
 
-    def publish(self, interrupt_after: int | None = None) -> dict[str, Any]:
+    def publish(
+        self,
+        *,
+        interrupt_after_identity: int | None = None,
+        interrupt_after_relations: int | None = None,
+    ) -> dict[str, Any]:
         self.publish_spec()
         expect(self.spec_authorizes_tickets(), "unaudited Spec authorized Ticket publication")
-        self.reconcile_identities_and_parents()
         try:
-            self.reconcile_relations(interrupt_after)
+            self.reconcile_identities_and_parents(interrupt_after_identity)
+            self.reconcile_relations(interrupt_after_relations)
         except InterruptedPublication:
             return self.report()
         self.audit_and_transition()
@@ -303,12 +381,13 @@ def check_disposable_local_publication() -> None:
             complete.observed_initial_states == ["needs-triage", "needs-triage"],
             "implementation Tickets did not begin with needs-triage",
         )
-        spec_body = (complete.feature / "spec.md").read_text()
+        spec_body = complete.spec_path.read_text()
         expect("caller-visible test seam" in spec_body, "Spec lost its confirmed test seam")
         expect("ready-for-agent" not in spec_body, "planning Spec became implementation-ready")
         expect(len(list(complete.issues.glob("*.md"))) == 2, "complete publication duplicated Ticket identities")
         for ticket in plan["tickets"]:
             body = complete._ticket_path(ticket).read_text()
+            expect(field(body, "Parent") == plan["spec"]["path"], f"Ticket parent is not the Spec path: {ticket['identity']}")
             expect(field(body, "Status") == "ready-for-agent", f"audited Ticket stayed non-ready: {ticket['identity']}")
             expect(field(body, "Category") == ticket["category"], f"Ticket category drifted: {ticket['identity']}")
             for conflict in ticket["conflicts"]:
@@ -317,14 +396,33 @@ def check_disposable_local_publication() -> None:
     with tempfile.TemporaryDirectory() as temporary:
         root = Path(temporary)
         interrupted = DisposableLocalPublisher(root, plan)
-        partial = interrupted.publish(int(plan["interrupt_after_relations"]))
+        partial = interrupted.publish(interrupt_after_identity=1)
+        expect(not partial["success"], "unparented identity interruption was reported as success")
+        first = interrupted._ticket_path(plan["tickets"][0])
+        expect(first.exists(), "identity interruption did not persist the created Ticket")
+        expect(field(first.read_text(), "Parent") is None, "identity interruption completed the parent unexpectedly")
+        expect(any(item.startswith("parent:") for item in partial["missing"]), "partial report omitted the missing parent")
+
+        resumed = DisposableLocalPublisher(root, plan)
+        final = resumed.publish()
+        expect(final["success"], f"unparented identity resume failed: {final['missing']}")
+        expect(len(list(resumed.issues.glob("*.md"))) == 2, "unparented resume duplicated Tickets")
+        expect(field(first.read_text(), "Parent") == plan["spec"]["path"], "resume did not reconcile the missing parent")
+
+    with tempfile.TemporaryDirectory() as temporary:
+        root = Path(temporary)
+        interrupted = DisposableLocalPublisher(root, plan)
+        partial = interrupted.publish(
+            interrupt_after_relations=int(plan["interrupt_after_relations"])
+        )
         expect(not partial["success"], "interrupted publication was reported as success")
         expect(partial["missing"], "interrupted publication did not report missing artifacts")
         expect(
-            any(item.startswith("relations:") for item in partial["missing"])
+            any(item.startswith("blocker:") or item.startswith("blockers:") for item in partial["missing"])
+            and any(item.startswith("conflict:") or item.startswith("conflicts:") for item in partial["missing"])
             and any(item.startswith("audit:") for item in partial["missing"])
             and any(item.startswith("readiness:") for item in partial["missing"]),
-            "partial report did not identify exact missing relation, audit, and readiness artifacts",
+            "partial report did not identify exact blocker, conflict, audit, and readiness artifacts",
         )
         for path in interrupted.issues.glob("*.md"):
             expect(field(path.read_text(), "Status") == "needs-triage", "Ticket became ready before audit")
@@ -337,10 +435,44 @@ def check_disposable_local_publication() -> None:
         expect(len(identities) == len(set(identities)), "resume duplicated an approved identity")
 
 
+def documented_relation_choice(
+    document: str,
+    native_marker: str,
+    fallback_marker: str,
+    native_available: bool,
+    native_value: Any,
+    fallback_value: Any,
+) -> Any:
+    native = document.index(native_marker)
+    fallback = document.index(fallback_marker)
+    expect(native < fallback, f"{fallback_marker} is documented before {native_marker}")
+    fallback_line = document[fallback : document.index("\n", fallback)]
+    expect(
+        "only when" in fallback_line and "unavailable" in fallback_line,
+        f"{fallback_marker} is not capability-gated",
+    )
+    return native_value if native_available else fallback_value
+
+
 def check_hosted_relation_fixtures() -> None:
+    github = (ROOT / "skills/engineering/setup-omskills/issue-tracker-github.md").read_text()
     for case in FIXTURE["hosted_relations"]:
-        parent = case["native_parent"] if case["native_parent_available"] else case["fallback_parent"]
-        blockers = case["native_blockers"] if case["native_blockers_available"] else case["fallback_blockers"]
+        parent = documented_relation_choice(
+            github,
+            "**Reconcile a native parent:**",
+            "**Documented fallback for parentage:**",
+            bool(case["native_parent_available"]),
+            case["native_parent"],
+            case["fallback_parent"],
+        )
+        blockers = documented_relation_choice(
+            github,
+            "**Add a native blocker:**",
+            "**Documented fallback for blockers:**",
+            bool(case["native_blockers_available"]),
+            case["native_blockers"],
+            case["fallback_blockers"],
+        )
         expect(parent == case["expected_parent"], f"wrong parent relation for {case['id']}")
         expect(blockers == case["expected_blockers"], f"wrong blocker relation for {case['id']}")
 
@@ -370,12 +502,16 @@ def check_skill_and_tracker_contracts() -> None:
     expect("Apply `ready-for-agent`" not in to_spec, "to-spec still applies ready-for-agent")
     expect("current `PASS` or explicit maintainer-authorized `BYPASS`" in to_spec, "to-spec omits the Spec audit gate")
 
+    parent_spec = to_tickets.index("Establish a publishable parent Spec")
     source_gate = to_tickets.index("Validate the source Prompt Audit")
     approval = to_tickets.index("Obtain breakdown approval")
     identities = to_tickets.index("Phase A — identities and parents")
     relations = to_tickets.index("Phase B — final contracts and relations")
     readiness = to_tickets.index("Phase C — audit and readiness")
-    expect(source_gate < approval < identities < relations < readiness, "to-tickets publication order is not deterministic")
+    expect(
+        parent_spec < source_gate < approval < identities < relations < readiness,
+        "to-tickets publication order is not deterministic",
+    )
     for phrase in (
         "Planning identity",
         "exactly one configured category role",
@@ -387,6 +523,8 @@ def check_skill_and_tracker_contracts() -> None:
         "completed and missing artifacts",
         "Do not limit discovery to already-parented children",
         "Do not mutate the audited source Spec",
+        "not itself a publishable parent identity",
+        "Do not invent a source identity or publish parentless implementation Tickets",
     ):
         expect(phrase in to_tickets, f"to-tickets omits {phrase!r}")
 
