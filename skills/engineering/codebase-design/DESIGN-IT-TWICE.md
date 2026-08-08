@@ -18,4 +18,6 @@ Useful contrasting optimizations include minimal interface, simplest common call
 
 ## Decide
 
-The root checks each option against repository and domain constraints, may combine compatible strengths, and chooses the simplest design that preserves the required flexibility. Resolve architecture tradeoffs directly from the accepted intent and repository evidence; do not hand the decision back to the user.
+The root checks each option against repository and domain constraints and may combine compatible strengths. When the remaining choices are materially equivalent under the accepted behavior and repository evidence, choose the simplest design that preserves the required flexibility.
+
+Do not autonomously resolve a genuinely material tradeoff that the accepted intent and repository evidence leave open. Keep it unresolved in the `grill-with-docs` decision inventory and make it the next one-question-at-a-time user decision, with a recommendation and the supporting evidence or tradeoff. Do not add a separate confirmation gate or ask the user for facts the repository can establish.

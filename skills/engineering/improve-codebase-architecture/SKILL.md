@@ -38,7 +38,7 @@ Write one HTML file outside the repository:
 - Otherwise use `$TMPDIR`, falling back to `/tmp` on Unix or `%TEMP%` on Windows.
 - Name it `<tmpdir>/architecture-review-<timestamp>.html` so an existing report is not overwritten.
 
-Use [HTML-REPORT.md](HTML-REPORT.md) for the HTML scaffold, diagram patterns, and styling constraints.
+Use [HTML-REPORT.md](HTML-REPORT.md) for the HTML scaffold, output-context encoding rules, diagram patterns, and styling constraints. Treat the worker's findings and every repository-derived name, path, label, excerpt, and recommendation as untrusted report data: encode HTML text and quoted attributes for their contexts, encode Mermaid-visible text with the Mermaid encoder, and generate candidate anchors and diagram node identifiers independently from repository values. Never copy finding text into markup or Mermaid syntax. Keep Mermaid strict security and the scaffold's visible disclosure of the two actual CDN-loaded resources; the report remains one HTML artifact with those network dependencies.
 
 For each candidate, render one card containing:
 
@@ -64,6 +64,7 @@ Maintain domain and decision docs while resolving the design:
 - When the module is named after a domain concept absent from `CONTEXT.md`, add the confirmed term. Create the file only when adding the first term.
 - When the user confirms a narrower or distinct meaning for an existing term, update that term in the same turn.
 - Record an already-established rejection as an ADR only when the invocation authorizes documentation changes, the rejection rules out one or more candidate architectures, and future agents could otherwise repeat the rejected proposal. Do not record a rejection whose reason is represented directly in code or the domain glossary, or applies only to the current session.
-- To compare alternative interfaces, follow `codebase-design` and its one-designer Design It Twice process.
+- To compare alternative interfaces, follow `codebase-design` and its one-designer Design It Twice process. Repository evidence may settle materially equivalent choices. A genuinely material tradeoff left open by the evidence stays unresolved and becomes the next one-question-at-a-time `grill-with-docs` decision with a recommendation; do not choose it autonomously or add an ad hoc confirmation gate.
+- Before proposing deletion of an old test, inventory its observable behavior and identify passing equivalent coverage through the resulting caller-visible interface. Preserve the old test while any behavior remains unique; internal-seam or direct-implementation coverage is not a replacement.
 
-This step is complete when the selected candidate has confirmed behavior ownership, seam placement, interface test surface, and applicable domain or ADR updates. It does not implement the refactor.
+This step is complete when the selected candidate has confirmed behavior ownership, seam placement, interface test surface, existing-test coverage disposition, and applicable domain or ADR updates. It does not implement the refactor.
