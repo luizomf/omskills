@@ -22,4 +22,4 @@ Core skills for code work, issue workflow, and architecture decisions. The group
 - **[tdd](./tdd/SKILL.md)** - Red -> green -> refactor development at confirmed test seams.
 - **[codebase-design](./codebase-design/SKILL.md)** - Shared vocabulary and principles for designing deep modules.
 - **[code-review](./code-review/SKILL.md)** - Review a diff along standards and spec axes.
-- **[resolving-merge-conflicts](./resolving-merge-conflicts/SKILL.md)** - Resolve an in-progress git merge or rebase conflict.
+- **[resolving-merge-conflicts](./resolving-merge-conflicts/SKILL.md)** - Resolve active merge/rebase conflicts or standalone conflict markers without losing source intent or unrelated work.

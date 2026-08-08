@@ -175,7 +175,7 @@ For mature projects, the queue should favor small, vertical, verifiable tickets.
 - **[tdd](./skills/engineering/tdd/SKILL.md)**: red -> green -> refactor development at confirmed test seams.
 - **[codebase-design](./skills/engineering/codebase-design/SKILL.md)**: shared vocabulary and principles for designing deep modules.
 - **[code-review](./skills/engineering/code-review/SKILL.md)**: reviews a diff along standards and spec axes.
-- **[resolving-merge-conflicts](./skills/engineering/resolving-merge-conflicts/SKILL.md)**: resolves an in-progress git merge or rebase conflict.
+- **[resolving-merge-conflicts](./skills/engineering/resolving-merge-conflicts/SKILL.md)**: resolves active merge/rebase conflicts or standalone conflict markers without losing source intent or unrelated work.
 
 ### Productivity
 
