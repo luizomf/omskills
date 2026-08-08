@@ -7,6 +7,8 @@ description: Audit whether clean-context agents understand text as intended; for
 
 Test whether a fresh agent's interpretation is semantically equivalent to the intended request. The interpreter and reviewer provide advisory evidence; the audit coordinator owns the final status.
 
+For a tracked Ticket, read the configured issue tracker and triage-label mapping before delegation. If either is unavailable, run `setup-omskills` first. Untracked prompt audits require neither configuration.
+
 ## Establish the reference intent
 
 Before delegation, record the complete accepted intent from the original execution prompt, accepted user direction, accepted conversation decisions, and every applicable authoritative issue, specification, document, ADR, and repository rule. Include every explicit boundary and every item deferred to later work.
@@ -97,9 +99,11 @@ When the execution contract is a tracked issue or an agent brief on one, post a 
 **Basis:** <concise evidence or explicit maintainer authorization>
 ```
 
-For an untracked prompt, report the same fields to the invoking workflow. A newer status supersedes an older one only when it applies to the same execution contract. A material change to the requested outcome, scope, required workflow, deliverables, acceptance criteria, or completion point makes the prior status stale.
+For an untracked prompt, report the same fields to the invoking workflow. A newer status supersedes an older one only when it applies to the same execution contract. A material change to the requested outcome, scope, required workflow, deliverables, acceptance criteria, relations, or completion point makes the prior status stale.
 
-Resume the invoking workflow after `PASS` or `BYPASS`. Stop after `FAIL`.
+For a tracked code or behavior-changing Ticket, transition it to `ready-for-agent` only after its final body, Agent Brief, parent, blocking, and conflict relations are stable, it carries exactly one category role, and this audit returns `PASS` or an explicit maintainer `BYPASS`. Replace `needs-triage`; do not leave two state roles. A `FAIL` remains outside `ready-for-agent`. The audit never creates adjacent Tickets or extends the audited contract.
+
+Resume the invoking workflow after `PASS` or `BYPASS`. The invoking implementation owns every in-scope decision without another user gate. Stop the audited contract after `FAIL`.
 
 ## Audit boundary
 

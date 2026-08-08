@@ -27,7 +27,7 @@ These are non-negotiable. If speed conflicts with these rules, follow the rules.
 
 - **Purpose:** a curated collection of agent skills, prompts, setup documentation, and helper scripts; this is not runtime application code.
 - **Origin:** adapted from a May 24, 2026 copy of [mattpocock/skills](https://github.com/mattpocock/skills), with selected later changes maintained independently.
-- **Default flow:** `idea -> grill -> spec -> tickets -> implement -> review -> PR -> handoff`.
+- **Default flow:** `idea -> grill -> spec -> tickets -> prompt audit -> implement -> review -> PR -> handoff`.
 - **Language:** English for code, comments, commits, issues, pull requests, READMEs, skill names and descriptions, and agent-facing instructions. Match the user's language in chat.
 - End significant changes with a concise summary and exact verification evidence.
 
@@ -73,7 +73,7 @@ When sources conflict, surface the conflict instead of silently choosing one.
 
 ## Workflow
 
-Default flow: **accepted request -> focused change -> verification -> conventional commit -> push**.
+Default flow: **accepted request -> focused change -> verification -> conventional commit -> push**. Code or behavior-changing work starts only from a `ready-for-agent` Ticket with a current Prompt Audit `PASS` or explicit maintainer `BYPASS`; see `CONTEXT.md` and ADR 0002. Text or documentation work that cannot change behavior may proceed directly.
 
 1. Inspect Git status, recent history, relevant issues, and dependency/conflict state.
 2. Read the affected skills, supporting files, and repository contracts before editing.

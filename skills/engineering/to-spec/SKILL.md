@@ -5,17 +5,17 @@ description: Synthesize the current conversation and repository context into a s
 
 # To Spec
 
-Produce a spec from information already established in the conversation and repository. Do not conduct a requirements interview. The only user confirmation in this process is the test-seam check in step 2.
+Produce a Spec from information already established in the conversation and repository. Do not conduct a requirements interview, invent decisions, or treat the Spec as an implementation unit.
 
-Read the configured issue tracker and triage-label vocabulary. If either is unavailable, run `setup-omskills` first.
+Read the configured issue tracker. If it is unavailable, run `setup-omskills` first.
 
 ## Process
 
 1. If the repository has not already been inspected in this context, inspect the current implementation in the affected area. Use the project's domain glossary terms throughout the spec and preserve applicable ADR decisions.
 
-2. Identify the **test seam** or test seams through which tests will verify the feature: caller-visible interfaces shared by production callers and behavior tests. Prefer an existing test seam. Choose the one closest to the feature's externally observable behavior that can exercise all specified behavior. When a new test seam is needed, place it as close to that behavior as possible. Minimize their number. Show the proposed test seams and wait for the user to confirm them.
+2. Record test seams, interfaces, architecture hints, and other implementation guidance only when the conversation or repository has already established them. Mark missing implementation decisions as unresolved rather than inventing them or interviewing the user during synthesis.
 
-3. Write the spec with the template below and publish it as one issue in the configured tracker. Apply `ready-for-agent`; do not perform additional triage.
+3. Write the Spec with the template below and publish it as one planning issue in the configured tracker. Apply no implementation-readiness state: `to-tickets` must first decompose the Spec into independently auditable Tickets.
 
 <spec-template>
 
@@ -43,11 +43,11 @@ Read the configured issue tracker and triage-label vocabulary. If either is unav
 
 Do not include file paths or code snippets. Exception: when prototype output contains a state machine, reducer, schema, type shape, or other snippet that encodes an established decision more precisely than prose can, include only its decision-bearing parts and identify it as prototype output.
 
-## Testing Decisions
+## Testing Guidance
 
-- **Test rule:** assert behavior observable through the confirmed test seam, not implementation details.
-- **Modules:** <the modules exercised through that test seam>
-- **Prior art:** <existing repository tests that provide the pattern to follow>
+- **Established test seams:** <caller-visible seams already established, or "Not yet established">
+- **Observable behavior:** <the outcomes later Tickets must preserve and verify>
+- **Prior art:** <existing repository tests already identified, or "None identified">
 
 ## Out of Scope
 
@@ -59,4 +59,4 @@ Do not include file paths or code snippets. Exception: when prototype output con
 
 </spec-template>
 
-Publishing is complete when the issue contains every established requirement and decision, introduces no new requirement, uses the confirmed test seams, and has `ready-for-agent`.
+Publishing is complete when the Spec contains every established requirement and decision, introduces no new requirement, identifies unresolved implementation details honestly, and carries no implementation-readiness state.

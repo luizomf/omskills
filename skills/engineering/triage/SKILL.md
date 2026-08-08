@@ -72,19 +72,19 @@ Show the count for each bucket and one line per item, then wait for the maintain
    - **Redundancy:** search by domain concept, not only the reporter's wording, for an existing implementation of the requested behavior. Record the locations searched. If the behavior already exists, use the already-implemented `wontfix` outcome in step 5.
    - **Prior rejection:** read `.out-of-scope/*.md` and report entries that reject the same requested outcome or establish a scope boundary applicable to it. Use actor, domain concept, and constraints to determine whether the rejection applies.
 
-2. **Recommend.** Present one category, one state, the evidence for each, and the relevant codebase findings, including the redundancy result. Wait for maintainer direction.
-
-3. **Verify.** Before grilling, test the claim:
+2. **Verify.** Test the claim before recommending a state:
    - for a bug, follow the reporter's reproduction steps;
    - for an enhancement, confirm the current behavior or interface state that the request wants changed;
    - for a PR, check out the diff and run the commands or tests that exercise its stated behavior.
 
    Report one result: `confirmed`, with the exercised code path and observed result; `failed`, with the command or step that contradicted the claim; or `insufficient detail`, listing the exact missing input. Treat `insufficient detail` as evidence for `needs-info`, not as automatic authorization to change state.
 
-4. **Grill when required.** Use `grill-with-docs` whenever the request needs fleshing out, including when an unresolved answer could change scope, externally observable behavior, acceptance criteria, or a durable architecture decision. Ask one question at a time and update `CONTEXT.md` or ADRs as that skill requires.
+3. **Grill when required.** Use `grill-with-docs` whenever the request needs fleshing out, including when an unresolved answer could change scope, externally observable behavior, acceptance criteria, or a durable architecture decision. Ask one question at a time and update `CONTEXT.md` or ADRs as that skill requires.
+
+4. **Recommend.** After verification and any required grilling, present one category, one state, the evidence for each, and the relevant codebase findings. Wait for maintainer direction. If later evidence changes the recommendation, obtain new direction before applying it.
 
 5. **Apply the maintainer-approved outcome:**
-   - `ready-for-agent` — post a brief that satisfies [AGENT-BRIEF.md](AGENT-BRIEF.md).
+   - `ready-for-agent` — post a brief that satisfies [AGENT-BRIEF.md](AGENT-BRIEF.md), keep or restore `needs-triage`, and run `prompt-comprehension-audits` against the final Ticket and brief. Only its current `PASS` or explicit maintainer `BYPASS` applies `ready-for-agent`.
    - `ready-for-human` — use the same brief structure and identify the specific human requirement, such as judgment, external access, design approval, or manual testing.
    - `needs-info` — post the [needs-info template](#needs-info-template).
    - `wontfix` — select exactly one reason:
@@ -93,13 +93,13 @@ Show the count for each bucket and one line per item, then wait for the maintain
      - **Rejected enhancement:** create the entry required by [OUT-OF-SCOPE.md](OUT-OF-SCOPE.md), link it in the comment, and close.
    - `needs-triage` — apply the role; add a comment only when partial findings need to persist.
 
-Outside a maintainer-approved quick state override, the item is triaged when it has exactly one category role, exactly one state role, and the required comment, brief, close action, or out-of-scope entry for that state.
+Outside a maintainer-approved quick state override, the item is triaged when it has exactly one category role, exactly one state role, and the required comment, brief, close action, or out-of-scope entry for that state. A code or behavior-changing item cannot finish at `ready-for-agent` without a current Prompt Audit `PASS` or explicit maintainer `BYPASS`.
 
 ## Quick state override
 
 When the maintainer explicitly requests a state, use that state without verification or grilling. Preserve the existing category. If no category exists, ask the maintainer to choose `bug` or `enhancement` before applying the state.
 
-Before acting, list the exact role changes, comment to be posted, and whether the item will close. For `ready-for-agent` without a grilling session, ask whether the maintainer wants to write an agent brief and wait for the answer. Then apply the listed changes.
+Before acting, list the exact role changes, comment to be posted, and whether the item will close. A request to apply `ready-for-agent` does not itself bypass the Agent Brief or Prompt Audit: prepare the brief, keep `needs-triage`, and transition only after `PASS` or an explicit `BYPASS` in the maintainer's direction. Then apply the listed changes.
 
 ## Needs-info template
 

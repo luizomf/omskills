@@ -16,7 +16,7 @@ This repository is maintained independently and does not track or synchronize wi
 
 The main flow this repo reinforces is:
 
-`idea -> grill -> spec -> tickets -> implement -> review -> PR -> handoff`
+`idea -> grill -> spec -> tickets -> prompt audit -> implement -> review -> PR -> handoff`
 
 The skills act as checkpoints: clarify before planning, document before queuing, triage before implementation, test before coding, review before shipping, and hand off before context is lost.
 
@@ -27,8 +27,8 @@ Before asking an agent to "build it", classify the moment:
 - Need to think through an idea: `/grill-me` or `/grill-with-docs`
 - The work is too large or foggy for one session: `/wayfinder`
 - Know the goal, but not the queue: `/to-spec`, then `/to-tickets`
-- Have a mature ticket or issue: `/implement`
-- Have a prepared issue queue to deliver autonomously: audit its execution prompts, then use `/orchestrate`
+- Have a mature Ticket with a current Prompt Audit `PASS` or explicit `BYPASS`: `/implement`
+- Have a fixed, audited Ticket queue to deliver autonomously: use `/orchestrate`
 - Want the diff checked before it ships: `/code-review`
 - Something broke: `/diagnosing-bugs`
 - Need high-trust reading legwork: `/research`
@@ -86,7 +86,7 @@ The risk in a prepared repo is ignoring decisions that already exist.
 1. Read the local instructions and context: `AGENTS.md`, `CONTEXT.md`, `docs/agents/*`, and `docs/adr/*`.
 2. Start from an existing issue or ticket when possible.
 3. Use `/triage` if the task is new or unclear.
-4. Use `/implement` if the issue is small, mature, and has acceptance criteria.
+4. Use `/implement` if the Ticket is small, mature, has acceptance criteria, and carries a current Prompt Audit `PASS` or explicit `BYPASS`.
 5. Use `/grill-with-docs` if the issue conflicts with domain language or decisions.
 6. Stop and discuss when the task conflicts with an ADR, changes architecture, or has meaningful tradeoffs.
 7. Use `/handoff` before pausing a long session.
@@ -163,8 +163,8 @@ For mature projects, the queue should favor small, vertical, verifiable tickets.
 - **[setup-omskills](./skills/engineering/setup-omskills/SKILL.md)**: configures issue tracker, triage labels, and docs layout per repo.
 - **[to-spec](./skills/engineering/to-spec/SKILL.md)**: turns the current conversation context into a spec and publishes it to the issue tracker.
 - **[to-tickets](./skills/engineering/to-tickets/SKILL.md)**: breaks a plan, spec, or conversation into tracer-bullet tickets with blocking and conflict edges.
-- **[implement](./skills/engineering/implement/SKILL.md)**: implements a spec, issue, or ticket and verifies it against its acceptance criteria.
-- **[orchestrate](./skills/engineering/orchestrate/SKILL.md)**: delivers prepared issues through single-pass writer and reviewer agents with coordinator-owned completion.
+- **[implement](./skills/engineering/implement/SKILL.md)**: implements one audited, authorized code or behavior-changing Ticket and verifies its acceptance criteria.
+- **[orchestrate](./skills/engineering/orchestrate/SKILL.md)**: delivers one authorized Ticket or fixed audited Ticket queue through single-pass writer and reviewer agents.
 - **[wayfinder](./skills/engineering/wayfinder/SKILL.md)**: maps a huge or foggy effort into investigation tickets on the issue tracker.
 
 **Typically agent-selected**
@@ -174,7 +174,7 @@ For mature projects, the queue should favor small, vertical, verifiable tickets.
 - **[research](./skills/engineering/research/SKILL.md)**: investigates a question against high-trust primary sources and saves cited findings in the repo.
 - **[tdd](./skills/engineering/tdd/SKILL.md)**: red -> green -> refactor development at confirmed test seams.
 - **[codebase-design](./skills/engineering/codebase-design/SKILL.md)**: shared vocabulary and principles for designing deep modules.
-- **[code-review](./skills/engineering/code-review/SKILL.md)**: reviews a diff along standards and spec axes.
+- **[code-review](./skills/engineering/code-review/SKILL.md)**: reviews a committed range or complete WIP candidate along Standards and Spec axes.
 - **[resolving-merge-conflicts](./skills/engineering/resolving-merge-conflicts/SKILL.md)**: resolves an in-progress git merge or rebase conflict.
 
 ### Productivity

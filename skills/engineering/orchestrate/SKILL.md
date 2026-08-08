@@ -1,6 +1,6 @@
 ---
 name: orchestrate
-description: Orchestrate delivery of prepared issues through one isolated writer, one isolated reviewer, coordinator-owned correction, and fresh-context continuation. Use when asked to autonomously deliver an audited issue or issue queue.
+description: Orchestrate one authorized Ticket or fixed Ticket queue through an isolated writer, isolated reviewer, coordinator-owned correction, and fresh-context continuation.
 ---
 
 # Orchestrate
@@ -19,26 +19,28 @@ Writer and reviewer are single-pass leaf agents. Every result returns only to th
 
 ## 1. Establish one work unit
 
-Read the repository instructions, live tracker state, complete issue, governing sources, dependency and conflict edges, base branch, and relevant code. Select one open, authorized, unblocked issue from the supplied prepared queue. Live state wins over handoffs and snapshots.
+Fix the **Mission envelope** from accepted user direction: exact authorized Ticket identities, scope, deferrals, queue, and completion boundary. When the user supplies a query or queue source, resolve its current Ticket identities once and freeze that snapshot before delivery. Authorization is non-transitive; newly discovered work and later queue additions remain outside this run.
 
-Locate the newest applicable `Prompt Audit` status for that issue:
+Read the repository instructions, live tracker state, complete Ticket, governing sources, dependency and conflict edges, base branch, and relevant code. Select one open, `ready-for-agent`, authorized, unblocked Ticket from the fixed queue. Live state wins over handoffs and snapshots.
+
+Locate the newest applicable `Prompt Audit` status for that Ticket:
 
 - `PASS` — proceed when no material change to the audited execution contract occurred afterward.
 - `BYPASS` — proceed only when its basis records explicit maintainer authorization for unaudited orchestration.
-- `FAIL` — stop and report its basis; a newer applicable `PASS` or `BYPASS` may supersede it.
-- Missing or stale — stop and ask the maintainer to run `prompt-comprehension-audits` or explicitly authorize a bypass.
+- `FAIL` — this Ticket is not authorized; record its basis and continue with the next independent authorized Ticket when one exists, otherwise report the blocked mission.
+- Missing or stale — this Ticket is not authorized; record the missing gate and continue with the next independent authorized Ticket when one exists, otherwise report the blocked mission.
 
 Never infer bypass authorization from a general request to implement or orchestrate. When the maintainer explicitly authorizes bypass in the current invocation, post a `Prompt Audit` comment with `Status: BYPASS`, the issue or agent-brief reference, and the authorization basis before continuing.
 
-When the sources leave an in-scope choice whose plausible options do not materially differ in behavior, scope, security, compatibility, cost, or reversibility, choose the smallest safe and reversible option consistent with repository conventions—the option you would recommend if asked—record it, and continue. Ask the user only when a material decision remains unresolved, the required change would leave approved scope, or external authority is required.
+A current `PASS` or `BYPASS` transfers every in-scope implementation decision to the coordinator. Resolve choices from the accepted sources and repository evidence without opening another user decision gate. If required behavior cannot be determined or external authority is unavailable, mark that Ticket blocked and continue with the next independent authorized Ticket when one exists; otherwise report the blocked mission. Never widen the Ticket or invent adjacent work.
 
-This step is complete when the coordinator has one exact issue with a current `PASS` or `BYPASS`, fixed scope and deferrals, acceptance criteria, an exact base fixed point, and an executable writer assignment.
+This step is complete when the coordinator has one exact Ticket with a current `PASS` or `BYPASS`, fixed scope and deferrals, acceptance criteria, an exact base fixed point, and an executable writer assignment.
 
 ## 2. Dispatch one writer
 
-Start exactly one fresh isolated writer for the whole issue. Give it a self-contained prompt with the repository and workspace paths, complete issue and governing sources, fixed scope and deferrals, acceptance criteria, repository instructions, expected verification, and required result fields.
+Start exactly one fresh isolated writer for the whole Ticket. Give it a self-contained prompt with the repository and workspace paths, complete Ticket and governing sources, fixed scope and deferrals, acceptance criteria, repository instructions, expected verification, and required result fields.
 
-Require the writer to implement the issue, perform its local iteration and relevant tests, leave the result at an exact candidate commit, and report changed files, verification, deviations, and concerns. The writer must perform the work directly without reviewing, selecting another issue, spawning, or delegating.
+Require the writer to implement the Ticket, perform its local iteration and relevant tests, leave the result at an exact candidate commit, and report changed files, verification, deviations, and concerns. The writer must perform the work directly without reviewing, selecting another Ticket, spawning, or delegating.
 
 This step is complete when the writer has returned one implementation result at an exact candidate commit.
 
@@ -56,15 +58,15 @@ This step is complete when `code-review` has returned one adjudicated report for
 
 ## 5. Correct and integrate
 
-Apply every surviving in-scope correction directly, without another writer or reviewer. Run repository-required verification and complete the repository's commit, push, integration, tracker, and cleanup workflow.
+Apply every surviving in-scope correction directly, without another writer or reviewer. Record out-of-scope review findings without creating or implementing follow-up Tickets. Run repository-required verification and complete the repository's commit, push, integration, tracker, and cleanup workflow.
 
-Review limits bound delegated review, not coordinator authority. Continue through source-resolved divergences; stop only for the material unresolved conditions from step 1.
+Review limits bound delegated review, not coordinator authority. Continue through source-resolved divergences and handle blocked or unauthorized Tickets as step 1 defines, without opening an interactive decision loop.
 
-This step is complete when the issue is delivered at a durable verified state, required tracker and integration work is complete, and the repository state is safe for continuation.
+This step is complete when the Ticket is delivered at a durable verified state, required tracker and integration work is complete, and the repository state is safe for continuation.
 
 ## 6. Continue in a fresh coordinator context
 
-An already-authorized next work unit continues through `wormhole`. The continuation state must identify this `orchestrate` `SKILL.md` as the governing contract, cite the completed issue and durable state, identify the queue source and next authorized unit or selection instruction, and require the fresh coordinator to read this skill completely before acting. With no next work unit, report completion.
+Only an already-authorized next Ticket inside the fixed Mission envelope continues through `wormhole`. The continuation state must identify this `orchestrate` `SKILL.md` as the governing contract, cite the completed Ticket and durable state, identify the fixed queue and next authorized Ticket or selection rule, and require the fresh coordinator to read this skill completely before acting. With no next authorized Ticket, report completion.
 
 This step is complete when the fresh coordinator starts the next authorized unit under this contract or the completed mission has been reported.
 

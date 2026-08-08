@@ -9,10 +9,10 @@ Resolve a plan or design's decision tree with the user. Resolve prerequisites be
 
 For each turn:
 
-1. Inspect the repository for facts that can answer the next question. Do not ask the user for discoverable facts.
-2. Ask exactly one unresolved decision question and wait for the answer.
-3. Include one recommended answer and the repository evidence or trade-off that supports it. The user makes the decision; do not treat the recommendation as approval.
-4. Check asserted premises and the current answer against glossary terms, repository evidence, earlier answers, stated constraints, edge cases, error behavior, and omitted constraints. Surface a conflict before moving to a dependent question.
+1. Validate the user's previous answer, when one exists, against glossary terms, repository evidence, earlier answers, stated constraints, edge cases, error behavior, and omitted constraints. Persist every confirmed domain term or approved durable decision before moving on, and surface any conflict first.
+2. Inspect the repository for facts that can answer the next question. Do not ask the user for discoverable facts.
+3. Ask exactly one unresolved decision question and wait for the answer.
+4. Include one recommended answer and the repository evidence or trade-off that supports it. The user makes the decision; do not treat the recommendation as approval.
 
 Do not enact the resulting plan.
 

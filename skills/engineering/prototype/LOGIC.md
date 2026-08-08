@@ -25,7 +25,7 @@ Match the project's existing conventions for tooling — don't add a new package
 
 ### 3. Isolate the logic in a portable module
 
-Put the actual logic — the bit that's answering the question — behind a small, pure interface that could be lifted out and dropped into the real codebase later. The TUI around it is throwaway; the logic module shouldn't be.
+Put the actual logic — the bit answering the question — behind a small, pure interface that is easy to inspect and can serve as a reference or starting point later. The logic and TUI remain prototype code until a separate implementation Ticket explicitly promotes the validated idea.
 
 The right shape depends on the question:
 
@@ -66,7 +66,7 @@ Give the user the run command. They'll drive it themselves; the interesting mome
 
 ### 7. Capture the answer and the prototype
 
-Once the prototype has answered its question, capture the answer, then capture the prototype the way the [SKILL](SKILL.md) describes. The logic-specific mapping: the validated reducer / machine / function set lifts into the real module (the decision, absorbed); the TUI shell rides along to the throwaway branch that keeps the prototype as a primary source.
+Once the prototype has answered its question, capture the answer and prototype as [SKILL.md](SKILL.md) describes. Record which reducer, machine, or function set may inform later production work. Do not lift it into the real module during the prototype invocation; an explicitly authorized implementation Ticket decides whether and how to reuse it.
 
 ## Anti-patterns
 

@@ -22,15 +22,14 @@ Use the plan, spec, or conversation already in context. If the user provides a p
 
 If the repository's current implementation has not already been inspected in this context, inspect the affected area. Use terms from the project domain glossary in ticket titles and bodies, and preserve applicable ADR decisions.
 
-Identify opportunities to prefactor the code so later tickets can make smaller changes. Schedule any such prefactoring before the tickets it enables.
-
 ### 3. Draft vertical slices
 
-Each tracer-bullet ticket must:
+Each tracer-bullet Ticket must:
 
-- deliver one user-visible behavior through every layer that behavior affects, such as schema, API, UI, and tests;
-- be independently demonstrable or verifiable after completion; and
-- fit one fresh agent context window.
+- deliver one behavior through every layer that behavior affects;
+- be independently demonstrable or verifiable after completion;
+- fit one fresh agent context with room to understand, implement, and verify it; and
+- identify its category role as `bug` or `enhancement` from the accepted source.
 
 Assign every ticket its blocking and conflict edges. A ticket with no blockers enters the frontier. It is eligible for concurrent work only when repository evidence shows no material conflict with active tickets.
 
@@ -63,12 +62,12 @@ Revise and repeat until the user approves the breakdown. Do not publish before a
 
 ### 5. Publish to the configured tracker
 
-Publish one artifact per approved ticket in blocker-first dependency order:
+Create every approved Ticket identity first with exactly one category role and the `needs-triage` state. After every identity exists, add parent links, blocking edges, and conflict edges in a second pass so all relations use real identifiers.
 
-- **Local markdown:** write each ticket to `.scratch/<feature-slug>/issues/<NN>-<slug>.md`, numbered from `01`. Record both edge types.
-- **GitHub, Linear, or another issue tracker:** create one issue per ticket so relationships use real identifiers. Use native blocking relations when available. Record conflicts in the issue body unless the tracker provides an equivalent native relation. Apply `ready-for-agent` unless instructed otherwise.
+- **Local markdown:** write every Ticket under `.scratch/<feature-slug>/issues/<NN>-<slug>.md`, numbered from `01`, then record both edge types.
+- **GitHub, GitLab, or another issue tracker:** create every issue first, then add the tracker's native parent and blocking relations where available and record conflicts in its configured representation.
 
-Do not close or modify a parent issue.
+Do not apply `ready-for-agent`, close or modify the parent Spec, run Prompt Audits, or begin implementation. Ticket publication and readiness are separate phases.
 
 <local-ticket-template>
 
@@ -80,7 +79,9 @@ Do not close or modify a parent issue.
 
 **Conflicts with:** <ticket numbers/titles, or "None — independent">
 
-**Status:** ready-for-agent
+**Category:** bug | enhancement
+
+**Status:** needs-triage
 
 - [ ] Acceptance criterion 1
 - [ ] Acceptance criterion 2
@@ -91,7 +92,11 @@ Do not close or modify a parent issue.
 
 ## Parent
 
-<parent issue reference when the source was an existing issue; otherwise omit this section>
+<parent Spec reference when one exists; otherwise omit this section>
+
+## Category
+
+`bug` | `enhancement`
 
 ## What to build
 
@@ -114,8 +119,8 @@ Do not close or modify a parent issue.
 
 Describe behavior and acceptance criteria without file paths, layer-by-layer implementation lists, or code snippets. Exception: when prototype output contains a state machine, reducer, schema, type shape, or other snippet that encodes an established decision more precisely than prose can, include only its decision-bearing parts and identify it as prototype output.
 
-The publish step is complete when every approved ticket exists separately, every blocking and conflict edge is recorded, and every non-overridden ticket has `ready-for-agent`.
+The publish step is complete when every approved Ticket exists separately with one category and `needs-triage`, and every parent, blocking, and conflict relation is recorded.
 
 ## Next-phase handoff
 
-Ticket creation does not require implementation. When execution begins later, work frontier tickets whose blockers are complete and use `implement` with a fresh context for each ticket. Concurrent tickets require demonstrated independence plus exclusive owners, branches, and worktrees. Integrate completed tickets one at a time, then revalidate every remaining branch after each merge.
+Ticket creation never authorizes implementation. Triage verifies and stabilizes each Ticket and its Agent Brief; `prompt-comprehension-audits` then checks semantic comprehension and one-context fit. Only a current `PASS` or explicit maintainer `BYPASS` transitions that exact Ticket to `ready-for-agent`. Execution later uses `implement` for one Ticket or `orchestrate` for a fixed audited queue.

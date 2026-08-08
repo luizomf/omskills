@@ -76,7 +76,7 @@ Use the tracker's native dependency relationship for blocking. Use a body conven
 Every ticket is either **HITL** (requires live input from a human speaking for themselves) or **AFK** (the agent can resolve it without live human input). An agent must not supply the human side of a HITL exchange.
 
 - **Research** (AFK): use when resolving the question requires knowledge outside the current working directory, such as external documentation, third-party APIs, or a local knowledge base. Produce and link a Markdown summary.
-- **Prototype** (HITL): use when a reaction to a concrete artifact is required to decide appearance or behavior. Produce and link a non-production outline, rough take, stub, or UI/logic prototype; use `prototype` for UI or logic code.
+- **Prototype** (HITL): use when a reaction to a concrete artifact is required to decide appearance or behavior. Produce and link a non-production outline, rough take, stub, or UI/logic prototype; use `prototype` for UI or logic code. The ticket resolves the design question only; promoting any result requires a separate implementation Ticket.
 - **Grilling** (HITL): use `grill-with-docs`, one question at a time. Use this type when the other type conditions do not apply.
 - **Task** (HITL or AFK): use only for work that must finish before a later decision can be made, when the work itself contains no research, prototype, or decision. Examples: provision access, sign up for a service so its API can be evaluated, or move data so its shape can be inspected. The agent performs the task alone where it can; otherwise it gives the human a checklist. Resolve the ticket when the work is complete, recording what changed and any facts later tickets require, such as credential location, URLs, or row counts.
 

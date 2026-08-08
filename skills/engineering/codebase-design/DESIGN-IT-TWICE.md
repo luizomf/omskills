@@ -18,4 +18,4 @@ Useful contrasting optimizations include minimal interface, simplest common call
 
 ## Decide
 
-The root checks each option against repository and domain constraints, may combine compatible strengths, and chooses the simplest design that preserves the required flexibility. Resolve architecture tradeoffs directly from the accepted intent and repository evidence; do not hand the decision back to the user.
+The root checks each option against repository and domain constraints and may combine compatible strengths. Inside an implementation Ticket with a current Prompt Audit `PASS` or explicit `BYPASS`, the coordinator chooses the source-consistent design without opening another user decision gate. Outside that authorization, resolve evidence-determined choices directly and use `grill-with-docs` for any material trade-off the accepted sources leave open.
