@@ -46,12 +46,16 @@ This step is complete when one implementation result and its verification eviden
 
 Inspect the complete result against every acceptance criterion and governing repository rule. Apply all surviving in-scope corrections directly; never return corrections to the writer.
 
-Use `tdd` when the behavior can be exercised at a test seam already confirmed in the request, specification, issue, Ticket, or conversation. Pass that confirmation through without asking the user to reconfirm it. Run typechecking regularly, single test files regularly, and the full test suite once after implementation is complete.
+Use `tdd` when the behavior can be exercised at a test seam already confirmed in the request, specification, issue, Ticket, or conversation. Pass that confirmation through without asking the user to reconfirm it.
 
-This step is complete when the coordinator has corrected every source-determined divergence and verified the complete unit against every acceptance criterion.
+Discover verification only from the target repository's instructions, changed-unit documentation, test layout, scripts, and configured automation. Classify each discovered check for this implementation unit before running it. Run only checks the target repository defines and that apply to the changed unit; do not invent or assume typechecking, a single-test convention, or one conventional full suite. A repository-required complete suite remains applicable when its own instructions require it.
+
+Report every discovered check considered, its exact command when one exists, and exactly one status: `passed`, `failed`, `skipped`, `unavailable`, or `inapplicable`. Give the reason for every status other than `passed`; never hide a failing applicable check behind a skip or omit a required check. A required applicable failure blocks a successful completion claim.
+
+This step is complete when the coordinator has corrected every source-determined divergence, verified the complete unit against every acceptance criterion, and recorded the complete repository-applicable check report.
 
 ## 4. Integrate and complete
 
 Integrate the verified unit through the repository's required workflow. Commit only when the user explicitly requested a commit or the repository's recorded workflow says this invocation should commit, and use a conventional commit. Independent code review remains outside this direct path.
 
-This step is complete when the coordinator has integrated the verified result, disclosed any isolation limitation, and reported completion, deviations, unexecuted checks, and concerns.
+This step is complete when the coordinator has integrated the verified result, disclosed any isolation limitation, and reported completion, deviations, every check status (including unavailable, inapplicable, skipped, or failing checks), and concerns.

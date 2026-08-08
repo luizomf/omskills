@@ -59,7 +59,7 @@ This step is complete when one candidate commit at `HEAD` accounts for the full 
 
 ## 4. Review the candidate
 
-Use `code-review` with the base fixed point from step 1 while the candidate commit is at `HEAD`; the review range is `git diff <base-fixed-point>...HEAD`. Give it the complete issue and governing sources, repository instructions, and commands needed to inspect the full diff. The orchestration coordinator is the review root; `code-review` owns the isolated-reviewer contract, complete read-only pass, evidence requirements, and finding adjudication. Do not reproduce or weaken that policy here.
+Use `code-review` in committed mode with the base fixed point from step 1 while the candidate commit is at `HEAD`; the review range is the validated base-to-`HEAD` candidate. Give it the complete issue and governing sources and every applicable repository instruction. The orchestration coordinator is the review root; `code-review` owns safe ref resolution, complete candidate capture, the isolated-reviewer contract, the read-only pass, evidence requirements, and finding adjudication. Do not reproduce or weaken that policy here.
 
 This step is complete when `code-review` has returned one adjudicated report for the candidate commit at `HEAD` against the base fixed point.
 

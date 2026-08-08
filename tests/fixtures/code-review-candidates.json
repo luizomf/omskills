@@ -1,0 +1,88 @@
+{
+  "rejected_refs": [
+    {
+      "id": "invalid",
+      "value": "refs/heads/fixture-missing"
+    },
+    {
+      "id": "option-like",
+      "value": "--help"
+    },
+    {
+      "id": "shell-semicolon",
+      "value": "HEAD; touch fixture-semicolon"
+    },
+    {
+      "id": "shell-substitution",
+      "value": "$(touch fixture-substitution)"
+    },
+    {
+      "id": "shell-ampersand",
+      "value": "HEAD&touch fixture-ampersand"
+    }
+  ],
+  "authority_cases": [
+    {
+      "id": "aligned",
+      "sources": [
+        {
+          "name": "Spec",
+          "claim": "review committed candidate"
+        },
+        {
+          "name": "Ticket",
+          "claim": "review committed candidate"
+        }
+      ],
+      "expected_status": "ready"
+    },
+    {
+      "id": "material-conflict",
+      "sources": [
+        {
+          "name": "Spec",
+          "claim": "review committed candidate"
+        },
+        {
+          "name": "Ticket",
+          "claim": "review WIP candidate"
+        }
+      ],
+      "expected_status": "conflict"
+    }
+  ],
+  "review_contracts": [
+    {
+      "id": "durable",
+      "mode": "committed",
+      "durable_source": {
+        "name": "Ticket #12",
+        "content": "Outcome: review the complete committed candidate. Scope: review only. Deferrals: integration. Acceptance: every changed path is inspected. Completion: one adjudicated report."
+      },
+      "expected_terms": [
+        "Ticket #12",
+        "complete committed candidate",
+        "every changed path"
+      ]
+    },
+    {
+      "id": "conversation-only",
+      "mode": "WIP",
+      "conversation_contract": {
+        "outcome": "Review the selected WIP candidate.",
+        "scope": "The current worktree only.",
+        "deferrals": "Do not edit or integrate.",
+        "acceptance_criteria": "Inspect staged, unstaged, and untracked changes.",
+        "completion": "Return one evidence-based report."
+      },
+      "private_parent_turn": "PRIVATE_PARENT_TURN_FIXTURE",
+      "expected_terms": [
+        "Outcome: Review the selected WIP candidate.",
+        "Scope: The current worktree only.",
+        "Deferrals: Do not edit or integrate.",
+        "Acceptance criteria: Inspect staged, unstaged, and untracked changes.",
+        "Completion: Return one evidence-based report."
+      ]
+    }
+  ]
+}
