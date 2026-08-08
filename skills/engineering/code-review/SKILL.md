@@ -55,9 +55,9 @@ Capture all three WIP components separately so staged and unstaged states of the
 - unstaged: `git diff --no-ext-diff --binary --`;
 - untracked inventory: `git ls-files --others --exclude-standard -z --`.
 
-Parse the untracked inventory as NUL-delimited paths. Create one empty temporary file outside the repository. For every path, record the path in the inventory and capture a binary-preserving patch with the direct-argument equivalent of `git diff --no-index --no-ext-diff --binary -- <empty-temp-file> <path>`; exit status `1` means a difference, not a command failure. Keep raw binary patch data intact and remove the temporary file after capture.
+Parse the untracked inventory as NUL-delimited paths. Create one empty temporary file outside the repository. For every path, record the path in the inventory and capture a binary-preserving patch with the direct-argument equivalent of `git diff --no-index --no-ext-diff --binary -- <empty-temp-file> <path>`. Treat status `0` with no diagnostic as complete empty-file content. Treat status `1` as a successful difference only when Git emits a usable patch and no diagnostic. Any other result—including status `0` with a diagnostic or status `1` with no usable patch or with a diagnostic—is a capture limitation. Retain the raw stdout, exact status, and stderr for that path, and keep the path in the candidate inventory. Remove the temporary file after capture.
 
-Never silently omit a binary or unreadable path. If Git cannot read or represent a candidate path, retain it in the inventory, record the exact limitation and command status, and do not claim complete content coverage for that path. Do not reinterpret ignored files as untracked candidate files.
+Never silently omit a binary or unreadable path. If Git cannot read or represent a candidate path, report the retained status and diagnostic and do not claim complete content coverage for that path. Do not reinterpret ignored files as untracked candidate files.
 
 The WIP candidate is empty only when both tracked diffs have no bytes and the untracked inventory has no paths. Report `Selected mode: WIP` and the empty candidate without dispatching an isolated reviewer.
 

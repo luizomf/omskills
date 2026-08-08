@@ -139,7 +139,9 @@ def committed_candidate(fixture: GitFixture, fixed_point: str) -> dict[str, Any]
     }
 
 
-def wip_candidate(fixture: GitFixture) -> dict[str, Any]:
+def wip_candidate(
+    fixture: GitFixture, *, remove_before_capture: str | None = None
+) -> dict[str, Any]:
     staged = fixture.git(
         "diff", "--no-ext-diff", "--binary", "--cached", "--"
     ).stdout
@@ -150,9 +152,11 @@ def wip_candidate(fixture: GitFixture) -> dict[str, Any]:
         "ls-files", "--others", "--exclude-standard", "-z", "--"
     ).stdout
     untracked: list[dict[str, Any]] = []
-    limitations: list[str] = []
+    limitations: list[dict[str, Any]] = []
     empty_file = fixture.root / "empty-candidate-file"
     empty_file.write_bytes(b"")
+    if remove_before_capture is not None:
+        (fixture.repo / remove_before_capture).unlink()
     for raw_path in filter(None, raw_paths.split(b"\0")):
         path = os.fsdecode(raw_path)
         patch = fixture.git(
@@ -165,13 +169,22 @@ def wip_candidate(fixture: GitFixture) -> dict[str, Any]:
             path,
             check=False,
         )
-        if patch.returncode not in {0, 1}:
-            limitations.append(path)
-            untracked.append({"path": path, "patch": b"", "limited": True})
-        else:
-            untracked.append(
-                {"path": path, "patch": patch.stdout, "limited": False}
+        diagnostic = patch.stderr.decode(errors="replace").strip()
+        complete = not diagnostic and (
+            patch.returncode == 0
+            or (patch.returncode == 1 and bool(patch.stdout))
+        )
+        if not complete:
+            limitations.append(
+                {
+                    "path": path,
+                    "status": patch.returncode,
+                    "stderr": diagnostic,
+                }
             )
+        untracked.append(
+            {"path": path, "patch": patch.stdout, "limited": not complete}
+        )
     return {
         "mode": "WIP",
         "staged": staged,
@@ -352,6 +365,22 @@ def check_untracked_text_binary_and_mixed_wip() -> None:
         fixture = GitFixture.create(temporary)
         candidate = wip_candidate(fixture)
         expect(candidate["empty"], "empty WIP candidate was not detected")
+
+    with tempfile.TemporaryDirectory() as temporary:
+        fixture = GitFixture.create(temporary)
+        fixture.write("vanished.txt", b"inventoried before capture\n")
+        candidate = wip_candidate(
+            fixture, remove_before_capture="vanished.txt"
+        )
+        entry = candidate["untracked"][0]
+        limitation = candidate["limitations"][0]
+        expect(entry["path"] == "vanished.txt", "limited path left the inventory")
+        expect(entry["limited"], "status 1 access error was accepted as a diff")
+        expect(
+            limitation["status"] == 1
+            and "Could not access" in limitation["stderr"],
+            "status 1 access limitation lost its exact status or diagnostic",
+        )
 
 
 def check_untrusted_refs_are_rejected_without_evaluation() -> None:
