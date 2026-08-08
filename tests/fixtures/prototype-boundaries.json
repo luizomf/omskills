@@ -5,7 +5,7 @@
       "prompt": "Build and run a throwaway settings UI to compare three variants; do not implement production behavior.",
       "mode": "prototype-only",
       "separate_promotion_unit": false,
-      "prompt_audit_status": null,
+      "prompt_audit_status": "PASS",
       "wayfinder_execution_authorized": false,
       "requested_actions": [
         "create_throwaway_artifact",
@@ -26,6 +26,25 @@
         "run_throwaway_artifact",
         "record_decision"
       ]
+    },
+    {
+      "id": "unaudited-prototype-stops",
+      "prompt": "Build and run a throwaway settings UI even though this prototype execution contract has no current Prompt Audit.",
+      "mode": "prototype-only",
+      "separate_promotion_unit": false,
+      "prompt_audit_status": null,
+      "wayfinder_execution_authorized": false,
+      "requested_actions": [
+        "create_throwaway_artifact",
+        "run_throwaway_artifact",
+        "record_decision"
+      ],
+      "contract_authorizations": [
+        "create_throwaway_artifact",
+        "run_throwaway_artifact",
+        "record_decision"
+      ],
+      "expected_allowed": []
     },
     {
       "id": "separately-audited-promotion",

@@ -37,7 +37,7 @@ PROMOTION_ACTIONS = {
     "verify_production_exclusion",
 }
 REPOSITORY_ACTIONS = {"write_tracker", "create_commit", "create_branch"}
-PROMOTION_AUDITS = {"PASS", "BYPASS"}
+AUTHORIZING_AUDITS = {"PASS", "BYPASS"}
 REQUIRED_UI_ROLES = {
     "variant-subtree",
     "url-variant-selection",
@@ -60,13 +60,18 @@ def allowed_actions(case: dict[str, Any]) -> list[str]:
         case["mode"] == "wayfinder"
         and not case["wayfinder_execution_authorized"]
     )
+    execution_contract_authorized = (
+        case["prompt_audit_status"] in AUTHORIZING_AUDITS
+    )
     promotion_authorized = (
-        case["mode"] == "promotion"
+        execution_contract_authorized
+        and case["mode"] == "promotion"
         and case["separate_promotion_unit"]
-        and case["prompt_audit_status"] in PROMOTION_AUDITS
     )
     allowed: list[str] = []
 
+    if not execution_contract_authorized:
+        return allowed
     if case["mode"] == "promotion" and not promotion_authorized:
         return allowed
 
@@ -112,6 +117,7 @@ def check_prompt_action_cases() -> None:
 
     for required in (
         "prototype-only-autonomous",
+        "unaudited-prototype-stops",
         "separately-audited-promotion",
         "wayfinder-planning-only-composition",
     ):
@@ -173,6 +179,8 @@ def check_ui_production_exclusion() -> None:
 
 def check_documented_contract() -> None:
     for phrase in (
+        "current Prompt Audit `PASS` or explicit maintainer-authorized `BYPASS`",
+        "missing, stale, or `FAIL` status stops before prototype creation or execution",
         "autonomously authorizes",
         "accepted question and repository scope",
         "production behavior changes",
@@ -181,8 +189,7 @@ def check_documented_contract() -> None:
         "branch creation",
         "current execution contract already authorizes",
         "Do not ask for separate confirmation",
-        "separate repository implementation unit",
-        "current Prompt Audit `PASS` or explicit maintainer-authorized `BYPASS`",
+        "Production promotion is a separate repository implementation unit with its own current Prompt Audit",
         "implement the validated behavior anew",
         "do not copy prototype code directly",
         "add applicable tests",
