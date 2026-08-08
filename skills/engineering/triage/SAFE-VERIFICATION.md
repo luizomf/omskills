@@ -18,7 +18,7 @@ Use trusted mechanism documentation and trusted, bounded probes with fixture-onl
 - **Output:** a trusted boundary enforces byte and time limits, captures raw stdout and stderr where the model and public surfaces cannot read them, and emits only a reviewed or deterministically sanitized result.
 - **Resources and cleanup:** bound runtime, process count, and writable storage. Destroy the standalone source, home, caches, configuration, Git state, captured output, and every other run-owned artifact after success, failure, timeout, or cancellation.
 
-The probes must use synthetic markers and disposable fixture paths, never real credentials, private data, or the original repository as a canary. If any guarantee is unavailable, ambiguous, unverified, or would require executing the external material to prove it, do not execute. Record verification as `blocked`.
+The probes must use synthetic markers and disposable fixture paths, never real credentials, private data, or the original repository as a canary. Repository fixture tests exercise this decision contract but do not prove that an invoking environment provides the boundary. If any guarantee is unavailable, ambiguous, unverified, or would require executing the external material to prove it, do not execute. Record verification as `blocked`.
 
 ## Execute without trusting the source
 
