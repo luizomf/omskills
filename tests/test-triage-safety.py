@@ -92,6 +92,16 @@ def check_isolation_decisions() -> None:
 
 
 def check_malicious_fixture_matrix() -> None:
+    expect(
+        "repository scripts and dependencies encountered during external-request verification"
+        in TRIAGE,
+        "triage trusts unchanged repository scripts or dependencies during external verification",
+    )
+    expect(
+        "repository script or dependency while verifying an external request"
+        in SAFE_VERIFICATION,
+        "safe-verification narrows protection to contributor-supplied scripts or dependencies",
+    )
     expected_attempts = {
         "authentication_environment",
         "ssh_agent",
