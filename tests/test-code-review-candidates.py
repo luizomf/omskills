@@ -151,6 +151,8 @@ def wip_candidate(fixture: GitFixture) -> dict[str, Any]:
     ).stdout
     untracked: list[dict[str, Any]] = []
     limitations: list[str] = []
+    empty_file = fixture.root / "empty-candidate-file"
+    empty_file.write_bytes(b"")
     for raw_path in filter(None, raw_paths.split(b"\0")):
         path = os.fsdecode(raw_path)
         patch = fixture.git(
@@ -159,7 +161,7 @@ def wip_candidate(fixture: GitFixture) -> dict[str, Any]:
             "--no-ext-diff",
             "--binary",
             "--",
-            os.devnull,
+            str(empty_file),
             path,
             check=False,
         )
@@ -284,9 +286,13 @@ def check_committed_range_and_empty_candidate() -> None:
     with tempfile.TemporaryDirectory() as temporary:
         fixture = GitFixture.create(temporary)
         base = resolve_commit(fixture, "HEAD")
+        fixture.git("commit", "--quiet", "--allow-empty", "-m", "empty candidate")
         candidate = committed_candidate(fixture, base)
         expect(candidate["empty"], "empty committed candidate was not detected")
-        expect(not candidate["log"], "empty committed range unexpectedly has a log")
+        expect(
+            b"empty candidate" in candidate["log"],
+            "empty committed candidate lost its associated log",
+        )
 
 
 def check_staged_and_unstaged_candidates() -> None:

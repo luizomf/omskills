@@ -55,7 +55,7 @@ Capture all three WIP components separately so staged and unstaged states of the
 - unstaged: `git diff --no-ext-diff --binary --`;
 - untracked inventory: `git ls-files --others --exclude-standard -z --`.
 
-Parse the untracked inventory as NUL-delimited paths. For every path, record the path in the inventory and capture a binary-preserving patch against an empty file with the direct-argument equivalent of `git diff --no-index --no-ext-diff --binary -- /dev/null <path>`; exit status `1` means a difference, not a command failure. Keep raw binary patch data intact.
+Parse the untracked inventory as NUL-delimited paths. Create one empty temporary file outside the repository. For every path, record the path in the inventory and capture a binary-preserving patch with the direct-argument equivalent of `git diff --no-index --no-ext-diff --binary -- <empty-temp-file> <path>`; exit status `1` means a difference, not a command failure. Keep raw binary patch data intact and remove the temporary file after capture.
 
 Never silently omit a binary or unreadable path. If Git cannot read or represent a candidate path, retain it in the inventory, record the exact limitation and command status, and do not claim complete content coverage for that path. Do not reinterpret ignored files as untracked candidate files.
 
