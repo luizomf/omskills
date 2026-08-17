@@ -15,6 +15,7 @@ General workflow tools, not code-specific. Active skills are grouped by their ty
 ## Optional
 
 - **[excalidraw](./excalidraw/SKILL.md)** - Create and edit clear, editable Excalidraw diagrams from text or an existing scene.
+- **[voice](./voice/SKILL.md)** - Speak assistant responses through private OMQueue serialization and Edge text-to-speech playback.
 
 ## Typically agent-selected
 
