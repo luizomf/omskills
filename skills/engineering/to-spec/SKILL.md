@@ -5,17 +5,23 @@ description: Synthesize the current conversation and repository context into a s
 
 # To Spec
 
-Produce a Spec from information already established in the conversation and repository. Do not conduct a requirements interview, invent decisions, or treat the Spec as an implementation unit.
+Produce a new or updated Spec from information already established in the conversation, repository, or a supplied Scratchpad. Do not conduct a requirements interview, invent decisions, or treat the Spec as an implementation unit.
 
 Read the configured issue tracker. If it is unavailable, run `setup-omskills` first.
 
+A supplied Scratchpad is source context, not implementation authority. Read it completely. Preserve its explicit established decisions, constraints, exclusions, unresolved Questions, and evidence pointers without treating an unresolved Question or recommendation as a decision. Do not fill gaps from an imagined prior conversation.
+
 ## Process
 
-1. If the repository has not already been inspected in this context, inspect the current implementation in the affected area. Use the project's domain glossary terms throughout the spec and preserve applicable ADR decisions.
+1. Gather all supplied source context. When a Scratchpad is supplied, distinguish its established content from its unresolved Questions before synthesis.
 
-2. Record test seams, interfaces, architecture hints, and other implementation guidance only when the conversation or repository has already established them. Mark missing implementation decisions as unresolved rather than inventing them or interviewing the user during synthesis.
+2. If the repository has not already been inspected in this context, inspect the current implementation in the affected area. Use the project's domain glossary terms throughout the Spec and preserve applicable ADR decisions.
 
-3. Write the Spec with the template below and publish it as one planning issue in the configured tracker. Apply no implementation-readiness state: `to-tickets` must first decompose the Spec into independently auditable Tickets.
+3. Search the configured issue tracker by domain concept and cited relationships for an existing Spec that already governs the result. If one exists, read its complete body and comments and update it instead of creating a duplicate. Preserve accepted content outside the synthesized change.
+
+4. Record test seams, interfaces, architecture hints, and other implementation guidance only when the supplied context or repository has already established them. Mark missing implementation decisions as unresolved rather than inventing them or interviewing the user during synthesis.
+
+5. Write the Spec with the template below. Update the governing Spec found in step 3, or publish one new planning issue when none exists. Add no implementation-readiness state: `to-tickets` must first decompose the Spec into independently auditable Tickets.
 
 <spec-template>
 
@@ -59,4 +65,6 @@ Do not include file paths or code snippets. Exception: when prototype output con
 
 </spec-template>
 
-Publishing is complete when the Spec contains every established requirement and decision, introduces no new requirement, identifies unresolved implementation details honestly, and carries no implementation-readiness state.
+6. After the new or updated Spec durably incorporates every accepted Scratchpad item that should survive, the supplied Scratchpad file may be removed. Preserve it when unresolved continuation context still depends on it; never delete it before checking the durable artifact.
+
+Publishing is complete when the new or updated Spec contains every established requirement and decision, introduces no new requirement, identifies unresolved implementation details honestly, preserves unrelated accepted content, and carries no implementation-readiness state.

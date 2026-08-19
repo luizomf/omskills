@@ -27,7 +27,7 @@ Use this shape for every visible Question:
 
 Keep each identifier unchanged and unambiguous while its round is visible; identifiers need not be global across rounds. The user makes each decision; do not treat a recommendation as approval.
 
-Do not enact the resulting plan.
+Do not enact the resulting plan or start implementation. Artifact writes are limited to the confirmed recording and routing rules below.
 
 ## Use repository domain language
 
@@ -52,6 +52,62 @@ Offer an ADR only when all three conditions hold:
 
 Create an accepted ADR only after the user approves both the decision and recording it. Follow [ADR-FORMAT.md](./ADR-FORMAT.md).
 
-Stop only when no unresolved Question or unresolved fact could materially change the plan and the user confirms the shared understanding. An empty frontier caused by an unresolved prerequisite is not completion.
+These domain and ADR writes remain inline interview behavior under their own gates. They do not authorize completion routing or implementation.
 
-If no document, ticket, issue, or plan has been generated, provide a detailed handoff to the user.
+## Complete the grill
+
+Begin completion only when the recomputed Question frontier is genuinely empty because no unresolved Question or unresolved fact could materially change the plan. An empty frontier caused by an unresolved prerequisite is not completion.
+
+Use these two gates in order:
+
+1. **Confirm the shared understanding.** Consolidate the established decisions, constraints, exclusions, relevant evidence, and any unresolved Questions, including why the unresolved Questions do not block completion. Ask the user to confirm or correct that complete understanding, then wait. Do not recommend a destination yet. If the user corrects it, update the decision tree, resume grilling when needed, and repeat this gate until the user explicitly confirms the revised understanding.
+2. **Confirm the destination separately.** Only after the user explicitly confirms the shared understanding, recommend exactly one destination from the criteria below and give a concise reason. Mention alternatives only when they are materially relevant to safe continuation. Ask the user to confirm that destination in a separate prompt, then wait. Never combine the two confirmations or route work before this second confirmation.
+
+Choose the recommendation by these criteria:
+
+- **Conversation only:** nothing needs to survive beyond the current conversation.
+- **Scratchpad:** temporary, clean-context continuation is needed, but the result does not yet warrant durable planning authority.
+- **New Spec:** durable behavior or workflow planning is needed and no existing Spec or Ticket already governs the result.
+- **Existing Spec or Ticket update:** an existing tracked item already governs the result; update it instead of creating a duplicate.
+- **Domain language:** confirmed shared meaning, ownership, or distinction qualifies for `CONTEXT.md` under the inline recording rule above.
+- **ADR:** the decision passes all three ADR conditions above and the user separately approves recording it.
+
+Destination confirmation does not replace the domain or ADR recording gates.
+
+## Route the confirmed destination
+
+Only after the user separately confirms the destination, take the corresponding action:
+
+- For conversation-only completion, finish with the confirmed summary and write no new artifact.
+- Write a confirmed Scratchpad directly under the safety and content contract below.
+- Route a new Spec through `to-spec`; do not create a Spec under this skill's own authority.
+- Route an existing Spec or Ticket update through the configured issue-tracker skill or invoking tracker workflow that owns that operation. Update the governing item instead of creating a duplicate.
+- Apply a domain-language or ADR destination only under the recording gates above. Inline updates already required during the interview remain valid and are not delayed until completion.
+
+None of these routes starts implementation. A destination confirmation, Scratchpad, Spec, tracked-item update, domain document, or ADR does not bypass existing Prompt Audit, readiness, implementation, review, PR, or handoff authority.
+
+### Scratchpad contract
+
+Before writing, confirm that Git ignores `.scratch/`. If it does not, add `.scratch/` to the repository's ignore rules and confirm the rule takes effect before creating the file. If the directory cannot be made ignored, do not write the Scratchpad.
+
+Write the Scratchpad only at `.scratch/<topic-slug>/grill.md`, using a topic slug derived from the confirmed objective. Make it self-contained for an agent with no access to the prior conversation and include these sections:
+
+```markdown
+# Grill continuation: <topic>
+
+> This Scratchpad is temporary continuation context. It carries no implementation authority.
+
+## Objective and scope
+
+## Established decisions
+
+## Constraints and exclusions
+
+## Unresolved Questions
+
+## Evidence pointers
+
+## Recommended next destination
+```
+
+Record concise conclusions and useful paths or URLs, not a full conversation transcript or turn-by-turn decision history. Never stage or commit the Scratchpad. It may be removed after its accepted content is incorporated into a durable artifact; preserve it while unresolved continuation context still depends on it.
