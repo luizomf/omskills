@@ -57,7 +57,7 @@ Do not propose method signatures, parameter shapes, or other interfaces before s
 
 ### 3. Develop a selected candidate
 
-After the user selects a candidate, use `grill-with-docs` to resolve constraints, dependencies, the deepened module's ownership, what remains behind the seam, which existing tests remain unchanged, and which tests use the resulting interface.
+After the user selects a candidate, use `grill-with-docs` to resolve constraints, dependencies, the deepened module's ownership, what remains behind the seam, which existing tests remain unchanged, and which tests use the resulting interface. Apply its bounded Question-frontier rounds only inside that selected candidate: a round may include no more than three independent Questions, and must never include Questions from another report candidate.
 
 Maintain domain and decision docs while resolving the design:
 

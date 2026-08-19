@@ -1,18 +1,31 @@
 ---
 name: grill-with-docs
-description: Stress-test a repository plan or design one decision question at a time while updating domain terms and durable architecture decisions.
+description: Stress-test a repository plan or design through bounded Question rounds while updating domain terms and durable architecture decisions.
 ---
 
 # Grill With Docs
 
-Resolve a plan or design's decision tree with the user. Resolve prerequisites before dependent decisions.
+Resolve a plan or design's decision tree with the user. Keep the tree internal: do not render or persist it.
 
-For each turn:
+Before the first round and after every user response:
 
-1. Validate the user's previous answer, when one exists, against glossary terms, repository evidence, earlier answers, stated constraints, edge cases, error behavior, and omitted constraints. Persist every confirmed domain term or approved durable decision before moving on, and surface any conflict first.
-2. Inspect the repository for facts that can answer the next question. Do not ask the user for discoverable facts.
-3. Ask exactly one unresolved decision question and wait for the answer.
-4. Include one recommended answer and the repository evidence or trade-off that supports it. The user makes the decision; do not treat the recommendation as approval.
+1. Validate every answer the user actually provided against glossary terms, repository evidence, earlier answers, stated constraints, edge cases, error behavior, and omitted constraints. Surface conflicts before treating an answer as settled.
+2. Settle only the Questions the user answered. Never infer an answer for an omitted Question; keep it eligible for a later recomputed frontier. Persist every confirmed domain term or approved durable decision before moving on, under the recording gates below.
+3. Investigate discoverable facts when they are needed using whatever workspace tools, authoritative sources, or isolated assistance the active harness provides. Do not ask the user to discover them or require a particular skill invocation, command spelling, or harness-specific worker API. If a fact remains unresolved, defer only the Questions that depend on it.
+4. Recompute the current frontier. A Question is eligible only when all its decision and fact prerequisites are settled. Select no more than three mutually independent eligible Questions; answering one must not determine, invalidate, or change the options of another.
+5. Present only that frontier and wait for the user's response.
+
+Use this shape for every visible Question:
+
+```markdown
+### Q<number> — <short title>
+
+<question text or options>
+
+**Recommendation:** <concise recommended answer, with repository evidence or a trade-off>
+```
+
+Keep each identifier unchanged and unambiguous while its round is visible; identifiers need not be global across rounds. The user makes each decision; do not treat a recommendation as approval.
 
 Do not enact the resulting plan.
 
@@ -39,6 +52,6 @@ Offer an ADR only when all three conditions hold:
 
 Create an accepted ADR only after the user approves both the decision and recording it. Follow [ADR-FORMAT.md](./ADR-FORMAT.md).
 
-Stop when no material ambiguity remains and the user confirms the shared understanding.
+Stop only when no unresolved Question or unresolved fact could materially change the plan and the user confirms the shared understanding. An empty frontier caused by an unresolved prerequisite is not completion.
 
 If no document, ticket, issue, or plan has been generated, provide a detailed handoff to the user.

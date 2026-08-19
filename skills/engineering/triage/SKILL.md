@@ -79,7 +79,7 @@ Show the count for each bucket and one line per item, then wait for the maintain
 
    Report one result: `confirmed`, with the exercised code path and observed result; `failed`, with the command or step that contradicted the claim; or `insufficient detail`, listing the exact missing input. Treat `insufficient detail` as evidence for `needs-info`, not as automatic authorization to change state.
 
-3. **Grill when required.** Use `grill-with-docs` whenever the request needs fleshing out, including when an unresolved answer could change scope, externally observable behavior, acceptance criteria, or a durable architecture decision. Ask one question at a time and update `CONTEXT.md` or ADRs as that skill requires.
+3. **Grill when required.** Use `grill-with-docs` whenever the request needs fleshing out, including when an unresolved answer could change scope, externally observable behavior, acceptance criteria, or a durable architecture decision. Apply its bounded Question-frontier rounds only within the one issue or PR currently being triaged: a round may group no more than three independent Questions about that request, and must never combine Questions from separate requests or tracker items. Update `CONTEXT.md` or ADRs as that skill requires.
 
 4. **Recommend.** After verification and any required grilling, present one category, one state, the evidence for each, and the relevant codebase findings. Wait for maintainer direction. If later evidence changes the recommendation, obtain new direction before applying it.
 

@@ -56,7 +56,7 @@ Load this low-resolution view once per session. Find open tickets by querying ch
 Each ticket:
 
 - is a child issue of the map and uses the tracker's issue id as its identity;
-- contains one question sized for one fresh agent session;
+- contains a single tracked resolution target sized for one fresh agent session;
 - has exactly one `wayfinder:<type>` label: `research`, `prototype`, `grilling`, or `task`;
 - records its answer in a resolution comment rather than the body; and
 - links assets created during resolution instead of pasting them into the body.
@@ -66,6 +66,8 @@ Each ticket:
 
 <the decision or investigation this ticket resolves>
 ```
+
+The `## Question` field states the tracked Ticket's resolution target; it is not a conversational **Question**. A `wayfinder:grilling` Ticket may need several Question rounds to resolve that single target.
 
 An open, unassigned ticket is unclaimed; assigning it to the developer driving the map claims it. Concurrent sessions skip claimed tickets.
 
@@ -77,12 +79,12 @@ Every ticket is either **HITL** (requires live input from a human speaking for t
 
 - **Research** (AFK): use when resolving the question requires knowledge outside the current working directory, such as external documentation, third-party APIs, or a local knowledge base. Produce and link a Markdown summary.
 - **Prototype** (HITL): use when a reaction to a concrete artifact is required to decide appearance or behavior. Produce and link a non-production outline, rough take, stub, or UI/logic prototype; use `prototype` for UI or logic code. The ticket resolves the design question only; promoting any result requires a separate implementation Ticket.
-- **Grilling** (HITL): use `grill-with-docs`, one question at a time. Use this type when the other type conditions do not apply.
+- **Grilling** (HITL): use `grill-with-docs` and its bounded Question-frontier rounds. Keep every round inside the selected Ticket; several rounds may resolve that one Ticket, but no round may include Questions for another Ticket. Use this type when the other type conditions do not apply.
 - **Task** (HITL or AFK): use only for work that must finish before a later decision can be made, when the work itself contains no research, prototype, or decision. Examples: provision access, sign up for a service so its API can be evaluated, or move data so its shape can be inspected. The agent performs the task alone where it can; otherwise it gives the human a checklist. Resolve the ticket when the work is complete, recording what changed and any facts later tickets require, such as credential location, URLs, or row counts.
 
 ## Fog of war and scope
 
-The map is intentionally incomplete. Create a ticket when one `## Question` can state the decision or investigation precisely, even if it cannot yet be answered or is blocked. Otherwise put the in-scope item in **Not yet specified**.
+The map is intentionally incomplete. Create a ticket when its `## Question` can state the decision or investigation precisely, even if it cannot yet be answered or is blocked. Otherwise put the in-scope item in **Not yet specified**.
 
 For each fog item, record the suspected question or area to revisit and any currently known constraint; ticket structure is not required. One fog item may later produce zero, one, or multiple tickets. When it meets the ticket condition, create the corresponding ticket or tickets and remove that item from **Not yet specified**. That section excludes decided items, live tickets, and out-of-scope work.
 
@@ -92,7 +94,7 @@ If an existing ticket is found to be beyond the destination, close it, add one l
 
 ## Invocation
 
-Use one of the following modes. In either mode, resolve no more than one ticket per session.
+Use one of the following modes. In either mode, resolve no more than one Ticket per session. Question rounds used while charting stay inside the one active map request; rounds used while working through a map stay inside the one selected Ticket and never combine separate Tickets.
 
 ### Chart the map
 
@@ -110,7 +112,7 @@ Use when the user provides a map URL or number. A specific ticket is optional.
 
 1. Load the map body without preloading every ticket.
 2. If the user named a ticket, select it. Otherwise select the first ticket in frontier order. Assign it to the developer driving the map before any other work.
-3. Resolve that ticket. Load related or closed ticket bodies only as needed and run every skill named in **Notes**. If in doubt, use `grill-with-docs`.
+3. Resolve only that Ticket, including as many Question rounds as it needs. Do not select or resume another Ticket in this session. Load related or closed Ticket bodies only as needed and run every skill named in **Notes**. If in doubt, use `grill-with-docs`.
 4. Post the answer as a resolution comment, close the ticket, and append its linked title plus a one-line gist to **Decisions so far**.
 5. Create newly stateable tickets before adding their blocking relationships. Remove each graduated fog item from **Not yet specified**. Close and record out-of-scope tickets as specified above. Update or delete tickets invalidated by the resolution.
 
