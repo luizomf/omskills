@@ -4,6 +4,7 @@
 # Local agent configuration and scratch work
 .claude/settings.local.json
 .pi/
+.scratch/
 .tmp-research/
 
 # Local environment files

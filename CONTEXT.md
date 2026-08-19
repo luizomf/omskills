@@ -17,8 +17,8 @@ A single tracked implementation unit inside an **Issue tracker**, sized to fit o
 _Avoid_: backlog item, multi-agent implementation plan, interview question
 
 **Scratchpad**:
-A temporary, untracked, self-contained continuation record under an ignored `.scratch/` directory. It lets an agent with clean context recover established decisions, unresolved **Questions**, evidence pointers, and the recommended next action when the result does not yet warrant a durable **Spec** or **Ticket**.
-_Avoid_: spec, ticket, permanent documentation
+A temporary, untracked, self-contained continuation record under an ignored `.scratch/` directory. It lets an agent with clean context recover established decisions, unresolved **Questions**, evidence pointers, and the recommended next action, but it is not a **Spec**, **Ticket**, ADR, or permanent documentation and carries no implementation authority.
+_Avoid_: spec, ticket, ADR, permanent documentation, implementation plan
 
 **Spec**:
 The durable planning authority describing a problem, intended behavior, constraints, and established design guidance. A **Spec** guides code only through smaller **Tickets** and is never itself an implementation unit.
@@ -38,7 +38,7 @@ _Avoid_: open-ended mandate, adjacent-work authorization
 
 - An **Issue tracker** holds many **Specs** and **Tickets**
 - A **Question** is resolved in a live interaction and may inform a later **Scratchpad**, **Spec**, or **Ticket**
-- A **Scratchpad** may preserve temporary planning context but carries no implementation authority
+- A **Scratchpad** may preserve temporary planning context and be removed after accepted content reaches a durable artifact, but it carries no implementation authority
 - A **Spec** is broken down into many **Tickets** and is never implemented directly
 - A triaged **Ticket** carries one category **Triage role** and one state **Triage role**
 - A code or behavior-changing **Ticket** becomes `ready-for-agent` only with a current `PASS` or explicit `BYPASS` **Prompt audit status**
