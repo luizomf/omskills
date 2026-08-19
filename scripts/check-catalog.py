@@ -16,6 +16,7 @@ MANIFESTS = [
 ]
 ALLOWED_BUCKETS = {"engineering", "productivity", "misc"}
 FORBIDDEN_BUCKETS = {"deprecated", "in-progress", "personal"}
+USER_ONLY_ACTIVE_SKILLS = {"teach"}
 
 
 def fail(message: str) -> None:
@@ -79,11 +80,16 @@ def main() -> None:
         names.add(name)
         if frontmatter_name(skill_file) != name:
             fail(f"frontmatter name does not match directory: {entry}")
-        if re.search(
-            r"(?m)^disable-model-invocation:\s*true\s*$",
-            frontmatter_text(skill_file),
-        ):
-            fail(f"active skill is not agent-discoverable: {entry}")
+        is_user_only = bool(
+            re.search(
+                r"(?m)^disable-model-invocation:\s*true\s*$",
+                frontmatter_text(skill_file),
+            )
+        )
+        if name in USER_ONLY_ACTIVE_SKILLS and not is_user_only:
+            fail(f"active skill must be user-only: {entry}")
+        if name not in USER_ONLY_ACTIVE_SKILLS and is_user_only:
+            fail(f"active skill is unexpectedly user-only: {entry}")
 
         expected_root_link = f"(./{relative.as_posix()}/SKILL.md)"
         if expected_root_link not in root_readme:
@@ -91,6 +97,13 @@ def main() -> None:
         bucket_readme = (ROOT / "skills" / bucket / "README.md").read_text()
         if f"(./{name}/SKILL.md)" not in bucket_readme:
             fail(f"skills/{bucket}/README.md does not link active skill: {name}")
+
+    unknown_user_only_skills = USER_ONLY_ACTIVE_SKILLS - names
+    if unknown_user_only_skills:
+        fail(
+            "user-only active skill is missing from the plugin manifest: "
+            + ", ".join(sorted(unknown_user_only_skills))
+        )
 
     # Bucket READMEs catalog every skill, including optional, personal,
     # in-progress, and deprecated entries that must stay out of the manifests.

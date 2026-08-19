@@ -122,7 +122,7 @@ By default, the script writes to `~/.agents/skills`, the shared user-level skill
 OMSKILLS_DEST=/tmp/omskills-test ./scripts/link-skills.sh
 ```
 
-All active skills are agent-discoverable. Supporting harnesses include each skill's name, description, and location in the agent's system context, then load the full `SKILL.md` only when the task matches or the user selects the skill directly. The groupings below describe the typical selection path, not discovery status.
+Active skills are installed by the plugin, independently of discovery state. Supporting harnesses include agent-discoverable skills in the model's system context, while user-only skills remain available for direct selection without permanent context load. `teach` is user-only; invoke it directly when you want a stateful learning workspace. The groupings below describe the typical selection path, not discovery status.
 
 2. In each repo that will consume these skills, run:
 

@@ -47,6 +47,7 @@ sync with the accepted behavior.
 - Active skills appear in the top-level `README.md`, their bucket README, and both plugin manifests.
 - Optional skills appear in their bucket README and stay out of both plugin manifests.
 - Each catalog entry links the skill name to its `SKILL.md`.
+- Catalog status and discovery state are independent: active user-only skills remain in both manifests but stay out of permanent model context. `scripts/check-catalog.py` records and validates each active user-only exception.
 - New skills default to user-only with `disable-model-invocation: true`. Promotion to agent-discoverable requires observed need and maintainer approval of the permanent context load.
 - A rename updates the folder, frontmatter `name`, both READMEs, both manifests, and every hard-coded reference in one change.
 - Refer to another skill by its installed name. Use relative links only for files bundled inside the current skill directory.
