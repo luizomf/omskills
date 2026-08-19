@@ -8,9 +8,17 @@ A curated collection of agent skills for structured Codex and coding-agent workf
 The tool that hosts a repo's specs, tickets, and issues — GitHub Issues, Linear, a local `.scratch/` markdown convention, or similar. Skills like `to-spec`, `to-tickets`, `triage`, `code-review`, `orchestrate`, and `wayfinder` read from and write to it.
 _Avoid_: backlog manager, backlog backend, issue host
 
+**Question**:
+A live prompt asking the user to resolve one decision or ambiguity during an interactive workflow. A **Question** is answered in the conversation and may shape a later **Spec** or **Ticket**; it is not itself tracked implementation work.
+_Avoid_: issue, ticket, task
+
 **Ticket**:
-A single tracked implementation unit inside an **Issue tracker**, sized to fit one fresh agent context with room for verification. A Ticket may be a bug, task, issue, investigation, or slice produced by `to-tickets`.
-_Avoid_: backlog item, multi-agent implementation plan
+A single tracked implementation unit inside an **Issue tracker**, sized to fit one fresh agent context with room for verification. A Ticket may be a bug, task, issue, investigation, or slice produced by `to-tickets`; it is not an interactive **Question**.
+_Avoid_: backlog item, multi-agent implementation plan, interview question
+
+**Scratchpad**:
+A temporary, untracked, self-contained continuation record under an ignored `.scratch/` directory. It lets an agent with clean context recover established decisions, unresolved **Questions**, evidence pointers, and the recommended next action when the result does not yet warrant a durable **Spec** or **Ticket**.
+_Avoid_: spec, ticket, permanent documentation
 
 **Spec**:
 The durable planning authority describing a problem, intended behavior, constraints, and established design guidance. A **Spec** guides code only through smaller **Tickets** and is never itself an implementation unit.
@@ -29,6 +37,8 @@ _Avoid_: open-ended mandate, adjacent-work authorization
 ## Relationships
 
 - An **Issue tracker** holds many **Specs** and **Tickets**
+- A **Question** is resolved in a live interaction and may inform a later **Scratchpad**, **Spec**, or **Ticket**
+- A **Scratchpad** may preserve temporary planning context but carries no implementation authority
 - A **Spec** is broken down into many **Tickets** and is never implemented directly
 - A triaged **Ticket** carries one category **Triage role** and one state **Triage role**
 - A code or behavior-changing **Ticket** becomes `ready-for-agent` only with a current `PASS` or explicit `BYPASS` **Prompt audit status**
