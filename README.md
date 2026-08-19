@@ -157,7 +157,7 @@ For mature projects, the queue should favor small, vertical, verifiable tickets.
 
 **Typically user-selected**
 
-- **[grill-with-docs](./skills/engineering/grill-with-docs/SKILL.md)**: runs a grilling session while maintaining domain language and ADRs.
+- **[grill-with-docs](./skills/engineering/grill-with-docs/SKILL.md)**: runs bounded Question rounds while maintaining domain language and ADRs.
 - **[triage](./skills/engineering/triage/SKILL.md)**: moves issues and external PRs through a state machine based on triage roles.
 - **[improve-codebase-architecture](./skills/engineering/improve-codebase-architecture/SKILL.md)**: scans a codebase for deepening opportunities and presents a visual report with a top recommendation.
 - **[setup-omskills](./skills/engineering/setup-omskills/SKILL.md)**: configures issue tracker, triage labels, and docs layout per repo.
@@ -181,7 +181,7 @@ For mature projects, the queue should favor small, vertical, verifiable tickets.
 
 **Typically user-selected**
 
-- **[grill-me](./skills/productivity/grill-me/SKILL.md)**: runs a grilling session without touching code or docs.
+- **[grill-me](./skills/productivity/grill-me/SKILL.md)**: runs bounded Question rounds without touching code or docs.
 - **[caveman](./skills/productivity/caveman/SKILL.md)**: uses ultra-compressed communication while preserving technical accuracy.
 - **[handoff](./skills/productivity/handoff/SKILL.md)**: compacts useful, undocumented conversation state for a fresh agent.
 - **[wormhole](./skills/productivity/wormhole/SKILL.md)**: moves the current conversation into a fresh interactive agent window and retires the origin Pi after transfer.

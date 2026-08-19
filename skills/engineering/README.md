@@ -4,7 +4,7 @@ Core skills for code work, issue workflow, and architecture decisions. The group
 
 ## Typically user-selected
 
-- **[grill-with-docs](./grill-with-docs/SKILL.md)** - Run a grilling session while maintaining domain language and ADRs.
+- **[grill-with-docs](./grill-with-docs/SKILL.md)** - Run bounded Question rounds while maintaining domain language and ADRs.
 - **[triage](./triage/SKILL.md)** - Move issues and external PRs through a state machine of triage roles.
 - **[improve-codebase-architecture](./improve-codebase-architecture/SKILL.md)** - Scan a codebase for deepening opportunities, present a visual report, then grill through the selected candidate.
 - **[setup-omskills](./setup-omskills/SKILL.md)** - Configure per-repo tracker, triage-label, and domain-document operations.

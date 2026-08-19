@@ -4,7 +4,7 @@ General workflow tools, not code-specific. Active skills are grouped by their ty
 
 ## Typically user-selected
 
-- **[grill-me](./grill-me/SKILL.md)** - Run a grilling session without touching code or docs.
+- **[grill-me](./grill-me/SKILL.md)** - Run bounded Question rounds without touching code or docs.
 - **[caveman](./caveman/SKILL.md)** - Use ultra-compressed communication while preserving technical accuracy.
 - **[handoff](./handoff/SKILL.md)** - Compact undocumented conversation state for a fresh agent.
 - **[wormhole](./wormhole/SKILL.md)** - Move the current conversation into a fresh interactive agent window and retire the origin Pi after transfer.
