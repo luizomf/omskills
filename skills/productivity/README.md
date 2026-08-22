@@ -1,11 +1,12 @@
 # Productivity
 
-General workflow tools, not code-specific. Active skills are grouped by their typical selection path; the optional skill is user-only.
+General workflow tools, not code-specific. Active skills are grouped by their typical selection path; optional skills are user-only.
 
 ## Typically user-selected
 
 - **[grill-me](./grill-me/SKILL.md)** - Run bounded Question rounds without touching code or docs.
 - **[caveman](./caveman/SKILL.md)** - Use ultra-compressed communication while preserving technical accuracy.
+- **[design](./design/SKILL.md)** - Design and refine context-fit user interfaces, then verify the rendered result.
 - **[handoff](./handoff/SKILL.md)** - Compact undocumented conversation state for a fresh agent.
 - **[wormhole](./wormhole/SKILL.md)** - Move the current conversation into a fresh interactive agent window and retire the origin Pi after transfer.
 - **[tmux-worker](./tmux-worker/SKILL.md)** - Connect the root with an agent in a visible tmux window for multi-turn work across systems or harnesses.

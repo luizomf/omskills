@@ -16,7 +16,7 @@ MANIFESTS = [
 ]
 ALLOWED_BUCKETS = {"engineering", "productivity", "misc"}
 FORBIDDEN_BUCKETS = {"deprecated", "in-progress", "personal"}
-USER_ONLY_ACTIVE_SKILLS = {"teach"}
+USER_ONLY_ACTIVE_SKILLS = {"design", "teach"}
 
 
 def fail(message: str) -> None:

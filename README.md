@@ -122,7 +122,7 @@ By default, the script writes to `~/.agents/skills`, the shared user-level skill
 OMSKILLS_DEST=/tmp/omskills-test ./scripts/link-skills.sh
 ```
 
-Active skills are installed by the plugin, independently of discovery state. Supporting harnesses include agent-discoverable skills in the model's system context, while user-only skills remain available for direct selection without permanent context load. `teach` is user-only; invoke it directly when you want a stateful learning workspace. The groupings below describe the typical selection path, not discovery status.
+Active skills are installed by the plugin, independently of discovery state. Supporting harnesses include agent-discoverable skills in the model's system context, while user-only skills remain available for direct selection without permanent context load. `design` and `teach` are user-only; invoke them directly for deliberate interface design or a stateful learning workspace. The groupings below describe the typical selection path, not discovery status.
 
 2. In each repo that will consume these skills, run:
 
@@ -183,6 +183,7 @@ For mature projects, the queue should favor small, vertical, verifiable tickets.
 
 - **[grill-me](./skills/productivity/grill-me/SKILL.md)**: runs bounded Question rounds without touching code or docs.
 - **[caveman](./skills/productivity/caveman/SKILL.md)**: uses ultra-compressed communication while preserving technical accuracy.
+- **[design](./skills/productivity/design/SKILL.md)**: designs and refines context-fit user interfaces, then verifies the rendered result.
 - **[handoff](./skills/productivity/handoff/SKILL.md)**: compacts useful, undocumented conversation state for a fresh agent.
 - **[wormhole](./skills/productivity/wormhole/SKILL.md)**: moves the current conversation into a fresh interactive agent window and retires the origin Pi after transfer.
 - **[tmux-worker](./skills/productivity/tmux-worker/SKILL.md)**: connects the root with an agent in a visible tmux window for multi-turn work across systems or harnesses.
