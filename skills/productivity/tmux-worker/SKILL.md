@@ -22,25 +22,30 @@ Use the coordinator process's `$TMUX_PANE` as the callback target even when anot
 
 Wait until the worker displays its normal input-ready editor. A project-trust selector is a user gate, not an input-ready editor: send no message and leave that choice to the user. Never auto-approve trust. Do not use a non-interactive print mode; the session must remain visible for user observation and input. Setup is ready for transport only when the worker pane is retained and its normal editor is input-ready; at a trust gate it remains intentionally paused.
 
-3. Send each caller-supplied message as one literal argument with `tmux send-keys -l`, then send `Enter` separately. Keep the recorded address and message shell-quoted as literal values:
+3. Send each caller-supplied message through a unique tmux buffer, then send `Enter` separately. Do not pass caller-controlled content as a tmux command argument: tmux may reinterpret leading options or command separators even when the shell preserves one argument. Choose each buffer name as a unique identifier containing only ASCII letters, digits, hyphens, and underscores, and keep the recorded addresses shell-quoted:
 
 ```bash
-tmux -S "$socket" send-keys -t "$worker_pane" -l "$message"
+printf '%s' "$message" |
+  tmux -S "$socket" load-buffer -b "$buffer_name" -
+tmux -S "$socket" paste-buffer -b "$buffer_name" -t "$worker_pane" -d
 tmux -S "$socket" send-keys -t "$worker_pane" Enter
 ```
 
-The message may be direct conversational text or point to a caller-owned prompt or artifact. `tmux-worker` does not require a task-specific brief, artifact shape, callback wording, or completion signal. A send is complete when the literal message and separate `Enter` reach the recorded worker pane.
+The message may be direct conversational text or point to a caller-owned prompt or artifact. `tmux-worker` does not require a task-specific brief, artifact shape, callback wording, or completion signal. A send is complete when the paste deletes its unique buffer and the separate `Enter` reaches the recorded worker pane.
 
 After submission, the invoking agent or skill may continue its own work, continue the dialogue, or follow another caller-owned policy. Sending a message neither imposes a yield nor decides whether the invoking turn may end.
 
-4. When the caller requests a response, give the worker the literal callback socket and coordinator pane. The worker returns any caller-defined callback through the same literal transport:
+4. When the caller requests a response, give the worker the literal callback socket and coordinator pane. The worker returns any caller-defined callback through the same buffered transport, with a new safe unique buffer name:
 
 ```bash
-tmux -S "$callback_socket" send-keys -t "$callback_pane" -l "$callback_message"
+printf '%s' "$callback_message" |
+  tmux -S "$callback_socket" load-buffer -b "$callback_buffer_name" -
+tmux -S "$callback_socket" paste-buffer \
+  -b "$callback_buffer_name" -t "$callback_pane" -d
 tmux -S "$callback_socket" send-keys -t "$callback_pane" Enter
 ```
 
-A callback is a cooperative transport event. It may carry a reply, question, progress message, or result pointer, and only the caller decides what it means and what follows. It is not an Accepted continuation mechanism by itself and does not justify ending an unattended autonomous turn. Repeat the literal send sequence in either direction for as many conversational exchanges as the caller needs; each transport leg is complete when its message and separate `Enter` reach the recorded pane.
+A callback is a cooperative transport event. It may carry a reply, question, progress message, or result pointer, and only the caller decides what it means and what follows. It is not an Accepted continuation mechanism by itself and does not justify ending an unattended autonomous turn. Repeat the buffered literal transport in either direction for as many conversational exchanges as the caller needs; each transport leg is complete when its paste deletes the unique buffer and separate `Enter` reaches the recorded pane.
 
 5. Keep the worker running throughout continued dialogue. Retire it only when the invoking agent or skill directs retirement, by sending literal `/quit` and `Enter` in separate calls to the recorded worker pane:
 
