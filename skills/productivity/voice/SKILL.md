@@ -35,8 +35,12 @@ Speak each user-facing response while this skill is active.
    VOICE_TEXT
    ```
 
-   Choose a heredoc delimiter absent from the spoken text. Preserve the label
-   and `--concurrency-key audio-playback`; the key serializes responses so two
+   Choose a heredoc delimiter absent from the spoken text. Invoke `bq` directly
+   from the current shell exactly as shown; never wrap the submission in
+   `bash -lc`, `zsh -lc`, or another login shell. If the harness requires a
+   command prefix, apply it directly to `bq` (for example, `rtk bq ...`) rather
+   than wrapping the whole command. Preserve the label and
+   `--concurrency-key audio-playback`; the key serializes responses so two
    recordings do not play simultaneously. This step is complete when `bq`
    accepts one submission.
 5. Return the normal written response. Do not wait for, poll, inspect, or replay
