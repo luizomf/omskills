@@ -26,19 +26,19 @@ Speak each user-facing response while this skill is active.
    needed. This step is complete when all queued text is safe for those two
    boundaries.
 4. Submit exactly one playback command for the response. Pass the text through
-   stdin without a queued shell and always use the `audio-playback` concurrency
-   key:
+   stdin without a queued shell, label it `pi_voice_playback`, and always use
+   the `audio-playback` concurrency key:
 
    ```sh
-   bq --stdin --concurrency-key audio-playback -- edgetts --stdin --quiet <<'VOICE_TEXT'
+   bq --stdin --label pi_voice_playback --concurrency-key audio-playback -- edgetts --stdin --quiet <<'VOICE_TEXT'
    Your natural spoken response goes here.
    VOICE_TEXT
    ```
 
-   Choose a heredoc delimiter absent from the spoken text. Preserve
-   `--concurrency-key audio-playback`; it serializes responses so two recordings
-   do not play simultaneously. This step is complete when `bq` accepts one
-   submission.
+   Choose a heredoc delimiter absent from the spoken text. Preserve the label
+   and `--concurrency-key audio-playback`; the key serializes responses so two
+   recordings do not play simultaneously. This step is complete when `bq`
+   accepts one submission.
 5. Return the normal written response. Do not wait for, poll, inspect, or replay
    the Queue job after acceptance. If submission fails before acceptance, say
    so briefly in writing rather than claiming audio was queued. This step is
