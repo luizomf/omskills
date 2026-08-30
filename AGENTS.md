@@ -84,6 +84,7 @@ explicit authorization.
 
 ## Engineering, tests, and documentation
 
+- Prefer test-driven development (TDD) whenever practical.
 - Prefer simple, explicit, readable code and prompts over cleverness or pattern purity.
 - Avoid unnecessary abstraction, high complexity, deep nesting, and god files. Split by cohesive responsibility, not arbitrary line counts.
 - Preserve useful error context; do not swallow failures or silently continue after invalid input.
