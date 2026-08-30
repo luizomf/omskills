@@ -16,9 +16,11 @@ Choose one discovery mode:
 
 A loaded skill may compose a user-only skill through a **context pointer** that names the installed skill and the condition for loading it. Use direct paths only for disclosed references bundled with the current skill.
 
-Use agent discovery only when observed use demonstrates a need for autonomous selection and a maintainer approves the permanent context load. Existing active omskills have met both conditions; every new skill remains user-only until it does.
+Use agent discovery only when observed use demonstrates a need for autonomous selection and a maintainer approves the permanent context load. Existing agent-discoverable omskills have met both conditions. Active status is independent: active user-only skills remain installed for direct selection without permanent context load, and every new skill remains user-only until promoted.
 
-When the user cannot recall the applicable user-only skill without inspecting or searching the list, create one user-only **router skill**. Its context pointers must name each target and the condition for loading it.
+When the user cannot recall the applicable user-only skill without inspecting or searching the list, create one user-only **Router Skill**. Its context pointers must name each target and the condition for loading it. This is a skill-selection role only; it never owns Mission Ticket identities, ordering, a cursor, or Ticket-coordinator dispatch, which belong to the canonical Ticket dispatcher.
+
+For skills that route Ticket execution, readiness and a current Prompt Audit gate establish eligibility but never Mission authorization. Route one explicitly selected Ticket to `orchestrate`; route only a user- or invoker-supplied ordered identity list to the future installed name `dispatch-tickets`. Neither skill discovery nor a ready-work query selects Mission work.
 
 ## Descriptions
 

@@ -5,7 +5,7 @@ description: Implement one authorized code or behavior-changing Ticket with a cu
 
 # Implement
 
-1. Read the exact Ticket, its governing Spec, repository instructions, live dependency and conflict state, and newest applicable Prompt Audit status. Proceed only when the Ticket is `ready-for-agent`, fits one fresh context, and has a current `PASS` or explicit maintainer `BYPASS`; otherwise report that it is not authorized.
+1. Confirm that the accepted invocation explicitly selects exactly one Ticket; `ready-for-agent` or a ready-work query alone is not Mission authorization. Read that Ticket, its governing Spec, repository instructions, live dependency and conflict state, and newest applicable Prompt Audit status. Proceed only when it fits one fresh context and has both the `ready-for-agent` state and a current `PASS` or explicit maintainer `BYPASS`; otherwise report that it is not authorized.
 2. Treat `PASS` or `BYPASS` as delegated authority for every in-scope implementation decision. Resolve those decisions from the accepted sources and repository evidence without opening another user decision gate. If required behavior cannot be determined or external authority is unavailable, report the Ticket as blocked rather than widening or guessing.
 3. Implement only the Ticket. Findings outside its scope remain findings and do not become new code, Tickets, or follow-up work during this invocation.
 4. Use `tdd` when an established test seam can exercise the behavior. Pass through any seam already confirmed by the Ticket or its sources; do not ask the user to reconfirm it.

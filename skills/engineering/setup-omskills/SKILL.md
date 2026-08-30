@@ -11,7 +11,7 @@ Configure:
 - the tracker strings mapped to the two triage category roles and five state roles; and
 - the locations and consumer rules for `CONTEXT.md` and ADRs.
 
-Use repository evidence to recommend values, obtain user confirmation, then write the configuration.
+Use repository evidence to recommend values, obtain user confirmation, then write the configuration. This is an interactive workflow. If required setup is missing during a headless Ticket run, that run returns a blocker to its Ticket coordinator instead of starting this workflow. A Ticket dispatcher never performs, inspects, or mediates setup.
 
 ## Process
 
@@ -60,7 +60,7 @@ State roles:
 
 - `needs-triage` — maintainer evaluation pending
 - `needs-info` — reporter information pending
-- `ready-for-agent` — recorded context is sufficient for agent execution
+- `ready-for-agent` — recorded context is sufficient for eligibility; explicit Mission authorization still selects execution
 - `ready-for-human` — human implementation required
 - `wontfix` — request will not be actioned
 
@@ -138,4 +138,4 @@ Label setup is complete only when each canonical triage role resolves to an exis
 
 ### 5. Report completion
 
-Setup is complete when the approved instruction block and required `docs/agents/*.md` files exist and, when applicable, every mapped tracker label exists. Report the files written and state that tracker-backed planning, triage, orchestration, and wayfinding workflows will read this configuration. State that users may edit `docs/agents/*.md` directly; rerun this setup only to change trackers or replace the configuration from the beginning.
+Setup is complete when the approved instruction block and required `docs/agents/*.md` files exist and, when applicable, every mapped tracker label exists. Report the files written and state that tracker-backed planning, triage, one-Ticket coordination, and wayfinding workflows will read this configuration. State that a missing setup blocks a headless Ticket run and is never mediated by the Ticket dispatcher. Users may edit `docs/agents/*.md` directly; rerun this setup only to change trackers or replace the configuration from the beginning.

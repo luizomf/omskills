@@ -7,7 +7,7 @@ description: Synthesize the current conversation and repository context into a s
 
 Produce a new or updated Spec from information already established in the conversation, repository, or a supplied Scratchpad. Do not conduct a requirements interview, invent decisions, or treat the Spec as an implementation unit.
 
-Read the configured issue tracker. If it is unavailable, run `setup-omskills` first.
+Read the configured issue tracker. If configuration is unavailable during an interactive invocation, run `setup-omskills` first and wait for its confirmed output. During a headless Ticket run, return a missing-setup blocker to the Ticket coordinator instead; never route setup through a Ticket dispatcher.
 
 A supplied Scratchpad is source context, not implementation authority. Read it completely. Preserve its explicit established decisions, constraints, exclusions, unresolved Questions, and evidence pointers without treating an unresolved Question or recommendation as a decision. Do not fill gaps from an imagined prior conversation.
 
@@ -67,4 +67,4 @@ Do not include file paths or code snippets. Exception: when prototype output con
 
 6. After the new or updated Spec durably incorporates every accepted Scratchpad item that should survive, the supplied Scratchpad file may be removed. Preserve it when unresolved continuation context still depends on it; never delete it before checking the durable artifact.
 
-Publishing is complete when the new or updated Spec contains every established requirement and decision, introduces no new requirement, identifies unresolved implementation details honestly, preserves unrelated accepted content, and carries no implementation-readiness state.
+Publishing is complete when the new or updated Spec contains every established requirement and decision, introduces no new requirement, identifies unresolved implementation details honestly, preserves unrelated accepted content, and carries no implementation-readiness state. A published Spec creates neither Ticket readiness nor Mission authorization; later ticketing, triage, Prompt Audit, and explicit selection remain separate phases.

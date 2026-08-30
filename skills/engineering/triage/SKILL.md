@@ -29,13 +29,13 @@ Assign exactly one state role:
 
 - `needs-triage` — maintainer evaluation is pending
 - `needs-info` — information required from the reporter is pending
-- `ready-for-agent` — fully specified and ready for an AFK agent
+- `ready-for-agent` — fully specified and eligible for an AFK agent after a separate explicit Mission authorization
 - `ready-for-human` — implementation requires a human
 - `wontfix` — the request will not be actioned
 
 For a PR, evaluate the states against its attached code: `ready-for-agent` means an agent brief identifies the next action on the diff; `ready-for-human` means a human can merge it without another triage step.
 
-These are canonical role names. Read their tracker-specific label mapping. If the mapping is missing, run `setup-omskills`. If an item has multiple category roles or multiple state roles, report the conflict and obtain maintainer direction before any other triage action.
+These are canonical role names. Read their tracker-specific label mapping. If the mapping is missing during an interactive invocation, run `setup-omskills` and wait for its confirmed output. During a headless Ticket run, return a missing-setup blocker to the Ticket coordinator instead; never route setup through a Ticket dispatcher. If an item has multiple category roles or multiple state roles, report the conflict and obtain maintainer direction before any other triage action.
 
 Normal transitions are:
 
@@ -52,7 +52,7 @@ Map natural-language requests to one of these branches:
 - attention query, such as “Show me anything that needs my attention” → [Show items needing attention](#show-items-needing-attention);
 - a specific item, such as “Let's look at #42” → [Triage a specific item](#triage-a-specific-item);
 - an explicit state change, such as “Move #42 to ready-for-agent” → [Quick state override](#quick-state-override); or
-- a ready-work query, such as “What's ready for agents to pick up?” → query the configured `ready-for-agent` role.
+- a ready-work query, such as “What's ready for agents to pick up?” → query the configured `ready-for-agent` role and report eligible items without selecting any into a Mission.
 
 ## Show items needing attention
 
@@ -93,7 +93,7 @@ Show the count for each bucket and one line per item, then wait for the maintain
      - **Rejected enhancement:** create the entry required by [OUT-OF-SCOPE.md](OUT-OF-SCOPE.md), link it in the comment, and close.
    - `needs-triage` — apply the role; add a comment only when partial findings need to persist.
 
-Outside a maintainer-approved quick state override, the item is triaged when it has exactly one category role, exactly one state role, and the required comment, brief, close action, or out-of-scope entry for that state. A code or behavior-changing item cannot finish at `ready-for-agent` without a current Prompt Audit `PASS` or explicit maintainer `BYPASS`.
+Outside a maintainer-approved quick state override, the item is triaged when it has exactly one category role, exactly one state role, and the required comment, brief, close action, or out-of-scope entry for that state. A code or behavior-changing item cannot finish at `ready-for-agent` without a current Prompt Audit `PASS` or explicit maintainer `BYPASS`. That result records eligibility only; it does not select the item or authorize a Mission. Later explicit direction routes one selected Ticket to `orchestrate` or supplies an already-resolved ordered identity list to `dispatch-tickets`.
 
 ## Quick state override
 

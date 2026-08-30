@@ -9,7 +9,7 @@ Use a **shared map** to determine the route from a loose idea to a named **desti
 
 ## Plan by default
 
-Unless the map's **Notes** explicitly include execution, each ticket resolves a decision and produces no destination deliverable. The map is complete when no decision remains before execution. When resolving the next ticket would perform the destination work rather than determine how to perform it, hand off instead.
+Unless the map's **Notes** explicitly include execution, each ticket resolves a decision and produces no destination deliverable. The map is complete when no decision remains before execution. When resolving the next ticket would perform the destination work rather than determine how to perform it, hand off instead. A mapped or ready Ticket is not Mission-authorized until the user or invoker explicitly selects it.
 
 ## Refer to issues by title
 
@@ -21,7 +21,7 @@ The map is the authoritative issue for the effort in the configured tracker, lab
 
 The map indexes decisions; each decision's detail exists only in its ticket. **Decisions so far** contains a one-line gist and link.
 
-Tracker storage, child relationships, blocking, and frontier queries are tracker-specific. Read the configured issue tracker's "Wayfinding operations" section. If the tracker configuration is missing, run `setup-omskills`. If no tracker is available after that, use local markdown.
+Tracker storage, child relationships, blocking, and frontier queries are tracker-specific. Read the configured issue tracker's "Wayfinding operations" section. If configuration is missing during an interactive invocation, run `setup-omskills` and wait for its confirmed output; if the approved configuration selects local markdown, use it. During a headless Ticket run, return a missing-setup blocker to the Ticket coordinator instead and never route setup through a Ticket dispatcher.
 
 ### Map body
 

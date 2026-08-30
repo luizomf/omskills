@@ -28,27 +28,39 @@ _Avoid_: PRD (use only when quoting external systems that call them PRDs), imple
 A canonical category or state label applied to a **Ticket** during triage. Category roles are `bug` and `enhancement`; state roles include `needs-triage` and `ready-for-agent`. Each role maps to a real label string in the **Issue tracker** via `docs/agents/triage-labels.md`.
 
 **Prompt audit status**:
-A durable result attached to one exact execution contract in the **Issue tracker**. `PASS` means no semantic divergence survived audit-coordinator adjudication and the Ticket fits one fresh agent context; `BYPASS` means a maintainer explicitly authorized autonomous delivery without a pass; `FAIL` means the audit did not establish equivalent comprehension or context fit. A current `PASS` or `BYPASS` authorizes autonomous implementation of that contract only. A material contract change makes its prior status stale.
+A durable execution-gate result attached to one exact contract in the **Issue tracker**. `PASS` means no semantic divergence survived audit-coordinator adjudication and the Ticket fits one fresh agent context; `BYPASS` means a maintainer explicitly waived that audit for the exact contract; `FAIL` means the audit did not establish equivalent comprehension or context fit. A current `PASS` or `BYPASS` makes the exact Ticket eligible for autonomous execution. It neither selects the Ticket nor grants **Mission authorization**, and a material contract change makes it stale.
+
+**Mission authorization**:
+Explicit user or invoker direction that selects one Ticket or supplies an already-resolved ordered list of Ticket identities for autonomous delivery. Readiness and a valid **Prompt audit status** are eligibility gates, not selection. Authorization is non-transitive: findings and newly imagined work outside the selected identities are reported, not converted into implementation.
+_Avoid_: ready-work query, discovery request, open-ended mandate
 
 **Mission envelope**:
-The exact authorized Ticket identities, governing Specs, scope, deferrals, frozen queue, and completion boundary for one autonomous run. If authorization names a query or queue source, its current Ticket identities are resolved once when the run starts and then frozen. Authorization is non-transitive: findings and newly imagined work outside the envelope are reported, not converted into implementation.
-_Avoid_: open-ended mandate, adjacent-work authorization
+The authority boundary established by **Mission authorization**: the exact selected Ticket identities, scope, deferrals, and completion boundary for one autonomous run. For a sequence, the **Ticket dispatcher** alone owns its fixed order and cursor. Each fresh **Ticket coordinator** receives one current Ticket identity and resolves that Ticket's governing sources and live execution gate.
+_Avoid_: adjacent-work authorization, child-selected work
+
+**Ticket dispatcher**:
+The minimal root policy role for the future user-only `dispatch-tickets` skill. It accepts an explicit, already-resolved ordered Ticket identity list supplied by its user or invoker and alone owns that list, its fixed order, cursor, current coordinator identity, dispatch state, and compact **Ticket outcomes**. It starts one fresh **Ticket coordinator** at a time, may forward a relevant user instruction without interpreting implementation content, and remains the user's responsive control surface while asynchronous work runs. It does not query the tracker, discover work, resolve a query, introduce a resolver role, inspect implementation context, or resolve blockers; its initial contract has no heartbeat, stall diagnosis, retry, or skip.
+_Avoid_: Ticket coordinator, implementation worker, query resolver, semantic supervisor
+
+**Ticket coordinator**:
+The fresh isolated agent running `orchestrate` for exactly one explicitly authorized Ticket. It validates that Ticket's live execution gate and required repository setup, reads every governing source, owns writer and reviewer delegation, performs surviving corrections and verification, completes delivery and tracker obligations, and returns one compact **Ticket outcome**. Missing required repository setup during a headless Ticket run produces a blocker; the coordinator does not open interactive setup through the dispatcher.
+_Avoid_: Ticket dispatcher, sequence owner, leaf writer, leaf reviewer
+
+**Ticket outcome**:
+The single-line JSON terminal envelope returned as a **Ticket coordinator**'s final assistant message. `delivered` allows the dispatcher to advance its cursor; `blocked`, `failed`, or `cancelled` stops the sequence. It contains only the Ticket identity, status, an essential durable reference when available, and one short blocker when applicable; detailed evidence remains in the tracker, repository, and coordinator session. A missing, malformed, or mismatched outcome fails closed.
+_Avoid_: implementation report, review summary, diff, handoff transcript
 
 **Mission complete**:
-The terminal state in which all work authorized by the **Mission envelope** has reached its required durable outcome. It describes the global mission, not merely the current agent turn or one dispatched worker.
+The terminal state in which every Ticket selected by the **Mission authorization** is delivered and the Mission's completion boundary is satisfied. It describes the global mission, not merely the current agent turn or one dispatched worker.
 _Avoid_: turn complete, worker accepted, work started
 
 **Safe turn boundary**:
-A state in which the current agent turn may end without abandoning authorized work. It exists only when the **Mission envelope** is complete, genuinely blocked with no independent authorized work runnable, waiting at an explicit user gate, or protected by an **Accepted continuation mechanism**.
+A state in which the current agent turn may end without abandoning authorized work. It exists only after **Mission complete**, at a genuine blocker, at an explicit user gate, or under an **Accepted continuation mechanism**.
 _Avoid_: work started, context restored, intent stated
 
 **Accepted continuation mechanism**:
 An acknowledged asynchronous operation whose harness-owned lifecycle documents automatic completion delivery or an owning-session reentry attempt without requiring a delegated agent to understand and execute a separate callback instruction. This contract does not claim that a process, host, network, or owning session cannot fail. A cooperative textual callback or a background process with no automatic return path does not qualify by itself.
 _Avoid_: guaranteed wake, worker promise, background activity
-
-**Transfer watchdog**:
-An experimental one-shot delayed owning-session wake, initially fixed at five minutes, used only when `orchestrate` transfers an active **Mission envelope** through `wormhole`. Through the active harness's documented capability, it lets the origin coordinator detect the absence of the fresh coordinator's safe-boundary callback and, when the fresh editor displays its normal input-ready state under existing transfer semantics, send one continuation reminder. It never repeats, interprets pane text as workflow state, interferes with a busy fresh coordinator, takes over the mission, or closes the origin without the callback. After either timeout branch, the origin remains alive awaiting that callback or user recovery. It is optional when the harness has no delayed owning-session wake.
-_Avoid_: mission heartbeat, pane monitor, automatic timeout closure
 
 ## Relationships
 
@@ -58,25 +70,25 @@ _Avoid_: mission heartbeat, pane monitor, automatic timeout closure
 - A **Spec** is broken down into many **Tickets** and is never implemented directly
 - A triaged **Ticket** carries one category **Triage role** and one state **Triage role**
 - A code or behavior-changing **Ticket** becomes `ready-for-agent` only with a current `PASS` or explicit `BYPASS` **Prompt audit status**
-- A current `PASS` or `BYPASS` transfers in-scope implementation decisions to the autonomous coordinator; it does not create another user decision gate, and ordinary uncertainty, preference, or a source-resolved choice cannot be converted into one
+- `ready-for-agent` and a current `PASS` or `BYPASS` make a Ticket eligible; only **Mission authorization** selects it for execution
+- Once a Ticket is selected, a current `PASS` or `BYPASS` transfers its in-scope implementation decisions to the **Ticket coordinator** without creating another user decision gate
 - Text or documentation work that cannot change behavior does not require a **Prompt audit status**
 - A **Ticket** may retain multiple historical **Prompt audit statuses**, but only its newest applicable status governs that exact contract
-- Every Ticket supplied for an initial `orchestrate` **Mission envelope** must have a current `PASS` or `BYPASS`; one missing initial gate blocks the whole mission before selection or dispatch, without filtering or partial execution, while a gate that becomes stale only after a fully authorized mission starts blocks that Ticket and lets other independent authorized Tickets continue
-- An autonomous coordinator may end a turn while its **Mission envelope** still contains authorized runnable work only after an **Accepted continuation mechanism** starts; otherwise it must continue until the mission is complete, genuinely blocked, or waiting at an explicit user gate
-- `wormhole` owns the generic **Safe turn boundary** for a fresh continuation, while the governing workflow defines the concrete accepted continuation mechanism; for `orchestrate`, that mechanism is an accepted isolated-writer dispatch
-- On the final `orchestrate` Ticket, an accepted writer creates only a **Safe turn boundary**; **Mission complete** still requires every later wake, review, correction, integration, tracker, and cleanup obligation to reach the mission's durable completion boundary
-- A `wormhole` jump reports completion and retires the origin Pi only after the fresh continuation restores its handoff and reaches its first **Safe turn boundary**; that callback, not pane-buffer interpretation, is the transfer source of truth
-- When `orchestrate` sends an active **Mission envelope** through `wormhole`, the origin owns and arms one **Transfer watchdog**, retains transfer and retirement responsibility, and releases its branch only after one definitive safe-boundary callback; the fresh coordinator focuses on the mission and owes only that callback after reaching its first **Safe turn boundary**
-- A `wormhole` transfer remains available without a **Transfer watchdog** when the harness lacks a delayed owning-session wake; an external delayed-message helper is optional operator tooling, not a distributed skill dependency, and may serve as a fallback only when its lifecycle is known
-- Any external watchdog fallback that returns a process handle must be canceled before the origin retires after an early safe-boundary callback; an uncancelled delayed injection cannot target a pane whose lifecycle has ended
-- A `wormhole` handoff's recorded authorized immediate action, explicit user gate, or absence of authorized action selects the continuation branch; `wormhole` transfers context but does not create work or implementation authority
-- With no authorized immediate action, restoring the fresh interactive context is itself a **Safe turn boundary**; with direct authorized action and no workflow-specific asynchronous boundary, the fresh coordinator continues until completion, the recorded gate, or a genuine blocker, then sends the same definitive callback
-- `tmux-worker` owns only visible tmux transport and lifecycle: opening the worker window, sending literal messages, receiving callbacks, supporting further dialogue, and retiring the worker when directed; the invoking agent or skill owns message semantics, task instructions, artifacts, completion, post-callback decisions, and whether its current turn may end
-- `tmux-worker` remains a cooperative interactive transport and does not imitate a scheduler or impose an unconditional yield after sending a message
+- The **Ticket dispatcher** is the only sequence owner: it receives the already-resolved ordered identity list, advances its cursor only after a matching `delivered` **Ticket outcome**, and never accepts child-selected `next` work
+- A **Ticket coordinator** owns complete delivery of one Ticket through the acyclic `Ticket coordinator -> writer -> Ticket coordinator -> reviewer -> Ticket coordinator` graph
+- Writer and reviewer are fresh, isolated, single-pass leaves; the **Ticket coordinator** adjudicates findings, performs surviving corrections directly, verifies, integrates, and decides the one-Ticket outcome
+- The dispatcher does not inspect or mediate missing setup; a headless **Ticket coordinator** returns a blocker when required repository configuration is unavailable
+- An interactive dispatcher turn may end after the harness accepts its asynchronous coordinator dispatch as an **Accepted continuation mechanism**; **Mission complete** still requires a matching `delivered` outcome for every selected identity
+- The dispatcher/coordinator managed subagent lineage does not depend on `wormhole` or `tmux-worker`; both remain available as generic optional interactive transports outside that lineage
+- `wormhole` transfers an interactive conversation to a fresh context and derives no work or implementation authority from the transfer; its definitive callback remains the source of truth for origin retirement
+- A `wormhole` handoff's recorded authorized immediate action, explicit user gate, or absence of authorized action selects the continuation branch
+- `tmux-worker` owns only visible tmux transport and lifecycle; its caller owns task meaning, artifacts, completion, post-callback decisions, and whether a turn may end
 - A cooperative `tmux-worker` callback is a transport event, not an **Accepted continuation mechanism** by itself, and cannot justify ending an unattended autonomous turn
+- The serialized detailed rewrite of `orchestrate` remains owned by Ticket #40. Until that rewrite, its queue, `next`, handoff, `wormhole`, watchdog, retry, and skip clauses are deferred execution text rather than this migrated governing architecture
 
 ## Flagged ambiguities
 
 - "backlog" was previously used to mean both the *tool* hosting issues and the *body of work* inside it — resolved: the tool is the **Issue tracker**; "backlog" is no longer used as a domain term.
 - "backlog backend" / "backlog manager" — resolved: collapsed into **Issue tracker**.
 - "issue" remains acceptable when the underlying tracker calls a work item an issue, but the skill vocabulary now uses **Ticket** for implementation slices and **Spec** for durable planning documents.
+- "Router Skill" in skill-authoring guidance names a user-only skill-selection aid, never the canonical **Ticket dispatcher**.

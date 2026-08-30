@@ -13,6 +13,8 @@ description: Create agent skills with SKILL.md, progressive disclosure, and bund
    - Does it require executable scripts, instructions, or both?
    - Which reference materials must it include?
    - Will it remain user-only by default, or does it qualify as agent-discoverable under [Description and Discovery](#description-and-discovery)?
+   - If it handles Tickets, does it preserve the boundary between readiness and explicit Mission authorization, route one selected Ticket to `orchestrate`, and route only a supplied ordered identity list to `dispatch-tickets`?
+   - If it selects among several user-only skills, is it a skill-selection Router Skill rather than a Ticket dispatcher?
 
 2. **Draft the skill.** Create:
    - a `SKILL.md` containing the instructions required by every branch;
@@ -49,7 +51,7 @@ Every skill requires a description.
 - **User-only** is the default. Set `disable-model-invocation: true`. Write one command-facing sentence that identifies the capability; this metadata is excluded from the agent's system context.
 - **Agent-discoverable** requires observed use that demonstrates a need for autonomous selection plus maintainer approval of the permanent context load. Omit `disable-model-invocation`. State the capability first, followed by one trigger for each distinct branch that should select the skill.
 
-A loaded skill may compose a user-only skill by its installed name; composition does not require agent discovery. Use relative paths only for files bundled with the current skill.
+A loaded skill may compose a user-only skill by its installed name; composition does not require agent discovery. Use relative paths only for files bundled with the current skill. A Router Skill selects an installed skill or disclosed reference to load; it does not accept Mission Ticket identities, own a fixed order or cursor, or dispatch Ticket coordinators, which belong only to the canonical Ticket dispatcher.
 
 Every description must:
 
@@ -86,7 +88,8 @@ After drafting, verify every item:
 - [ ] The description satisfies the format rules; an agent-discoverable description contains one trigger per distinct branch.
 - [ ] `SKILL.md` contains fewer than 100 lines.
 - [ ] Instructions contain no time-sensitive information, including current-date statements, unpinned `latest` values, expiring URLs, or versions that require future manual revision.
-- [ ] Each concept has one term, used consistently.
+- [ ] Each concept has one term, used consistently; Router Skill wording cannot imply Ticket-dispatch ownership.
+- [ ] Ticket routing, when present, treats readiness as eligibility and requires explicit Mission authorization.
 - [ ] At least one concrete input/output or interaction example is included.
 - [ ] Each bundled context pointer links directly to its target, and no bundled reference requires another reference file.
 

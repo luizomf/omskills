@@ -8,7 +8,7 @@ The skills speak in terms of two category roles and five state roles. This file 
 | Category | `enhancement`         | `enhancement`        | New feature or improvement                |
 | State    | `needs-triage`        | `needs-triage`       | Maintainer needs to evaluate this issue   |
 | State    | `needs-info`          | `needs-info`         | Waiting on reporter for more information  |
-| State    | `ready-for-agent`     | `ready-for-agent`    | Fully specified, ready for an agent       |
+| State    | `ready-for-agent`     | `ready-for-agent`    | Eligible; Mission authorization selects work |
 | State    | `ready-for-human`     | `ready-for-human`    | Requires human implementation             |
 | State    | `wontfix`             | `wontfix`            | Will not be actioned                      |
 

@@ -16,9 +16,9 @@ This repository is maintained independently and does not track or synchronize wi
 
 The main flow this repo reinforces is:
 
-`idea -> grill -> spec -> tickets -> prompt audit -> implement -> review -> PR -> handoff`
+`idea -> grill -> spec -> tickets -> prompt audit -> explicit authorization -> implement -> review -> PR -> handoff`
 
-The skills act as checkpoints: clarify before planning, document before queuing, triage before implementation, test before coding, review before shipping, and hand off before context is lost.
+The skills act as checkpoints: clarify before planning, document before ticketing, triage before implementation, authorize before autonomous execution, test before coding, review before shipping, and hand off before context is lost.
 
 ## Operating Model
 
@@ -26,9 +26,10 @@ Before asking an agent to "build it", classify the moment:
 
 - Need to think through an idea: `/grill-me` or `/grill-with-docs`
 - The work is too large or foggy for one session: `/wayfinder`
-- Know the goal, but not the queue: `/to-spec`, then `/to-tickets`
-- Have a mature Ticket with a current Prompt Audit `PASS` or explicit `BYPASS`: `/implement`
-- Have a fixed, audited Ticket queue to deliver autonomously: use `/orchestrate`
+- Know the goal, but not the implementation Tickets: `/to-spec`, then `/to-tickets`
+- Want to implement one explicitly selected, audited Ticket directly: `/implement`
+- Want one explicitly Mission-authorized Ticket delivered through a fresh coordinator, writer, and reviewer: `/orchestrate`
+- Have an explicitly authorized fixed ordered Ticket sequence: route it to the future user-only `/dispatch-tickets`; its catalog activation is delivered separately
 - Want the diff checked before it ships: `/code-review`
 - Something broke: `/diagnosing-bugs`
 - Need high-trust reading legwork: `/research`
@@ -69,7 +70,7 @@ The risk in an existing project is enforcing process before understanding the sy
 1. Start with normal repo exploration and, when the request is broad, `/research` or `/wayfinder`.
 2. Run `/setup-omskills` to connect the repo to the skills.
 3. Use `/grill-with-docs` if project language is unclear or undocumented.
-4. Use `/triage` before picking work from a messy queue.
+4. Use `/triage` to establish which work is eligible before explicitly selecting any Ticket for execution.
 5. Use `/improve-codebase-architecture` when coupling or structure needs attention; treat the output as diagnosis and issue material, not blanket permission to refactor.
 6. Use `/implement` when a specific ticket is mature enough to build.
 
@@ -86,7 +87,7 @@ The risk in a prepared repo is ignoring decisions that already exist.
 1. Read the local instructions and context: `AGENTS.md`, `CONTEXT.md`, `docs/agents/*`, and `docs/adr/*`.
 2. Start from an existing issue or ticket when possible.
 3. Use `/triage` if the task is new or unclear.
-4. Use `/implement` if the Ticket is small, mature, has acceptance criteria, and carries a current Prompt Audit `PASS` or explicit `BYPASS`.
+4. Explicitly select the Ticket, then use `/implement` if it is small, mature, has acceptance criteria, and carries a current Prompt Audit `PASS` or explicit `BYPASS`.
 5. Use `/grill-with-docs` if the issue conflicts with domain language or decisions.
 6. Stop and discuss when the task conflicts with an ADR, changes architecture, or has meaningful tradeoffs.
 7. Use `/handoff` before pausing a long session.
@@ -122,7 +123,7 @@ By default, the script writes to `~/.agents/skills`, the shared user-level skill
 OMSKILLS_DEST=/tmp/omskills-test ./scripts/link-skills.sh
 ```
 
-Active skills are installed by the plugin, independently of discovery state. Supporting harnesses include agent-discoverable skills in the model's system context, while user-only skills remain available for direct selection without permanent context load. `design` and `teach` are user-only; invoke them directly for deliberate interface design or a stateful learning workspace. The groupings below describe the typical selection path, not discovery status.
+Active skills are installed by the plugin independently of discovery state. Supporting harnesses include agent-discoverable skills in the model's system context, while active user-only skills remain installed for direct selection without permanent context load. `design` and `teach` are the current active user-only skills; invoke them directly for deliberate interface design or a stateful learning workspace. The groupings below describe the typical selection path, not discovery status. The future user-only `dispatch-tickets` remains outside the active catalog until its separate activation work is delivered.
 
 2. In each repo that will consume these skills, run:
 
@@ -145,11 +146,11 @@ States:
 
 - `needs-triage`: maintainer needs to evaluate.
 - `needs-info`: missing information from the reporter/author.
-- `ready-for-agent`: well-specified issue, ready for an agent to implement without extra context.
+- `ready-for-agent`: well-specified issue eligible for autonomous execution when a current Prompt Audit gate and explicit Mission authorization also exist; the state does not select the issue.
 - `ready-for-human`: needs human implementation or decision-making.
 - `wontfix`: will not be actioned.
 
-For mature projects, the queue should favor small, vertical, verifiable tickets. Changes to shared systems such as architecture, runtime, persistence, deployment, or AI integration need to be mature before implementation.
+For mature projects, the eligible Ticket set should favor small, vertical, verifiable units. Changes to shared systems such as architecture, runtime, persistence, deployment, or AI integration need to be mature before implementation. A ready-work query only discovers eligible Tickets; explicit user or invoker direction selects one Ticket or supplies an already-resolved ordered list for a Mission.
 
 ## Active Skills
 
@@ -164,7 +165,7 @@ For mature projects, the queue should favor small, vertical, verifiable tickets.
 - **[to-spec](./skills/engineering/to-spec/SKILL.md)**: turns the current conversation context into a spec and publishes it to the issue tracker.
 - **[to-tickets](./skills/engineering/to-tickets/SKILL.md)**: breaks a plan, spec, or conversation into tracer-bullet tickets with blocking and conflict edges.
 - **[implement](./skills/engineering/implement/SKILL.md)**: implements one audited, authorized code or behavior-changing Ticket and verifies its acceptance criteria.
-- **[orchestrate](./skills/engineering/orchestrate/SKILL.md)**: delivers one authorized Ticket or fixed audited Ticket queue through single-pass writer and reviewer agents.
+- **[orchestrate](./skills/engineering/orchestrate/SKILL.md)**: coordinates complete delivery of one explicitly authorized Ticket through single-pass writer and reviewer agents.
 - **[wayfinder](./skills/engineering/wayfinder/SKILL.md)**: maps a huge or foggy effort into investigation tickets on the issue tracker.
 
 **Typically agent-selected**
@@ -185,8 +186,8 @@ For mature projects, the queue should favor small, vertical, verifiable tickets.
 - **[caveman](./skills/productivity/caveman/SKILL.md)**: uses ultra-compressed communication while preserving technical accuracy.
 - **[design](./skills/productivity/design/SKILL.md)**: designs and refines context-fit user interfaces, then verifies the rendered result.
 - **[handoff](./skills/productivity/handoff/SKILL.md)**: compacts useful, undocumented conversation state for a fresh agent.
-- **[wormhole](./skills/productivity/wormhole/SKILL.md)**: moves the current conversation into a fresh interactive agent window and retires the origin Pi after transfer.
-- **[tmux-worker](./skills/productivity/tmux-worker/SKILL.md)**: connects the root with an agent in a visible tmux window for multi-turn work across systems or harnesses.
+- **[wormhole](./skills/productivity/wormhole/SKILL.md)**: moves the current conversation into a fresh interactive agent window and retires the origin Pi after transfer; it remains a generic optional transport outside managed Ticket subagent lineage.
+- **[tmux-worker](./skills/productivity/tmux-worker/SKILL.md)**: connects the root with an agent in a visible tmux window for multi-turn work across systems or harnesses; it remains a generic optional transport outside managed Ticket subagent lineage.
 - **[teach](./skills/productivity/teach/SKILL.md)**: teaches a new skill or concept over multiple sessions, using the current directory as a stateful teaching workspace.
 - **[writing-great-skills](./skills/productivity/writing-great-skills/SKILL.md)**: reference for the vocabulary and design principles behind predictable skills.
 

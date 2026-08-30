@@ -7,7 +7,7 @@ description: Audit whether clean-context agents understand text as intended; for
 
 Test whether a fresh agent's interpretation is semantically equivalent to the intended request. The interpreter and reviewer provide advisory evidence; the audit coordinator owns the final status.
 
-For a tracked Ticket, read the configured issue tracker and triage-label mapping before delegation. If either is unavailable, run `setup-omskills` first. Untracked prompt audits require neither configuration.
+For a tracked Ticket, read the configured issue tracker and triage-label mapping before delegation. If either is unavailable during an interactive invocation, run `setup-omskills` first and wait for its confirmed output. During a headless Ticket run, return a missing-setup blocker to the Ticket coordinator instead; never route setup through a Ticket dispatcher. Untracked prompt audits require neither configuration.
 
 ## Establish the reference intent
 
@@ -15,7 +15,7 @@ Before delegation, record the complete accepted intent from the original executi
 
 If no accepted intent exists beyond the execution prompt, use only its explicit requirements as the reference. Record ambiguities that could materially change the outcome, scope, required workflow, deliverables, or completion point; do not infer adjacent work.
 
-When the maintainer explicitly authorizes the invoking autonomous workflow to proceed without a comprehension audit, skip the agent passes, choose `BYPASS`, and record the status as specified below.
+When the maintainer explicitly waives the comprehension audit for the exact contract, skip the agent passes, choose `BYPASS`, and record the status as specified below. The waiver satisfies an execution gate; it does not by itself select the Ticket into a Mission.
 
 ## Run two isolated agent passes
 
@@ -86,7 +86,7 @@ Treat any semantic `PASS` above as provisional. When the audited contract is one
 Choose exactly one status:
 
 - `PASS` — no semantic divergence survives audit-coordinator adjudication.
-- `BYPASS` — the maintainer explicitly authorizes the invoking autonomous workflow to proceed without `PASS`. Never infer this authorization or represent a bypass as a pass.
+- `BYPASS` — the maintainer explicitly waives `PASS` for this exact contract. Never infer this waiver or represent a bypass as a pass.
 - `FAIL` — the audit cannot establish equivalent clean-context comprehension, including when required isolation cannot be completed or a material divergence remains unresolved.
 
 When the execution contract is a tracked issue or an agent brief on one, post a new comment without editing prior audit history:
@@ -101,9 +101,9 @@ When the execution contract is a tracked issue or an agent brief on one, post a 
 
 For an untracked prompt, report the same fields to the invoking workflow. A newer status supersedes an older one only when it applies to the same execution contract. A material change to the requested outcome, scope, required workflow, deliverables, acceptance criteria, relations, or completion point makes the prior status stale.
 
-For a tracked code or behavior-changing Ticket, transition it to `ready-for-agent` only after its final body, Agent Brief, parent, blocking, and conflict relations are stable, it carries exactly one category role, and this audit returns `PASS` or an explicit maintainer `BYPASS`. Replace `needs-triage`; do not leave two state roles. A `FAIL` remains outside `ready-for-agent`. The audit never creates adjacent Tickets or extends the audited contract.
+For a tracked code or behavior-changing Ticket, transition it to `ready-for-agent` only after its final body, Agent Brief, parent, blocking, and conflict relations are stable, it carries exactly one category role, and this audit returns `PASS` or an explicit maintainer `BYPASS`. Replace `needs-triage`; do not leave two state roles. A `FAIL` remains outside `ready-for-agent`. The audit never creates adjacent Tickets or extends the audited contract. `ready-for-agent` plus `PASS` or `BYPASS` establishes eligibility, not Mission authorization.
 
-Resume the invoking workflow after `PASS` or `BYPASS`. The invoking implementation owns every in-scope decision without another user gate. Stop the audited contract after `FAIL`.
+After `PASS` or `BYPASS`, resume implementation only when the invoking workflow already carries explicit Mission authorization for that Ticket; otherwise report the eligibility result and stop before implementation. Once selected, the invoking implementation owns every in-scope decision without another user gate. Stop the audited contract after `FAIL`.
 
 ## Audit boundary
 
