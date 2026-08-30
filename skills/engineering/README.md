@@ -1,6 +1,6 @@
 # Engineering
 
-Core skills for code work, issue workflow, and architecture decisions. The groups describe the typical selection path; every current skill in this bucket remains agent-discoverable. Readiness and a current Prompt Audit gate make a Ticket eligible but do not select it: route one explicitly Mission-authorized Ticket to `orchestrate`, and route an explicitly supplied fixed ordered sequence to the future user-only installed name `dispatch-tickets`.
+Core skills for code work, issue workflow, and architecture decisions. The groups describe the typical selection path; `dispatch-tickets` is user-only and the other current skills in this bucket remain agent-discoverable. Readiness and a current Prompt Audit gate make a Ticket eligible but do not select it: route one explicitly Mission-authorized Ticket directly to `orchestrate`, or supply that one exact identity to `dispatch-tickets` for dispatch from a responsive root.
 
 ## Typically user-selected
 
@@ -12,6 +12,7 @@ Core skills for code work, issue workflow, and architecture decisions. The group
 - **[to-tickets](./to-tickets/SKILL.md)** - Break a plan, spec, or conversation into tracer-bullet tickets with blocking and conflict edges.
 - **[implement](./implement/SKILL.md)** - Implement one audited, authorized code or behavior-changing Ticket and verify its acceptance criteria.
 - **[orchestrate](./orchestrate/SKILL.md)** - Coordinate complete delivery of one explicitly authorized Ticket through single-pass writer and reviewer agents.
+- **[dispatch-tickets](./dispatch-tickets/SKILL.md)** - Dispatch one exact Mission-authorized Ticket from a minimal responsive root to a fresh coordinator.
 - **[wayfinder](./wayfinder/SKILL.md)** - Map a huge or foggy effort into investigation tickets on the issue tracker.
 
 ## Typically agent-selected

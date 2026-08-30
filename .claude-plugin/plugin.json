@@ -9,6 +9,7 @@
     "./skills/engineering/to-tickets",
     "./skills/engineering/implement",
     "./skills/engineering/orchestrate",
+    "./skills/engineering/dispatch-tickets",
     "./skills/engineering/wayfinder",
     "./skills/engineering/prototype",
     "./skills/engineering/diagnosing-bugs",
