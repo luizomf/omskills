@@ -55,7 +55,7 @@ The risk in an empty repo is inventing too much architecture too early.
 3. Use `/grill-with-docs` before substantial coding to clarify domain language, constraints, and the smallest useful first slice.
 4. Use `/to-spec` if the direction needs a durable spec.
 5. Use `/to-tickets` to break the spec into small, vertical tickets.
-6. Use `/implement` only when a ticket is clear and verifiable.
+6. Explicitly select the Ticket, then use `/implement` only when it is clear, verifiable, `ready-for-agent`, and carries a current Prompt Audit `PASS` or explicit `BYPASS`.
 
 Good prompt:
 
@@ -72,7 +72,7 @@ The risk in an existing project is enforcing process before understanding the sy
 3. Use `/grill-with-docs` if project language is unclear or undocumented.
 4. Use `/triage` to establish which work is eligible before explicitly selecting any Ticket for execution.
 5. Use `/improve-codebase-architecture` when coupling or structure needs attention; treat the output as diagnosis and issue material, not blanket permission to refactor.
-6. Use `/implement` when a specific ticket is mature enough to build.
+6. Explicitly select the Ticket, then use `/implement` when it is mature, `ready-for-agent`, and carries a current Prompt Audit `PASS` or explicit `BYPASS`.
 
 Good prompt:
 

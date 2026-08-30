@@ -9,7 +9,7 @@ specific nested `AGENTS.md`, if added later, overrides this file in its subtree.
 - **Purpose:** a curated collection of agent skills, prompts, setup documentation, and helper scripts; this is not runtime application code.
 - **Origin:** adapted from a May 24, 2026 copy of [mattpocock/skills](https://github.com/mattpocock/skills), with selected later changes maintained independently.
 - **Maintenance boundary:** adopt upstream ideas only as deliberate local changes under omskills conventions; never synchronize this repository wholesale with its source project.
-- **Skill lifecycle:** `idea -> grill -> spec -> tickets -> prompt audit -> implement -> review -> PR -> handoff`.
+- **Skill lifecycle:** `idea -> grill -> spec -> tickets -> prompt audit -> explicit authorization -> implement -> review -> PR -> handoff`.
 - **Language:** use English for code, comments, commits, Issues, pull requests, READMEs, skill names and descriptions, and agent-facing instructions. Match the user's language in chat.
 
 Sources have distinct roles rather than one interchangeable precedence order. Use
