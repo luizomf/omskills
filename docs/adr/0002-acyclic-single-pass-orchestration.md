@@ -17,7 +17,3 @@ A separate Ticket dispatcher owns sequences. Its user or invoker supplies an exp
 The managed dispatcher/coordinator lineage does not require interactive transport. `wormhole` and `tmux-worker` remain available and accurate as generic optional interactive transports outside that lineage, but they own no Ticket sequence state or cross-Ticket continuation in this architecture.
 
 Authorization remains non-transitive. Review findings and newly imagined adjacent work are reported without creating or implementing additional Tickets. Mission completion requires every explicitly selected identity to be delivered; readiness, dispatch acceptance, and completion of one Ticket do not complete a longer Mission.
-
-## Serialized execution-contract migration
-
-Ticket #40 owns the detailed one-Ticket rewrite of `skills/engineering/orchestrate/SKILL.md`. Until that serialized Ticket is delivered, the skill's multi-Ticket queue, `next`, handoff, `wormhole`, watchdog, retry, and skip clauses are known deferred execution text. They do not override this governing dispatcher/coordinator split, and this Ticket does not partially rewrite them.

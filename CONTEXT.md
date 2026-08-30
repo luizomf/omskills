@@ -84,7 +84,6 @@ _Avoid_: guaranteed wake, worker promise, background activity
 - A `wormhole` handoff's recorded authorized immediate action, explicit user gate, or absence of authorized action selects the continuation branch
 - `tmux-worker` owns only visible tmux transport and lifecycle; its caller owns task meaning, artifacts, completion, post-callback decisions, and whether a turn may end
 - A cooperative `tmux-worker` callback is a transport event, not an **Accepted continuation mechanism** by itself, and cannot justify ending an unattended autonomous turn
-- The serialized detailed rewrite of `orchestrate` remains owned by Ticket #40. Until that rewrite, its queue, `next`, handoff, `wormhole`, watchdog, retry, and skip clauses are deferred execution text rather than this migrated governing architecture
 
 ## Flagged ambiguities
 
