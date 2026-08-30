@@ -1,6 +1,6 @@
 # Productivity
 
-General workflow tools, not code-specific. Active skills are grouped by their typical selection path; optional skills are user-only.
+General workflow tools, not code-specific. Active skills are grouped by their typical selection path; optional skills are user-only. `wormhole` and `tmux-worker` remain generic optional interactive transports outside managed Ticket subagent lineage and own no Ticket sequence state.
 
 ## Typically user-selected
 

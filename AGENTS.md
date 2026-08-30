@@ -9,7 +9,7 @@ specific nested `AGENTS.md`, if added later, overrides this file in its subtree.
 - **Purpose:** a curated collection of agent skills, prompts, setup documentation, and helper scripts; this is not runtime application code.
 - **Origin:** adapted from a May 24, 2026 copy of [mattpocock/skills](https://github.com/mattpocock/skills), with selected later changes maintained independently.
 - **Maintenance boundary:** adopt upstream ideas only as deliberate local changes under omskills conventions; never synchronize this repository wholesale with its source project.
-- **Skill lifecycle:** `idea -> grill -> spec -> tickets -> prompt audit -> implement -> review -> PR -> handoff`.
+- **Skill lifecycle:** `idea -> grill -> spec -> tickets -> prompt audit -> explicit authorization -> implement -> review -> PR -> handoff`.
 - **Language:** use English for code, comments, commits, Issues, pull requests, READMEs, skill names and descriptions, and agent-facing instructions. Match the user's language in chat.
 
 Sources have distinct roles rather than one interchangeable precedence order. Use
@@ -59,12 +59,14 @@ sync with the accepted behavior.
 Repository maintenance normally follows **accepted request -> focused change ->
 verification -> conventional commit -> push**.
 
-Code or behavior-changing work starts only from a `ready-for-agent` Ticket with a
-current Prompt Audit `PASS` or explicit maintainer `BYPASS`; see `CONTEXT.md` and
-ADR 0002. Text or documentation work that cannot change behavior may proceed
-directly.
+A code or behavior-changing Ticket is eligible for autonomous execution only
+when it is `ready-for-agent` with a current Prompt Audit `PASS` or explicit
+maintainer `BYPASS`; see `CONTEXT.md` and ADR 0002. Eligibility does not select
+work. The accepted user or invoker request must explicitly authorize the Ticket
+or supply the already-resolved ordered Ticket identity list for the Mission.
+Text or documentation work that cannot change behavior may proceed directly.
 
-1. Inspect Git status, recent history, relevant Issues, and live dependency/conflict state. Before substantial workflow, architecture, or publishing work, confirm whether the request is open, blocked, deferred, already delivered, or conflicts with another change.
+1. Inspect Git status, recent history, relevant Issues, and live dependency/conflict state. Before substantial workflow, architecture, or publishing work, confirm whether the explicitly selected request is open, blocked, deferred, already delivered, or conflicts with another change. A ready-work query is discovery, not Mission authorization.
 2. Read the accepted request, affected skills, supporting files, and governing contracts before editing. Ask only when behavior, safety, scope, workflow, or authority remains materially unresolved.
 3. Keep the change complete, narrowly scoped, and small enough for meaningful human review.
 4. Review the exact diff and preserve unrelated work.

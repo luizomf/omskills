@@ -54,9 +54,9 @@ _Avoid_: human index, burden, overhead
 
 ### Router Skill
 
-A **user-only** skill with explicit **context pointers** to other user-only skills or references, naming each and when to load it. The user remembers one entry point; once loaded, the router can select a target explicitly without making every target agent-discoverable. It cures accumulated **cognitive load** without adding all target descriptions to the system context.
+A **user-only** skill with explicit **context pointers** to other user-only skills or references, naming each and when to load it. The user remembers one entry point; once loaded, the Router Skill can select a skill or reference explicitly without making every target agent-discoverable. This is skill selection only: it owns no Mission Ticket identities, fixed order, cursor, or Ticket-coordinator lifecycle and is never the canonical Ticket dispatcher. It cures accumulated **cognitive load** without adding all target descriptions to the system context.
 
-_Avoid_: dispatcher, menu, registry, index, router procedure
+_Avoid_: Ticket dispatcher, dispatcher, menu, registry, index, router procedure
 
 ### Granularity
 

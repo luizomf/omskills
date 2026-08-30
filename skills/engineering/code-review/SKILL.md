@@ -5,7 +5,7 @@ description: Review a committed range or complete work-in-progress candidate aga
 
 # Code Review
 
-Read the configured issue tracker and domain-document locations. If either configuration is unavailable, run `setup-omskills` first.
+Read the configured issue tracker and domain-document locations. If either configuration is unavailable during an interactive invocation, run `setup-omskills` first and wait for its confirmed output. During a headless Ticket run, return a missing-setup blocker to the Ticket coordinator instead; never route setup through a Ticket dispatcher.
 
 Review exactly one candidate in one of two modes:
 

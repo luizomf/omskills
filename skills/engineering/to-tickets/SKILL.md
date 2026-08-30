@@ -10,7 +10,7 @@ Create **tracer-bullet tickets** with two scheduling relations:
 - A **blocking edge** means the blocked ticket cannot start or integrate until the blocker is complete.
 - A **conflict edge** means two otherwise unblocked tickets should not have active writers concurrently because they materially overlap in files, contracts, artifacts, or integration assumptions.
 
-Read the configured issue tracker and triage-label vocabulary. If either is unavailable, run `setup-omskills` first.
+Read the configured issue tracker and triage-label vocabulary. If either configuration is unavailable during an interactive invocation, run `setup-omskills` first and wait for its confirmed output. During a headless Ticket run, return a missing-setup blocker to the Ticket coordinator instead; never route setup through a Ticket dispatcher.
 
 ## Process
 
@@ -123,4 +123,4 @@ The publish step is complete when every approved Ticket exists separately with o
 
 ## Next-phase handoff
 
-Ticket creation never authorizes implementation. Triage verifies and stabilizes each Ticket and its Agent Brief; `prompt-comprehension-audits` then checks semantic comprehension and one-context fit. Only a current `PASS` or explicit maintainer `BYPASS` transitions that exact Ticket to `ready-for-agent`. Execution later uses `implement` for one Ticket or `orchestrate` for a fixed audited queue.
+Ticket creation never authorizes implementation. Triage verifies and stabilizes each Ticket and its Agent Brief; `prompt-comprehension-audits` then checks semantic comprehension and one-context fit. Only a current `PASS` or explicit maintainer `BYPASS` transitions that exact Ticket to `ready-for-agent`, making it eligible without selecting it. Explicit Mission authorization is a separate later phase: route one selected Ticket to its coordinator contract, `orchestrate`, and route a user- or invoker-supplied fixed ordered identity list to the future installed name `dispatch-tickets`. Neither route discovers ready work or derives authorization from a query.
