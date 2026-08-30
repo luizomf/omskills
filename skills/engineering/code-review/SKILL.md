@@ -36,18 +36,30 @@ Review against two separately reported criteria sets:
 
 For either mode, locate the governing Ticket or specification and every repository instruction or standard applicable to the candidate. If no governing contract exists, review Standards and observable correctness while stating that Spec compliance could not be verified.
 
+## Select the caller-safe review path
+
+This skill requires one isolated review pass; assigning a reviewer name does not create isolation, read-only behavior, tools, or delivery semantics.
+
+- A root interactive caller may use the active harness's documented asynchronous delivery or a documented visible isolated-worker transport. An asynchronous caller resumes adjudication only after the one deterministic completion notification; after acceptance it does not wait, sleep, or poll.
+- A print caller and a depth-2 Ticket coordinator that depends on the findings use direct delivery. Direct settlement returns once through the pending call and produces no later asynchronous completion notification.
+- A designated depth-3 reviewer is already the one fresh review leaf: it performs the supplied one-pass contract directly with inherited non-delegating tools, returns complete findings to the Ticket coordinator, and skips the dispatch and adjudication sections below. A depth-3 writer does not self-review or invoke this helper; it consumes coordinator-supplied evidence or returns a blocker. Neither role requests a depth-4 reviewer.
+
+Before launch, require a fresh isolated conversation with no parent transcript or prior child turns. Preflight the read-only tools and providers needed to inspect the complete candidate, and, where the harness exposes lineage controls, set the child's maximum delegation depth to its assigned depth and its direct-child ceiling to zero. An over-depth or capability mismatch must reject before launch or prompt acceptance. Do not retry it as though a review occurred.
+
+Choose a complete result-recovery channel before dispatch. Prefer the full terminal response plus the harness's native session reference. If terminal text is bounded, read the complete assistant message from that session before adjudication. A harness without an adequate result or inspectable native session may instead use one predeclared findings artifact outside the candidate worktree; writing that artifact is the only allowed write. Require a mechanically completed outcome as well as complete findings: a failed, interrupted, cancelled, or missing reviewer outcome is incomplete even when its native session retains partial text. If complete decision-bearing findings cannot be recovered, report the review as incomplete rather than inferring a verdict.
+
 ## Dispatch one isolated reviewer
 
-Start exactly one clean, read-only reviewer. Supply the selected mode, complete candidate, governing contract, applicable repository instructions, and this contract:
+Start exactly one fresh, read-only, non-delegating reviewer. Supply the selected mode, complete candidate or exact read-only commands that reproduce it, governing contract, applicable repository instructions, the selected result channel, and this contract:
 
 ```text
-Review every supplied candidate path in one pass against Standards and Spec. Report only concrete findings with file/line and evidence. Separate blockers from non-blocking observations and label each finding Standards or Spec. Treat capture limitations explicitly. Do not edit, push, approve, merge, spawn, delegate, invent requirements, or expand the reviewed scope.
+Review every supplied candidate path in one pass against Standards and Spec. Perform the review directly and return all decision-bearing findings, not a lossy summary. Report only concrete findings with file/line and evidence. Separate blockers from non-blocking observations and label each finding Standards or Spec. Treat capture limitations explicitly. Do not edit the candidate, push, approve, merge, spawn, delegate, invoke code-review, invent requirements, or expand the reviewed scope. If and only if a findings artifact path was supplied, write the complete result there and report that exact path.
 ```
 
 ## Adjudicate and report
 
-Verify every reported finding against the candidate and cited authority. Reject speculative hardening, style preferences, invented requirements, and claims contradicted by repository conventions.
+Verify every reported finding against the candidate and cited authority only after the reviewer has settled and the complete selected result channel has been recovered. Reject speculative hardening, style preferences, invented requirements, and claims contradicted by repository conventions.
 
-Inside a Ticket with a current Prompt Audit `PASS` or explicit `BYPASS`, adjudicate all in-scope findings from the accepted sources without opening another user decision gate. If the sources cannot determine required behavior, report that Ticket as blocked rather than guessing or widening it. Findings outside the Ticket remain findings and never authorize new work.
+Inside a Ticket with a current Prompt Audit `PASS` or explicit `BYPASS`, the Ticket coordinator adjudicates all in-scope findings from the accepted sources, performs surviving corrections directly, and opens no other user decision gate. If the sources cannot determine required behavior, report that Ticket as blocked rather than guessing or widening it. Findings outside the Ticket remain findings and never authorize new work.
 
 Report the selected mode, capture limitations, blockers ordered by severity, non-blocking observations, and a short verdict. Do not dispatch another reviewer or create a correction/re-review loop.

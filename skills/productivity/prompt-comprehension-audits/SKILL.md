@@ -17,9 +17,24 @@ If no accepted intent exists beyond the execution prompt, use only its explicit 
 
 When the maintainer explicitly waives the comprehension audit for the exact contract, skip the agent passes, choose `BYPASS`, and record the status as specified below. The waiver satisfies an execution gate; it does not by itself select the Ticket into a Mission.
 
+## Select isolated pass delivery
+
+Every delegated pass is a fresh, independent, read-only, non-delegating leaf that performs its assigned comparison directly. A role or name does not grant isolation, tools, or delivery behavior. Never continue a prior pass session or give a later pass hidden access to it.
+
+Before each launch, preflight the tools and providers required for that pass and the absence of inherited conversation. Where the active harness exposes lineage controls, set the child's maximum delegation depth to its assigned depth and its direct-child ceiling to zero. A depth-3 leaf cannot launch the required depth-4 clean pass. Any unavailable isolation, over-depth rejection, or capability mismatch before prompt acceptance requires `FAIL`; record it through the status process below and stop.
+
+Choose delivery from the caller's role:
+
+- A root interactive coordinator may use the active harness's documented asynchronous delivery. After acceptance it does not wait, sleep, or poll; it resumes the audit from the single deterministic completion notification.
+- A print coordinator and a depth-2 coordinator that depends on the pass use direct delivery. Direct settlement returns once through the pending call and emits no later asynchronous completion notification.
+
+Run the passes sequentially even when asynchronous delivery is available: interpreter settlement precedes coordinator assessment, and only that assessment makes the reviewer input complete. A confirmation, when allowed below, starts only after artifact repair. Never issue these passes as concurrent siblings.
+
+For every pass, require a mechanically completed terminal outcome and a complete decision-bearing response. When terminal text is bounded, recover the complete response from the returned native session reference or another predeclared durable result channel before assessment. Reading persisted evidence does not add context to the child. If the pass is failed, interrupted, cancelled, missing its response, or cannot be recovered without weakening isolation, choose and durably record `FAIL`; do not fabricate evidence, treat a partial response as `PASS`, continue the child, or rerun the pass.
+
 ## Run two isolated agent passes
 
-Start one fresh, independent agent for the interpreter pass and another for the reviewer pass. Each agent may receive baseline system and project instructions but no parent conversational turns, coordinator analysis, or desired answer. If the harness cannot guarantee these isolation conditions, choose `FAIL`, report that the audit cannot meet its required isolation, and stop after recording the status as specified below.
+Start one fresh agent for the interpreter pass and another for the reviewer pass under the rules above. Each agent may receive baseline system and project instructions but no parent conversational turns, coordinator analysis, or desired answer.
 
 ### 1. Run the interpreter pass
 
@@ -73,7 +88,7 @@ For each semantic divergence, consult the complete reference intent:
 
 After adjudicating every divergence, choose `PASS` when none remains and no artifact repair requires confirmation.
 
-After repairing an execution prompt or authoritative request artifact, use exactly one fresh clean-context confirmation reviewer. Give it only the revised prompt or request artifact and the authoritative sources that artifact explicitly requires or cites; withhold the conversation, previous responses, coordinator analysis, and a desired answer. Require it to reconstruct the requested outcome, scope boundaries, required workflow, deliverables, and completion point, then report `PASS` or `DIVERGENCE` with evidence about whether the request is self-contained and aligned with the supplied sources.
+After repairing an execution prompt or authoritative request artifact, use exactly one fresh clean-context confirmation reviewer under the same leaf, delivery, settlement, and bounded-result recovery rules above. Give it only the revised prompt or request artifact and the authoritative sources that artifact explicitly requires or cites; withhold the conversation, previous responses, coordinator analysis, and a desired answer. Require it to reconstruct the requested outcome, scope boundaries, required workflow, deliverables, and completion point, then report `PASS` or `DIVERGENCE` with evidence about whether the request is self-contained and aligned with the supplied sources.
 
 The coordinator adjudicates the confirmation once. If no concrete divergence survives, choose `PASS`. If a concrete remaining defect is resolved by the reference intent, apply one final minimal correction and choose `PASS` without another reviewer. Apply the escalation rule above only when a material decision remains unresolved. Exhausting the isolated-review budget transfers the result to coordinator adjudication; it is not a reason to stop or start a reviewer loop.
 
