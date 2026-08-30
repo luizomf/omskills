@@ -104,5 +104,5 @@ A smaller caller-visible surface generally requires fewer tests and simpler setu
 ## Progressive references
 
 - For deepening a cluster with known dependencies, read [DEEPENING.md](./DEEPENING.md) for dependency categories, seam discipline, and replace-don't-layer testing.
-- For comparing alternative interfaces, read [DESIGN-IT-TWICE.md](./DESIGN-IT-TWICE.md) for the one-designer comparison process.
+- For comparing alternative interfaces, read [DESIGN-IT-TWICE.md](./DESIGN-IT-TWICE.md) for the optional one-designer comparison process. Use it only when the invoking workflow authorizes that designer role and the current caller can dispatch a non-delegating leaf within its inherited depth. A depth-3 leaf resolves accepted sources directly or returns a blocker; it never requests depth 4.
 - To scan an entire repository for candidates, use `improve-codebase-architecture`.
