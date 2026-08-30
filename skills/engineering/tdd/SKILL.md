@@ -21,11 +21,14 @@ Use the architecture meaning of **seam** from `codebase-design`: a location wher
 
 Before writing any test:
 
-1. List the test seams to be exercised.
-2. Treat a test seam already confirmed in the request, specification, issue, ticket, or conversation as approved.
-3. For each unconfirmed test seam, ask the user: "What's the caller-visible interface, and which test seams should we exercise?" Obtain confirmation before writing its first test.
+1. List every caller-visible test seam to be exercised.
+2. Treat a test seam already confirmed in the accepted request, Spec, Ticket, repository sources, or conversation as confirmed. When those accepted sources and repository behavior determine the caller-visible interface and seam, record that evidence and proceed without asking for reconfirmation. Resolve a minor residual choice that does not change caller-visible coverage through established repository conventions.
+3. Resolve each genuinely unconfirmed material seam through the applicable authority branch:
+   - In standalone interactive use, ask the explicit Question: "What's the caller-visible interface, and which test seams should we exercise?" Obtain confirmation before writing the first test at that seam.
+   - In a Mission-authorized Ticket with a current `PASS` or explicit maintainer `BYPASS`, stop and return the unresolved seam as a blocker directly to the Ticket coordinator. An audited writer, including a depth-3 writer, remains a single-pass leaf: it does not delegate or route the blocker through the Ticket dispatcher.
+   - In any other print/headless invocation, report the unresolved seam to the caller and stop before writing tests. Print/headless execution never waits for a conversational answer.
 
-Write behavior tests only at confirmed test seams. Do not bypass the caller-visible interface to test internal seams.
+Seam selection is complete only when every test seam is confirmed from accepted sources or interactive confirmation, or the applicable terminal blocker has been returned. Write behavior tests only at confirmed test seams. Do not bypass the caller-visible interface to test internal seams.
 
 ## Anti-patterns
 
