@@ -1,33 +1,33 @@
 ---
 name: dispatch-tickets
-description: Dispatch one explicitly authorized Ticket to a fresh coordinator while keeping the root responsive.
+description: Dispatch a fixed ordered list of explicitly authorized Tickets through fresh coordinators while keeping the root responsive.
 disable-model-invocation: true
 ---
 
 # Dispatch Tickets
 
-Run as the minimal depth-1 **Ticket dispatcher** for exactly one Ticket. Before adopting dispatcher state, use the skill loader to read and follow the installed `caveman` skill. That composition read is the root's sole file read and exists only to load compressed reporting behavior.
+Run as the minimal depth-1 **Ticket dispatcher** for one fixed Mission sequence. Before adopting dispatcher state, use the skill loader to read and follow the installed `caveman` skill. That composition read is the root's sole file read and exists only to load compressed reporting behavior.
 
-Keep only `ticket`, `coordinator`, `state`, and `outcome` as dispatcher state. `ticket` is the exact supplied identity, `coordinator` is the owner-scoped numeric subagent ID, `state` is `ready`, `dispatched`, `terminal`, or `rejected`, and `outcome` is either the compact validated object or one rejection code. Keep no queue, cursor, transcript summary, or persistent Mission state.
+Keep only the frozen ordered Ticket identities, `cursor`, current owner-scoped `coordinator` ID, current native child session reference when the harness supplies one, mode, transition state, matching cancellation intent, and compact mechanically validated outcomes. The cursor is the number of delivered Tickets, so `tickets[:cursor]` remains delivered after any later stop. Keep no implementation content, transcript summary, or dynamic queue. There is no persistent workflow state.
 
-Keep the root's normal tools active for inheritance by the fresh coordinator. After composing `caveman`, use them only for the required routing-environment preflight below, the subagent lifecycle operation, and mechanical validation of its returned envelope. The root performs no tracker, repository, or remote discovery and reads no tracker material, governing source, repository file, code, diff, test, writer output, reviewer finding, native child session, or detailed coordinator output.
+Keep the root's normal tools active for inheritance by each fresh coordinator. After composing `caveman`, use them for routing-environment preflight, the subagent lifecycle operations below, and mechanical outcome validation only. The dispatcher performs no tracker, repository, or remote discovery and reads no tracker material, governing source, repository file, code, diff, test, writer output, reviewer finding, or native child session.
 
-## 1. Accept one authorized identity
+## 1. Accept and freeze the Mission
 
 Accept only an invocation that:
 
 - explicitly states Mission authorization from the user or invoker; and
-- supplies exactly one identity in the form `<owner>/<repository>#<positive-integer>`, where owner and repository contain only ASCII letters, digits, `.`, `_`, or `-`.
+- supplies one non-empty ordered list of unique identities, each in the form `<owner>/<repository>#<positive-integer>`, where owner and repository contain only ASCII letters, digits, `.`, `_`, or `-`.
 
-Preserve the identity byte-for-byte. Do not normalize, complete, search for, or verify it against a tracker. Derive `<repository>` for the coordinator prompt only by removing the final `#<positive-integer>` from the supplied identity; retain no separate repository field.
+A one-item list is valid. Preserve every identity and their order byte-for-byte. Treat uniqueness byte-for-byte. Do not normalize, sort, complete, search for, or verify an identity against a tracker. For each dispatch, derive `<repository>` only by removing the final `#<positive-integer>` from the current identity.
 
-Reject zero identities, multiple identities, an unqualified identity such as `#34`, invalid syntax, or readiness/discovery language without explicit Mission authorization. Report the compact input rejection and stop.
+Reject missing Mission authorization, an empty list, any duplicate, an unqualified identity such as `#38`, or any invalid syntax before dispatching. Use rejection code `authorization`, `empty`, `duplicate`, or `identity-syntax`, respectively. Freeze the accepted list once; later messages, child output, adjacent findings, and child-proposed work cannot add, remove, replace, or reorder it.
 
-This step is complete only when one exact supplied identity and explicit Mission authorization are present, or the invocation has been rejected without discovery and execution has stopped.
+This step is complete only when one valid list has been frozen with `cursor` zero or input has been rejected without any lifecycle call.
 
-## 2. Start one fresh coordinator
+## 2. Start only the current Ticket
 
-Use this exact coordinator prompt, replacing both placeholders without adding text:
+Start one fresh coordinator at a time for `tickets[cursor]`. Use this exact coordinator prompt, replacing both placeholders without adding text:
 
 ```text
 Repository: <repository>
@@ -36,103 +36,148 @@ Load and follow installed `orchestrate`. Resolve all governing context and compl
 Return exactly one single-line JSON object with required string fields "ticket": "<ticket>" and "status": one of "delivered", "blocked", "failed", or "cancelled". Include non-empty string "ref" only for an essential durable reference and non-empty string "blocker" only when applicable. Include no other fields or output.
 ```
 
-Immediately before the call, inspect `PI_PROVIDER`, `PI_MODEL`, and `PI_REASONING_LEVEL` only as the subagent lifecycle's routing preflight, then retain none of their values in dispatcher state. Call `subagent_start` exactly once with that prompt, `maxDepth: 3`, and `maxChildren: 1`. The start creates a clean coordinator conversation without the parent transcript. Omit `tools` so the coordinator inherits the complete active capability snapshot. Omit `cwd`, `model`, and `reasoning` so the coordinator inherits the root checkout and active route.
+Immediately before every start, inspect `PI_PROVIDER`, `PI_MODEL`, and `PI_REASONING_LEVEL` only as the subagent lifecycle's routing preflight, then retain none of their values in dispatcher state. Call `subagent_start` with that exact prompt, `maxDepth: 3`, and `maxChildren: 1`; every start creates a clean coordinator conversation without the parent transcript. Omit `tools` so the coordinator inherits the complete active capability snapshot. Omit `cwd`, `model`, and `reasoning` so it inherits the root checkout and active route.
 
 Choose delivery from the current Pi mode:
 
-- Interactive mode: set `delivery: "async"`. Prompt acceptance returns the owner-scoped coordinator ID while the coordinator continues independently.
-- Print mode: set `delivery: "direct"`. The call stays pending and returns the bounded terminal result in this invocation; Pi emits no later pong.
+- Interactive mode: set `delivery: "async"`. Acceptance supplies the owner-scoped coordinator ID while work continues independently.
+- Print mode: set `delivery: "direct"`. The call remains pending until its bounded terminal result and emits no later pong.
 
-A rejection before prompt acceptance means no coordinator was dispatched. Record only its compact dispatch rejection; do not retry or choose other work.
+Capture the coordinator ID and preserve any native child session reference supplied by the harness. Never start another coordinator while that ID is active. A start rejection is a failed Mission transition; do not retry or select another Ticket.
 
-This step is complete only when one coordinator ID has been captured from one accepted start, or dispatch rejection has been reported and execution has stopped.
+In interactive mode, report the first accepted dispatch and end the response without waiting, sleeping, polling, listing subagents, or doing dependent work. In print mode, emit no interim report while a direct call is pending.
 
-## 3. Settle through the mode's one return path
+This step is complete only when the current coordinator has been accepted as the sole active coordinator, or dispatch has failed and the Mission has stopped.
 
-In interactive mode, after acceptance set `state` to `dispatched`, emit the compressed dispatch transition, and end the response without waiting, sleeping, polling, listing subagents, or doing dependent work. The root is then available for user interaction. When exactly one later pong arrives, require its owner-scoped ID to equal `coordinator`, then validate that pong's terminal result.
+## 3. Route interactive user control mechanically
 
-In print mode, emit no interim transition while the direct call is pending. Capture its owner-scoped ID, consume the direct terminal result, and validate it in the same finite invocation. Finish with no later pong pending.
+While an interactive coordinator is active, keep unrelated root conversation possible without forwarding it or changing Mission state.
 
-For either mode, require the outer subagent outcome to be `completed`, one untruncated final assistant message to be present, and the return path to match the selected mode. Treat a failed, interrupted, missing, truncated, duplicate, mismatched-ID, or wrong-path result as a transport rejection. Do not continue the coordinator or read its native session.
+Forward an instruction only when the user explicitly targets the current owner-scoped coordinator. Call `subagent_steer` for that exact ID with the user's instruction literally, including its original wording and formatting. Do not interpret, summarize, or expand its implementation content. Do not retain that content. A message with no coordinator target or a target other than the current coordinator is not forwarded.
 
-This step is complete only when the one matching return has reached envelope validation, or a transport rejection has been recorded with no further lifecycle operation.
+For an unambiguous deliberate request to stop the current coordinator:
 
-## 4. Validate the Ticket outcome mechanically
+1. Record cancellation intent containing the current Ticket and coordinator ID before interruption.
+2. Call `subagent_interrupt` exactly once for that coordinator; recursive descendant cleanup is harness-owned. Do not enumerate or separately interrupt nested writer or reviewer work.
+3. Stop the sequence and dispatch no remaining Ticket.
+4. Map the result to `cancelled` only when the harness confirms a matching mechanical caller interruption for the recorded coordinator and intent. This is the sole case where a missing JSON Ticket outcome is not failed.
+
+A failed or mismatched interrupt, an unsolicited interruption, an interruption without matching recorded intent, or any other missing envelope is `failed`. Preserve the native child session reference from the harness, but do not continue or inspect that session or implementation evidence.
+
+This step is complete only when an explicitly targeted instruction has been forwarded unchanged, an unrelated message has remained local, or a stop has settled as matching `cancelled` or `failed` with no later dispatch.
+
+## 4. Accept exactly one mode-correct return
+
+Interactive mode accepts exactly one later pong for the active coordinator. Require its owner-scoped ID to equal `coordinator`; then validate its bounded terminal result in that new turn. Never sleep, poll, call a status/list operation, or wait synchronously between async acceptance and pong.
+
+Print mode consumes only the direct terminal result from its pending start. It never accepts a pong for that call.
+
+For either mode, require all of the following:
+
+- the return uses the selected mode's path;
+- the outer subagent outcome is `completed`;
+- exactly one untruncated final assistant message is present; and
+- the return belongs to the current coordinator and has not already settled.
+
+A missing result, duplicate return, mismatched coordinator, failed or unsolicited interrupted outer outcome, truncated result, or wrong return path is `failed`. Retain only its compact transport reason and any supplied native child session reference; never guess an envelope from partial or repeated content. Do not call `subagent_continue` or inspect the native session.
+
+This step is complete only when one mode-correct return has reached envelope validation, a deliberate matching interrupt has settled under step 3, or a transport failure has stopped the Mission.
+
+## 5. Validate the Ticket outcome mechanically
 
 Apply every check below to the complete final assistant message:
 
-1. The trimmed message is exactly one physical line of valid JSON that decodes to one top-level JSON object; `null`, arrays, scalar JSON, Markdown fences, prefixes, suffixes, and multiple envelopes are rejected.
+1. The trimmed message is exactly one physical line of valid JSON that decodes to one top-level JSON object. Reject `null`, arrays, scalar JSON, Markdown fences, prefixes, suffixes, multiple envelopes, and any duplicate narrative.
 2. The object has required keys `ticket` and `status`, and may have only optional keys `ref` and `blocker`. Reject missing required keys, unknown keys, and duplicate JSON keys.
 3. `ticket` and `status` are strings. Any present `ref` or `blocker` is a non-empty string.
-4. `ticket` equals the supplied `ticket` byte-for-byte.
-5. `status` is exactly `"delivered"`, `"blocked"`, `"failed"`, or `"cancelled"`.
+4. `ticket` equals `tickets[cursor]` byte-for-byte.
+5. `status` is exactly `delivered`, `blocked`, `failed`, or `cancelled`.
 
-Use `syntax` for invalid JSON or surrounding/multiple output; `shape` for a non-object, wrong keys, duplicate keys, or wrong value types; `identity` for a Ticket mismatch; `status` for an unexpected status; and `transport` for a return-path failure from step 3. On success, set `outcome` to the validated object and `state` to `terminal`. On the first failed check, retain only that rejection code in `outcome`, set `state` to `rejected`, and do not retain raw invalid output. Do not adjudicate implementation semantics: never verify whether delivery occurred, whether a `ref` resolves, whether a blocker is correct, or whether optional fields should have been supplied.
+Use `syntax` for invalid JSON or surrounding/multiple output; `shape` for a non-object, wrong keys, duplicate keys, or wrong value types; `identity` for a Ticket mismatch; and `status` for an unexpected status. On the first failed check, discard the raw output, record only `outcome-<code>`, classify the current Ticket as failed, and stop.
 
-This step is complete only when every check has accepted one compact object or exactly one rejection code has been retained without semantic inspection.
+Do not adjudicate implementation semantics. Never verify whether delivery occurred, whether a `ref` resolves, whether a blocker is correct, whether descendants were cleaned up internally, or whether optional fields should have been supplied.
 
-## 5. Report one compressed transition
+This step is complete only when one compact outcome has passed every check or one compact failure reason has stopped the Mission.
 
-Use `caveman` and these mode-accurate forms:
+## 6. Advance or stop deterministically
 
-- Invalid interactive input: `dispatch rejected (<authorization|identity-count|identity-syntax>); root available.`
-- Invalid print input: `dispatch rejected (<authorization|identity-count|identity-syntax>); print settled; no pong pending.`
-- Interactive dispatch acceptance: `<ticket> dispatched (#<coordinator>); root available; outcome pending.`
-- Interactive dispatch rejection: `<ticket> dispatch rejected (transport); root available.`
-- Print dispatch rejection: `<ticket> dispatch rejected (transport); print settled; no pong pending.`
-- Valid interactive terminal: `<ticket> <status>[; ref <ref>][; blocker <blocker>]; root available.`
-- Valid print terminal: `<ticket> <status>[; ref <ref>][; blocker <blocker>]; print settled; no pong pending.`
-- Invalid interactive terminal: `<ticket> outcome rejected (<code>); root available.`
-- Invalid print terminal: `<ticket> outcome rejected (<code>); print settled; no pong pending.`
+Apply exactly one transition for the current cursor:
 
-Preserve the exact Ticket identity and the complete values of any valid `ref` and `blocker`. Never report `Mission complete`; this tracer bullet reports one Ticket's dispatch or terminal transition only.
+| Current result | Transition |
+| --- | --- |
+| Matching `delivered`, later Ticket remains | Preserve the compact outcome, increment `cursor`, and dispatch the next fresh coordinator. |
+| Matching `delivered`, final Ticket | Preserve the compact outcome, increment `cursor`, and report `Mission complete`. |
+| Matching `blocked`, `failed`, or `cancelled` | Preserve the compact outcome and stop before every remaining Ticket without incrementing `cursor`. |
+| Any transport or envelope failure | Preserve only the compact failure and session reference, then stop before every remaining Ticket without incrementing `cursor`. |
 
-This step is complete only when exactly one applicable compressed transition has been emitted with truthful availability and return-path state.
+Earlier delivered Tickets remain represented by the unchanged prefix `tickets[:cursor]`. No stopped Mission can retry, skip, reorder, or resume the sequence.
+
+In interactive mode, after a matching delivered pong with a later Ticket, advance by asynchronously starting that next fresh coordinator in the new turn. Report only after the next start is accepted or rejected, then leave the root responsive again. There is never more than one active coordinator.
+
+In print mode, after each matching direct `delivered`, synchronously start the next fresh coordinator with `delivery: "direct"`. Continue serially through the frozen finite list in one finite invocation. Stop the loop on the first non-delivered or invalid result and emit one final compact report; no pong remains pending.
+
+This step is complete only when exactly one next coordinator is active, the Mission has stopped, or the final cursor has produced `Mission complete`.
+
+## 7. Report compact state transitions
+
+Use `caveman`. Preserve exact Ticket identities and complete valid `ref`, `blocker`, and native child session reference values when supplied. Include `<cursor>/<total> delivered` in advance, stop, failure, cancellation, and completion reports so prior delivery remains explicit.
+
+Use these forms:
+
+- Invalid interactive input: `Mission rejected (<code>); root available.`
+- Invalid print input: `Mission rejected (<code>); print settled; no pong pending.`
+- First interactive dispatch: `<ticket> dispatched (#<coordinator>); root available; outcome pending.`
+- Explicit steering: `<ticket> instruction forwarded (#<coordinator>); root available; outcome pending.`
+- Interactive advance after the next start is accepted: `<ticket> delivered[; ref <ref>][; session <session>]; <cursor>/<total> delivered; <next-ticket> dispatched (#<coordinator>); root available; outcome pending.`
+- Valid interactive stop: `<ticket> <blocked|failed|cancelled>[; ref <ref>][; blocker <blocker>][; session <session>]; <cursor>/<total> delivered; Mission stopped; <remaining> remaining; root available.`
+- Invalid interactive result: `<ticket> failed (<reason>)[; session <session>]; <cursor>/<total> delivered; Mission stopped; <remaining> remaining; root available.`
+- Interactive completion: `<ticket> delivered[; ref <ref>][; session <session>]; <total>/<total> delivered; Mission complete; root available.`
+- Print terminal: `<compact outcome 1> | ... | <compact current outcome>; <cursor>/<total> delivered; <Mission complete|Mission stopped; remaining count>; print settled; no pong pending.`
+
+For an accepted current-Ticket outcome, `<remaining>` counts fixed identities after the current Ticket. For a dispatch rejection, state that the current Ticket was not dispatched and count it among the undelivered identities. A valid matching `cancelled` envelope and a confirmed deliberate interruption use the same cancellation stop form. Never report `Mission complete` before the final fixed identity returns matching `delivered`.
+
+This step is complete only when exactly one truthful mode-accurate transition has been emitted without implementation narrative.
 
 ## Examples
 
 Interactive input:
 
 ```text
-/dispatch-tickets Mission-authorized Ticket: luizomf/omskills#34
+/dispatch-tickets Mission-authorized Tickets, in order: [luizomf/omskills#34, luizomf/omskills#38]
 ```
 
-After asynchronous acceptance as subagent 7:
+First asynchronous acceptance as coordinator 7:
 
 ```text
 luizomf/omskills#34 dispatched (#7); root available; outcome pending.
 ```
 
-Later, matching pong final message:
-
-```json
-{"ticket":"luizomf/omskills#34","status":"delivered","ref":"abc123"}
-```
-
-Root terminal report:
+After coordinator 7 returns `{"ticket":"luizomf/omskills#34","status":"delivered","ref":"abc123"}` and coordinator 8 is accepted:
 
 ```text
-luizomf/omskills#34 delivered; ref abc123; root available.
+luizomf/omskills#34 delivered; ref abc123; 1/2 delivered; luizomf/omskills#38 dispatched (#8); root available; outcome pending.
 ```
 
-In print mode, a direct result whose final message is `{"ticket":"luizomf/omskills#34","status":"blocked","blocker":"required setup missing"}` produces:
+An explicitly targeted instruction is forwarded without interpretation:
 
 ```text
-luizomf/omskills#34 blocked; blocker required setup missing; print settled; no pong pending.
+For coordinator #8: Preserve API v1 exactly; do not rename it.
 ```
 
-Mechanical rejection examples:
+If the harness then confirms the user's matching interruption of coordinator 8 and supplies `session-8`:
 
-| Final message | Rejection |
-| --- | --- |
-| `[]` | `shape` |
-| `{"ticket":"luizomf/omskills#34"}` | `shape` |
-| `{"ticket":"luizomf/omskills#34","status":"done"}` | `status` |
-| `{"ticket":"luizomf/omskills#35","status":"delivered"}` | `identity` |
-| `{"ticket":"luizomf/omskills#34","status":"delivered","next":"#35"}` | `shape` |
+```text
+luizomf/omskills#38 cancelled; session session-8; 1/2 delivered; Mission stopped; 0 remaining; root available.
+```
+
+A final matching delivered result reports:
+
+```text
+luizomf/omskills#38 delivered; ref def456; 2/2 delivered; Mission complete; root available.
+```
 
 ## Delivery boundary
 
-This one-Ticket tracer bullet has no wormhole, tmux, persistent Mission state, Queue/TTS side effect, publishing, tagging, release, heartbeat, retry, skip, takeover, parallel coordinator, root rotation, or semantic outcome supervision. It has no steering or interruption mechanics. Multi-identity ordering and cursor advancement, exhaustive transition rules, literal correction steering, deliberate-stop and missing-envelope cancellation mapping, and Mission completion belong to later dispatcher work.
+No child receives or returns `next`. This dispatcher has no retry, skip, heartbeat, stall diagnosis, timeout takeover, blocker resolution, parallel coordinator, root rotation, dynamic expansion, or persistent workflow state. It has no wormhole or tmux dependency and no Queue/TTS side effect, publishing, tagging, or release behavior.
 
-Apply every boundary above to every invocation; no child-selected work, `next` list, tracker query, or adjacent finding can expand the one supplied identity.
+The dispatcher owns only the fixed Mission envelope and mechanical routing. Ticket eligibility, governing sources, implementation, review, integration, tracker work, and semantic decisions remain with each fresh Ticket coordinator.

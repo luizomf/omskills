@@ -39,7 +39,7 @@ The authority boundary established by **Mission authorization**: the exact selec
 _Avoid_: adjacent-work authorization, child-selected work
 
 **Ticket dispatcher**:
-The minimal root policy role implemented by the user-only `dispatch-tickets` skill. Its active tracer accepts one exact, explicitly authorized Ticket identity supplied by its user or invoker and owns only that identity, current coordinator identity, dispatch state, and compact **Ticket outcome**. The accepted sequence extension later adds an already-resolved ordered identity list, fixed order, cursor, literal instruction forwarding, and Mission completion; until then callers supply one identity. The dispatcher remains the user's responsive control surface while asynchronous work runs. It does not query the tracker, discover work, resolve a query, introduce a resolver role, inspect implementation context, or resolve blockers; its initial contract has no heartbeat, stall diagnosis, retry, or skip.
+The minimal root policy role implemented by the user-only `dispatch-tickets` skill. It accepts and freezes one non-empty, already-resolved ordered list of unique, explicitly authorized Ticket identities supplied by its user or invoker. It alone owns that fixed order, cursor, current coordinator identity and native session reference, matching cancellation intent, dispatch state, and compact **Ticket outcomes**. It advances only after the current identity returns matching `delivered`, forwards only explicitly targeted instructions literally, stops on every other or invalid result, and reports **Mission complete** only after the final identity is delivered. The dispatcher remains the user's responsive control surface while asynchronous work runs. It does not query the tracker, discover or expand work, resolve a query, introduce a resolver role, inspect implementation context, or resolve blockers; it has no heartbeat, stall diagnosis, retry, or skip.
 _Avoid_: Ticket coordinator, implementation worker, query resolver, semantic supervisor
 
 **Ticket coordinator**:
@@ -47,7 +47,7 @@ The fresh isolated agent running `orchestrate` for exactly one explicitly author
 _Avoid_: Ticket dispatcher, sequence owner, leaf writer, leaf reviewer
 
 **Ticket outcome**:
-The single-line JSON terminal envelope returned as a **Ticket coordinator**'s final assistant message. `delivered` is the successful one-Ticket result and allows cursor advancement once the sequence extension is active; `blocked`, `failed`, or `cancelled` are non-delivered results. It contains only the Ticket identity, status, an essential durable reference when available, and one short blocker when applicable; detailed evidence remains in the tracker, repository, and coordinator session. A missing, malformed, or mismatched outcome fails closed.
+The single-line JSON terminal envelope returned as a **Ticket coordinator**'s final assistant message. Matching `delivered` is the only result that advances the dispatcher cursor; `blocked`, `failed`, or `cancelled` stop the sequence. It contains only the Ticket identity, status, an essential durable reference when available, and one short blocker when applicable; detailed evidence remains in the tracker, repository, and coordinator session. A missing, malformed, mismatched, duplicate, truncated, wrong-path, or unexpected outcome fails closed.
 _Avoid_: implementation report, review summary, diff, handoff transcript
 
 **Mission complete**:
@@ -74,7 +74,7 @@ _Avoid_: guaranteed wake, worker promise, background activity
 - Once a Ticket is selected, a current `PASS` or `BYPASS` transfers its in-scope implementation decisions to the **Ticket coordinator** without creating another user decision gate
 - Text or documentation work that cannot change behavior does not require a **Prompt audit status**
 - A **Ticket** may retain multiple historical **Prompt audit statuses**, but only its newest applicable status governs that exact contract
-- The active one-Ticket **Ticket dispatcher** receives one supplied identity and never accepts child-selected `next` work; the accepted sequence extension makes it the only owner of an already-resolved ordered list and advances its cursor only after a matching `delivered` **Ticket outcome**
+- The active **Ticket dispatcher** is the only owner of one supplied already-resolved ordered list and advances its cursor only after a matching `delivered` **Ticket outcome**; no child receives or returns `next` work
 - A **Ticket coordinator** owns complete delivery of one Ticket through the acyclic `Ticket coordinator -> writer -> Ticket coordinator -> reviewer -> Ticket coordinator` graph
 - Writer and reviewer are fresh, isolated, single-pass leaves; the **Ticket coordinator** adjudicates findings, performs surviving corrections directly, verifies, integrates, and decides the one-Ticket outcome
 - The dispatcher does not inspect or mediate missing setup; a headless **Ticket coordinator** returns a blocker when required repository configuration is unavailable
