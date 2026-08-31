@@ -94,7 +94,7 @@ The coordinator adjudicates the confirmation once. If no concrete divergence sur
 
 ## Check implementation-unit fit when applicable
 
-Treat any semantic `PASS` above as provisional. When the audited contract is one repository code implementation unit, read `to-tickets` and confirm that it satisfies the tracer-bullet rules, including fit in one fresh agent context with room to understand the relevant code, implement the end-to-end behavior, and verify it. If it does not, choose `FAIL` and report that decomposition is required before autonomous delivery. For every other audited text, this check does not apply.
+Treat any semantic `PASS` or explicit `BYPASS` above as provisional. When the audited contract is one repository code implementation unit, read `to-tickets` and confirm that it satisfies the tracer-bullet rules, including fit in one fresh agent context with room to understand the relevant code, implement the end-to-end behavior, and verify it. If it does not, choose `FAIL` and report that decomposition is required before autonomous delivery. For every other audited text, this check does not apply.
 
 ## Record the prompt audit status
 
@@ -118,8 +118,16 @@ For an untracked prompt, report the same fields to the invoking workflow. A newe
 
 For a tracked code or behavior-changing Ticket, transition it to `ready-for-agent` only after its final body, Agent Brief, parent, blocking, and conflict relations are stable, it carries exactly one category role, and this audit returns `PASS` or an explicit maintainer `BYPASS`. Replace `needs-triage`; do not leave two state roles. A `FAIL` remains outside `ready-for-agent`. The audit never creates adjacent Tickets or extends the audited contract. `ready-for-agent` plus `PASS` or `BYPASS` establishes eligibility, not Mission authorization.
 
-After `PASS` or `BYPASS`, resume implementation only when the invoking workflow already carries explicit Mission authorization for that Ticket; otherwise report the eligibility result and stop before implementation. Once selected, the invoking implementation owns every in-scope decision without another user gate. Stop the audited contract after `FAIL`.
+## Complete the audit context
+
+After recording the status and applying any eligible state transition for a tracked code or behavior-changing Ticket, take exactly one branch:
+
+- `FAIL` — report the status; the audit invocation ends without dispatch.
+- `PASS` or `BYPASS` without Mission authorization — the audit reports eligibility and ends without dispatch.
+- `PASS` or `BYPASS` with explicit Mission authorization for this one Ticket — route the exact selected Ticket directly to exactly one fresh isolated context running installed `orchestrate`, without another user intervention, then end the audit invocation.
+
+The audit conversation performs no implementation. The fresh Ticket coordinator owns every in-scope implementation decision without another user gate. Every other audit returns its recorded status to the invoking workflow and ends.
 
 ## Audit boundary
 
-The audit evaluates communication of intent only. It does not implement the issue, inspect runtime readiness, run tests, prepare a release, or establish runtime behavior.
+The audit evaluates communication of intent only. Runtime-readiness inspection, test execution, release preparation, and runtime-behavior establishment belong to later delivery work.

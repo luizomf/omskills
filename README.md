@@ -27,7 +27,6 @@ Before asking an agent to "build it", classify the moment:
 - Need to think through an idea: `/grill-me` or `/grill-with-docs`
 - The work is too large or foggy for one session: `/wayfinder`
 - Know the goal, but not the implementation Tickets: `/to-spec`, then `/to-tickets`
-- Want to implement one explicitly selected, audited Ticket directly: `/implement`
 - Want one explicitly Mission-authorized Ticket delivered through a fresh coordinator, writer, and reviewer: `/orchestrate`
 - Want a fixed ordered list of Mission-authorized Tickets dispatched while the root remains responsive: `/dispatch-tickets`
 - Want the diff checked before it ships: `/code-review`
@@ -55,7 +54,7 @@ The risk in an empty repo is inventing too much architecture too early.
 3. Use `/grill-with-docs` before substantial coding to clarify domain language, constraints, and the smallest useful first slice.
 4. Use `/to-spec` if the direction needs a durable spec.
 5. Use `/to-tickets` to break the spec into small, vertical tickets.
-6. Explicitly select the Ticket, then use `/implement` only when it is clear, verifiable, `ready-for-agent`, and carries a current Prompt Audit `PASS` or explicit `BYPASS`.
+6. Explicitly Mission-authorize the Ticket, then use `/orchestrate` only when it is clear, verifiable, `ready-for-agent`, and carries a current Prompt Audit `PASS` or explicit `BYPASS`.
 
 Good prompt:
 
@@ -72,7 +71,7 @@ The risk in an existing project is enforcing process before understanding the sy
 3. Use `/grill-with-docs` if project language is unclear or undocumented.
 4. Use `/triage` to establish which work is eligible before explicitly selecting any Ticket for execution.
 5. Use `/improve-codebase-architecture` when coupling or structure needs attention; treat the output as diagnosis and issue material, not blanket permission to refactor.
-6. Explicitly select the Ticket, then use `/implement` when it is mature, `ready-for-agent`, and carries a current Prompt Audit `PASS` or explicit `BYPASS`.
+6. Explicitly Mission-authorize the Ticket, then use `/orchestrate` when it is mature, `ready-for-agent`, and carries a current Prompt Audit `PASS` or explicit `BYPASS`.
 
 Good prompt:
 
@@ -87,7 +86,7 @@ The risk in a prepared repo is ignoring decisions that already exist.
 1. Read the local instructions and context: `AGENTS.md`, `CONTEXT.md`, `docs/agents/*`, and `docs/adr/*`.
 2. Start from an existing issue or ticket when possible.
 3. Use `/triage` if the task is new or unclear.
-4. Explicitly select the Ticket, then use `/implement` if it is small, mature, has acceptance criteria, and carries a current Prompt Audit `PASS` or explicit `BYPASS`.
+4. Explicitly Mission-authorize the Ticket, then use `/orchestrate` if it is small, mature, has acceptance criteria, and carries a current Prompt Audit `PASS` or explicit `BYPASS`.
 5. Use `/grill-with-docs` if the issue conflicts with domain language or decisions.
 6. Stop and discuss when the task conflicts with an ADR, changes architecture, or has meaningful tradeoffs.
 7. Use `/handoff` before pausing a long session.

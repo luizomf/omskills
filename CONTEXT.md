@@ -71,6 +71,7 @@ _Avoid_: guaranteed wake, worker promise, background activity
 - A triaged **Ticket** carries one category **Triage role** and one state **Triage role**
 - A code or behavior-changing **Ticket** becomes `ready-for-agent` only with a current `PASS` or explicit `BYPASS` **Prompt audit status**
 - `ready-for-agent` and a current `PASS` or `BYPASS` make a Ticket eligible; only **Mission authorization** selects it for execution
+- `prompt-comprehension-audits` owns the canonical completion boundary for a tracked code or behavior-changing Ticket: Prompt Audit and implementation are separate context units. The audit conversation records its status and ends without implementation; eligible Mission-authorized delivery begins only in one fresh isolated **Ticket coordinator** running `orchestrate`
 - Once a Ticket is selected, a current `PASS` or `BYPASS` transfers its in-scope implementation decisions to the **Ticket coordinator** without creating another user decision gate
 - Text or documentation work that cannot change behavior does not require a **Prompt audit status**
 - A **Ticket** may retain multiple historical **Prompt audit statuses**, but only its newest applicable status governs that exact contract
