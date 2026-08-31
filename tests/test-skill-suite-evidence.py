@@ -59,6 +59,15 @@ def is_user_only(skill_file: Path) -> bool:
     )
 
 
+def parse_distribution(value: str) -> tuple[str, str, str]:
+    match = re.fullmatch(
+        r"(active|optional), (agent-discoverable|user-only) — `(skills/[^`]+)`\.",
+        value,
+    )
+    assert match, f"invalid distribution classification: {value}"
+    return match.group(1), match.group(2), match.group(3)
+
+
 def parse_classifications(
     audit: str, start: str, end: str | None, expected_fields: set[str]
 ) -> dict[str, dict[str, str]]:
@@ -132,11 +141,9 @@ def check_dynamic_inventory(audit: str) -> None:
         relative_dir = skill_file.parent.relative_to(ROOT).as_posix()
         distribution = "active" if relative_dir in active_paths else "optional"
         discovery = "user-only" if is_user_only(skill_file) else "agent-discoverable"
-        actual = skills[name]["Distribution / discovery"].lower()
-        assert distribution in actual, f"wrong distribution for {name}"
-        assert discovery in actual, f"wrong discovery state for {name}"
-        assert relative_dir in skills[name]["Distribution / discovery"], (
-            f"missing skill path for {name}"
+        actual = parse_distribution(skills[name]["Distribution / discovery"])
+        assert actual == (distribution, discovery, relative_dir), (
+            f"wrong distribution classification for {name}: {actual}"
         )
 
         owned_resources = sorted(
@@ -152,18 +159,22 @@ def check_dynamic_inventory(audit: str) -> None:
             )
 
     assert len(active_paths) == len(manifests[0]["skills"])
-    assert all(
-        "decision-bearing" in row["Decision role"].lower()
-        for row in resource_rows.values()
-    )
-    assert all(
-        "compatible" in row["Compatibility"].lower()
-        for row in resource_rows.values()
-    )
-    assert all(
-        "compatible" in row["Evidence / classification"].lower()
-        for row in skills.values()
-    )
+    for identity, row in resource_rows.items():
+        assert row["Decision role"].startswith("decision-bearing "), (
+            f"resource is not classified as decision-bearing: {identity}"
+        )
+        classification = row["Compatibility"].split(";", 1)[0]
+        assert classification in {
+            "compatible",
+            "compatible with preserved finding",
+            "compatible with the dispatcher/coordinator architecture",
+        }, f"invalid resource compatibility classification: {identity}"
+
+    for name, row in skills.items():
+        assert re.fullmatch(
+            r"compatible(?: — preserved finding)? — .+",
+            row["Evidence / classification"],
+        ), f"invalid skill compatibility classification: {name}"
 
 
 def require(path: str, *fragments: str) -> None:
