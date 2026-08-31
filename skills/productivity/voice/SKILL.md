@@ -7,7 +7,10 @@ compatibility: Requires the private OMQueue bq CLI and edgetts with local audio 
 
 # Voice
 
-Speak each user-facing response while this skill is active.
+Speak only strategically useful responses while this skill is active: conclusions,
+meaningful milestones, blockers, or pauses that require the user's input. Keep routine
+acknowledgments and intermediate progress updates text-only; do not narrate every
+step.
 
 ## Workflow
 
@@ -52,7 +55,8 @@ Speak each user-facing response while this skill is active.
 ## Mode
 
 Remain in voice mode for the conversation until the user asks to stop speaking
-responses. Do not speak tool output, hidden reasoning, progress-only updates, or
+responses. Apply the workflow only when a response meets the strategic-use rule
+above. Do not speak tool output, hidden reasoning, routine progress updates, or
 content that is not part of a user-facing answer.
 
 ## Example
