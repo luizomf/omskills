@@ -6,11 +6,11 @@ disable-model-invocation: true
 
 # Dispatch Tickets
 
-Run as the minimal depth-1 **Ticket dispatcher** for exactly one Ticket. Load and follow the installed `caveman` skill before every root report.
+Run as the minimal depth-1 **Ticket dispatcher** for exactly one Ticket. Before adopting dispatcher state, use the skill loader to read and follow the installed `caveman` skill. That composition read is the root's sole file read and exists only to load compressed reporting behavior.
 
 Keep only `ticket`, `coordinator`, `state`, and `outcome` as dispatcher state. `ticket` is the exact supplied identity, `coordinator` is the owner-scoped numeric subagent ID, `state` is `ready`, `dispatched`, `terminal`, or `rejected`, and `outcome` is either the compact validated object or one rejection code. Keep no queue, cursor, transcript summary, or persistent Mission state.
 
-The root's normal tools stay active solely for inheritance by the fresh coordinator. At the root, use only the subagent lifecycle operation specified below and mechanical validation of its returned envelope. The root performs no tracker, file, or remote discovery and reads no tracker material, governing source, repository file, code, diff, test, writer output, reviewer finding, native child session, or detailed coordinator output.
+Keep the root's normal tools active for inheritance by the fresh coordinator. After composing `caveman`, use them only for the required routing-environment preflight below, the subagent lifecycle operation, and mechanical validation of its returned envelope. The root performs no tracker, repository, or remote discovery and reads no tracker material, governing source, repository file, code, diff, test, writer output, reviewer finding, native child session, or detailed coordinator output.
 
 ## 1. Accept one authorized identity
 
@@ -36,7 +36,7 @@ Load and follow installed `orchestrate`. Resolve all governing context and compl
 Return exactly one single-line JSON object with required string fields "ticket": "<ticket>" and "status": one of "delivered", "blocked", "failed", or "cancelled". Include non-empty string "ref" only for an essential durable reference and non-empty string "blocker" only when applicable. Include no other fields or output.
 ```
 
-Call `subagent_start` exactly once with that prompt, `maxDepth: 3`, and `maxChildren: 1`. The start creates a clean coordinator conversation without the parent transcript. Omit `tools` so the coordinator inherits the complete active capability snapshot. Omit `cwd`, `model`, and `reasoning` so the coordinator inherits the root checkout and active route.
+Immediately before the call, inspect `PI_PROVIDER`, `PI_MODEL`, and `PI_REASONING_LEVEL` only as the subagent lifecycle's routing preflight, then retain none of their values in dispatcher state. Call `subagent_start` exactly once with that prompt, `maxDepth: 3`, and `maxChildren: 1`. The start creates a clean coordinator conversation without the parent transcript. Omit `tools` so the coordinator inherits the complete active capability snapshot. Omit `cwd`, `model`, and `reasoning` so the coordinator inherits the root checkout and active route.
 
 Choose delivery from the current Pi mode:
 

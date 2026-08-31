@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Focused structural contract checks for dispatch-tickets."""
+"""Focused structural and reference-scenario checks for dispatch-tickets."""
 
 from __future__ import annotations
 
@@ -20,6 +20,123 @@ Return exactly one single-line JSON object with required string fields \"ticket\
 def require(text: str, *fragments: str) -> None:
     for fragment in fragments:
         assert fragment in text, f"missing contract fragment: {fragment}"
+
+
+class ObjectPairs(list[tuple[str, object]]):
+    """Distinguish decoded JSON objects from arrays and retain duplicate keys."""
+
+
+ALLOWED_STATUSES = {"delivered", "blocked", "failed", "cancelled"}
+ALLOWED_KEYS = {"ticket", "status", "ref", "blocker"}
+
+
+def validate_outcome(message: str, expected_ticket: str) -> tuple[str, dict]:
+    trimmed = message.strip()
+    if "\n" in trimmed or "\r" in trimmed:
+        return "syntax", {}
+    try:
+        decoded = json.loads(trimmed, object_pairs_hook=ObjectPairs)
+    except (json.JSONDecodeError, TypeError):
+        return "syntax", {}
+    if not isinstance(decoded, ObjectPairs):
+        return "shape", {}
+
+    keys = [key for key, _ in decoded]
+    if len(keys) != len(set(keys)):
+        return "shape", {}
+    outcome = dict(decoded)
+    if not {"ticket", "status"} <= outcome.keys() or outcome.keys() - ALLOWED_KEYS:
+        return "shape", {}
+    if not isinstance(outcome["ticket"], str) or not isinstance(
+        outcome["status"], str
+    ):
+        return "shape", {}
+    if any(
+        key in outcome
+        and (not isinstance(outcome[key], str) or not outcome[key])
+        for key in ("ref", "blocker")
+    ):
+        return "shape", {}
+    if outcome["ticket"] != expected_ticket:
+        return "identity", {}
+    if outcome["status"] not in ALLOWED_STATUSES:
+        return "status", {}
+    return "accepted", outcome
+
+
+def dispatch_report(ticket: str, coordinator: int, mode: str) -> str | None:
+    if mode == "print":
+        return None
+    return f"{ticket} dispatched (#{coordinator}); root available; outcome pending."
+
+
+def terminal_report(message: str, ticket: str, mode: str) -> str:
+    result, outcome = validate_outcome(message, ticket)
+    suffix = (
+        "root available."
+        if mode == "interactive"
+        else "print settled; no pong pending."
+    )
+    if result != "accepted":
+        return f"{ticket} outcome rejected ({result}); {suffix}"
+    details = "".join(
+        f"; {key} {outcome[key]}" for key in ("ref", "blocker") if key in outcome
+    )
+    return f"{ticket} {outcome['status']}{details}; {suffix}"
+
+
+def check_reference_scenarios() -> None:
+    ticket = "luizomf/omskills#34"
+    scenarios = [
+        (
+            '{"ticket":"luizomf/omskills#34","status":"delivered","ref":"abc123"}',
+            "interactive",
+            "luizomf/omskills#34 delivered; ref abc123; root available.",
+        ),
+        (
+            '{"ticket":"luizomf/omskills#34","status":"blocked","blocker":"setup missing"}',
+            "print",
+            "luizomf/omskills#34 blocked; blocker setup missing; print settled; no pong pending.",
+        ),
+        ("[]", "interactive", f"{ticket} outcome rejected (shape); root available."),
+        (
+            '{"ticket":"luizomf/omskills#34"}',
+            "print",
+            f"{ticket} outcome rejected (shape); print settled; no pong pending.",
+        ),
+        (
+            '{"ticket":"luizomf/omskills#34","ticket":"luizomf/omskills#34","status":"delivered"}',
+            "interactive",
+            f"{ticket} outcome rejected (shape); root available.",
+        ),
+        (
+            '{"ticket":"luizomf/omskills#34","status":"done"}',
+            "interactive",
+            f"{ticket} outcome rejected (status); root available.",
+        ),
+        (
+            '{"ticket":"luizomf/omskills#35","status":"delivered"}',
+            "interactive",
+            f"{ticket} outcome rejected (identity); root available.",
+        ),
+        (
+            '{"ticket":"luizomf/omskills#34","status":"delivered","next":"#35"}',
+            "print",
+            f"{ticket} outcome rejected (shape); print settled; no pong pending.",
+        ),
+        (
+            'prefix {"ticket":"luizomf/omskills#34","status":"delivered"}',
+            "interactive",
+            f"{ticket} outcome rejected (syntax); root available.",
+        ),
+    ]
+    for message, mode, expected in scenarios:
+        assert terminal_report(message, ticket, mode) == expected
+
+    assert dispatch_report(ticket, 7, "interactive") == (
+        "luizomf/omskills#34 dispatched (#7); root available; outcome pending."
+    )
+    assert dispatch_report(ticket, 7, "print") is None
 
 
 def main() -> None:
@@ -67,12 +184,15 @@ def main() -> None:
 
     require(
         skill,
-        "Load and follow the installed `caveman` skill before every root report.",
+        "use the skill loader to read and follow the installed `caveman` skill",
+        "That composition read is the root's sole file read",
         "`<owner>/<repository>#<positive-integer>`",
         "only ASCII letters, digits, `.`, `_`, or `-`",
         "explicitly states Mission authorization",
-        "performs no tracker, file, or remote discovery",
+        "performs no tracker, repository, or remote discovery",
         "only `ticket`, `coordinator`, `state`, and `outcome`",
+        "`PI_PROVIDER`, `PI_MODEL`, and `PI_REASONING_LEVEL`",
+        "retain none of their values in dispatcher state",
         "`subagent_start`",
         '`delivery: "async"`',
         '`delivery: "direct"`',
@@ -94,7 +214,26 @@ def main() -> None:
         "no steering or interruption mechanics",
     )
 
-    print("dispatch-tickets contract ok")
+    staged_routing = {
+        ROOT / "CONTEXT.md": "Its active tracer accepts one exact",
+        ROOT / "skills/productivity/writing-great-skills/SKILL.md": (
+            "supply that same one exact identity to the active `dispatch-tickets`"
+        ),
+        ROOT / "skills/productivity/write-a-skill/SKILL.md": (
+            "route that same one exact identity to `dispatch-tickets`"
+        ),
+        ROOT / "skills/engineering/triage/SKILL.md": (
+            "supplies that same one exact identity to `dispatch-tickets`"
+        ),
+        ROOT / "skills/engineering/to-tickets/SKILL.md": (
+            "supply that same one exact identity to the active `dispatch-tickets`"
+        ),
+    }
+    for path, fragment in staged_routing.items():
+        require(path.read_text(), fragment)
+
+    check_reference_scenarios()
+    print("dispatch-tickets contract and reference scenarios ok")
 
 
 if __name__ == "__main__":
