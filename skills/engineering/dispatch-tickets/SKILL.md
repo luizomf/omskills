@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 Run as the minimal depth-1 **Ticket dispatcher** for one fixed Mission sequence. Before adopting dispatcher state, use the skill loader to read and follow the installed `caveman` skill. That composition read is the root's sole file read and exists only to load compressed reporting behavior.
 
-Keep only the frozen ordered Ticket identities, `cursor`, current owner-scoped `coordinator` ID, current native child session reference when the harness supplies one, mode, transition state, matching cancellation intent, and compact mechanically validated outcomes. The cursor is the number of delivered Tickets, so `tickets[:cursor]` remains delivered after any later stop. Keep no implementation content, transcript summary, or dynamic queue. There is no persistent workflow state.
+Keep only the frozen ordered Ticket identities, `cursor`, current owner-scoped `coordinator` ID, current native child session reference when the harness supplies one, mode, transition state, matching cancellation intent, pending transport-failure reason, and compact mechanically validated outcomes. The cursor is the number of delivered Tickets, so `tickets[:cursor]` remains delivered after any later stop. Keep no implementation content, transcript summary, or dynamic queue. There is no persistent workflow state.
 
 Keep the root's normal tools active for inheritance by each fresh coordinator. After composing `caveman`, use them for routing-environment preflight, the subagent lifecycle operations below, and mechanical outcome validation only. The dispatcher performs no tracker, repository, or remote discovery and reads no tracker material, governing source, repository file, code, diff, test, writer output, reviewer finding, or native child session.
 
@@ -59,12 +59,12 @@ For an unambiguous deliberate request to stop the current coordinator:
 
 1. Record cancellation intent containing the current Ticket and coordinator ID before interruption.
 2. Call `subagent_interrupt` exactly once for that coordinator; recursive descendant cleanup is harness-owned. Do not enumerate or separately interrupt nested writer or reviewer work.
-3. Stop the sequence and dispatch no remaining Ticket.
-4. Map the result to `cancelled` only when the harness confirms a matching mechanical caller interruption for the recorded coordinator and intent. This is the sole case where a missing JSON Ticket outcome is not failed.
+3. Stop the sequence immediately and dispatch no remaining Ticket. An accepted interruption request only enters `cancelling`; it is not terminal confirmation. Report cancellation pending and end the turn without waiting or polling.
+4. Consume the one later pong for that same coordinator. Because the harness emits it only after the coordinator process and managed descendants have closed, map the missing JSON Ticket outcome to `cancelled` only when that pong is mechanically `interrupted` and matches the recorded Ticket, coordinator, and cancellation intent. That pong is the required matching mechanical caller interruption.
 
-A failed or mismatched interrupt, an unsolicited interruption, an interruption without matching recorded intent, or any other missing envelope is `failed`. Preserve the native child session reference from the harness, but do not continue or inspect that session or implementation evidence.
+A rejected interruption request, failed or mismatched interruption pong, unsolicited interruption, interruption without matching recorded intent, or any other missing envelope is `failed`, never `cancelled`. If the request is rejected while the coordinator remains active, keep its ID, dispatch nothing else, and consume its eventual normal pong before final failure settlement; do not retry the interruption. Preserve the native child session reference from the terminal pong, but do not continue or inspect that session or implementation evidence.
 
-This step is complete only when an explicitly targeted instruction has been forwarded unchanged, an unrelated message has remained local, or a stop has settled as matching `cancelled` or `failed` with no later dispatch.
+This step is complete only when an explicitly targeted instruction has been forwarded unchanged, an unrelated message has remained local, an accepted interruption request is awaiting its automatic pong without polling, or the later matching pong has settled the stop as `cancelled` or `failed` with no later dispatch.
 
 ## 4. Accept exactly one mode-correct return
 
@@ -81,7 +81,9 @@ For either mode, require all of the following:
 
 A missing result, duplicate return, mismatched coordinator, failed or unsolicited interrupted outer outcome, truncated result, or wrong return path is `failed`. Retain only its compact transport reason and any supplied native child session reference; never guess an envelope from partial or repeated content. Do not call `subagent_continue` or inspect the native session.
 
-This step is complete only when one mode-correct return has reached envelope validation, a deliberate matching interrupt has settled under step 3, or a transport failure has stopped the Mission.
+A mode-correct pong for the current coordinator proves that runtime has already closed, even when its content fails validation. If an unexpected or stale return belongs to a different coordinator while the current asynchronous coordinator may still be active, record the failure, call `subagent_interrupt` once for the current coordinator solely for managed-lineage cleanup, and consume its later terminal pong before final settlement. That cleanup has no cancellation intent and therefore remains `failed` even when its terminal outcome is `interrupted`. Never mark an active coordinator settled or discard its ID before its own terminal pong.
+
+This step is complete only when one mode-correct return has reached envelope validation, a deliberate matching interrupt has settled under step 3, a cleanup interruption's later pong has preserved the failure classification, or a transport failure has stopped the Mission after every accepted coordinator is mechanically settled.
 
 ## 5. Validate the Ticket outcome mechanically
 
@@ -128,13 +130,16 @@ Use these forms:
 - Invalid print input: `Mission rejected (<code>); print settled; no pong pending.`
 - First interactive dispatch: `<ticket> dispatched (#<coordinator>); root available; outcome pending.`
 - Explicit steering: `<ticket> instruction forwarded (#<coordinator>); root available; outcome pending.`
-- Interactive advance after the next start is accepted: `<ticket> delivered[; ref <ref>][; session <session>]; <cursor>/<total> delivered; <next-ticket> dispatched (#<coordinator>); root available; outcome pending.`
+- Accepted interruption request: `<ticket> cancellation requested (#<coordinator>); Mission stopped; confirmation pending; root available.`
+- Interactive advance after the next start is accepted: `<ticket> delivered[; ref <ref>][; blocker <blocker>][; session <session>]; <cursor>/<total> delivered; <next-ticket> dispatched (#<coordinator>); root available; outcome pending.`
 - Valid interactive stop: `<ticket> <blocked|failed|cancelled>[; ref <ref>][; blocker <blocker>][; session <session>]; <cursor>/<total> delivered; Mission stopped; <remaining> remaining; root available.`
 - Invalid interactive result: `<ticket> failed (<reason>)[; session <session>]; <cursor>/<total> delivered; Mission stopped; <remaining> remaining; root available.`
-- Interactive completion: `<ticket> delivered[; ref <ref>][; session <session>]; <total>/<total> delivered; Mission complete; root available.`
+- Interactive completion: `<ticket> delivered[; ref <ref>][; blocker <blocker>][; session <session>]; <total>/<total> delivered; Mission complete; root available.`
+- Interactive start rejection: `<ticket> failed (dispatch-<reason>)[; session <session>]; <cursor>/<total> delivered; Mission stopped; current not dispatched; <undelivered> undelivered; root available.`
 - Print terminal: `<compact outcome 1> | ... | <compact current outcome>; <cursor>/<total> delivered; <Mission complete|Mission stopped; remaining count>; print settled; no pong pending.`
+- Print start rejection: `<prior compact outcomes, when any> | <ticket> failed (dispatch-<reason>)[; session <session>]; <cursor>/<total> delivered; Mission stopped; current not dispatched; <undelivered> undelivered; print settled; no pong pending.`
 
-For an accepted current-Ticket outcome, `<remaining>` counts fixed identities after the current Ticket. For a dispatch rejection, state that the current Ticket was not dispatched and count it among the undelivered identities. A valid matching `cancelled` envelope and a confirmed deliberate interruption use the same cancellation stop form. Never report `Mission complete` before the final fixed identity returns matching `delivered`.
+For an accepted current-Ticket outcome, `<remaining>` counts fixed identities after the current Ticket. For a start rejection, `<undelivered>` counts the current Ticket and every later identity. A valid matching `cancelled` envelope and the later confirmed pong for a deliberate interruption use the same cancellation stop form. Never report `Mission complete` before the final fixed identity returns matching `delivered`.
 
 This step is complete only when exactly one truthful mode-accurate transition has been emitted without implementation narrative.
 
@@ -164,7 +169,13 @@ An explicitly targeted instruction is forwarded without interpretation:
 For coordinator #8: Preserve API v1 exactly; do not rename it.
 ```
 
-If the harness then confirms the user's matching interruption of coordinator 8 and supplies `session-8`:
+If the user deliberately stops coordinator 8, interruption-request acceptance first produces:
+
+```text
+luizomf/omskills#38 cancellation requested (#8); Mission stopped; confirmation pending; root available.
+```
+
+Only the later matching `interrupted` pong, emitted after managed-lineage closure and carrying `session-8`, produces:
 
 ```text
 luizomf/omskills#38 cancelled; session session-8; 1/2 delivered; Mission stopped; 0 remaining; root available.

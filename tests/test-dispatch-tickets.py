@@ -92,13 +92,9 @@ class CoordinatorReturn:
 
 
 @dataclass(frozen=True)
-class InterruptResult:
+class InterruptRequest:
     coordinator: int
-    confirmed: bool
-    caller_initiated: bool
-    mechanical_status: str
-    session: str | None = None
-    recursive_cleanup: bool = False
+    accepted: bool = True
 
 
 @dataclass(frozen=True)
@@ -120,6 +116,7 @@ class Mission:
     coordinator: int | None = None
     active_session: str | None = None
     cancellation_intent: tuple[str, int] | None = None
+    pending_failure: OutcomeRecord | None = None
     outcomes: list[OutcomeRecord] = field(default_factory=list)
     settled_coordinators: set[int] = field(default_factory=set)
     events: list[tuple[object, ...]] = field(default_factory=list)
@@ -160,7 +157,25 @@ class Mission:
             )
         return f"{ticket} dispatched (#{coordinator}); root available; outcome pending."
 
+    def reject_start(self, reason: str = "transport", session: str | None = None) -> str:
+        if self.state != "ready" or self.coordinator is not None:
+            raise RuntimeError("Mission not awaiting a coordinator start")
+        record = OutcomeRecord(
+            ticket=self.current_ticket,
+            status="failed",
+            session=session,
+            reason=f"dispatch-{reason}",
+        )
+        self.outcomes.append(record)
+        self.events.append(("start-rejected", record.ticket, record.reason))
+        self.state = "stopped"
+        return self._terminal_report(current_not_dispatched=True)
+
     def receive(self, result: CoordinatorReturn) -> str:
+        if self.state == "cancelling":
+            return self._receive_cancellation_pong(result)
+        if self.state == "cleanup":
+            return self._receive_cleanup_pong(result)
         if self.coordinator is None:
             reason = (
                 "duplicate-return"
@@ -180,7 +195,11 @@ class Mission:
                 if result.coordinator in self.settled_coordinators
                 else "mismatched-return"
             )
-            return self._fail(reason, result.session)
+            if self.mode == "interactive":
+                return self._begin_cleanup_failure(
+                    reason, result.session, result.coordinator
+                )
+            return self._fail(reason, result.session, result.coordinator)
         if result.truncated:
             return self._fail("truncated", result.session)
         if result.outer_status != "completed":
@@ -227,22 +246,46 @@ class Mission:
         )
         return report, message
 
-    def stop(self, target: int, result: InterruptResult) -> str:
+    def request_stop(self, target: int, request: InterruptRequest) -> str:
         if self.state != "dispatched" or target != self.coordinator:
-            return self._fail("interrupt-mismatch", result.session)
+            return self._fail("interrupt-mismatch", None)
 
         ticket = self.current_ticket
         coordinator = self.coordinator
         self.cancellation_intent = (ticket, coordinator)
-        self.events.append(("interrupt", coordinator, "managed-lineage"))
-        if not (
-            result.confirmed
-            and result.caller_initiated
-            and result.mechanical_status == "interrupted"
-            and result.coordinator == coordinator
+        self.events.append(("interrupt-request", coordinator, "managed-lineage"))
+        if request.coordinator != coordinator or not request.accepted:
+            return self._begin_cleanup_failure(
+                "interrupt-request", None, request.coordinator, request_cleanup=False
+            )
+
+        self.state = "cancelling"
+        return (
+            f"{ticket} cancellation requested (#{coordinator}); Mission stopped; "
+            "confirmation pending; root available."
+        )
+
+    def _receive_cancellation_pong(self, result: CoordinatorReturn) -> str:
+        ticket = self.current_ticket
+        coordinator = self.coordinator
+        matched = (
+            coordinator is not None
             and self.cancellation_intent == (ticket, coordinator)
-        ):
-            return self._fail("interrupt", result.session)
+            and result.coordinator == coordinator
+            and result.path == "pong"
+            and result.outer_status == "interrupted"
+            and not result.truncated
+            and result.return_count == 1
+        )
+        if not matched:
+            if coordinator is not None and result.coordinator != coordinator:
+                return self._begin_cleanup_failure(
+                    "interrupt-confirmation",
+                    result.session,
+                    result.coordinator,
+                    request_cleanup=False,
+                )
+            return self._fail("interrupt-confirmation", result.session)
 
         record = OutcomeRecord(
             ticket=ticket,
@@ -250,10 +293,62 @@ class Mission:
             session=result.session or self.active_session,
         )
         self.outcomes.append(record)
-        self.events.append(("interrupt-return", ticket, coordinator, "cancelled"))
+        self.events.append(
+            ("interrupt-pong", ticket, coordinator, "managed-lineage-closed")
+        )
         self.settled_coordinators.add(coordinator)
         self.coordinator = None
         self.active_session = None
+        self.state = "stopped"
+        return self._terminal_report()
+
+    def _begin_cleanup_failure(
+        self,
+        reason: str,
+        session: str | None,
+        returned_coordinator: int,
+        request_cleanup: bool = True,
+    ) -> str:
+        active = self.coordinator
+        self.pending_failure = OutcomeRecord(
+            ticket=self.current_ticket,
+            status="failed",
+            session=session or self.active_session,
+            reason=reason,
+        )
+        self.events.append(
+            ("failure-detected", self.current_ticket, active, returned_coordinator, reason)
+        )
+        action = "interrupt-cleanup" if request_cleanup else "await-terminal-cleanup"
+        self.events.append((action, active, "managed-lineage"))
+        self.state = "cleanup"
+        return "cleanup-pending"
+
+    def _receive_cleanup_pong(self, result: CoordinatorReturn) -> str:
+        active = self.coordinator
+        if (
+            active is None
+            or self.pending_failure is None
+            or result.coordinator != active
+            or result.path != "pong"
+            or result.return_count != 1
+        ):
+            return self._fail("cleanup-confirmation", result.session)
+
+        record = OutcomeRecord(
+            ticket=self.pending_failure.ticket,
+            status="failed",
+            session=result.session or self.pending_failure.session,
+            reason=self.pending_failure.reason,
+        )
+        self.outcomes.append(record)
+        self.events.append(
+            ("cleanup-pong", record.ticket, active, result.outer_status)
+        )
+        self.settled_coordinators.add(active)
+        self.coordinator = None
+        self.active_session = None
+        self.pending_failure = None
         self.state = "stopped"
         return self._terminal_report()
 
@@ -283,11 +378,17 @@ class Mission:
         self.state = "stopped"
         return self._terminal_report()
 
-    def _terminal_report(self) -> str:
+    def _terminal_report(self, current_not_dispatched: bool = False) -> str:
         current = format_record(self.outcomes[-1])
         progress = f"{self.cursor}/{len(self.tickets)} delivered"
         if self.state == "complete":
             ending = "Mission complete"
+        elif current_not_dispatched:
+            undelivered = len(self.tickets) - self.cursor
+            ending = (
+                "Mission stopped; current not dispatched; "
+                f"{undelivered} undelivered"
+            )
         else:
             remaining = len(self.tickets) - self.cursor - 1
             ending = f"Mission stopped; {max(remaining, 0)} remaining"
@@ -413,15 +514,16 @@ def check_terminal_and_cursor_scenarios() -> None:
         CoordinatorReturn(
             22,
             "pong",
-            '{"ticket":"acme/repo#2","status":"delivered","ref":"commit-2"}',
+            '{"ticket":"acme/repo#2","status":"delivered","ref":"commit-2",'
+            '"blocker":"informational"}',
             session="session-22",
         )
     )
     assert complete.cursor == 2
     assert complete.state == "complete"
     assert complete_report == (
-        "acme/repo#2 delivered; ref commit-2; session session-22; 2/2 delivered; "
-        "Mission complete; root available."
+        "acme/repo#2 delivered; ref commit-2; blocker informational; "
+        "session session-22; 2/2 delivered; Mission complete; root available."
     )
 
 
@@ -429,7 +531,6 @@ def check_fail_closed_scenarios() -> None:
     ticket = "acme/repo#7"
     scenarios = [
         (CoordinatorReturn(31, "direct", f'{{"ticket":"{ticket}","status":"delivered"}}'), "wrong-path"),
-        (CoordinatorReturn(99, "pong", f'{{"ticket":"{ticket}","status":"delivered"}}'), "mismatched-return"),
         (CoordinatorReturn(31, "pong", None), "missing"),
         (CoordinatorReturn(31, "pong", f'{{"ticket":"{ticket}","status":"delivered"}}', truncated=True), "truncated"),
         (CoordinatorReturn(31, "pong", f'{{"ticket":"{ticket}","status":"delivered"}}', return_count=2), "duplicate-return"),
@@ -450,14 +551,53 @@ def check_fail_closed_scenarios() -> None:
         assert "Mission complete" not in report
         assert "Mission stopped; 1 remaining" in report
 
+    mismatched = Mission.accept([ticket, "acme/repo#8"], True, "interactive")
+    mismatched.start(31, "active-session")
+    assert mismatched.receive(
+        CoordinatorReturn(
+            99,
+            "pong",
+            f'{{"ticket":"{ticket}","status":"delivered"}}',
+        )
+    ) == "cleanup-pending"
+    assert mismatched.state == "cleanup"
+    assert mismatched.coordinator == 31
+    assert mismatched.outcomes == []
+    assert mismatched.events[-1] == (
+        "interrupt-cleanup",
+        31,
+        "managed-lineage",
+    )
+    report = mismatched.receive(
+        CoordinatorReturn(
+            31,
+            "pong",
+            None,
+            outer_status="interrupted",
+            session="active-session",
+        )
+    )
+    assert mismatched.state == "stopped"
+    assert mismatched.outcomes[-1].reason == "mismatched-return"
+    assert "session active-session" in report
+
     duplicate = Mission.accept([ticket, "acme/repo#8"], True, "interactive")
     duplicate.start(40)
     assert duplicate.receive(
         CoordinatorReturn(40, "pong", f'{{"ticket":"{ticket}","status":"delivered"}}')
     ) == "advance"
-    duplicate.start(41)
-    report = duplicate.receive(
+    duplicate.start(41, "session-41")
+    assert duplicate.receive(
         CoordinatorReturn(40, "pong", f'{{"ticket":"{ticket}","status":"delivered"}}')
+    ) == "cleanup-pending"
+    report = duplicate.receive(
+        CoordinatorReturn(
+            41,
+            "pong",
+            None,
+            outer_status="interrupted",
+            session="session-41",
+        )
     )
     assert duplicate.outcomes[-1].reason == "duplicate-return"
     assert duplicate.cursor == 1
@@ -488,22 +628,41 @@ def check_steering_and_cancellation_scenarios() -> None:
             current = Mission.accept([ticket, "acme/repo#10"], True, "interactive")
             current.start(coordinator, f"native-session-{coordinator}")
         nested_work = {coordinator: [nested_role]}
-        mechanical = InterruptResult(
-            coordinator=coordinator,
-            confirmed=True,
-            caller_initiated=True,
-            mechanical_status="interrupted",
-            session=f"native-session-{coordinator}",
-            recursive_cleanup=True,
+        pending = current.request_stop(
+            coordinator,
+            InterruptRequest(coordinator=coordinator),
         )
-        cancelled = current.stop(coordinator, mechanical)
-        if mechanical.recursive_cleanup:
-            nested_work[coordinator].clear()
 
         assert current.cancellation_intent == (ticket, coordinator)
-        assert current.events[-2] == ("interrupt", coordinator, "managed-lineage")
+        assert current.state == "cancelling"
+        assert current.outcomes == []
+        assert current.events[-1] == (
+            "interrupt-request",
+            coordinator,
+            "managed-lineage",
+        )
+        assert nested_work[coordinator] == [nested_role]
+        assert "confirmation pending" in pending
         assert not any(event[0] == "interrupt-descendant" for event in current.events)
+
+        # The harness emits the pong only after coordinator/descendant process closure.
+        nested_work[coordinator].clear()
+        cancelled = current.receive(
+            CoordinatorReturn(
+                coordinator,
+                "pong",
+                None,
+                outer_status="interrupted",
+                session=f"native-session-{coordinator}",
+            )
+        )
         assert nested_work[coordinator] == []
+        assert current.events[-1] == (
+            "interrupt-pong",
+            ticket,
+            coordinator,
+            "managed-lineage-closed",
+        )
         assert current.outcomes[-1] == OutcomeRecord(
             ticket=ticket,
             status="cancelled",
@@ -513,18 +672,52 @@ def check_steering_and_cancellation_scenarios() -> None:
         assert "0/2 delivered" in cancelled
         assert "Mission stopped; 1 remaining" in cancelled
 
-    failed_interrupts = [
-        InterruptResult(61, False, True, "failed", "session-61"),
-        InterruptResult(62, True, True, "interrupted", "session-62"),
-        InterruptResult(61, True, False, "interrupted", "session-61"),
-    ]
-    for result in failed_interrupts:
-        failed = Mission.accept([ticket], True, "interactive")
-        failed.start(61)
-        report = failed.stop(61, result)
-        assert failed.outcomes[-1].status == "failed"
-        assert failed.outcomes[-1].reason == "interrupt"
-        assert "Mission complete" not in report
+    wrong_confirmation = Mission.accept([ticket], True, "interactive")
+    wrong_confirmation.start(61, "session-61")
+    wrong_confirmation.request_stop(61, InterruptRequest(61))
+    report = wrong_confirmation.receive(
+        CoordinatorReturn(61, "pong", None, outer_status="failed", session="session-61")
+    )
+    assert wrong_confirmation.outcomes[-1].status == "failed"
+    assert wrong_confirmation.outcomes[-1].reason == "interrupt-confirmation"
+    assert "Mission complete" not in report
+
+    mismatched_confirmation = Mission.accept([ticket], True, "interactive")
+    mismatched_confirmation.start(62, "session-62")
+    mismatched_confirmation.request_stop(62, InterruptRequest(62))
+    assert mismatched_confirmation.receive(
+        CoordinatorReturn(99, "pong", None, outer_status="interrupted")
+    ) == "cleanup-pending"
+    report = mismatched_confirmation.receive(
+        CoordinatorReturn(
+            62,
+            "pong",
+            None,
+            outer_status="interrupted",
+            session="session-62",
+        )
+    )
+    assert mismatched_confirmation.outcomes[-1].status == "failed"
+    assert mismatched_confirmation.outcomes[-1].reason == "interrupt-confirmation"
+    assert "Mission complete" not in report
+
+    rejected_request = Mission.accept([ticket], True, "interactive")
+    rejected_request.start(63, "session-63")
+    assert rejected_request.request_stop(
+        63,
+        InterruptRequest(63, accepted=False),
+    ) == "cleanup-pending"
+    report = rejected_request.receive(
+        CoordinatorReturn(
+            63,
+            "pong",
+            f'{{"ticket":"{ticket}","status":"delivered"}}',
+            session="session-63",
+        )
+    )
+    assert rejected_request.outcomes[-1].status == "failed"
+    assert rejected_request.outcomes[-1].reason == "interrupt-request"
+    assert "Mission complete" not in report
 
     unsolicited = Mission.accept([ticket], True, "interactive")
     unsolicited.start(70)
@@ -533,6 +726,48 @@ def check_steering_and_cancellation_scenarios() -> None:
     )
     assert unsolicited.outcomes[-1].reason == "transport"
     assert "failed" in report
+
+
+def check_start_rejection_scenarios() -> None:
+    tickets = ["acme/repo#1", "acme/repo#2"]
+
+    first = Mission.accept(tickets, True, "interactive")
+    report = first.reject_start("capacity")
+    assert first.cursor == 0
+    assert first.state == "stopped"
+    assert first.events == [("start-rejected", tickets[0], "dispatch-capacity")]
+    assert "current not dispatched; 2 undelivered" in report
+    assert "root available" in report
+
+    later = Mission.accept(tickets, True, "interactive")
+    later.start(75)
+    assert later.receive(
+        CoordinatorReturn(
+            75,
+            "pong",
+            '{"ticket":"acme/repo#1","status":"delivered"}',
+        )
+    ) == "advance"
+    report = later.reject_start("preflight")
+    assert later.cursor == 1
+    assert [item.status for item in later.outcomes] == ["delivered", "failed"]
+    assert "1/2 delivered" in report
+    assert "current not dispatched; 1 undelivered" in report
+
+    printed = Mission.accept(tickets, True, "print")
+    printed.start(76)
+    assert printed.receive(
+        CoordinatorReturn(
+            76,
+            "direct",
+            '{"ticket":"acme/repo#1","status":"delivered"}',
+        )
+    ) == "advance"
+    report = printed.reject_start("transport", "session-rejected")
+    assert "acme/repo#1 delivered | acme/repo#2 failed (dispatch-transport)" in report
+    assert "session session-rejected" in report
+    assert "current not dispatched; 1 undelivered" in report
+    assert "print settled; no pong pending" in report
 
 
 def check_mode_progression_scenarios() -> None:
@@ -588,6 +823,7 @@ def check_reference_scenarios() -> None:
     check_terminal_and_cursor_scenarios()
     check_fail_closed_scenarios()
     check_steering_and_cancellation_scenarios()
+    check_start_rejection_scenarios()
     check_mode_progression_scenarios()
 
 
@@ -672,9 +908,13 @@ def main() -> None:
         "Do not retain",
         "cancellation intent",
         "`subagent_interrupt`",
+        "only enters `cancelling`",
+        "one later pong",
+        "managed descendants have closed",
         "recursive descendant cleanup is harness-owned",
         "native child session reference",
         "matching mechanical caller interruption",
+        "current not dispatched",
         "Mission complete",
         "No child receives or returns `next`",
         "no retry, skip, heartbeat",
