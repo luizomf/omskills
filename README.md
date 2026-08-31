@@ -29,7 +29,7 @@ Before asking an agent to "build it", classify the moment:
 - Know the goal, but not the implementation Tickets: `/to-spec`, then `/to-tickets`
 - Want to implement one explicitly selected, audited Ticket directly: `/implement`
 - Want one explicitly Mission-authorized Ticket delivered through a fresh coordinator, writer, and reviewer: `/orchestrate`
-- Want one exact Mission-authorized Ticket dispatched while the root remains responsive: `/dispatch-tickets`
+- Want a fixed ordered list of Mission-authorized Tickets dispatched while the root remains responsive: `/dispatch-tickets`
 - Want the diff checked before it ships: `/code-review`
 - Something broke: `/diagnosing-bugs`
 - Need high-trust reading legwork: `/research`
@@ -123,7 +123,7 @@ By default, the script writes to `~/.agents/skills`, the shared user-level skill
 OMSKILLS_DEST=/tmp/omskills-test ./scripts/link-skills.sh
 ```
 
-Active skills are installed by the plugin independently of discovery state. Supporting harnesses include agent-discoverable skills in the model's system context, while active user-only skills remain installed for direct selection without permanent context load. `design`, `teach`, and `dispatch-tickets` are the current active user-only skills; invoke them directly for deliberate interface design, a stateful learning workspace, or one-Ticket dispatch. The groupings below describe the typical selection path, not discovery status.
+Active skills are installed by the plugin independently of discovery state. Supporting harnesses include agent-discoverable skills in the model's system context, while active user-only skills remain installed for direct selection without permanent context load. `design`, `teach`, and `dispatch-tickets` are the current active user-only skills; invoke them directly for deliberate interface design, a stateful learning workspace, or fixed-sequence Ticket dispatch. The groupings below describe the typical selection path, not discovery status.
 
 2. In each repo that will consume these skills, run:
 
@@ -166,7 +166,7 @@ For mature projects, the eligible Ticket set should favor small, vertical, verif
 - **[to-tickets](./skills/engineering/to-tickets/SKILL.md)**: breaks a plan, spec, or conversation into tracer-bullet tickets with blocking and conflict edges.
 - **[implement](./skills/engineering/implement/SKILL.md)**: implements one audited, authorized code or behavior-changing Ticket and verifies its acceptance criteria.
 - **[orchestrate](./skills/engineering/orchestrate/SKILL.md)**: coordinates complete delivery of one explicitly authorized Ticket through single-pass writer and reviewer agents.
-- **[dispatch-tickets](./skills/engineering/dispatch-tickets/SKILL.md)**: dispatches one exact Mission-authorized Ticket from a minimal responsive root to a fresh coordinator.
+- **[dispatch-tickets](./skills/engineering/dispatch-tickets/SKILL.md)**: dispatches a fixed ordered list of Mission-authorized Tickets from a minimal responsive root through fresh coordinators.
 - **[wayfinder](./skills/engineering/wayfinder/SKILL.md)**: maps a huge or foggy effort into investigation tickets on the issue tracker.
 
 **Typically agent-selected**
