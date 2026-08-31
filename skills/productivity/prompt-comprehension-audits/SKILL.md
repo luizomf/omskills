@@ -15,6 +15,8 @@ Before delegation, record the complete accepted intent from the original executi
 
 If no accepted intent exists beyond the execution prompt, use only its explicit requirements as the reference. Record ambiguities that could materially change the outcome, scope, required workflow, deliverables, or completion point; do not infer adjacent work.
 
+For a tracked code or behavior-changing Ticket, make every accepted decision and boundary required for delivery durable in the final Ticket or Agent Brief before a delegated pass or `BYPASS`. Add only already-accepted context to that contract; the audit conversation is not an implementation handoff. This step is complete only when a fresh `orchestrate` Ticket coordinator can recover the complete execution contract from the Issue tracker.
+
 When the maintainer explicitly waives the comprehension audit for the exact contract, skip the agent passes, choose `BYPASS`, and record the status as specified below. The waiver satisfies an execution gate; it does not by itself select the Ticket into a Mission.
 
 ## Select isolated pass delivery
@@ -94,7 +96,7 @@ The coordinator adjudicates the confirmation once. If no concrete divergence sur
 
 ## Check implementation-unit fit when applicable
 
-Treat any semantic `PASS` or explicit `BYPASS` above as provisional. When the audited contract is one repository code implementation unit, read `to-tickets` and confirm that it satisfies the tracer-bullet rules, including fit in one fresh agent context with room to understand the relevant code, implement the end-to-end behavior, and verify it. If it does not, choose `FAIL` and report that decomposition is required before autonomous delivery. For every other audited text, this check does not apply.
+Treat any semantic `PASS` or explicit `BYPASS` above as provisional. When the audited contract is one repository code or behavior-changing Ticket, read `to-tickets` and confirm that it satisfies the tracer-bullet rules, including fit in one fresh agent context with room to understand the relevant behavior, implement the end-to-end change, and verify it. If it does not, choose `FAIL` and report that decomposition is required before autonomous delivery. For every other audited text, this check does not apply.
 
 ## Record the prompt audit status
 
@@ -120,13 +122,13 @@ For a tracked code or behavior-changing Ticket, transition it to `ready-for-agen
 
 ## Complete the audit context
 
-After recording the status and applying any eligible state transition for a tracked code or behavior-changing Ticket, take exactly one branch:
+Apply the canonical Prompt Audit-to-delivery boundary from the repository's domain terms. After recording the status and applying any eligible state transition for a tracked code or behavior-changing Ticket, complete the current invocation through exactly one terminal branch:
 
-- `FAIL` — report the status; the audit invocation ends without dispatch.
-- `PASS` or `BYPASS` without Mission authorization — the audit reports eligibility and ends without dispatch.
-- `PASS` or `BYPASS` with explicit Mission authorization for this one Ticket — route the exact selected Ticket directly to exactly one fresh isolated context running installed `orchestrate`, without another user intervention, then end the audit invocation.
+- `FAIL` — return the recorded status and stop before dispatch.
+- `PASS` or `BYPASS` without Mission authorization — report eligibility and stop before dispatch.
+- `PASS` or `BYPASS` with explicit Mission authorization for this exact Ticket — route its unchanged identity directly to one fresh isolated context running installed `orchestrate`, without another user intervention, then end the audit invocation.
 
-The audit conversation performs no implementation. The fresh Ticket coordinator owns every in-scope implementation decision without another user gate. Every other audit returns its recorded status to the invoking workflow and ends.
+The branch selection is the audit's terminal action. The current audit invocation performs no Ticket implementation. Every other audit returns its recorded status and ends.
 
 ## Audit boundary
 

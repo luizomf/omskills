@@ -163,7 +163,7 @@ For mature projects, the eligible Ticket set should favor small, vertical, verif
 - **[setup-omskills](./skills/engineering/setup-omskills/SKILL.md)**: configures issue tracker, triage labels, and docs layout per repo.
 - **[to-spec](./skills/engineering/to-spec/SKILL.md)**: turns the current conversation context into a spec and publishes it to the issue tracker.
 - **[to-tickets](./skills/engineering/to-tickets/SKILL.md)**: breaks a plan, spec, or conversation into tracer-bullet tickets with blocking and conflict edges.
-- **[implement](./skills/engineering/implement/SKILL.md)**: implements one audited, authorized code or behavior-changing Ticket and verifies its acceptance criteria.
+- **[implement](./skills/engineering/implement/SKILL.md)**: routes one audited, Mission-authorized code or behavior-changing Ticket to a fresh `orchestrate` coordinator.
 - **[orchestrate](./skills/engineering/orchestrate/SKILL.md)**: coordinates complete delivery of one explicitly authorized Ticket through single-pass writer and reviewer agents.
 - **[dispatch-tickets](./skills/engineering/dispatch-tickets/SKILL.md)**: dispatches a fixed ordered list of Mission-authorized Tickets from a minimal responsive root through fresh coordinators.
 - **[wayfinder](./skills/engineering/wayfinder/SKILL.md)**: maps a huge or foggy effort into investigation tickets on the issue tracker.

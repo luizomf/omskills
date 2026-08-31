@@ -1,14 +1,10 @@
 ---
 name: implement
-description: Implement one authorized code or behavior-changing Ticket with a current Prompt Audit PASS or explicit BYPASS.
+description: Route one explicitly authorized code or behavior-changing Ticket to a fresh orchestrate coordinator.
 ---
 
 # Implement
 
-1. Confirm that the accepted invocation explicitly selects exactly one Ticket; `ready-for-agent` or a ready-work query alone is not Mission authorization. If explicit selection is absent, report that the Ticket is not Mission-authorized. Read the selected Ticket, its governing Spec, repository instructions, live dependency and conflict state, and newest applicable Prompt Audit status. Proceed only when it fits one fresh context and has both the `ready-for-agent` state and a current `PASS` or explicit maintainer `BYPASS`; otherwise report that it is not eligible.
-2. Treat `PASS` or `BYPASS` as delegated authority for every in-scope implementation decision. Resolve those decisions from the accepted sources and repository evidence without opening another user decision gate. If required behavior cannot be determined or external authority is unavailable, report the Ticket as blocked rather than widening or guessing.
-3. Implement only the Ticket. Findings outside its scope remain findings and do not become new code, Tickets, or follow-up work during this invocation.
-4. Use `tdd` when an established test seam can exercise the behavior. Pass through any seam already confirmed by the Ticket or its sources; do not ask the user to reconfirm it.
-5. Run the smallest relevant repository-defined checks during development and the repository's applicable complete verification before completion. Do not assume typechecking or a conventional test suite exists.
-6. Verify every acceptance criterion. Code review remains outside this skill unless the accepted workflow explicitly includes it.
-7. Commit and push only when the accepted repository workflow or user direction requires them, using a conventional commit.
+For exactly one explicitly Mission-authorized Ticket, load and follow installed `orchestrate` as the complete delivery contract. Route the supplied Ticket identity unchanged into the fresh isolated Ticket coordinator required by that skill. The current invocation is only a routing pointer and performs no Ticket implementation.
+
+If the invocation does not explicitly select exactly one Ticket, report that Mission authorization is missing or invalid and stop without dispatch. Readiness, the current Prompt Audit gate, context fit, governing sources, implementation, review, verification, and delivery remain owned by `orchestrate`; this skill adds no alternate execution path.
