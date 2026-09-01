@@ -1,10 +1,15 @@
 # Sannux consumer verification
 
+> **Historical fixed-run record:** every command, serial invocation, topology
+> count, and test result below applies only to Ticket #41's named August 2026
+> commits. It is not current dispatcher, Prompt Audit, catalog, or suite
+> guidance. `CONTEXT.md`, ADR 0002, and the live skills define current behavior.
+
 **Ticket:** [luizomf/omskills#41](https://github.com/luizomf/omskills/issues/41)
 **Verified:** 2026-08-31
-**Result:** PASS with the synchronization gap recorded below
+**Historical result:** PASS with the synchronization gap recorded below
 
-This is the public-safe evidence record for a non-publishing integration run.
+This is the public-safe evidence record for that non-publishing integration run.
 It contains no credentials, environment values, native sessions, raw logs,
 private configuration, production marker identities, or private runtime input.
 Commands use these placeholders:
@@ -287,7 +292,7 @@ no production trigger or marker path was available. These are narrower,
 mechanical non-publishing boundaries rather than a claim that the model had no
 network transport.
 
-### Print execution and topology evidence
+### Historical print execution and topology evidence
 
 The finite invocation was:
 
@@ -313,15 +318,10 @@ native session paths:
 fixture/daily-paper#1 delivered; ref 01d47286dcef3690010aeb631e116842c73f3d54; session <coordinator-session-1> | fixture/daily-paper#2 delivered; ref 497c4ea70860a29ae502fefa119b037df2f95b6d; session <coordinator-session-2>; 2/2 delivered; Mission complete; print settled; no pong pending.
 ```
 
-Before deleting sessions, the bundled public-safe analyzer counted assistant
-`toolCall` records and their literal `delivery` arguments:
-
-```bash
-python3 docs/audits/fixtures/analyze-sannux-topology.py \
-  "$FIXTURE/daily-workspace/.evidence-sessions"
-```
-
-It emitted only:
+Before deleting sessions, a one-time public-safe analyzer counted assistant
+`toolCall` records and their literal `delivery` arguments. The analyzer depended
+on prompt wording to classify roles and has been removed under the current
+workflow evidence policy; its fixed-run output was:
 
 ```text
 session_files=7
@@ -335,11 +335,12 @@ leaf_starts=0
 pong_markers=0
 ```
 
-The assertions required exactly one root, two distinct fresh coordinators, two
-writers, two reviewers, two root `subagent_start` calls with `delivery=direct`,
-two direct starts in each coordinator, zero leaf starts, and zero pong markers.
-Role classification used only each session's initial fixture prompt. No message,
-prompt, response, path, or session identity entered the report.
+These historical assertions required exactly one root, two distinct fresh
+coordinators, two writers, two reviewers, two root `subagent_start` calls with
+`delivery=direct`, two direct starts in each coordinator, zero leaf starts, and
+zero pong markers. They describe that fixed serial run only and are not current
+prompt-meaning or routing proof. No message, response, path, or session identity
+entered the report.
 
 The disposable repository independently proved:
 
@@ -357,23 +358,15 @@ dispatcher advanced only through matching `delivered`, returned both native
 coordinator references, and settled without a pong before the foreground
 fixture container exited.
 
-## Failure, cancellation, and cleanup fixtures
+## Historical failure, cancellation, and cleanup fixtures
 
-The deterministic dispatcher model passed:
+A then-current dispatcher semantic state model passed during the fixed run. That
+test was deleted when phased Mission dispatch landed and is not current suite or
+behavioral evidence. Its recorded scenarios covered cancellation, invalid
+outcomes, native references, and cleanup settlement for the old serial contract.
 
-```bash
-cd "$PROJECTS_DIR/omskills"
-./tests/test-dispatch-tickets.py
-# dispatch-tickets contract and state-machine scenarios ok
-```
-
-It distinguishes the sole matching-cancellation path from rejected, mismatched,
-or unsolicited interruption and from missing, malformed, duplicate, truncated,
-wrong-path, wrong-identity, and wrong-status outcomes. It also preserves native
-references in stopped reports and requires cleanup settlement before failure.
-
-The current ompi candidate's real controller/RPC/process fixtures passed 5 files
-and 71 tests:
+The then-current ompi candidate's real controller/RPC/process fixtures passed 5
+files and 71 tests:
 
 ```bash
 cd "$PROJECTS_DIR/ompi"
@@ -418,9 +411,9 @@ container and process were absent. Snapshot staging/backup paths were absent.
 The seven session files occupied 316 KiB before guarded deletion; no native
 session, raw output, cloned repository, or fixture file remained afterward.
 
-## Repository verification
+## Historical repository verification
 
-The final candidate passed:
+The Ticket #41 candidate passed these then-current checks:
 
 ```text
 ./scripts/check-catalog.py
@@ -429,8 +422,6 @@ The final candidate passed:
   linker tests ok
 ./scripts/link-skills.sh --check
   27 active managed links reported ok
-./tests/test-dispatch-tickets.py
-  dispatch-tickets contract and state-machine scenarios ok
 ./tests/test-skill-suite-evidence.py
   skill-suite evidence ok: dynamic catalog and resource contracts complete
 ompi focused runtime

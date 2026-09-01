@@ -15,7 +15,7 @@ description: Create agent skills with SKILL.md, progressive disclosure, and bund
    - Does it require executable scripts, instructions, or both?
    - Which reference materials must it include?
    - Will it remain user-only by default, or does it qualify as agent-discoverable under [Description and Discovery](#description-and-discovery)?
-   - If it handles Tickets, does it preserve the boundary between readiness and explicit Mission authorization, route one selected Ticket directly to `orchestrate`, and route one already-resolved ordered list of Mission-authorized identities to `dispatch-tickets` only when fixed-sequence delivery from a responsive root is required?
+   - If it handles Tickets, does it preserve the boundary between readiness and explicit Mission authorization, route every finite pre-resolved Mission plan through `dispatch-tickets`, and use `implement` only to compose one selected Ticket as a one-item plan through that dispatcher?
    - If it selects among several user-only skills, is it a skill-selection Router Skill rather than a Ticket dispatcher?
 
    In standalone interactive use, resolve what the repository and conversation already establish, then ask the user a Question for each genuinely missing requirement. In a Mission-authorized Ticket with a current `PASS` or explicit maintainer `BYPASS`, resolve established requirements from the accepted Ticket, governing Spec, repository sources, and conversation without asking the user to reconfirm source-determined choices. Resolve minor residual choices through established repository conventions. If a material requirement remains genuinely unresolved, stop and return it as a blocker directly to the Ticket coordinator. An audited writer, including a depth-3 writer, remains a single-pass leaf: it does not delegate or route the blocker through the Ticket dispatcher. In any other print/headless invocation, report unresolved material requirements to the caller and stop rather than waiting for conversational input.
@@ -61,7 +61,7 @@ Every skill requires a description.
 - **User-only** is the default. Set `disable-model-invocation: true`. Write one command-facing sentence that identifies the capability; this metadata is excluded from the agent's system context.
 - **Agent-discoverable** requires observed use that demonstrates a need for autonomous selection plus maintainer approval of the permanent context load. Omit `disable-model-invocation`. State the capability first, followed by one trigger for each distinct branch that should select the skill.
 
-A loaded skill may compose a user-only skill by its installed name; composition does not require agent discovery. Use relative paths only for files bundled with the current skill. A Router Skill selects an installed skill or disclosed reference to load; it does not accept Mission Ticket identities, own a fixed order or cursor, or dispatch Ticket coordinators, which belong only to the canonical Ticket dispatcher.
+A loaded skill may compose a user-only skill by its installed name; composition does not require agent discovery. Use relative paths only for files bundled with the current skill. A Router Skill selects an installed skill or disclosed reference to load; it does not accept Mission Ticket identities, own a Mission plan or cursor, or dispatch Ticket coordinators, which belong only to `dispatch-tickets`. `implement` is a one-Ticket convenience pointer to that dispatcher, and `orchestrate` is loaded only as its fresh coordinator.
 
 Every description must:
 

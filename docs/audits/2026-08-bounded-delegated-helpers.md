@@ -1,6 +1,10 @@
 # Bounded delegated-helper compatibility evidence
 
-This focused record reconstructs the delegated evidence-helper contracts against the delivered Pi runtime. It covers Ticket #37's runner boundary only; it is not a catalog-wide compatibility claim or an implementation of subagent mechanics.
+> **Historical focused evidence:** this record is bounded to Ticket #37's named
+> runtime and then-current skill contracts. It is not current Prompt Audit or
+> Mission-routing guidance; `CONTEXT.md` and ADR 0002 govern those workflows.
+
+This focused record reconstructs delegated evidence-helper contracts against the delivered Pi runtime. It covers Ticket #37's runner boundary only; it is not a catalog-wide compatibility claim or an implementation of subagent mechanics.
 
 ## Runtime baseline
 
@@ -39,7 +43,7 @@ The distributed skill contracts close the runtime scenarios as follows:
 - **Research:** one fresh researcher writes the exact public-safe Markdown artifact. Completion requires a successful settlement plus caller read-back and primary-source validation; terminal text is not a substitute.
 - **Architecture Explore:** one fresh Explore leaf writes findings only. The caller validates those findings, adjudicates cited repository evidence, writes and validates the HTML report, and only then attempts the platform opener.
 - **Headless opener:** after a complete report passes artifact checks, an unavailable or non-zero opener is reported with the absolute path and top recommendation and remains non-fatal. Opener success is never validation. No alternate browser or HTML-security work is introduced.
-- **Prompt Audit:** interpreter, coordinator assessment, reviewer, and the optional one post-repair confirmation remain sequential. Each pass receives only its asymmetric declared inputs. Missing isolation, preflight rejection, failure, interruption, cancellation, missing output, or unrecoverable bounded evidence records `FAIL` through the normal durable status path.
+- **Prompt Audit (current supersession):** current Prompt Audit uses one interpreter followed by one independent reviewer, records the coordinator's status, and ends. It has no post-repair confirmation or dispatch branch. The historical runtime facts about isolated direct leaves and fail-closed recovery remain applicable mechanics only.
 - **Design It Twice:** the optional designer is one clean leaf only when the invoking workflow and current depth authorize that role. The accepted one-Ticket writer/reviewer graph does not silently gain a third specialist; a depth-3 leaf resolves accepted sources directly or returns a blocker.
 
 These contracts consume Pi's delivered delivery, inheritance, lineage, cancellation, and session behavior. They do not reproduce those mechanics in skill text.

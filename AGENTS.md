@@ -9,7 +9,7 @@ specific nested `AGENTS.md`, if added later, overrides this file in its subtree.
 - **Purpose:** a curated collection of agent skills, prompts, setup documentation, and helper scripts; this is not runtime application code.
 - **Origin:** adapted from a May 24, 2026 copy of [mattpocock/skills](https://github.com/mattpocock/skills), with selected later changes maintained independently.
 - **Maintenance boundary:** adopt upstream ideas only as deliberate local changes under omskills conventions; never synchronize this repository wholesale with its source project.
-- **Skill lifecycle:** `idea -> grill -> spec -> tickets -> prompt audit -> explicit authorization -> implement -> review -> PR -> handoff`.
+- **Skill lifecycle:** `idea -> grill -> spec -> tickets -> prompt audit -> explicit authorization -> dispatch -> implementation -> review -> PR -> handoff`.
 - **Language:** use English for code, comments, commits, Issues, pull requests, READMEs, skill names and descriptions, and agent-facing instructions. Match the user's language in chat.
 
 Sources have distinct roles rather than one interchangeable precedence order. Use
@@ -62,8 +62,8 @@ verification -> conventional commit -> push**.
 A code or behavior-changing Ticket is eligible for autonomous execution only
 when it is `ready-for-agent` with a current Prompt Audit `PASS` or explicit
 maintainer `BYPASS`; see `CONTEXT.md` and ADR 0002. Eligibility does not select
-work. The accepted user or invoker request must explicitly authorize the Ticket
-or supply the already-resolved ordered Ticket identity list for the Mission.
+work. The accepted user or invoker request must explicitly authorize the Ticket or
+supply the finite pre-resolved Mission plan.
 Text or documentation work that cannot change behavior may proceed directly.
 
 1. Inspect Git status, recent history, relevant Issues, and live dependency/conflict state. Before substantial workflow, architecture, or publishing work, confirm whether the explicitly selected request is open, blocked, deferred, already delivered, or conflicts with another change. A ready-work query is discovery, not Mission authorization.

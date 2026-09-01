@@ -93,7 +93,7 @@ Show the count for each bucket and one line per item, then wait for the maintain
      - **Rejected enhancement:** create the entry required by [OUT-OF-SCOPE.md](OUT-OF-SCOPE.md), link it in the comment, and close.
    - `needs-triage` — apply the role; add a comment only when partial findings need to persist.
 
-Outside a maintainer-approved quick state override, the item is triaged when it has exactly one category role, exactly one state role, and the required comment, brief, close action, or out-of-scope entry for that state. A code or behavior-changing item cannot finish at `ready-for-agent` without a current Prompt Audit `PASS` or explicit maintainer `BYPASS`. That result records eligibility only; it does not select the item or authorize a Mission. Later explicit direction routes one Mission-authorized Ticket directly to `orchestrate` or supplies one already-resolved ordered list of Mission-authorized identities to `dispatch-tickets` when fixed-sequence delivery from a responsive root is required.
+Outside a maintainer-approved quick state override, the item is triaged when it has exactly one category role, exactly one state role, and the required comment, brief, close action, or out-of-scope entry for that state. A code or behavior-changing item cannot finish at `ready-for-agent` without a current Prompt Audit `PASS` or explicit maintainer `BYPASS`. That result records eligibility only; it does not select the item or authorize a Mission. Later explicit direction supplies a finite pre-resolved Mission plan to `dispatch-tickets`; for exactly one selected Ticket, `implement` composes that same dispatcher route as a one-item plan. Only the dispatcher creates the fresh `orchestrate` Ticket coordinator.
 
 ## Quick state override
 

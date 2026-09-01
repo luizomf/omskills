@@ -50,9 +50,10 @@ never discovers, expands, removes, replaces, reorders, or semantically schedules
 work.
 
 The dispatcher owns only the frozen topology and compact mechanical routing
-state, coordinator references, cancellation intent, and Ticket outcomes. It
-starts one fresh `orchestrate` Ticket coordinator for every identity runnable
-under the frozen topology. A parallel group may run concurrently only when the
+state, coordinator references, cancellation intent, and Ticket outcomes. It is
+the only root contract that starts fresh `orchestrate` Ticket coordinators and
+starts one for every identity runnable under the frozen topology. A parallel
+group may run concurrently only when the
 invoker declared it compatible. The next phase waits until every identity in the
 active group returns matching `delivered`; a blocked, failed, cancelled, missing,
 malformed, mismatched, or otherwise invalid transition stops the Mission.
@@ -64,10 +65,16 @@ non-transitive: no child receives later identities or returns `next` work, and
 adjacent findings are reported without entering the plan. Mission completion
 requires every selected identity to be delivered.
 
+The user-only `implement` skill is only the one-Ticket convenience entry. In the
+same root invocation, it composes the selected identity unchanged as a one-item
+Mission plan through `dispatch-tickets`. It never invokes `orchestrate`, creates
+a coordinator, or owns an independent implementation, review, or delivery path.
+
 ### One-Ticket ownership and role inheritance
 
-Each fresh Ticket coordinator owns exactly one Ticket end to end through the
-existing acyclic graph:
+Each fresh Ticket coordinator is created only by `dispatch-tickets`, runs
+`orchestrate`, and owns exactly one Ticket end to end through the existing
+acyclic graph:
 
 ```text
 Ticket coordinator -> writer -> Ticket coordinator -> reviewer -> Ticket coordinator

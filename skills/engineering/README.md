@@ -1,6 +1,6 @@
 # Engineering
 
-Core skills for code work, issue workflow, and architecture decisions. The groups describe the typical selection path; `dispatch-tickets` is user-only and the other current skills in this bucket remain agent-discoverable. Readiness and a current Prompt Audit gate make a Ticket eligible but do not select it: route one explicitly Mission-authorized Ticket directly to `orchestrate`, or supply one already-resolved ordered list of Mission-authorized identities to `dispatch-tickets` for fixed-sequence dispatch from a responsive root.
+Core skills for code work, issue workflow, and architecture decisions. The groups describe selection and composition. `dispatch-tickets`, `implement`, and `orchestrate` are active user-only skills; the other current skills in this bucket remain agent-discoverable. Readiness and a current Prompt Audit gate make a Ticket eligible but do not select it. Route a finite pre-resolved Mission plan through `dispatch-tickets`; `implement` is its one-Ticket convenience entry, and only the dispatcher loads `orchestrate` as a fresh coordinator.
 
 ## Typically user-selected
 
@@ -10,10 +10,13 @@ Core skills for code work, issue workflow, and architecture decisions. The group
 - **[setup-omskills](./setup-omskills/SKILL.md)** - Configure per-repo tracker, triage-label, and domain-document operations.
 - **[to-spec](./to-spec/SKILL.md)** - Turn the current conversation context into a spec and publish it to the issue tracker.
 - **[to-tickets](./to-tickets/SKILL.md)** - Break a plan, spec, or conversation into tracer-bullet tickets with blocking and conflict edges.
-- **[implement](./implement/SKILL.md)** - Route one audited, Mission-authorized code or behavior-changing Ticket to a fresh `orchestrate` coordinator.
-- **[orchestrate](./orchestrate/SKILL.md)** - Coordinate complete delivery of one explicitly authorized Ticket through single-pass writer and reviewer agents.
-- **[dispatch-tickets](./dispatch-tickets/SKILL.md)** - Dispatch a fixed ordered list of Mission-authorized Tickets from a minimal responsive root through fresh coordinators.
 - **[wayfinder](./wayfinder/SKILL.md)** - Map a huge or foggy effort into investigation tickets on the issue tracker.
+- **[dispatch-tickets](./dispatch-tickets/SKILL.md)** - Dispatch one finite pre-resolved sequential/parallel Mission plan from the canonical minimal root.
+- **[implement](./implement/SKILL.md)** - Compose one audited, Mission-authorized Ticket as a one-item Mission through `dispatch-tickets`.
+
+## Dispatcher-composed
+
+- **[orchestrate](./orchestrate/SKILL.md)** - Run as the fresh one-Ticket coordinator created by `dispatch-tickets`, owning one writer/reviewer delivery graph.
 
 ## Typically agent-selected
 

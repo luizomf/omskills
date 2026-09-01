@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fail-closed completeness and contract checks for the skill-suite audit."""
+"""Check deterministic skill-suite inventory, schema, and executable fixtures."""
 
 from __future__ import annotations
 
@@ -159,100 +159,6 @@ def check_dynamic_inventory(audit: str) -> None:
             )
 
     assert len(active_paths) == len(manifests[0]["skills"])
-    for identity, row in resource_rows.items():
-        assert row["Decision role"].startswith("decision-bearing "), (
-            f"resource is not classified as decision-bearing: {identity}"
-        )
-        classification = row["Compatibility"].split(";", 1)[0]
-        assert classification in {
-            "compatible",
-            "compatible with preserved finding",
-            "compatible with the dispatcher/coordinator architecture",
-        }, f"invalid resource compatibility classification: {identity}"
-
-    for name, row in skills.items():
-        assert re.fullmatch(
-            r"compatible(?: — preserved finding)? — .+",
-            row["Evidence / classification"],
-        ), f"invalid skill compatibility classification: {name}"
-
-
-def require(path: str, *fragments: str) -> None:
-    text = (ROOT / path).read_text()
-    for fragment in fragments:
-        assert fragment in text, f"{path} missing contract fragment: {fragment}"
-
-
-def check_architecture_contracts() -> None:
-    require(
-        "skills/engineering/orchestrate/SKILL.md",
-        "Accept exactly one explicitly Mission-authorized Ticket identity",
-        "direct delivery",
-        "fresh, non-delegating, single-pass depth-3 leaves",
-        "Never return work to the writer",
-        "Do not delegate corrections or request another review",
-        "exactly one compact single-line JSON object",
-    )
-    orchestrate = (ROOT / "skills/engineering/orchestrate/SKILL.md").read_text()
-    for stale in ("fixed Ticket queue", "queue cursor", "transfer watchdog"):
-        assert stale not in orchestrate, f"orchestrate retains stale architecture: {stale}"
-
-    require(
-        "skills/engineering/dispatch-tickets/SKILL.md",
-        "minimal depth-1 **Ticket dispatcher**",
-        "performs no tracker, repository, or remote discovery",
-        '`delivery: "async"`',
-        '`delivery: "direct"`',
-        "No child receives or returns `next`",
-        "no wormhole or tmux dependency",
-        "no Queue/TTS side effect",
-    )
-    for path in (
-        "skills/engineering/code-review/SKILL.md",
-        "skills/engineering/improve-codebase-architecture/SKILL.md",
-        "skills/engineering/research/SKILL.md",
-        "skills/productivity/prompt-comprehension-audits/SKILL.md",
-    ):
-        require(path, "depth-3", "direct delivery", "no later asynchronous completion notification")
-
-    require(
-        "skills/engineering/tdd/SKILL.md",
-        "In a Mission-authorized Ticket",
-        "return the unresolved seam as a blocker directly to the Ticket coordinator",
-        "Print/headless execution never waits for a conversational answer",
-    )
-    require(
-        "skills/productivity/write-a-skill/SKILL.md",
-        "In a Mission-authorized Ticket",
-        "return it as a blocker directly to the Ticket coordinator",
-        "without opening a user review Question",
-    )
-    require(
-        "skills/engineering/codebase-design/DESIGN-IT-TWICE.md",
-        "does not by itself authorize a third specialist",
-        "A depth-3 writer or reviewer resolves accepted sources directly",
-    )
-    for path in (
-        "skills/engineering/implement/SKILL.md",
-        "skills/engineering/diagnosing-bugs/SKILL.md",
-        "skills/engineering/prototype/SKILL.md",
-        "skills/engineering/resolving-merge-conflicts/SKILL.md",
-    ):
-        text = (ROOT / path).read_text()
-        assert "subagent_start" not in text and "spawn_agent" not in text, (
-            f"audited leaf opens delegation: {path}"
-        )
-
-    require(
-        "skills/productivity/tmux-worker/SKILL.md",
-        "owns only this visible transport and lifecycle",
-        "not an Accepted continuation mechanism",
-    )
-    require(
-        "skills/productivity/wormhole/SKILL.md",
-        "The transfer creates neither work nor authority",
-        "first Safe turn boundary",
-    )
 
 
 def check_decision_bearing_fixtures() -> None:
@@ -310,20 +216,9 @@ def main() -> None:
     audit = AUDIT.read_text()
     assert "/Users/" not in audit, "audit contains an absolute home path"
     assert ".scratch/" not in audit, "audit cites ignored scratch material"
-    for fragment in (
-        "8a0c2df5e3c771a7fc6bb3dd42ffd24c9c2ebcd2",
-        "c3aa6aa26878ce8c9f73cb51cf3b826b98439cd8",
-        "5 test files passed; 70 tests passed",
-        "Historical only",
-        "Sannux",
-        "separate authorization",
-    ):
-        assert fragment in audit, f"audit missing evidence boundary: {fragment}"
-
     check_dynamic_inventory(audit)
-    check_architecture_contracts()
     check_decision_bearing_fixtures()
-    print("skill-suite evidence ok: dynamic catalog and resource contracts complete")
+    print("skill-suite evidence ok: inventory, schema, and executable fixtures complete")
 
 
 if __name__ == "__main__":

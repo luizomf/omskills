@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Historical Ticket #41 fixture for its fixed serial run; not current dispatcher guidance.
 set -euo pipefail
 
 : "${AUTOMATION_ROOT:?Set AUTOMATION_ROOT to the reviewed Daily Paper source}"

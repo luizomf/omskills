@@ -16,7 +16,7 @@ This repository is maintained independently and does not track or synchronize wi
 
 The main flow this repo reinforces is:
 
-`idea -> grill -> spec -> tickets -> prompt audit -> explicit authorization -> implement -> review -> PR -> handoff`
+`idea -> grill -> spec -> tickets -> prompt audit -> explicit authorization -> dispatch -> implementation -> review -> PR -> handoff`
 
 The skills act as checkpoints: clarify before planning, document before ticketing, triage before implementation, authorize before autonomous execution, test before coding, review before shipping, and hand off before context is lost.
 
@@ -27,8 +27,8 @@ Before asking an agent to "build it", classify the moment:
 - Need to think through an idea: `/grill-me` or `/grill-with-docs`
 - The work is too large or foggy for one session: `/wayfinder`
 - Know the goal, but not the implementation Tickets: `/to-spec`, then `/to-tickets`
-- Want one explicitly Mission-authorized Ticket delivered through a fresh coordinator, writer, and reviewer: `/orchestrate`
-- Want a fixed ordered list of Mission-authorized Tickets dispatched while the root remains responsive: `/dispatch-tickets`
+- Want one explicitly Mission-authorized Ticket delivered through the canonical dispatcher route: `/implement`
+- Want one or more Mission-authorized Tickets dispatched from a pre-resolved phased plan: `/dispatch-tickets`
 - Want the diff checked before it ships: `/code-review`
 - Something broke: `/diagnosing-bugs`
 - Need high-trust reading legwork: `/research`
@@ -54,7 +54,7 @@ The risk in an empty repo is inventing too much architecture too early.
 3. Use `/grill-with-docs` before substantial coding to clarify domain language, constraints, and the smallest useful first slice.
 4. Use `/to-spec` if the direction needs a durable spec.
 5. Use `/to-tickets` to break the spec into small, vertical tickets.
-6. Explicitly Mission-authorize the Ticket, then use `/orchestrate` only when it is clear, verifiable, `ready-for-agent`, and carries a current Prompt Audit `PASS` or explicit `BYPASS`.
+6. Explicitly Mission-authorize the Ticket, then use `/implement` only when it is clear, verifiable, `ready-for-agent`, and carries a current Prompt Audit `PASS` or explicit `BYPASS`.
 
 Good prompt:
 
@@ -71,7 +71,7 @@ The risk in an existing project is enforcing process before understanding the sy
 3. Use `/grill-with-docs` if project language is unclear or undocumented.
 4. Use `/triage` to establish which work is eligible before explicitly selecting any Ticket for execution.
 5. Use `/improve-codebase-architecture` when coupling or structure needs attention; treat the output as diagnosis and issue material, not blanket permission to refactor.
-6. Explicitly Mission-authorize the Ticket, then use `/orchestrate` when it is mature, `ready-for-agent`, and carries a current Prompt Audit `PASS` or explicit `BYPASS`.
+6. Explicitly Mission-authorize the Ticket, then use `/implement` when it is mature, `ready-for-agent`, and carries a current Prompt Audit `PASS` or explicit `BYPASS`.
 
 Good prompt:
 
@@ -86,7 +86,7 @@ The risk in a prepared repo is ignoring decisions that already exist.
 1. Read the local instructions and context: `AGENTS.md`, `CONTEXT.md`, `docs/agents/*`, and `docs/adr/*`.
 2. Start from an existing issue or ticket when possible.
 3. Use `/triage` if the task is new or unclear.
-4. Explicitly Mission-authorize the Ticket, then use `/orchestrate` if it is small, mature, has acceptance criteria, and carries a current Prompt Audit `PASS` or explicit `BYPASS`.
+4. Explicitly Mission-authorize the Ticket, then use `/implement` if it is small, mature, has acceptance criteria, and carries a current Prompt Audit `PASS` or explicit `BYPASS`.
 5. Use `/grill-with-docs` if the issue conflicts with domain language or decisions.
 6. Stop and discuss when the task conflicts with an ADR, changes architecture, or has meaningful tradeoffs.
 7. Use `/handoff` before pausing a long session.
@@ -122,7 +122,7 @@ By default, the script writes to `~/.agents/skills`, the shared user-level skill
 OMSKILLS_DEST=/tmp/omskills-test ./scripts/link-skills.sh
 ```
 
-Active skills are installed by the plugin independently of discovery state. Supporting harnesses include agent-discoverable skills in the model's system context, while active user-only skills remain installed for direct selection without permanent context load. `design`, `teach`, and `dispatch-tickets` are the current active user-only skills; invoke them directly for deliberate interface design, a stateful learning workspace, or fixed-sequence Ticket dispatch. The groupings below describe the typical selection path, not discovery status.
+Active skills are installed by the plugin independently of discovery state. Supporting harnesses include agent-discoverable skills in the model's system context, while active user-only skills remain installed without permanent context load. `design`, `teach`, `dispatch-tickets`, `implement`, and `orchestrate` are the current active user-only skills. Select `design`, `teach`, `dispatch-tickets`, or `implement` deliberately; `orchestrate` is loaded explicitly only by the dispatcher. The groupings below describe the selection and composition path, not discovery status.
 
 2. In each repo that will consume these skills, run:
 
@@ -149,7 +149,7 @@ States:
 - `ready-for-human`: needs human implementation or decision-making.
 - `wontfix`: will not be actioned.
 
-For mature projects, the eligible Ticket set should favor small, vertical, verifiable units. Changes to shared systems such as architecture, runtime, persistence, deployment, or AI integration need to be mature before implementation. A ready-work query only discovers eligible Tickets; explicit user or invoker direction selects one Ticket or supplies an already-resolved ordered list for a Mission.
+For mature projects, the eligible Ticket set should favor small, vertical, verifiable units. Changes to shared systems such as architecture, runtime, persistence, deployment, or AI integration need to be mature before implementation. A ready-work query only discovers eligible Tickets; explicit user or invoker direction selects one Ticket or supplies a finite pre-resolved Mission plan.
 
 ## Active Skills
 
@@ -163,10 +163,13 @@ For mature projects, the eligible Ticket set should favor small, vertical, verif
 - **[setup-omskills](./skills/engineering/setup-omskills/SKILL.md)**: configures issue tracker, triage labels, and docs layout per repo.
 - **[to-spec](./skills/engineering/to-spec/SKILL.md)**: turns the current conversation context into a spec and publishes it to the issue tracker.
 - **[to-tickets](./skills/engineering/to-tickets/SKILL.md)**: breaks a plan, spec, or conversation into tracer-bullet tickets with blocking and conflict edges.
-- **[implement](./skills/engineering/implement/SKILL.md)**: routes one audited, Mission-authorized code or behavior-changing Ticket to a fresh `orchestrate` coordinator.
-- **[orchestrate](./skills/engineering/orchestrate/SKILL.md)**: coordinates complete delivery of one explicitly authorized Ticket through single-pass writer and reviewer agents.
-- **[dispatch-tickets](./skills/engineering/dispatch-tickets/SKILL.md)**: dispatches a fixed ordered list of Mission-authorized Tickets from a minimal responsive root through fresh coordinators.
 - **[wayfinder](./skills/engineering/wayfinder/SKILL.md)**: maps a huge or foggy effort into investigation tickets on the issue tracker.
+- **[dispatch-tickets](./skills/engineering/dispatch-tickets/SKILL.md)**: dispatches one finite pre-resolved sequential/parallel Mission plan from the canonical minimal root.
+- **[implement](./skills/engineering/implement/SKILL.md)**: composes one audited, Mission-authorized Ticket as a one-item Mission through `dispatch-tickets`.
+
+**Dispatcher-composed**
+
+- **[orchestrate](./skills/engineering/orchestrate/SKILL.md)**: runs only as a fresh one-Ticket coordinator created by `dispatch-tickets` and owns one writer/reviewer delivery graph.
 
 **Typically agent-selected**
 
@@ -193,7 +196,7 @@ For mature projects, the eligible Ticket set should favor small, vertical, verif
 
 **Typically agent-selected**
 
-- **[prompt-comprehension-audits](./skills/productivity/prompt-comprehension-audits/SKILL.md)**: uses two isolated passes, plus one confirmation after repairs, to test a prompt's semantic equivalence.
+- **[prompt-comprehension-audits](./skills/productivity/prompt-comprehension-audits/SKILL.md)**: gathers sequential interpreter and reviewer evidence, records one audit status, and ends without dispatch.
 - **[write-a-skill](./skills/productivity/write-a-skill/SKILL.md)**: creates new skills with structure, frontmatter, and supporting resources.
 
 ## Optional Skills

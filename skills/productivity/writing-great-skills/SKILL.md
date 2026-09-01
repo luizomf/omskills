@@ -18,9 +18,9 @@ A loaded skill may compose a user-only skill through a **context pointer** that 
 
 Use agent discovery only when observed use demonstrates a need for autonomous selection and a maintainer approves the permanent context load. Existing agent-discoverable omskills have met both conditions. Active status is independent: active user-only skills remain installed for direct selection without permanent context load, and every new skill remains user-only until promoted.
 
-When the user cannot recall the applicable user-only skill without inspecting or searching the list, create one user-only **Router Skill**. Its context pointers must name each target and the condition for loading it. This is a skill-selection role only; it never owns Mission Ticket identities, ordering, a cursor, or Ticket-coordinator dispatch, which belong to the canonical Ticket dispatcher.
+When the user cannot recall the applicable user-only skill without inspecting or searching the list, create one user-only **Router Skill**. Its context pointers must name each target and the condition for loading it. This is a skill-selection role only; it never owns Mission Ticket identities, a Mission plan, a cursor, or Ticket-coordinator dispatch, which belong only to `dispatch-tickets`.
 
-For skills that route Ticket execution, readiness and a current Prompt Audit gate establish eligibility but never Mission authorization. Route one explicitly Mission-authorized Ticket directly to `orchestrate`; when fixed-sequence delivery from a responsive root is required, supply one already-resolved ordered list of Mission-authorized identities to the active `dispatch-tickets`. Neither skill discovery nor a ready-work query selects Mission work.
+For skills that route Ticket execution, readiness and a current Prompt Audit gate establish eligibility but never Mission authorization. Supply every finite pre-resolved Mission plan to `dispatch-tickets`; `implement` may compose exactly one selected Ticket as a one-item plan through that dispatcher. Only the dispatcher creates fresh `orchestrate` Ticket coordinators. Neither skill discovery nor a ready-work query selects Mission work.
 
 ## Descriptions
 

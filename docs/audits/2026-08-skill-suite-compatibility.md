@@ -1,36 +1,35 @@
 # Distributed skill-suite compatibility evidence
 
-This audit is the catalog-wide evidence for Ticket #35. It classifies the live
-post-predecessor catalog and every file bundled inside a skill directory. It is
-an evidence record, not authorization to repair unrelated behavior.
+This audit originated as the catalog-wide evidence for Ticket #35 and now
+maintains the live catalog and bundled-resource inventory. It is an evidence
+record, not authorization to repair unrelated behavior. Named Ticket #35 and
+runtime results are historical facts at their fixed commits; current workflow
+claims follow `CONTEXT.md`, ADR 0002, Spec #52, Ticket #55, and the live skills.
 
 ## Scope and baselines
 
-- **Omskills implementation base:**
+- **Historical Ticket #35 implementation base:**
   `8a0c2df5e3c771a7fc6bb3dd42ffd24c9c2ebcd2`.
-- **Current clean ompi runtime:**
-  `c3aa6aa26878ce8c9f73cb51cf3b826b98439cd8`. This includes the nested-lineage
-  delivery at `bd64e683ff9a8c5bbab9d9f628babf8fee632951` plus later bounded-frame
-  fixes.
-- **Live inventory:** 27 active manifest skills and 2 optional bucket skills,
-  for 29 skills. The executable check derives these sets from the manifests,
-  frontmatter, bucket tree, and bundled files; these counts are observations,
-  not fixed test inputs.
-- **Bundled inventory:** 26 non-`SKILL.md` files. All 26 affect a workflow,
-  output contract, template, fixture, or visual default and are therefore
-  classified as decision-bearing below.
-- **Governing evidence:** `CONTEXT.md`, ADR 0001, ADR 0002, Ticket #35 and its
-  current Prompt Audit, parent Spec #33, predecessor commits, and
+- **Historical ompi runtime:**
+  `c3aa6aa26878ce8c9f73cb51cf3b826b98439cd8`. The recorded focused run at that
+  commit is runtime evidence only and does not define the current skill route.
+- **Current integration base:**
+  `5158449ab6ff7bb6822ace20b7f3104e4098f3e4`, followed by Ticket #55's catalog
+  convergence candidate.
+- **Live inventory:** the executable check derives active and optional skills
+  from both manifests, frontmatter, the bucket tree, and bundled files. Counts
+  are observations, not fixed test inputs.
+- **Bundled inventory:** the executable check derives every non-`SKILL.md`
+  bundled file and requires one complete schema row for each resource.
+- **Governing evidence:** `CONTEXT.md`, ADR 0001, ADR 0002, Spec #52, Ticket #55
+  and its current Prompt Audit, predecessor commits, and
   [the bounded delegated-helper audit](./2026-08-bounded-delegated-helpers.md).
-  Ignored working notes were validated against current tracked sources but are
-  neither authority nor citations here.
+  Ignored working notes are neither authority nor citations here.
 
-The clean-context Prompt Audit for the exact Ticket contract is durable at
-<https://github.com/luizomf/omskills/issues/35#issuecomment-5470868703>. Its
-isolated interpreter and confirmation reviewer established semantic
-comprehension and one-context fit. Runtime inheritance and native-session
-claims below come from the focused current ompi run, not from that semantic
-audit alone.
+Ticket #35's Prompt Audit remains durable historical evidence at
+<https://github.com/luizomf/omskills/issues/35#issuecomment-5470868703>; it does
+not define the current terminal two-pass Prompt Audit. Runtime inheritance and
+native-session facts below are bounded to their named historical ompi run.
 
 ## Classification method
 
@@ -63,16 +62,17 @@ Evidence keys used below:
 
 - **E1 — live contract reconstruction:** complete current skill and bundled
   resource reads against governing sources and predecessor history.
-- **E2 — executable omskills scenarios:** dynamic catalog/resource test,
-  dispatcher state-machine scenarios, installer fixtures, Excalidraw base
-  parse, HITL shell syntax check, and fake Queue/TTS command capture.
-- **E3 — focused ompi runtime:** five subagent files at the current clean commit;
-  **5 test files passed; 70 tests passed**. These tests exercise asynchronous,
-  direct, print, inheritance/provider preflight, clean native sessions, depth,
-  nested process lifetime, cancellation, bounded evidence, and presentation.
-- **E4 — clean-context Prompt Audit:** the current Ticket #35 PASS linked above,
-  plus predecessor Prompt Audits represented by their delivered contracts and
-  commits.
+- **E2 — executable omskills scenarios:** dynamic catalog/resource schema,
+  installer mechanics, Excalidraw base parsing, HITL shell syntax, and fake
+  Queue/TTS command capture.
+- **E3 — historical focused ompi runtime:** five subagent files at the named
+  `c3aa6aa` commit; **5 test files passed; 70 tests passed**. Those fixed tests
+  exercised asynchronous/direct delivery, inheritance/provider preflight, clean
+  native sessions, depth, nested process lifetime, cancellation, bounded
+  evidence, and presentation. They do not define current prompt semantics.
+- **E4 — clean-context Prompt Audit:** Ticket #55's current PASS governs this
+  integration contract. Older statuses remain historical at their exact
+  contracts and do not define the present route.
 - **E5 — risk boundary:** deterministic static reconstruction where real tracker,
   GUI, tmux, Queue/TTS, publishing, or user interaction would create external
   effects. No such live effect was submitted.
@@ -114,14 +114,14 @@ Evidence keys used below:
 
 ### `dispatch-tickets`
 - **Distribution / discovery:** active, user-only — `skills/engineering/dispatch-tickets`.
-- **Invocation / composition:** explicitly invoked with one frozen non-empty ordered Mission-authorized identity list; composes installed `caveman`, its sole file read.
-- **Inheritance / clean context:** root retains tools only for lifecycle preflight/inheritance; each fresh coordinator gets ICB and the exact minimal prompt, while user-only status is never converted into inherited model discovery.
-- **Role / depth:** canonical depth-1 Ticket dispatcher; starts one depth-2 coordinator at a time with maximum depth 3 and one child slot, and owns no implementation semantics.
-- **Delivery / modes:** interactive async acceptance/pong with a responsive root; print direct serial settlement; no polling, custom TUI, wormhole, or tmux dependency.
-- **Cancellation / effects:** records matching intent, interrupts only the active coordinator, and maps only its confirmed interrupted pong to cancelled; recursive managed cleanup is runtime-owned. It has no Queue/TTS or publishing effect.
-- **Authorization / continuation / completion:** authorization is the supplied fixed list only; dispatcher owns cursor and literal targeted steering, advances only on matching delivered, stops on every other/invalid result, and reports Mission complete only after the last delivery.
+- **Invocation / composition:** explicitly invoked with one finite pre-resolved Mission plan, including a one-item plan composed by `implement`; composes installed `caveman`, its sole file read.
+- **Inheritance / clean context:** root retains tools only for lifecycle preflight/inheritance; each fresh coordinator gets ICB and the exact minimal prompt, while user-only `orchestrate` is loaded by installed name rather than model discovery.
+- **Role / depth:** canonical and only depth-1 Ticket dispatcher; starts one fresh depth-2 coordinator per runnable identity, with at most two declared-compatible coordinators in one active phase, and owns no implementation semantics.
+- **Delivery / modes:** interactive asynchronous acceptance/pong or print direct settlement; declared compatible groups start together, phases remain sequential, and no polling, custom TUI, wormhole, or tmux dependency exists.
+- **Cancellation / effects:** records matching intent, interrupts only the targeted active coordinator, lets accepted siblings settle, and maps only its confirmed interrupted return to cancelled; recursive managed cleanup is runtime-owned. It has no Queue/TTS or publishing effect.
+- **Authorization / continuation / completion:** authorization is the frozen supplied topology; the dispatcher owns the phase cursor and literal targeted steering, advances only after every active identity returns matching delivered, stops on every other or invalid transition, and reports Mission complete only after all selected identities deliver.
 - **Bundled resources:** None.
-- **Evidence / classification:** compatible — E1/E2/E3 cover exact prompt isolation, input/envelope validation, sequence progression, interactive/direct paths, cancellation, cleanup, and compact completion.
+- **Evidence / classification:** compatible — E1/E3 and predecessor delivery evidence cover plan/envelope validation, phase barriers, interactive/direct paths, cancellation, cleanup, and compact outcomes; prose meaning is governed by E4 rather than phrase assertions.
 
 ### `grill-with-docs`
 - **Distribution / discovery:** active, agent-discoverable — `skills/engineering/grill-with-docs`.
@@ -135,15 +135,15 @@ Evidence keys used below:
 - **Evidence / classification:** compatible — E1/E5 show bounded interactive continuation without dispatcher authority or a hidden audited-leaf gate.
 
 ### `implement`
-- **Distribution / discovery:** active, agent-discoverable — `skills/engineering/implement`.
-- **Invocation / composition:** direct one-Ticket implementation path; composes `tdd` only at an established test seam and explicitly leaves code review outside unless another accepted workflow owns it.
-- **Inheritance / clean context:** works in its assigned current context with repository tools/sources; under a clean writer assignment, ICB contains no parent transcript and all governing inputs must be supplied or read.
-- **Role / depth:** direct writer/root leaf, not Ticket coordinator or dispatcher; no delegated child and no depth-4 path.
-- **Delivery / modes:** synchronous/direct and TUI-independent; print/headless proceeds from source-determined authority or returns a blocker.
-- **Cancellation / effects:** repository edits/commits are ordinary caller-owned effects with no rollback promise; applicable checks and status inspection determine resumability.
-- **Authorization / continuation / completion:** exactly one explicitly selected, ready, current PASS/BYPASS Ticket; no adjacent work or user reconfirmation. Completion verifies every criterion and follows only accepted commit/push direction.
+- **Distribution / discovery:** active, user-only — `skills/engineering/implement`.
+- **Invocation / composition:** accepts exactly one explicitly Mission-authorized identity and, in the same root invocation, composes it unchanged as a one-item Mission plan through installed `dispatch-tickets`.
+- **Inheritance / clean context:** adds no child context; the composed dispatcher retains the root's normal route for coordinator inheritance and performs no repository or tracker discovery.
+- **Role / depth:** one-Ticket convenience entry only; it is neither dispatcher, coordinator, writer, nor reviewer and creates no child or alternate execution path.
+- **Delivery / modes:** follows the loaded dispatcher's interactive or print path without adding another settlement mode.
+- **Cancellation / effects:** owns no repository, tracker, lifecycle, or cancellation effect; these remain with the dispatcher and its coordinator.
+- **Authorization / continuation / completion:** rejects anything other than one fully qualified selected Ticket, supplies empty complete relation arrays, and delegates all routing and delivery completion to `dispatch-tickets`.
 - **Bundled resources:** None.
-- **Evidence / classification:** compatible — E1/E4 establish one-Ticket authority and no hidden user/delegation gate.
+- **Evidence / classification:** compatible — E1/E4 establish the single one-item composition route and user-only discovery state.
 
 ### `improve-codebase-architecture`
 - **Distribution / discovery:** active, agent-discoverable — `skills/engineering/improve-codebase-architecture`.
@@ -157,8 +157,8 @@ Evidence keys used below:
 - **Evidence / classification:** compatible — preserved finding — E1/E3 prove nesting, artifact, and headless behavior; public HTML/Mermaid escaping remains separately authorized work.
 
 ### `orchestrate`
-- **Distribution / discovery:** active, agent-discoverable — `skills/engineering/orchestrate`.
-- **Invocation / composition:** one fresh coordinator receives exactly one Mission-authorized Ticket and composes one writer plus one `code-review` reviewer.
+- **Distribution / discovery:** active, user-only — `skills/engineering/orchestrate`.
+- **Invocation / composition:** only `dispatch-tickets` loads it into one fresh coordinator for exactly one Mission-authorized Ticket; the coordinator composes one writer plus one `code-review` reviewer.
 - **Inheritance / clean context:** depth-2 coordinator receives ICB from the dispatcher but no root transcript; it independently reads complete live governing/setup/repository context. Each leaf is another clean explicit assignment.
 - **Role / depth:** depth-2 Ticket coordinator; sequential depth-3 writer and reviewer leaves, each non-delegating and single-pass. Coordinator alone corrects and converges.
 - **Delivery / modes:** dispatcher-to-coordinator is interactive async or print direct; both dependent leaf calls are direct with no later pong; no TUI, wormhole, queue, or transfer-watchdog dependency.
@@ -213,7 +213,7 @@ Evidence keys used below:
 
 ### `tdd`
 - **Distribution / discovery:** active, agent-discoverable — `skills/engineering/tdd`.
-- **Invocation / composition:** direct red-green-refactor discipline, normally composed by `implement`; uses `codebase-design` seam vocabulary and disclosed test/mocking references.
+- **Invocation / composition:** direct red-green-refactor discipline, normally used by the Ticket coordinator's assigned writer; uses `codebase-design` seam vocabulary and disclosed test/mocking references.
 - **Inheritance / clean context:** current repository runner/domain/ADR context or ICB in a clean writer; accepted source-confirmed seams are explicit inputs, not parent-memory assumptions.
 - **Role / depth:** root or depth-3 writer leaf; no managed child and no depth-4 path.
 - **Delivery / modes:** synchronous/direct and TUI-independent; standalone interactive may ask the explicit seam Question, audited Ticket mode blocks unresolved material seams, and other print/headless use stops rather than waits.
@@ -240,7 +240,7 @@ Evidence keys used below:
 - **Role / depth:** root planning/tracker role with no child; does not dispatch or coordinate implementation.
 - **Delivery / modes:** direct external tracker work after an interactive breakdown approval; print/headless stops at the approval gate unless accepted approval is already supplied.
 - **Cancellation / effects:** partially created tracker identities/edges require explicit reconciliation; publication is not transactional.
-- **Authorization / continuation / completion:** every Ticket starts `needs-triage`; one selected identity routes to `orchestrate`, while only an already-resolved Mission-authorized list routes to `dispatch-tickets`. Completion never applies readiness or starts work.
+- **Authorization / continuation / completion:** every Ticket starts `needs-triage`; later authorization supplies a finite pre-resolved plan to `dispatch-tickets`, with `implement` available only to compose a one-item plan. Completion never applies readiness or starts work.
 - **Bundled resources:** None.
 - **Evidence / classification:** compatible — E1/E5 establish correct dispatcher routing without granting dispatcher authority to planning.
 
@@ -323,14 +323,14 @@ Evidence keys used below:
 
 ### `prompt-comprehension-audits`
 - **Distribution / discovery:** active, agent-discoverable — `skills/productivity/prompt-comprehension-audits`.
-- **Invocation / composition:** audit coordinator runs sequential interpreter and reviewer passes, plus at most one clean confirmation after artifact repair; tracked implementation fit composes `to-tickets`.
+- **Invocation / composition:** audit coordinator runs one interpreter and then one independent reviewer; tracked implementation fit composes `to-tickets`. It records one status and ends without repair, confirmation, dispatch, or implementation.
 - **Inheritance / clean context:** every pass gets ICB but no parent turns/coordinator analysis/desired answer; asymmetric explicit pass inputs and native-session recovery preserve isolation.
 - **Role / depth:** root audit coordinator may use depth-2 leaves; a depth-2 coordinator uses direct depth-3 leaves; depth-3 leaf cannot open a depth-4 audit and records FAIL.
 - **Delivery / modes:** root interactive async sequential pongs; print and dependent depth-2 direct; no TUI requirement, no concurrent sibling passes, and no later direct pong.
 - **Cancellation / effects:** failed/interrupted/cancelled/missing/unrecoverable pass records FAIL; tracker status comments/labels are durable effects owned by the audit coordinator.
 - **Authorization / continuation / completion:** PASS/BYPASS establishes eligibility only; Mission authorization remains separate. Completion records exactly one status after coordinator adjudication and never creates adjacent work.
 - **Bundled resources:** None.
-- **Evidence / classification:** compatible — E1/E3/E4 prove clean native sessions, asymmetric sequential passes, bounded recovery, cancellation FAIL, and one confirmation limit.
+- **Evidence / classification:** compatible — E1/E3/E4 cover clean native sessions, asymmetric sequential passes, bounded recovery, cancellation FAIL, and the terminal audit boundary.
 
 ### `teach`
 - **Distribution / discovery:** active, user-only — `skills/productivity/teach`.
@@ -394,7 +394,7 @@ Evidence keys used below:
 - **Role / depth:** role-neutral reference with no child; Router Skill and canonical Ticket dispatcher remain explicitly distinct.
 - **Delivery / modes:** TUI/RPC/print/headless neutral and synchronous; no external effect.
 - **Cancellation / effects:** read-only reference with no cancellation ownership.
-- **Authorization / continuation / completion:** discovery/readiness never selects Mission work; reference completion means every applicable discovery/hierarchy/splitting/completion/pruning rule and glossary term has been checked.
+- **Authorization / continuation / completion:** discovery/readiness never selects Mission work; every Mission enters `dispatch-tickets`, `implement` only composes its one-item form, and `orchestrate` is dispatcher-loaded. Reference completion means every applicable discovery/hierarchy/splitting/completion/pruning rule and glossary term has been checked.
 - **Bundled resources:** `skills/productivity/writing-great-skills/GLOSSARY.md`.
 - **Evidence / classification:** compatible — E1/E4 independently cover the skill and glossary, active-user-only exceptions, explicit routing, and no leaf delegation.
 
@@ -586,9 +586,9 @@ authorization. No surviving dispatcher/coordinator contradiction was found.
 
 ## Verification record
 
-Commands were run from the omskills checkout unless the command changes to the
-sibling ompi checkout. Results are deterministic summaries; no logs, sessions,
-home paths, or volatile runtime identifiers are retained.
+Current verification is limited to repository-required gates, applicable local
+installation mechanics, the dynamic catalog/resource schema, and executable
+fixtures:
 
 ```text
 ./scripts/check-catalog.py
@@ -598,45 +598,36 @@ catalog ok: 27 active skills
 linker tests ok
 
 ./scripts/link-skills.sh --check
-27 active managed links reported ok; exit 0
+27 active managed links reported ok
 
-./tests/test-dispatch-tickets.py
-dispatch-tickets contract and state-machine scenarios ok
+python3 tests/test-skill-suite-evidence.py
+skill-suite evidence ok: inventory, schema, and executable fixtures complete
 
-./tests/test-skill-suite-evidence.py
-skill-suite evidence ok: dynamic catalog and resource contracts complete
-
-cd ../ompi && npm test -- \
-  extensions/subagents/controller.test.ts \
-  extensions/subagents/inheritance.test.ts \
-  extensions/subagents/native-inheritance.test.ts \
-  extensions/subagents/native-nesting.test.ts \
-  extensions/subagents/presentation.test.ts
-5 test files passed; 70 tests passed
+git diff --check 5158449ab6ff7bb6822ace20b7f3104e4098f3e4...HEAD
+passed
 ```
 
-The focused ompi files exercise real extension controller/RPC/native-session
-behavior with deterministic process/provider fakes. The omskills compatibility
-test executes the documented Voice command against a fake `bq`, parses the
-Excalidraw base without mutation, and syntax-checks the HITL template; it does
-not submit Queue/TTS, open a GUI, mutate a tracker, start tmux, publish, or
-release.
+The compatibility test executes the documented Voice command against a fake
+`bq`, parses the Excalidraw base without mutation, and syntax-checks the HITL
+template. Its remaining Markdown parsing checks deterministic inventory,
+frontmatter, manifest, resource ownership, and row schema only; it makes no
+prompt-meaning assertion.
 
-`git diff --check 8a0c2df5e3c771a7fc6bb3dd42ffd24c9c2ebcd2`
-was also required to pass before the candidate commit. The default managed
-skills destination existed, so local installation verification was applicable.
-Both repositories remained clean except for this Ticket's intended omskills
-candidate.
+**Historical only:** Ticket #35 recorded a five-file/70-test ompi run and a
+then-current dispatcher semantic state-model test. The latter test was deleted
+when phased dispatch landed and is not current suite evidence. Neither fixed
+historical result defines the present prompt or routing contract.
 
 ## Boundaries and historical status
 
 - `docs/audits/2026-07-pi-compatibility.md` is **Historical only**: it describes
   Pi 0.80.10, an older catalog, and pre-nested-helper limitations. It is not the
   current compatibility status and remains unchanged as history.
-- The bounded delegated-helper audit remains valid focused predecessor evidence
-  at its recorded runtime commit; this audit's current ompi rerun confirms the
-  same 5-file/70-test result after later frame fixes.
-- Sannux snapshot synchronization and consumer execution were not run. They
-  belong exclusively to downstream Ticket #41.
+- The bounded delegated-helper audit remains historical focused predecessor
+  evidence only at its recorded runtime and skill commits; its five-file result
+  is not a current route claim.
+- The Sannux audit documents its own later Ticket #41 fixed run. Its serial
+  invocation and then-current tests remain historical, not present catalog or
+  route evidence.
 - No live Queue/TTS, tracker mutation, GUI opener, tmux transport, publishing,
   release, PR, push, or sibling-repository modification occurred.

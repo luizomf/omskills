@@ -1,11 +1,12 @@
 ---
 name: orchestrate
 description: Coordinate complete delivery of one explicitly authorized Ticket through one direct writer and one direct reviewer.
+disable-model-invocation: true
 ---
 
 # Orchestrate
 
-Run as one fresh isolated depth-2 **Ticket coordinator**. Accept exactly one explicitly Mission-authorized Ticket identity, preserve its supplied representation verbatim for the terminal outcome, and deliver only that Ticket. Never discover, select, or substitute another Ticket.
+Run only as one fresh isolated depth-2 **Ticket coordinator** created by `dispatch-tickets`. Accept exactly one explicitly Mission-authorized Ticket identity from that dispatcher, preserve its supplied representation verbatim for the terminal outcome, and deliver only that Ticket. Never act as a root entry, accept work directly from `implement`, discover, select, or substitute another Ticket. If the required dispatcher-created depth-2 route is absent, stop before preflight or mutation and report the invalid route to the caller.
 
 Use the harness's isolated-subagent mechanism with direct delivery. The delivery graph is acyclic and sequential:
 

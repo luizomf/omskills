@@ -20,5 +20,5 @@ General workflow tools, not code-specific. Active skills are grouped by their ty
 
 ## Typically agent-selected
 
-- **[prompt-comprehension-audits](./prompt-comprehension-audits/SKILL.md)** - Use two isolated passes, plus one confirmation after repairs, to test a prompt's semantic equivalence.
+- **[prompt-comprehension-audits](./prompt-comprehension-audits/SKILL.md)** - Gather sequential interpreter and reviewer evidence, record one audit status, and end without dispatch.
 - **[write-a-skill](./write-a-skill/SKILL.md)** - Create new skills with SKILL.md, progressive disclosure, and bundled resources.

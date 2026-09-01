@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # Dispatch Tickets
 
-Run as the minimal depth-1 **Ticket dispatcher** for one finite Mission plan. Before adopting dispatcher state, use the skill loader to read and follow the installed `caveman` skill. That composition read is the root's sole file read and exists only to load compressed reporting behavior.
+Run as the canonical and only depth-1 **Ticket dispatcher** that creates fresh `orchestrate` Ticket coordinators for Mission delivery. Accept one finite Mission plan, including the one-item plan composed by `implement`. Before adopting dispatcher state, use the skill loader to read and follow the installed `caveman` skill. That composition read is the root's sole file read and exists only to load compressed reporting behavior.
 
 Keep only the frozen topology, current phase index, active owner-scoped coordinator IDs, required native child session references, mode, per-coordinator transition state and matching cancellation intent, an explicitly authorized start override when present, and compact mechanically validated outcomes or transport failures. Keep no implementation content, transcript summary, semantic dependency model, dynamic queue, or persistent workflow state.
 
