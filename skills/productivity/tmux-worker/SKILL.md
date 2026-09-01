@@ -55,3 +55,19 @@ tmux -S "$socket" send-keys -t "$worker_pane" Enter
 ```
 
 `/quit` exits Pi; it does not manage tmux. Because step 2 starts Pi as the worker pane's top-level command, tmux normally removes that pane and its one-pane window when Pi exits. If Pi was instead started from an existing shell, that shell and window remain; tmux configuration may also change either result. Do not separately kill or preserve the pane or window. Treat its resulting lifecycle as tmux behavior, not worker success or failure. Directed retirement is submitted once literal `/quit` and separate `Enter` reach the recorded worker pane; the resulting pane and window lifecycle remains tmux-owned.
+
+## Apply caller-owned bounded Mission observation
+
+A separate external root may deliberately act as **Mission observer** for a long Mission whose dispatcher runs in the visible worker window. The observer, not `tmux-worker`, owns this optional policy. It receives the fixed Mission identities and uses the recorded pane only as a visible transport endpoint; it adopts neither Ticket implementation nor dispatcher state.
+
+While the Mission is active, submit at most one self-terminating, payload-free heartbeat. Its reentry prompt must carry the fixed identities, recorded dispatcher target, allowed evidence, and this decision policy without adding work. With Pi's `scheduler_submit`, use one `in` or `at` timing value and omit `payload`, `cron`, `every`, and `count`. Do not submit the next heartbeat before the current one fires. If the active harness has no documented payload-free heartbeat and reentry mechanism, report that observation is unavailable; never imitate it with a background command, sleep, polling loop, recurring or infinite schedule, daemon, monitoring code or script, persistent workflow state, takeover mechanism, or new infrastructure.
+
+When the heartbeat fires, perform one bounded inspection: capture the visible dispatcher pane once, then read only the commit and Issue evidence needed for the fixed Tickets and current transition. Pane prose may show activity or a mechanical transition, but never proves delivery by itself; corroborate a delivery claim with durable repository and tracker evidence. Do not sleep, recapture repeatedly, poll, loop, inspect implementation semantics, or supervise healthy choices. Quiet output or elapsed time alone is not a failure.
+
+Choose exactly one outcome from that inspection:
+
+- **Healthy and active:** send no message, submit one next payload-free heartbeat, and otherwise remain silent.
+- **Concrete failure or blockage, abandoned human gate, or mechanically invalid or stopped dispatch transition:** make at most one intervention. Address it explicitly to the applicable dispatcher root or name exactly one active coordinator ID for literal forwarding; never target a writer, change the frozen plan, or select adjacent work. If the Mission remains active afterward, submit one next heartbeat. Never auto-approve a trust or other human gate.
+- **Every fixed Ticket durably delivered, or a real terminal stop:** submit no heartbeat. Report any concrete terminal problem to the applicable root, then direct the visible worker's normal retirement once through step 5; do not kill or take over its pane or window.
+
+This observation does not create a continuation or survival guarantee. A cooperative callback remains only a transport event, and neither callbacks nor pane text permit an unattended turn to claim Mission completion.
