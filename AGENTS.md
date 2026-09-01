@@ -40,7 +40,6 @@ sync with the accepted behavior.
 - `tests/test-link-skills.sh` — installer behavior coverage
 - `docs/agents/` — repository tracker, triage, and domain configuration
 - `docs/adr/` — durable decisions
-- `docs/audits/` — historical compatibility, migration, and research records
 
 ## Catalog contract
 
