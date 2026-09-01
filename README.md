@@ -20,6 +20,12 @@ The main flow this repo reinforces is:
 
 The skills act as checkpoints: clarify before planning, document before ticketing, triage before implementation, authorize before autonomous execution, test before coding, review before shipping, and hand off before context is lost.
 
+### Runtime Relationship with ompi
+
+This collection has no package or checkout dependency on [ompi](https://github.com/luizomf/ompi), and many skills remain usable in any compatible coding-agent harness. However, the advanced `implement` -> `dispatch-tickets` -> `orchestrate` workflow depends on isolated subagents, bounded nesting, direct and asynchronous delivery, capability inheritance, and managed cancellation semantics currently implemented and validated by ompi. Using that workflow outside ompi requires a harness that provides the same contract.
+
+The relationship also runs in the other direction: ompi's skill-enabled profiles consume selected skills from this repository. Each repository remains independently installed and maintained; neither checkout is synchronized from the other.
+
 ## Operating Model
 
 Before asking an agent to "build it", classify the moment:
