@@ -275,7 +275,7 @@ Evidence keys used below:
 - **Cancellation / effects:** no external effect or cancellation ownership.
 - **Authorization / continuation / completion:** grants no work authority or continuation boundary; preserves exact identifiers, warnings, and ordered procedures while active.
 - **Bundled resources:** None.
-- **Evidence / classification:** compatible — E1/E2 show the dispatcher retains exact Ticket/ref/blocker/session semantics under compressed reports.
+- **Evidence / classification:** compatible — E1 establishes the composition and no-authority boundary; current compressed-report behavior is not claimed from prompt text.
 
 ### `design`
 - **Distribution / discovery:** active, user-only — `skills/productivity/design`.
@@ -506,7 +506,7 @@ Evidence keys used below:
 - **Decision role:** decision-bearing durable behavioral brief format and acceptance/scope rules.
 - **Owner / loading:** `triage` loads it for ready-for-agent and ready-for-human outcomes.
 - **Compatibility:** compatible; the brief records readiness but explicitly not Mission authorization.
-- **Evidence:** E1/E4 comparison with Ticket #35's revised brief and current Prompt Audit.
+- **Evidence:** E1 comparison with the live brief format; Ticket #35's revised brief and Prompt Audit remain historical evidence for their fixed contract.
 
 ### `skills/engineering/triage/OUT-OF-SCOPE.md`
 - **Decision role:** decision-bearing rejected-enhancement knowledge-base format and lifecycle.

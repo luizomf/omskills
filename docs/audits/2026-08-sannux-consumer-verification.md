@@ -218,8 +218,8 @@ The exact public fixture source is bundled at
 `AGENTS.md`, domain/ADR/tracker configuration, both OPEN `ready-for-agent`
 Tickets and current Prompt Audit `PASS` records, byte-exact deliverable
 contracts, verifier, fixture-only runner, and Compose override. It refuses an
-existing or unexpected target. The durable topology analyzer is
-`docs/audits/fixtures/analyze-sannux-topology.py`.
+existing or unexpected target. A one-time topology analyzer was bundled for the fixed run and was later removed
+under the workflow evidence policy.
 
 The construction and identity commands were:
 
@@ -443,10 +443,11 @@ git diff --check <fixed-base>..HEAD
 - Ephemeral session files were retained only long enough to produce bounded
   role/tool-count metadata, then deleted. The public report preserves two
   coordinator-reference facts and topology counts, not identities or contents.
-- Cancellation classification is covered by the omskills executable state
-  machine; recursive process/session behavior is covered by ompi's native
-  deterministic fixture. A model-driven cancellation was not forced into the
-  successful print Mission because direct print delivery has no interactive
+- Cancellation classification was covered by the then-current omskills
+  executable state model; recursive process/session behavior was covered by
+  ompi's named native deterministic fixture. Neither historical result is
+  current dispatcher evidence. A model-driven cancellation was not forced into
+  the successful print Mission because direct print delivery had no interactive
   stop turn.
 - No product defect was repaired, and no Sannux, Omnews, Daily Paper, ompi,
   dotfiles, production automation, Queue/TTS state, tag, release, or publication
