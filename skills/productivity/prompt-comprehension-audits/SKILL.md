@@ -9,15 +9,15 @@ Test whether a fresh agent's interpretation is semantically equivalent to the in
 
 For a tracked Ticket, read the configured issue tracker and triage-label mapping before delegation. If either is unavailable during an interactive invocation, run `setup-omskills` first and wait for its confirmed output. During a headless Ticket run, return a missing-setup blocker to the Ticket coordinator instead; never route setup through a Ticket dispatcher. Untracked prompt audits require neither configuration.
 
-## Establish the reference intent
+## Fix the reference intent
 
-Before delegation, record the complete accepted intent from the original execution prompt, accepted user direction, accepted conversation decisions, and every applicable authoritative issue, specification, document, ADR, and repository rule. Include every explicit boundary and every item deferred to later work.
+Before delegation, read the complete original request and every artifact it explicitly requires. For a tracked Ticket, also read the complete final Issue body, labels, comments, incorporated Agent Brief, relations, governing domain terms, ADRs, and repository rules. The final Ticket Issue must contain or identify every accepted outcome, scope boundary, required workflow or order, deliverable, acceptance criterion, relation, and completion condition; conversation and audit history supply no hidden implementation requirement.
 
-If no accepted intent exists beyond the execution prompt, use only its explicit requirements as the reference. Record ambiguities that could materially change the outcome, scope, required workflow, deliverables, or completion point; do not infer adjacent work.
+Fix one reference intent for the exact contract version. Record its requested outcome, scope, required actions and order, deliverables, completion point, explicit deferrals, and ambiguities that could materially change any of them. Do not infer adjacent work. This step is complete only when the reference is stable before any delegated pass and the Ticket remains recoverable as one complete contract from the Issue tracker.
 
-For a tracked code or behavior-changing Ticket, make every accepted decision and boundary required for delivery durable in the final Ticket or Agent Brief before a delegated pass or `BYPASS`. Add only already-accepted context to that contract; the audit conversation is not an implementation handoff. This step is complete only when a fresh `orchestrate` Ticket coordinator can recover the complete execution contract from the Issue tracker.
+If the accepted sources do not determine material authority or the contract changes materially after the reference is fixed, choose `FAIL`, record it as specified below, and end. The changed contract requires a new Prompt Audit; evidence from the older version is stale.
 
-When the maintainer explicitly waives the comprehension audit for the exact contract, skip the agent passes, choose `BYPASS`, and record the status as specified below. The waiver satisfies an execution gate; it does not by itself select the Ticket into a Mission.
+When the maintainer explicitly waives the comprehension audit for the exact contract, skip the agent passes and consider only `BYPASS` or `FAIL` through the fit and status rules below. The waiver satisfies an execution gate; it does not select the Ticket into a Mission, cannot be inferred, and is never represented as `PASS`.
 
 ## Select isolated pass delivery
 
@@ -30,81 +30,62 @@ Choose delivery from the caller's role:
 - A root interactive coordinator may use the active harness's documented asynchronous delivery. After acceptance it does not wait, sleep, or poll; it resumes the audit from the single deterministic completion notification.
 - A print coordinator and a depth-2 coordinator that depends on the pass use direct delivery. Direct settlement returns once through the pending call and emits no later asynchronous completion notification.
 
-Run the passes sequentially even when asynchronous delivery is available: interpreter settlement precedes coordinator assessment, and only that assessment makes the reviewer input complete. A confirmation, when allowed below, starts only after artifact repair. Never issue these passes as concurrent siblings.
+Run the passes sequentially even when asynchronous delivery is available: the interpreter must settle before the reviewer starts. Never issue these passes as concurrent siblings or assess the interpreter for the reviewer.
 
 For every pass, require a mechanically completed terminal outcome and a complete decision-bearing response. When terminal text is bounded, recover the complete response from the returned native session reference or another predeclared durable result channel before assessment. Reading persisted evidence does not add context to the child. If the pass is failed, interrupted, cancelled, missing its response, or cannot be recovered without weakening isolation, choose and durably record `FAIL`; do not fabricate evidence, treat a partial response as `PASS`, continue the child, or rerun the pass.
 
 ## Run two isolated agent passes
 
-Start one fresh agent for the interpreter pass and another for the reviewer pass under the rules above. Each agent may receive baseline system and project instructions but no parent conversational turns, coordinator analysis, or desired answer.
+Start one fresh agent for the interpreter pass and, only after it settles, another fresh independent agent for the reviewer pass. Beyond baseline harness instructions, both passes receive only the inputs listed for their role. Neither receives parent conversational turns or hidden coordinator analysis.
 
 ### 1. Run the interpreter pass
 
 Give the interpreter only:
 
-- the original prompt;
-- artifacts that the prompt explicitly requires;
+- the original request;
+- artifacts that the request explicitly requires; and
 - this question: "What do you understand you are being asked to do?"
 
-Require only a reconstruction of the requested outcome, scope boundaries, required actions and order, deliverables, completion point, and ambiguities that could change any of those items. Keep the interpreter read-only and non-delegating.
+Require a reconstruction of the requested outcome, scope boundaries, required actions and order, deliverables, completion point, and ambiguities that could materially change any of those items. Keep the interpreter read-only and non-delegating. It explains the request as written without executing it, revising it, or adding unstated requirements.
 
-The interpreter must explain the prompt as written without executing it, revising it, or adding unstated requirements.
+Interpreter settlement is complete only when its full decision-bearing response is available to the coordinator and can be passed unchanged to the reviewer.
 
-### 2. Record the coordinator assessment
+### 2. Run the reviewer pass
 
-Compare the interpreter response with the reference intent. Record only these differences:
+After interpreter settlement, give the reviewer only:
 
-- requested work omitted or unrequested work added;
-- a scope boundary changed;
-- a required action or its order changed;
-- a deliverable or completion point changed;
-- wording interpreted in a way that changes the outcome, scope, required workflow, deliverables, or completion point.
+- the complete final Ticket Issue and fixed reference intent for a tracked audit, or the original request and fixed reference intent for an untracked audit;
+- artifacts explicitly required by that request; and
+- the interpreter's complete response.
 
-Do not report missing release work, tests, artifacts, fallbacks, documentation, or implementation details unless the reference intent requires them.
+Withhold any coordinator assessment, desired verdict, or desired answer. Keep the reviewer read-only and non-delegating. Require `PASS` or `DIVERGENCE` with quoted or paraphrased evidence for every requested outcome, scope boundary, required action or order, deliverable, completion point, or material ambiguity it finds added, omitted, or changed. The reviewer compares semantic meaning and excludes requirements arising only from its preferred implementation workflow.
 
-### 3. Run the reviewer pass
+Reviewer settlement is complete only when its full decision-bearing response is available to the coordinator.
 
-After the interpreter finishes, give the reviewer only:
+### 3. Adjudicate both passes
 
-- the original prompt;
-- the interpreter's response;
-- the reference intent recorded above.
+Only after both passes settle, compare the original request, fixed reference intent, interpreter response, and reviewer judgment. The coordinator, not either delegated agent, owns the result.
 
-Withhold the coordinator assessment. Keep the reviewer read-only and non-delegating. Require `PASS` or `DIVERGENCE` and quoted or paraphrased evidence for every item added, omitted, or changed. The reviewer must compare semantic meaning and exclude requirements that arise only from its preferred implementation workflow.
+Treat a difference as material semantic divergence only when it changes the understood outcome, scope, required workflow or order, deliverables, or completion point. Compression or omission of an enumeration is not material when its governing boundary remains intact. Do not add release work, tests, artifacts, fallbacks, documentation, or implementation details unless the fixed reference intent requires them.
 
-### 4. Adjudicate
+For every reported difference:
 
-Decide from the prompt, interpreter response, reviewer judgment, and reference intent; the coordinator, not either delegated agent, owns the result.
+- If the fixed reference determines one clear meaning and the differing reading is not supported, record that adjudication and continue.
+- If plausible readings materially differ, authority remains unresolved, or fixing the ambiguity would change the audited contract, choose `FAIL` and require a separate contract correction and fresh Prompt Audit.
 
-Treat a difference as semantic only when it changes the understood outcome, scope, required workflow, deliverables, or completion point. Do not fail an audit merely because an interpretation compresses or omits an enumeration while preserving its governing boundary.
-
-When the reference sources leave an in-scope choice whose plausible options do not materially differ in behavior, scope, security, compatibility, cost, or reversibility, select the smallest safe and reversible option consistent with repository conventions—the option you would recommend if asked. Record the choice in the reference intent and execution prompt when needed, then continue.
-
-If no semantic divergence survives adjudication, choose `PASS`.
-
-For each semantic divergence, consult the complete reference intent:
-
-- If it determines one safe meaning and the prompt is already clear, record the coordinator adjudication and continue without editing.
-- If it determines the meaning but the execution prompt or an authoritative request artifact permits the wrong reading, minimally clarify the execution prompt and each affected authoritative artifact. Within accepted scope, the coordinator may edit any such artifact needed to express already-established intent. Preserve approved scope and deferred work; do not create acceptance criteria.
-- If a material decision remains unresolved, the required change would leave approved scope, or external authority is required, choose `FAIL`, report the unresolved decision to the user, and stop after recording the status.
-
-After adjudicating every divergence, choose `PASS` when none remains and no artifact repair requires confirmation.
-
-After repairing an execution prompt or authoritative request artifact, use exactly one fresh clean-context confirmation reviewer under the same leaf, delivery, settlement, and bounded-result recovery rules above. Give it only the revised prompt or request artifact and the authoritative sources that artifact explicitly requires or cites; withhold the conversation, previous responses, coordinator analysis, and a desired answer. Require it to reconstruct the requested outcome, scope boundaries, required workflow, deliverables, and completion point, then report `PASS` or `DIVERGENCE` with evidence about whether the request is self-contained and aligned with the supplied sources.
-
-The coordinator adjudicates the confirmation once. If no concrete divergence survives, choose `PASS`. If a concrete remaining defect is resolved by the reference intent, apply one final minimal correction and choose `PASS` without another reviewer. Apply the escalation rule above only when a material decision remains unresolved. Exhausting the isolated-review budget transfers the result to coordinator adjudication; it is not a reason to stop or start a reviewer loop.
+Choose `PASS` only when no material semantic divergence survives adjudication. Do not edit the contract, run a confirmation pass, rerun a failed pass, or create another semantic-review loop in this invocation.
 
 ## Check implementation-unit fit when applicable
 
-Treat any semantic `PASS` or explicit `BYPASS` above as provisional. When the audited contract is one repository code or behavior-changing Ticket, read `to-tickets` and confirm that it satisfies the tracer-bullet rules, including fit in one fresh agent context with room to understand the relevant behavior, implement the end-to-end change, and verify it. If it does not, choose `FAIL` and report that decomposition is required before autonomous delivery. For every other audited text, this check does not apply.
+Treat any semantic `PASS` or explicit `BYPASS` above as provisional. When the audited contract is one repository code or behavior-changing Ticket, read `to-tickets` and confirm that it satisfies the tracer-bullet rules, including fit in one fresh agent context with room to understand the relevant behavior, implement the end-to-end change, and verify it. If it does not, choose `FAIL` and report that decomposition is required before autonomous delivery. Isolation failure, unresolved material authority, and one-context-fit failure always produce `FAIL`. For every other audited text, this check does not apply.
 
 ## Record the prompt audit status
 
 Choose exactly one status:
 
-- `PASS` — no semantic divergence survives audit-coordinator adjudication.
+- `PASS` — no material semantic divergence about outcome, scope, required workflow or order, deliverables, or completion survives audit-coordinator adjudication, and every applicable one-context-fit check succeeds.
 - `BYPASS` — the maintainer explicitly waives `PASS` for this exact contract. Never infer this waiver or represent a bypass as a pass.
-- `FAIL` — the audit cannot establish equivalent clean-context comprehension, including when required isolation cannot be completed or a material divergence remains unresolved.
+- `FAIL` — the audit cannot establish equivalent clean-context comprehension, including when isolation fails, material authority remains unresolved, a material divergence survives, or an applicable one-context-fit check fails.
 
 When the execution contract is a tracked issue or an agent brief on one, post a new comment without editing prior audit history:
 
@@ -116,19 +97,15 @@ When the execution contract is a tracked issue or an agent brief on one, post a 
 **Basis:** <concise evidence or explicit maintainer authorization>
 ```
 
-For an untracked prompt, report the same fields to the invoking workflow. A newer status supersedes an older one only when it applies to the same execution contract. A material change to the requested outcome, scope, required workflow, deliverables, acceptance criteria, relations, or completion point makes the prior status stale.
+For an untracked prompt, report the same fields to the invoking workflow. A newer status supersedes an older one only when it applies to the same execution contract. A material change to the requested outcome, scope, required workflow or order, deliverables, acceptance criteria, relations, or completion point makes the prior status stale.
 
 For a tracked code or behavior-changing Ticket, transition it to `ready-for-agent` only after its final body, Agent Brief, parent, blocking, and conflict relations are stable, it carries exactly one category role, and this audit returns `PASS` or an explicit maintainer `BYPASS`. Replace `needs-triage`; do not leave two state roles. A `FAIL` remains outside `ready-for-agent`. The audit never creates adjacent Tickets or extends the audited contract. `ready-for-agent` plus `PASS` or `BYPASS` establishes eligibility, not Mission authorization.
 
-## Complete the audit context
+## End the audit invocation
 
-Apply the canonical Prompt Audit-to-delivery boundary from the repository's domain terms. After recording the status and applying any eligible state transition for a tracked code or behavior-changing Ticket, complete the current invocation through exactly one terminal branch:
+After recording the status and applying any valid readiness transition, report the recorded `PASS`, `FAIL`, or explicit `BYPASS` and end the current invocation. A current `PASS` or `BYPASS` establishes eligibility for the exact unchanged contract but does not select work. Existing Mission authorization does not change this endpoint.
 
-- `FAIL` — return the recorded status and stop before dispatch.
-- `PASS` or `BYPASS` without Mission authorization — report eligibility and stop before dispatch.
-- `PASS` or `BYPASS` with explicit Mission authorization for this exact Ticket — route its unchanged identity directly to one fresh isolated context running installed `orchestrate`, without another user intervention, then end the audit invocation.
-
-The branch selection is the audit's terminal action. The current audit invocation performs no Ticket implementation. Every other audit returns its recorded status and ends.
+Prompt Audit never calls `dispatch-tickets`, invokes `orchestrate`, or performs Ticket implementation. A later, separately invoked workflow owns any authorized dispatch or delivery.
 
 ## Audit boundary
 
