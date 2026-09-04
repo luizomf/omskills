@@ -29,7 +29,7 @@ Try these methods in roughly this order:
 After the command exists:
 
 - assert the reported symptom rather than only checking for process success;
-- reduce setup and unrelated initialization until a run takes seconds, not minutes;
+- reduce setup and unrelated initialization without changing the symptom; aim for seconds, not minutes;
 - pin time and random seeds and isolate filesystem and network dependencies when they affect the verdict.
 
 For a non-deterministic bug, run the trigger 100 times under recorded conditions. Use parallel execution, load, narrower timing windows, or injected delays to raise the reproduction rate. Continue until the reproduction rate is high enough to debug against; one reproduction per 100 is insufficient.
@@ -48,7 +48,7 @@ Phase 1 is complete only when you report one command, its output from at least o
 
 - [ ] executes the actual bug path and fails on the user's reported symptom;
 - [ ] returns the same verdict on every deterministic run, or reproduces at a pinned rate high enough to debug against for a non-deterministic bug;
-- [ ] completes in seconds, not minutes;
+- [ ] excludes avoidable setup and reports why any remaining minutes-long runtime is necessary to reproduce the symptom;
 - [ ] runs unattended, except through `scripts/hitl-loop.template.sh`.
 
 Do not begin Phase 2 until all four conditions hold.

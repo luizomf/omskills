@@ -65,7 +65,7 @@ When comparing interface designs, check:
 - **Depth is a property of a module relative to its interface.** Internal composition does not make an external interface shallow. A module may use internal seams available only to its implementation and implementation-level tests while exposing one external seam to callers.
 - **Deletion test.** Model deleting the module while preserving required behavior. If no caller must absorb rules or knowledge, the module was a pass-through. If rules or knowledge must be copied or coordinated across callers, the module provides locality or leverage.
 - **The interface is the test surface.** Production callers and behavior tests use the same test seam. A test that must bypass the interface is evidence that the interface does not expose required behavior or that the tested behavior belongs to another module.
-- **One adapter is a hypothetical seam; two adapters make variation observable.** Treat a seam as worth designing only when at least two adapters exist.
+- **Two justified adapters warrant a port.** Introduce a port only when at least two adapters are justified (typically production + test).
 
 ## Designing for testability
 

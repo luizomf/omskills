@@ -67,9 +67,3 @@ Give the user the run command. They'll drive it themselves; the interesting mome
 ### 7. Capture the answer and the prototype
 
 Once the prototype has answered its question, capture the answer and prototype as [SKILL.md](SKILL.md) describes. Record which reducer, machine, or function set may inform later production work. Do not lift it into the real module during the prototype invocation; an explicitly authorized implementation Ticket decides whether and how to reuse it.
-
-## Anti-patterns
-
-- **Don't add tests.** A prototype that needs tests is no longer a prototype.
-- **Don't wire it to the real database.** Use an in-memory store unless the question is specifically about persistence.
-- **Don't generalise.** No "what if we wanted to support X later." The prototype answers one question.

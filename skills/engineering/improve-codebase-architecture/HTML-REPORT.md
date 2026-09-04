@@ -101,11 +101,11 @@ Before: a tree of function calls rendered as nested boxes. After: the same tree 
 
 ## Top recommendation section
 
-One larger card. Candidate name, one sentence on why, anchor link to its card. That's it.
+One larger card. Candidate name, one sentence on why, anchor link to its card. If no candidate is supported, state that conclusion with scan coverage and evidence gaps instead.
 
 ## Completion checks and opener behavior
 
-After writing, read the file back before attempting to open it. Verify that it is non-empty, has the complete document scaffold, contains one card for every validated candidate, includes each card's required fields and diagrams, contains no unresolved template placeholders, and ends with a top recommendation whose anchor resolves to its candidate card. Report validation is based on this artifact, not on CDN availability or an opener exit status.
+After writing, read the file back before attempting to open it. Verify that it is non-empty, has the complete document scaffold, contains one card for every validated candidate, includes each card's required fields and diagrams, contains no unresolved template placeholders, and ends with either a top recommendation linked to its candidate card or an explicit no-candidate conclusion with coverage and evidence gaps. Report validation is based on this artifact, not on CDN availability or an opener exit status.
 
 Attempt the platform opener only after these checks. If no graphical opener is available, or it returns non-zero in a headless or print environment, preserve the report and state the failure explicitly with its absolute path. That failure is non-fatal once the report passes the completion checks. Do not retry with unrelated browser automation and do not weaken or broaden the report contract.
 

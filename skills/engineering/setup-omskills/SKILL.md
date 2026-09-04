@@ -22,7 +22,7 @@ Check every listed source that exists before making a recommendation:
 - `git remote -v` and `.git/config` for tracker host and repository identity;
 - root `AGENTS.md`, `GEMINI.md`, `CLAUDE.md`, and `CODEX.md` for existing instructions and `## Agent skills` sections;
 - root `CONTEXT.md` and `CONTEXT-MAP.md`;
-- `docs/adr/` and `src/*/docs/adr/`;
+- root `docs/adr/` and context-specific `docs/adr/` directories located through `CONTEXT-MAP.md` or the observed package layout;
 - `docs/agents/` for prior setup output;
 - `.scratch/` for an existing local-markdown tracker convention;
 - the installed skill list for `triage`; and
@@ -64,7 +64,7 @@ State roles:
 - `ready-for-human` — human implementation required
 - `wontfix` — request will not be actioned
 
-Ask: “Do you want to keep the default triage labels?” Recommend **yes**. By default, each label string equals its canonical role. Ask for individual mappings only if the user answers no. This prevents creation of duplicate labels such as `bug` when the repository uses `type:bug`.
+Inspect existing tracker labels and recommend matching role mappings. Where no existing label fits, default its string to the canonical role. Ask the user to confirm the proposed mappings; ask about individual roles only when their mapping remains unresolved.
 
 #### C. Domain docs
 

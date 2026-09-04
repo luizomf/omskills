@@ -53,7 +53,10 @@ Create a single switcher component on the route:
 
 ```tsx
 // pseudo-code — adapt to the project's framework
-const variant = searchParams.get('variant') ?? 'A';
+const variant = searchParams.get('variant');
+const prototypeEnabled = process.env.NODE_ENV !== 'production'
+  && ['A', 'B', 'C'].includes(variant ?? '');
+if (!prototypeEnabled) return <OriginalPage {...data} />;
 return (
   <>
     {variant === 'A' && <VariantA {...data} />}
@@ -66,7 +69,7 @@ return (
 
 For sub-shape A (existing page): keep all the existing data fetching above the switcher; only the rendered subtree changes per variant.
 
-For sub-shape B (new page): the throwaway route mounts the same switcher.
+For sub-shape B (new page): the throwaway route mounts the same switcher; use the framework's not-found response instead of `OriginalPage` when prototype mode is disabled.
 
 ### 4. Build the floating switcher
 
@@ -81,7 +84,7 @@ Behaviour:
 - Clicking an arrow updates the URL search param (use the framework's router — `router.replace` on Next, `navigate` on React Router, etc) so the variant is shareable and reload-stable.
 - Keyboard: `←` and `→` arrow keys also cycle. Don't intercept arrow keys when an `<input>`, `<textarea>`, or `[contenteditable]` is focused.
 - Visually distinct from the page (e.g. high-contrast pill, subtle shadow) so it's obviously not part of the design being evaluated.
-- Hidden in production builds — gate on `process.env.NODE_ENV !== 'production'` or an equivalent check, so a stray prototype merge can't ship the bar to users.
+- Gate the variants and bar together out of production builds, as above, using the framework's equivalent check.
 
 Put the switcher in a single shared component so both sub-shapes can reuse it. Locate it wherever shared UI lives in the project.
 

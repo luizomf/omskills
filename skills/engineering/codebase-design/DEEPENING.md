@@ -26,12 +26,11 @@ Third-party services (Stripe, Twilio, etc.) you don't control. The deepened modu
 
 ## Seam discipline
 
-- **One adapter means a hypothetical seam. Two adapters means a real one.** Introduce a port only when at least two adapters are justified (typically production + test).
 - **Internal seams vs external seams.** A deep module can have internal seams (private to its implementation, used by its own implementation-level tests) as well as the external test seam at its interface. Don't expose internal seams through the interface just because implementation-level tests use them.
 
 ## Testing strategy: replace, don't layer
 
-- Old unit tests on shallow modules become waste once tests at the deepened module's interface exist — delete them.
+- Delete an old test only when passing tests at the deepened module's interface preserve its covered behavior.
 - Write new tests at the deepened module's interface. The **interface is the test surface**.
 - Tests assert on observable outcomes through the interface, not internal state.
 - Tests should survive internal refactors — they describe behaviour, not implementation. If a test has to change when the implementation changes, it's testing past the interface.

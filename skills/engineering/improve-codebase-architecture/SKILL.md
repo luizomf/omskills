@@ -55,11 +55,11 @@ For each candidate, render one card containing:
 - **Before / After:** side-by-side diagrams of the current and proposed responsibility distribution; and
 - **Recommendation strength:** one of `Strong`, `Worth exploring`, or `Speculative`, rendered as a badge.
 
-End with **Top recommendation**, naming the candidate to tackle first and explaining why.
+End with **Top recommendation**, naming the candidate to tackle first and explaining why. If no candidate is supported, state that conclusion with scan coverage and evidence gaps instead.
 
 If a candidate conflicts with an ADR, include it only when the observed friction is substantial enough to warrant revisiting that ADR. Add a warning naming the ADR and the supporting evidence.
 
-Do not propose method signatures, parameter shapes, or other interfaces before step 3. After writing the file, read it back and apply the completion checks in [HTML-REPORT.md](HTML-REPORT.md). Only then attempt `xdg-open <path>` on Linux, `open <path>` on macOS, or `start <path>` on Windows. In headless or print operation, an unavailable opener or non-zero opener result is explicit and non-fatal once the complete report has been validated: report the failure, absolute path, and top recommendation. Do not treat a successful opener as report validation. If the invocation names a candidate to develop, continue to step 3. Otherwise stop; the validated report is the complete deliverable and no selection question is required.
+Do not propose method signatures, parameter shapes, or other interfaces before step 3. After writing the file, read it back and apply the completion checks in [HTML-REPORT.md](HTML-REPORT.md). Only then attempt `xdg-open <path>` on Linux, `open <path>` on macOS, or `start <path>` on Windows. In headless or print operation, an unavailable opener or non-zero opener result is explicit and non-fatal once the complete report has been validated: report the failure, absolute path, and recommendation or no-candidate conclusion. Do not treat a successful opener as report validation. If the invocation names a candidate to develop, continue to step 3. Otherwise stop; the validated report is the complete deliverable and no selection question is required.
 
 ### 3. Develop a selected candidate
 
@@ -69,7 +69,7 @@ Maintain domain and decision docs while resolving the design:
 
 - When the module is named after a domain concept absent from `CONTEXT.md`, add the confirmed term. Create the file only when adding the first term.
 - When the user confirms a narrower or distinct meaning for an existing term, update that term in the same turn.
-- Record an already-established rejection as an ADR only when the invocation authorizes documentation changes, the rejection rules out one or more candidate architectures, and future agents could otherwise repeat the rejected proposal. Do not record a rejection whose reason is represented directly in code or the domain glossary, or applies only to the current session.
+- Apply `grill-with-docs`' ADR eligibility and approval gates to already-established rejections too. Record one only when it rules out candidate architectures and future agents could otherwise repeat the proposal. Do not record a rejection whose reason is represented directly in code or the domain glossary, or applies only to the current session.
 - To compare alternative interfaces, follow `codebase-design` and its one-designer Design It Twice process.
 
 This step is complete when the selected candidate has confirmed behavior ownership, seam placement, interface test surface, and applicable domain or ADR updates. It does not implement the refactor.
