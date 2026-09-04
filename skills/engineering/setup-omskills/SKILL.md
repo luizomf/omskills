@@ -40,7 +40,7 @@ Recommend GitHub when a remote points to GitHub. Recommend GitLab when a remote 
 
 - **GitHub:** repository GitHub Issues through `gh`.
 - **GitLab:** repository GitLab Issues through [`glab`](https://gitlab.com/gitlab-org/cli).
-- **Local markdown:** `.scratch/<feature>/` files in this repository.
+- **Local markdown:** Git-ignored files at chosen `.scratch/` paths for local-only work. Prefer a durable tracker for project-relevant requirements, decisions, and delivery history.
 - **Other, such as Jira or Linear:** ask the user to describe the workflow in one paragraph and record it as freeform prose.
 
 In GitHub and GitLab configurations, set external PRs or MRs as a request surface to off unless the user explicitly enables them.

@@ -9,7 +9,7 @@ Use a **shared map** to determine the route from a loose idea to a named **desti
 
 ## Plan by default
 
-Unless the map's **Notes** explicitly include execution, each ticket resolves a decision and produces no destination deliverable. The map is complete when no decision remains before execution. When resolving the next ticket would perform the destination work rather than determine how to perform it, hand off instead. A mapped or ready Ticket is not Mission-authorized until the user or invoker explicitly selects it.
+Investigations determine the route to the destination rather than implementing it. A request to work through a map authorizes selecting and resolving one in-scope investigation per session; continue established steps without asking for reconfirmation. The map is complete when no decision remains before execution. When the next step would implement the destination, hand off to the normal Ticket delivery workflow with its readiness, audit, and explicit Mission authorization gates. Even Notes that include execution do not bypass those gates.
 
 ## Refer to issues by title
 
@@ -80,7 +80,7 @@ Every ticket is either **HITL** (requires live input from a human speaking for t
 - **Research** (AFK): use when resolving the question requires knowledge outside the current working directory, such as external documentation, third-party APIs, or a local knowledge base. Produce and link a Markdown summary.
 - **Prototype** (HITL): use when a reaction to a concrete artifact is required to decide appearance or behavior. Produce and link a non-production outline, rough take, stub, or UI/logic prototype; use `prototype` for UI or logic code. The ticket resolves the design question only; promoting any result requires a separate implementation Ticket.
 - **Grilling** (HITL): use `grill-with-docs` and its bounded Question-frontier rounds. Keep every round inside the selected Ticket; several rounds may resolve that one Ticket, but no round may include Questions for another Ticket. Use this type when the other type conditions do not apply.
-- **Task** (HITL or AFK): use only for work that must finish before a later decision can be made, when the work itself contains no research, prototype, or decision. Examples: provision access, sign up for a service so its API can be evaluated, or move data so its shape can be inspected. The agent performs the task alone where it can; otherwise it gives the human a checklist. Resolve the ticket when the work is complete, recording what changed and any facts later tickets require, such as credential location, URLs, or row counts.
+- **Task** (HITL or AFK): use only for work that must finish before a later decision can be made, when the work itself contains no research, prototype, or decision. Examples: provision access, sign up for a service so its API can be evaluated, or move data so its shape can be inspected. The agent performs authorized in-scope preparation alone where it can; otherwise it gives the human a checklist. Destination implementation uses the delivery handoff above. Resolve the ticket when the work is complete, recording what changed and any facts later tickets require, such as credential location, URLs, or row counts.
 
 ## Fog of war and scope
 

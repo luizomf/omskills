@@ -65,24 +65,26 @@ Revise and repeat until the user approves the breakdown. Do not publish before a
 
 Create every approved Ticket identity first with exactly one category role and the `needs-triage` state. After every identity exists, add parent links, blocking edges, and conflict edges in a second pass so all relations use real identifiers.
 
-- **Local markdown:** write every Ticket under `.scratch/<feature-slug>/issues/<NN>-<slug>.md`, numbered from `01`, then record both edge types.
+- **Local markdown:** follow the configured tracker's ignore and lifecycle rules. Write one file per Ticket at a chosen `.scratch/` path, then record both edge types using those paths.
 - **GitHub, GitLab, or another issue tracker:** create every issue first, then add the tracker's native parent and blocking relations where available and record conflicts in its configured representation.
 
 Do not apply `ready-for-agent`, close or modify the parent Spec, run Prompt Audits, or begin implementation. Ticket publication and readiness are separate phases.
 
 <local-ticket-template>
 
-# <NN> — <Ticket title>
+# <Ticket title>
 
 **What to build:** <the end-to-end behavior this ticket makes work from the user's perspective>
 
-**Blocked by:** <ticket numbers/titles, or "None">
+**Blocked by:** <linked Ticket paths, or "None">
 
-**Conflicts with:** <ticket numbers/titles and shared surfaces, or "None">
+**Conflicts with:** <linked Ticket paths and shared surfaces, or "None">
 
 **Category:** bug | enhancement
 
 **Status:** needs-triage
+
+**Lifecycle:** open
 
 - [ ] Acceptance criterion 1
 - [ ] Acceptance criterion 2

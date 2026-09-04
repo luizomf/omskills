@@ -90,6 +90,8 @@ _Avoid_: prompt wording test, regex comprehension proof, duplicate prose impleme
 
 - An **Issue tracker** holds many **Specs** and **Tickets**
 - A **Question** is resolved in a live interaction and may inform a later **Scratchpad**, **Spec**, or **Ticket**
+- A request to work through a wayfinder map authorizes selecting and resolving one in-scope investigation per session without reconfirming established steps. Destination implementation still requires the normal Ticket delivery gates and explicit Mission authorization; map Notes do not bypass them.
+- All `.scratch/` artifacts remain local and Git-ignored, with filenames and subdirectories chosen for the work. Prefer the project's durable Issue tracker for project-relevant requirements, decisions, and delivery history. In a local Markdown tracker, triage `Status` and investigation `Lifecycle` are separate fields.
 - A **Scratchpad** may preserve temporary planning context and be removed after accepted content reaches a durable artifact, but it carries no implementation authority
 - A **Spec** is broken down into many **Tickets** and is never implemented directly
 - A triaged **Ticket** carries one category **Triage role** and one state **Triage role**

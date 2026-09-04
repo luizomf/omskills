@@ -138,7 +138,7 @@ Active skills are installed by the plugin independently of discovery state. Supp
 /setup-omskills
 ```
 
-This setup records where issues live, which triage labels the repo uses, and how the agent should consume `CONTEXT.md` and ADRs.
+This setup records where issues live, which triage labels the repo uses, and how the agent should consume `CONTEXT.md` and ADRs. All `.scratch/` artifacts stay local and Git-ignored; choose paths as needed and prefer the durable issue tracker for project-relevant requirements, decisions, and delivery history.
 
 ## Triage Model
 
