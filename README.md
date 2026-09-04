@@ -22,7 +22,7 @@ The skills act as checkpoints: clarify before planning, document before ticketin
 
 ### Runtime Relationship with ompi
 
-This collection has no package or checkout dependency on [ompi](https://github.com/luizomf/ompi), and many skills remain usable in any compatible coding-agent harness. However, the advanced `implement` -> `dispatch-tickets` -> `orchestrate` workflow depends on isolated subagents, bounded nesting, direct and asynchronous delivery, capability inheritance, and managed cancellation semantics currently implemented and validated by ompi. Using that workflow outside ompi requires a harness that provides the same contract.
+This collection has no package or checkout dependency on [ompi](https://github.com/luizomf/ompi), and many skills remain usable in any compatible coding-agent harness. However, the advanced `implement` -> `dispatch-tickets` -> `orchestrate` workflow depends on isolated subagents, bounded nesting, direct and asynchronous delivery, capability inheritance, and managed cancellation semantics currently implemented and validated by ompi. Using that workflow outside ompi requires a harness that provides the same contract. Its Ticket identity format is currently `owner/repository#integer`; local Markdown paths and nested GitLab namespaces are not supported by this delivery route, even though planning and triage support those trackers.
 
 The relationship also runs in the other direction: ompi's skill-enabled profiles consume selected skills from this repository. Each repository remains independently installed and maintained; neither checkout is synchronized from the other.
 
@@ -42,6 +42,8 @@ Before asking an agent to "build it", classify the moment:
 - Want to learn a topic over multiple sessions: `/teach`
 - Need to pause without losing context: `/handoff`
 - Need a fresh agent window that retires the old Pi after transfer: `/wormhole`
+
+For `/implement`, select one fully qualified Ticket and confirm that its external blockers and conflicts are resolved; the convenience entry does not inspect the tracker.
 
 The core habit is to ask: "Is this clear enough to become code?"
 

@@ -25,7 +25,7 @@ Tracker storage, child relationships, blocking, and frontier queries are tracker
 
 ### Map body
 
-Load this low-resolution view once per session. Find open tickets by querying child issues; do not list them in the map body.
+Load this low-resolution view once per session. Find open tickets by querying child issues; include a child index in the map body only when the configured tracker requires it as the relationship fallback.
 
 ```markdown
 ## Destination
