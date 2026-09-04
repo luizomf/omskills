@@ -52,6 +52,8 @@ Present a numbered draft. For each ticket, include:
 - **Conflicts with:** every conflicting ticket and its shared surface, or none; and
 - **What it delivers:** the end-to-end behavior that becomes demonstrable or verifiable.
 
+Before requesting approval, show proposed sequential/parallel phases within the current dispatcher and harness limits. For each parallel group, require exclusive worktrees and branches, account for shared resources outside Git, and include a Ticket that integrates and verifies every member before dependent work. Record each Ticket's delivery boundary explicitly. Prefer a serial plan when independence is not established. This is part of breakdown approval, not another user gate.
+
 Ask the user to identify:
 
 - any ticket that does not fit one fresh context or cannot be verified independently;

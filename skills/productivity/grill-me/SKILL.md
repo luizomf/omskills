@@ -33,6 +33,8 @@ Question assumptions, undefined or multiply defined terms, contradictions, bound
 
 Begin completion only when the recomputed Question frontier is genuinely empty because no unresolved Question or unresolved fact could change the outcome or scope. An empty frontier caused by an unresolved prerequisite is not completion. Completion never starts implementation.
 
+For implementation-bound work, include known dependencies, conflicts, shared-resource constraints, and integration decisions in the shared understanding. Leave the phase proposal to `to-tickets` during breakdown approval.
+
 Use these two gates in order:
 
 1. **Confirm the shared understanding.** Consolidate the established decisions, constraints, exclusions, relevant evidence, and any unresolved Questions, including why the unresolved Questions do not block completion. Ask the user to confirm or correct that complete understanding, then wait. Do not recommend a destination yet. If the user corrects it, update the decision tree, resume grilling when needed, and repeat this gate until the user explicitly confirms the revised understanding.
