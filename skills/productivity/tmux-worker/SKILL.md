@@ -47,14 +47,14 @@ tmux -S "$callback_socket" send-keys -t "$callback_pane" Enter
 
 A callback is a cooperative transport event. It may carry a reply, question, progress message, or result pointer, and only the caller decides what it means and what follows. It is not an Accepted continuation mechanism by itself and does not justify ending an unattended autonomous turn. Repeat the buffered literal transport in either direction for as many conversational exchanges as the caller needs; each transport leg is complete when its paste deletes the unique buffer and separate `Enter` reaches the recorded pane.
 
-5. Keep the worker running throughout continued dialogue. Retire it only when the invoking agent or skill directs retirement, by sending literal `/quit` and `Enter` in separate calls to the recorded worker pane:
+5. Keep the worker running throughout continued dialogue. Retire it only when the invoking agent or skill directs retirement. For Pi, send literal `/quit` and `Enter` in separate calls to the recorded worker pane:
 
 ```bash
 tmux -S "$socket" send-keys -t "$worker_pane" -l '/quit'
 tmux -S "$socket" send-keys -t "$worker_pane" Enter
 ```
 
-`/quit` exits Pi; it does not manage tmux. Because step 2 starts Pi as the worker pane's top-level command, tmux normally removes that pane and its one-pane window when Pi exits. If Pi was instead started from an existing shell, that shell and window remain; tmux configuration may also change either result. Do not separately kill or preserve the pane or window. Treat its resulting lifecycle as tmux behavior, not worker success or failure. Directed retirement is submitted once literal `/quit` and separate `Enter` reach the recorded worker pane; the resulting pane and window lifecycle remains tmux-owned.
+For another harness, use its known exit command; if unknown, report that retirement is blocked rather than guessing. The exit command stops the harness, not tmux. A harness launched as the pane's top-level command normally leaves tmux to remove the pane and its one-pane window; one launched inside an existing shell normally returns to that shell. Tmux configuration may change either result. Do not separately kill or preserve the pane or window. Directed retirement is submitted once the exit command and separate `Enter` reach the recorded pane; the resulting pane and window lifecycle remains tmux-owned.
 
 ## Apply caller-owned bounded Mission observation
 
