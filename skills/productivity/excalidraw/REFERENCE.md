@@ -1,6 +1,6 @@
 # Excalidraw scene reference
 
-Use this reference when creating new elements. When editing, preserve valid fields already present in the target rather than normalizing unrelated elements.
+Use this reference when creating new elements. Visual values below describe the bundled base; the selected target or supplied base takes precedence. When editing, preserve valid fields already present in the target rather than normalizing unrelated elements.
 
 ## Scene
 
@@ -11,7 +11,7 @@ A standard scene contains `type: "excalidraw"`, `version: 2`, `elements`, `appSt
 Every new element needs:
 
 ```json
-{"id":"unique-id","type":"rectangle","x":100,"y":100,"width":200,"height":80,"angle":0,"strokeColor":"#88aaf2","backgroundColor":"#495b81","fillStyle":"solid","strokeWidth":1,"strokeStyle":"solid","roughness":1,"opacity":100,"groupIds":[],"frameId":null,"roundness":{"type":3},"seed":123456,"version":1,"versionNonce":654321,"index":null,"isDeleted":false,"boundElements":[],"updated":1700000000000,"link":null,"locked":false}
+{"id":"unique-id","type":"rectangle","x":100,"y":100,"width":200,"height":80,"angle":0,"strokeColor":"#88aaf2","backgroundColor":"#495b81","fillStyle":"solid","strokeWidth":1,"strokeStyle":"solid","roughness":2,"opacity":100,"groupIds":[],"frameId":null,"roundness":{"type":3},"seed":123456,"version":1,"versionNonce":654321,"index":null,"isDeleted":false,"boundElements":[],"updated":1700000000000,"link":null,"locked":false}
 ```
 
 Generate distinct nonzero `seed` and `versionNonce` integers. Keep `version` at `1` for new elements and use a current millisecond timestamp for `updated`. Preserve fractional coordinates only when they improve alignment.
@@ -63,4 +63,4 @@ Use one pair consistently for the same concept. Use `#3b4fa6` as a neutral or pr
 
 ## Exhaustive check
 
-For every output element, verify the common fields, type-specific fields, unique ID, non-deleted state, and valid bounds. For every binding, verify both participants reference each other and exist in the output scene.
+For every output element, verify the common fields, type-specific fields, unique ID, and valid bounds. For every binding, verify both participants reference each other and exist in the output scene.

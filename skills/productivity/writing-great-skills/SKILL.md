@@ -82,6 +82,6 @@ Diagnose and correct each observed failure as follows:
 - **Premature completion:** first make the completion criterion checkable. Split the sequence across a fresh context only when the criterion cannot be made checkable and an observed run still ends the step early.
 - **Duplication:** retain one authoritative statement of the meaning and replace intentional recurrence with a leading word.
 - **Sediment:** delete content that no longer affects current skill behavior.
-- **Sprawl:** move branch-specific reference behind context pointers; split by branch or sequence only under the conditions above.
+- **Sprawl:** move branch-specific reference behind context pointers; apply [When to Split](#when-to-split) only if a split is still needed.
 - **No-op:** delete any sentence whose removal does not change behavior. If a leading word is too weak to change behavior, replace it with a word that imposes an observable criterion, such as _red_, or remove it.
 - **Negation:** state the required positive behavior. Retain a prohibition only for a hard boundary that has no equivalent positive formulation, and pair it with the required alternative.

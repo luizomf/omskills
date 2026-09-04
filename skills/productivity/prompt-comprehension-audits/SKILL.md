@@ -13,7 +13,7 @@ For a tracked Ticket, read the configured issue tracker and triage-label mapping
 
 Before delegation, read the complete original request and every artifact it explicitly requires. For a tracked Ticket, also read the complete final Issue body, labels, comments, incorporated Agent Brief, relations, governing domain terms, ADRs, and repository rules. The final Ticket Issue must contain or identify every accepted outcome, scope boundary, required workflow or order, deliverable, acceptance criterion, relation, and completion condition; conversation and audit history supply no hidden implementation requirement.
 
-Fix one reference intent for the exact contract version. Record its requested outcome, scope, required actions and order, deliverables, completion point, explicit deferrals, and ambiguities that could materially change any of them. Do not infer adjacent work. This step is complete only when the reference is stable before any delegated pass and the Ticket remains recoverable as one complete contract from the Issue tracker.
+Fix one reference intent for the exact contract version. Record its requested outcome, scope, required actions and order, deliverables, completion point, explicit deferrals, and ambiguities that could materially change any of them. Do not infer adjacent work. This step is complete only when the reference is stable before any delegated pass.
 
 If the accepted sources do not determine material authority or the contract changes materially after the reference is fixed, choose `FAIL`, record it as specified below, and end. The changed contract requires a new Prompt Audit; evidence from the older version is stale.
 

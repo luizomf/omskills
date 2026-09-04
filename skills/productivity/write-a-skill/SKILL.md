@@ -86,10 +86,7 @@ Add a utility script when at least one condition applies:
 
 Use the `writing-great-skills` information hierarchy for progressive disclosure: keep instructions required by every branch in `SKILL.md`, and move branch-specific reference behind a direct context pointer.
 
-Split only under the governing conditions:
-
-- **By discovery:** the new skill has a distinct leading word for autonomous selection, observed use demonstrates the discovery need, and the maintainer approves its permanent context load.
-- **By sequence:** an observed run ends a step early because visible post-completion steps pull attention forward, its completion criterion cannot be made checkable, and the later steps move across a real fresh-context boundary.
+For a skill or sequence split, apply the loaded `writing-great-skills` splitting conditions.
 
 Line count, a separate domain, or rarity is not split evidence. Treat excess length as sprawl and apply the information hierarchy before considering a governed split.
 
@@ -105,6 +102,6 @@ After drafting, verify every item:
 - [ ] Instructions contain no time-sensitive information, including current-date statements, unpinned `latest` values, expiring URLs, or versions that require future manual revision.
 - [ ] Each concept has one term, used consistently; Router Skill wording cannot imply Ticket-dispatch ownership.
 - [ ] Ticket routing, when present, treats readiness as eligibility and requires explicit Mission authorization.
-- [ ] Every split has the required discovery or observed-sequence evidence.
+- [ ] Every skill or sequence split has the required discovery or observed-sequence evidence.
 - [ ] Every bundled context pointer links directly to its target, with no chained bundled reference.
 - [ ] The decision-bearing content of every bundled resource has been inspected and agrees with every accepted use case and governing source.

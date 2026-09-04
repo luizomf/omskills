@@ -1,6 +1,6 @@
 # Writing Agent Briefs
 
-An agent brief is a structured comment, or the configured tracker's equivalent, posted on an issue or PR when it moves to `ready-for-agent`. The original body and discussion are context — the agent brief is the execution contract if the item is later selected. It establishes readiness, not Mission authorization.
+An agent brief is a structured comment, or the configured tracker's equivalent, posted on an issue or PR during triage to define the remaining work. The brief is explicitly incorporated into the complete Ticket contract, not a replacement for its accepted requirements. It supports readiness assessment, not Mission authorization.
 
 The brief states **what the agent should do**, which stretches to both surfaces: for an issue, that's building the change from nothing; for a PR, it's what's left to do *to the existing diff* — finish it, close gaps, address review points.
 

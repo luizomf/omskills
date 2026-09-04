@@ -16,7 +16,7 @@ Use the current directory as the teaching workspace and store learning state in 
 - `reference/*.html`: printable lookup material extracted from lessons, including cheat sheets, algorithms, syntax, and poses.
 - `RESOURCES.md`: sources for knowledge and communities for practice. Follow [RESOURCES-FORMAT.md](./RESOURCES-FORMAT.md).
 - `learning-records/*.md`: demonstrated learning, stated prior knowledge, corrected misconceptions, and mission changes used to select later lessons. Name files `0001-<dash-case-name>.md` and increment the highest existing number. Follow [LEARNING-RECORD-FORMAT.md](./LEARNING-RECORD-FORMAT.md).
-- `lessons/*.html`: self-contained lessons. Follow [Lessons](#lessons).
+- `lessons/*.html`: lessons. Follow [Lessons](#lessons).
 - `assets/*`: reusable lesson components. Follow [Assets](#assets).
 - `NOTES.md`: teaching preferences and temporary working notes.
 
@@ -44,7 +44,7 @@ Do not treat correct performance immediately after explanation as evidence of st
 
 ## Lessons
 
-For each lesson, create one self-contained HTML file under `lessons/`. Use `0001-<dash-case-name>.html`, incrementing the highest existing lesson number.
+For each lesson, create one HTML file under `lessons/`. Use `0001-<dash-case-name>.html`, incrementing the highest existing lesson number.
 
 A completed lesson should:
 

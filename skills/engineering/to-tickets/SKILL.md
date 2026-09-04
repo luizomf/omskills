@@ -48,7 +48,8 @@ If no migration batch can pass CI independently, retain this sequence on an inte
 Present a numbered draft. For each ticket, include:
 
 - **Title:** one line naming the delivered behavior;
-- **Blocked by:** every ticket that must complete first, or none; and
+- **Blocked by:** every ticket that must complete first, or none;
+- **Conflicts with:** every conflicting ticket and its shared surface, or none; and
 - **What it delivers:** the end-to-end behavior that becomes demonstrable or verifiable.
 
 Ask the user to identify:
@@ -75,9 +76,9 @@ Do not apply `ready-for-agent`, close or modify the parent Spec, run Prompt Audi
 
 **What to build:** <the end-to-end behavior this ticket makes work from the user's perspective>
 
-**Blocked by:** <ticket numbers/titles, or "None — can start immediately">
+**Blocked by:** <ticket numbers/titles, or "None">
 
-**Conflicts with:** <ticket numbers/titles, or "None — independent">
+**Conflicts with:** <ticket numbers/titles and shared surfaces, or "None">
 
 **Category:** bug | enhancement
 
@@ -109,11 +110,11 @@ Do not apply `ready-for-agent`, close or modify the parent Spec, run Prompt Audi
 
 ## Blocked by
 
-- <each blocking ticket reference, or "None — can start immediately">
+- <each blocking ticket reference, or "None">
 
 ## Conflicts with
 
-- <each conflicting ticket reference plus the shared surface, or "None — independent">
+- <each conflicting ticket reference plus the shared surface, or "None">
 
 </issue-template>
 
