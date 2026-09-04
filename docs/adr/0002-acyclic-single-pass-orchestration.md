@@ -4,9 +4,12 @@
 
 Prompt Audit, Mission dispatch, Ticket delivery, observation, and evidence need one
 recoverable architecture. Earlier deliveries established a fresh implementation
-context and a serial dispatcher, but left an audit-to-dispatch branch, a direct
-one-Ticket route, and a no-parallel limitation. Prompt meaning was also sometimes
-modeled through wording assertions rather than clean-context comprehension.
+context and a serial dispatcher, but left an audit-to-dispatch branch and a
+no-parallel limitation. Exclusive dispatcher entry later caused a coordinator
+to reject selected work before reading its governing Ticket; caller authority
+must be separate from mechanical dispatch ownership. Prompt meaning was also
+sometimes modeled through wording assertions rather than clean-context
+comprehension.
 
 ## Decision
 
@@ -50,10 +53,11 @@ never discovers, expands, removes, replaces, reorders, or semantically schedules
 work.
 
 The dispatcher owns only the frozen topology and compact mechanical routing
-state, coordinator references, cancellation intent, and Ticket outcomes. It is
-the only root contract that starts fresh `orchestrate` Ticket coordinators and
-starts one for every identity runnable under the frozen topology. A parallel
-group may run concurrently only when the
+state, coordinator references, cancellation intent, and Ticket outcomes when
+used. It provides thin dispatch for long finite multi-Ticket Missions, not
+exclusive permission to start every coordinator. It starts one fresh
+`orchestrate` coordinator for every identity runnable under the frozen topology.
+A parallel group may run concurrently only when the
 invoker declared it compatible. The next phase waits until every identity in the
 active group returns matching `delivered`; a blocked, failed, cancelled, missing,
 malformed, mismatched, or otherwise invalid transition stops the Mission.
@@ -72,8 +76,9 @@ a coordinator, or owns an independent implementation, review, or delivery path.
 
 ### One-Ticket ownership and role inheritance
 
-Each fresh Ticket coordinator is created only by `dispatch-tickets`, runs
-`orchestrate`, and owns exactly one Ticket end to end through the existing
+A human/invoker or context-rich parent may dispatch one fresh isolated Ticket
+coordinator directly for smaller work. Each coordinator runs `orchestrate` and
+owns exactly one explicitly authorized Ticket end to end through the existing
 acyclic graph:
 
 ```text
@@ -89,6 +94,12 @@ correction or confirmation rounds. Ticket internals and Prompt Audit passes
 remain sequential even when independent Tickets occupy a declared parallel
 group.
 
+The coordinator checks the selected Ticket's explicit authorization, live
+`PASS` or explicit `BYPASS`, scope, setup and actual execution capabilities. It
+does not authenticate its parent's role or provenance, inspect ancestors, or
+reject merely because its prompt has `role=user` or lacks a dispatcher/depth
+assertion. It never discovers or substitutes work.
+
 After selection, the current execution gate transfers the exact contract's
 in-scope decisions to the coordinator without another user gate. The coordinator
 resolves source-determined divergences and minor safe defaults. If authorized
@@ -99,9 +110,12 @@ blocked outcome rather than widening, guessing, or starting interactive setup.
 The standard dispatcher, coordinator, writer, and reviewer roles inherit the
 active provider, model, reasoning level, tools, and repository route unless an
 authorized caller explicitly overrides them. Role names define ownership, not
-reduced intelligence or capability. The hierarchy remains dispatcher at depth
-1, Ticket coordinator at depth 2, and non-delegating leaves at depth 3; there is
-no depth 4.
+reduced intelligence or capability. The standard managed hierarchy is caller
+(dispatcher when used) at depth 1, Ticket coordinator at depth 2, and
+non-delegating leaves at depth 3; there is no depth 4. The harness enforces
+actual tool capabilities and depth/child ceilings. Caller authority never
+relaxes them, and textual role or depth assertions cannot establish or override
+them. Unsupported execution capabilities remain blockers.
 
 The managed dispatcher/coordinator lineage does not require `wormhole` or
 `tmux-worker`. Both remain generic optional interactive transports outside that
@@ -137,6 +151,16 @@ preserving #50 as historical delivery evidence for the fresh-context boundary.
 It also supersedes delivered Spec #33's serial-only/no-parallel limitation while
 preserving that Spec as historical evidence for the initial dispatcher. Their
 historical delivery records are not rewritten.
+
+The maintainer's caller-authority correction in Issue #58 supersedes only the
+exclusive-dispatcher entry and mandatory parent-provenance interpretation of
+this ADR and delivered #55/#52 guidance. Their historical records remain
+untouched. One-Ticket isolation, live gates, non-transitive authorization,
+single-pass leaves, coordinator corrections, actual harness limits and all
+mechanical dispatcher boundaries when used remain in force. `implement` retains
+its existing dispatcher composition. This governance correction precedes the
+separately audited and authorized behavioral text delivery in #58; it is not a
+runtime bypass or a retry of the stopped Mission.
 
 This record establishes governing architecture before behavior changes. Issue
 #51, implementation, running Prompt Audits, dispatch behavior, releases,
