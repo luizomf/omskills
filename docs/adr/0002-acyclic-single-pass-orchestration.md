@@ -13,20 +13,73 @@ comprehension.
 
 ## Decision
 
+### Independent delivery dimensions and adaptive gate
+
+Delivery topology and maintainer availability are independent dimensions, not a
+fixed mode matrix. Topology is either Direct delivery by one responsible
+conversational agent or Mission topology for coordinated work. Availability is
+Assisted while the maintainer remains available for ordinary implementation
+Questions and Unattended when execution must rely on durable pre-resolved
+authority and stop at a genuine blocker.
+
+The responsible agent resolves only a materially unknown dimension at an
+adaptive Delivery mode gate before the first implementation mutation. Read-only
+inspection, investigation, and reproduction may precede the gate. A semantic
+statement that already establishes topology or availability is sufficient;
+there is no fixed questionnaire, magic wording, caller-ancestry check, or
+redundant confirmation.
+
+Direct Assisted delivery applies to an untracked request or exactly one selected
+Ticket when no real coordination is required. The confirmed conversation is its
+active contract, and the conversational responsible agent owns investigation,
+implementation, verification, review adjudication, corrections, and delivery.
+No Ticket, Agent Brief, readiness state, or Prompt Audit is required by default.
+Durable tracking is required when the active contract must survive the
+conversation. If accepted behavior materially changes existing governing
+authority, the agent updates the applicable Ticket, Spec, ADR, workflow,
+security, or other durable source before delivery.
+
+More than one selected Ticket always requires Mission topology. So does any work
+with real dependency, conflict, integration, shared-resource, or multiple-writer
+coordination. Several edits in one request do not become
+multiple Tickets merely because they touch multiple files. Mission topology does
+not imply that the maintainer is absent, and Assisted availability does not
+remove its planning, relation, capacity, integration, or delivery boundaries.
+An active Mission coordinator must leave untargeted root conversation and
+capacity-supported unrelated work responsive rather than monopolizing them by
+policy.
+
+Direct Assisted work may delegate bounded non-delegating research or
+investigation with narrow questions and compact evidence returns, while the
+responsible agent retains decisions and implementation. Independent
+investigations should start together when independence and active capacity are
+affirmatively established. Routine local inspection stays local when delegation
+would cost more context than it saves.
+
+Changing from Assisted to Unattended requires a new explicit gate. Before the
+transition, preserve recoverable current state, establish durable current
+contracts and resolved relations, obtain a current Prompt Audit `PASS` or
+explicit maintainer `BYPASS`, and receive explicit Mission authorization.
+Silence never changes availability. Once Unattended work starts, it completes
+within that authority or stops at a genuine blocker instead of opening ordinary
+interactive Questions.
+
 ### Ticket contract and execution gate
 
-The final Ticket Issue, including any explicitly incorporated tracker artifact,
-is the complete recoverable implementation contract. It contains or identifies
-every accepted outcome, scope boundary, required workflow or order, deliverable,
-acceptance criterion, relation, and completion condition. Conversations,
-handoffs, coordinator analysis, and audit transcripts contain no secret
-implementation requirement.
+For tracked work, the final Ticket Issue, including any explicitly incorporated
+tracker artifact, is the complete recoverable implementation contract. It
+contains or identifies every accepted outcome, scope boundary, required workflow
+or order, deliverable, acceptance criterion, relation, and completion condition.
+Conversations, handoffs, coordinator analysis, and audit transcripts contain no
+secret implementation requirement.
 
 A current Prompt Audit `PASS` or explicit maintainer `BYPASS` for that exact
-contract is an autonomous-execution eligibility gate, not Mission selection.
-Only explicit Mission authorization selects work. A material change to outcome,
-scope, workflow or order, deliverables, acceptance criteria, relations, or
-completion makes the prior status stale.
+contract is an Unattended-execution eligibility gate, not Mission selection.
+Only explicit Mission authorization selects Unattended work. Prompt Audit is not
+applicable to Assisted work by default, though the maintainer may request it for
+complex intent. A material change to outcome, scope, workflow or order,
+deliverables, acceptance criteria, relations, or completion makes the prior
+status stale.
 
 ### Terminal sequential Prompt Audit
 
@@ -44,8 +97,10 @@ never dispatches or implements.
 
 ### Frozen Mission plans and mechanical dispatch
 
-Mission authorization selects either one Ticket or one finite, non-empty,
-pre-resolved plan supplied by the invoker. Before dispatch, that plan contains
+When Mission topology is used, Mission authorization supplies one finite,
+non-empty, pre-resolved plan. For Unattended Direct delivery, it may instead
+select exactly one Ticket without requiring dispatcher composition. Before
+Mission dispatch, the plan contains
 fully qualified unique Ticket identities, ordered sequential phases, declared
 compatible parallel groups, blockers, and conflicts. A one-Ticket Mission is a
 one-item plan. The dispatcher validates and freezes the supplied topology; it
@@ -80,9 +135,10 @@ same root invocation, it composes the selected identity unchanged as a one-item
 Mission plan through `dispatch-tickets`. It never invokes `orchestrate`, creates
 a coordinator, or owns an independent implementation, review, or delivery path.
 
-### One-Ticket ownership and role inheritance
+### Managed one-Ticket ownership and role inheritance
 
-A human/invoker or context-rich parent may dispatch one fresh isolated Ticket
+When Mission topology or Unattended delivery uses the managed Ticket route, a
+human/invoker or context-rich parent may dispatch one fresh isolated Ticket
 coordinator directly for smaller work. Each coordinator runs `orchestrate` and
 owns exactly one explicitly authorized Ticket end to end through the existing
 acyclic graph:
@@ -100,18 +156,21 @@ correction or confirmation rounds. Ticket internals and Prompt Audit passes
 remain sequential even when independent Tickets occupy a declared parallel
 group.
 
-The coordinator checks the selected Ticket's explicit authorization, live
-`PASS` or explicit `BYPASS`, scope, setup and actual execution capabilities. It
-does not authenticate its parent's role or provenance, inspect ancestors, or
-reject merely because its prompt has `role=user` or lacks a dispatcher/depth
-assertion. It never discovers or substitutes work.
+The coordinator checks the selected Ticket's explicit authorization, scope,
+setup and actual execution capabilities and, for Unattended work, its live
+`PASS` or explicit `BYPASS`. It does not authenticate its parent's role or
+provenance, inspect ancestors, or reject merely because its prompt has
+`role=user` or lacks a dispatcher/depth assertion. It never discovers or
+substitutes work.
 
-After selection, the current execution gate transfers the exact contract's
-in-scope decisions to the coordinator without another user gate. The coordinator
-resolves source-determined divergences and minor safe defaults. If authorized
-sources cannot determine required behavior, external authority is unavailable,
-or required repository setup is missing during a headless run, it returns a
-blocked outcome rather than widening, guessing, or starting interactive setup.
+After Unattended selection, the current execution gate transfers the exact
+contract's in-scope decisions to the coordinator without another user gate. The
+coordinator resolves source-determined divergences and minor safe defaults. If
+authorized sources cannot determine required behavior, external authority is
+unavailable, or required repository setup is missing during a headless run, it
+returns a blocked outcome rather than widening, guessing, or starting
+interactive setup. In an Assisted Mission, a materially unresolved decision may
+instead return to the available maintainer.
 
 The standard dispatcher, coordinator, writer, and reviewer roles inherit the
 active provider, model, reasoning level, tools, and repository route unless an
@@ -129,9 +188,10 @@ lineage and own no Mission topology or cross-Ticket continuation.
 
 ### Exclusive candidates and delivery boundaries
 
-Every implementation Ticket, including one-item and integration Tickets, owns an
-exclusive worktree and branch. After authorization, live gate, setup, relations,
-exact-base and child-capability preflight succeeds, its coordinator establishes
+Every implementation Ticket handled by a Ticket coordinator, including one-item
+and integration Tickets, owns an exclusive worktree and branch. After
+authorization, live gate, setup, relations, exact-base, and child-capability
+preflight succeeds, its coordinator establishes
 and verifies that candidate before the sole writer starts. Preflight blockers
 remain `blocked`; operational setup and execution failures are `failed`. Unsafe
 reuse or collision never authorizes touching another owner's candidate.
@@ -164,6 +224,22 @@ that are safe and no longer needed; preserve unrelated, failed, cancelled, dirty
 or unintegrated work and required inputs, recording retention reasons. No blanket
 or forced cleanup, history rewrite or force-push is authorized.
 
+### Proportionate independent review
+
+Review follows authority and impact rather than file extension. Specs, ADRs,
+workflow, security, and other governing documents remain first-class behavior
+authority. Direct Assisted code or behavior changes and changes to that governing
+authority receive one fresh independent review. Purely editorial
+documentation may be self-reviewed. The reviewer receives the concise current
+contract, governing sources, complete candidate, and verification instructions,
+not the complete conversation by default. The responsible agent adjudicates and
+corrects findings; re-review is required only when corrections materially change
+the candidate.
+
+This Assisted review contract does not alter the managed Ticket route's isolated
+single-pass reviewer, coordinator-owned correction, exact-candidate capture, or
+verification requirements.
+
 ### External bounded observation
 
 Observation is separate from implementation and dispatch. An external observer
@@ -188,6 +264,29 @@ Prefer deleting redundant semantic assertions or abstractions over replacing
 them with another framework.
 
 ## Supersession and scope
+
+The accepted dual-axis architecture in Spec #61 and Issue #62 amends this ADR's
+universal autonomous-pipeline requirements only where they conflict: Direct
+Assisted work no longer requires a Ticket, Prompt Audit, dispatcher, separate
+Ticket coordinator, or writer, and Prompt Audit gates Unattended rather than
+Assisted execution. Mission topology is now selected by real coordination, not
+maintainer absence, and availability is resolved independently. This amendment
+preserves #52 and #58 as historical delivery evidence without rewriting their
+Issues, audit records, or delivery records.
+
+All unaffected guarantees remain in force: non-transitive authorization,
+terminal sequential Prompt Audit when applicable, frozen mechanical Mission
+dispatch, established safe parallelism and independent-investigation
+parallelism, actual capacity checks, phase barriers and sibling settlement,
+review independence, managed single-pass leaves and coordinator corrections,
+exclusive candidate isolation, exact commit capture, verification honesty,
+branch-artifact and combined-state integration boundaries, privacy, least
+privilege, external-resource ownership, recoverable retention, bounded
+observation, safe cleanup, and prohibitions on forced cleanup and history
+rewrites. This amendment adds no runtime service, retry, monitoring system,
+dynamic discovery, or concurrency claim. Downstream skill, catalog, runtime, and
+user-facing behavior changes remain separately authorized work in #63, #65, and
+#64.
 
 This decision supersedes Issue #50's audit-to-dispatch completion branch while
 preserving #50 as historical delivery evidence for the fresh-context boundary.

@@ -24,6 +24,10 @@ _Avoid_: spec, ticket, ADR, permanent documentation, implementation plan
 The durable planning authority describing a problem, intended behavior, constraints, and established design guidance. A **Spec** guides code only through smaller **Tickets** and is never itself an implementation unit.
 _Avoid_: PRD (use only when quoting external systems that call them PRDs), implementation ticket
 
+**Governing authority**:
+An accepted durable source that constrains behavior, including Specs, ADRs, workflow and security documentation, and other domain contracts. Authority and impact—not file extension—determine whether a change is behavioral and requires independent review.
+_Avoid_: editorial-only documentation, optional background, code-only authority
+
 **Triage role**:
 A canonical category or state label applied to a **Ticket** during triage. Category roles are `bug` and `enhancement`; state roles include `needs-triage` and `ready-for-agent`. Each role maps to a real label string in the **Issue tracker** via `docs/agents/triage-labels.md`.
 
@@ -32,10 +36,26 @@ A terminal sequential evidence workflow for one exact Ticket contract. The curre
 _Avoid_: implementation handoff, parallel audit passes, semantic test suite
 
 **Prompt audit status**:
-A durable execution-gate result attached to one exact contract in the **Issue tracker**. `PASS` means no material semantic divergence survived audit-coordinator adjudication and the Ticket fits one fresh agent context; `BYPASS` means a maintainer explicitly waived that audit for the exact contract and is never represented as `PASS`; `FAIL` means the audit did not establish equivalent comprehension or context fit. A current `PASS` or `BYPASS` makes the exact Ticket eligible for autonomous execution. It neither selects the Ticket nor grants **Mission authorization**. A material change to outcome, scope, workflow or order, deliverables, acceptance criteria, relations, or completion makes it stale.
+A durable execution-gate result attached to one exact contract in the **Issue tracker**. `PASS` means no material semantic divergence survived audit-coordinator adjudication and the Ticket fits one fresh agent context; `BYPASS` means a maintainer explicitly waived that audit for the exact contract and is never represented as `PASS`; `FAIL` means the audit did not establish equivalent comprehension or context fit. A current `PASS` or `BYPASS` makes the exact Ticket eligible for Unattended execution. It neither selects the Ticket nor grants **Mission authorization**. Prompt Audit is not applicable to Assisted work by default, but the maintainer may request it for complex intent. A material change to outcome, scope, workflow or order, deliverables, acceptance criteria, relations, or completion makes it stale.
+
+**Delivery topology**:
+The routing dimension resolved before the first implementation mutation. **Direct delivery** keeps one responsible conversational agent in end-to-end ownership. **Mission topology** coordinates multiple selected **Tickets** or work with real dependency, conflict, integration, shared-resource, or multiple-writer coordination. Topology is independent of **Maintainer availability**; several edits in one request do not become several Tickets merely because they touch several files.
+_Avoid_: autonomy level, fixed mode matrix, agent-count preference
+
+**Direct delivery**:
+The topology for an untracked request or exactly one selected **Ticket** when no real coordination requires a **Mission**. In Assisted work, the responsible agent owns investigation, implementation, verification, review adjudication, corrections, and delivery; the confirmed conversation is the active contract. Durable tracking is required when that contract must survive the conversation or materially changes existing **Governing authority**. The agent may use bounded non-delegating research or investigation with narrow questions and compact evidence, but retains decisions and implementation.
+_Avoid_: unreviewed work, implicit multi-writer coordination, mandatory dispatcher route
+
+**Maintainer availability**:
+The delivery dimension that records whether the maintainer remains available for ordinary implementation **Questions**. **Assisted** means available; **Unattended** means execution must complete within durable pre-resolved authority or stop at a genuine blocker. Availability is independent of **Delivery topology**, and silence never changes it.
+_Avoid_: direct versus Mission topology, inferred absence, fixed mode matrix
+
+**Delivery mode gate**:
+The adaptive gate before the first implementation mutation. Read-only inspection, investigation, and reproduction may precede it. The responsible agent asks only for a topology or availability dimension that remains materially unresolved; an explicit semantic choice satisfies that dimension without magic wording, caller ancestry, role labels, or redundant confirmation.
+_Avoid_: fixed questionnaire, provenance check, post-mutation confirmation
 
 **Mission authorization**:
-Explicit user or invoker direction that selects one Ticket or supplies one finite, non-empty, pre-resolved **Mission plan** for autonomous delivery. Readiness and a valid **Prompt audit status** are eligibility gates, not selection. Authorization is non-transitive: findings and newly imagined work outside the selected identities are reported, not converted into implementation.
+Explicit user or invoker direction that selects one Ticket or supplies one finite, non-empty, pre-resolved **Mission plan**. It is required for Unattended delivery and authorizes execution there without ordinary interactive decisions; when Mission topology is used, it supplies the plan regardless of maintainer availability. Readiness and a valid **Prompt audit status** are eligibility gates, not selection. Authorization is non-transitive: findings and newly imagined work outside the selected identities are reported, not converted into implementation.
 _Avoid_: ready-work query, discovery request, open-ended mandate
 
 **Mission plan**:
@@ -43,7 +63,7 @@ The invoker-supplied execution topology for a Mission: fully qualified unique Ti
 _Avoid_: dispatcher-built queue, dynamic work graph, child-proposed next work
 
 **Mission envelope**:
-The authority boundary established by **Mission authorization**: the exact frozen **Mission plan**, scope, deferrals, and completion boundary for one autonomous run. When used, the **Ticket dispatcher** alone owns its compact mechanical routing state and outcomes. Each fresh **Ticket coordinator** receives exactly one Ticket identity and resolves that Ticket's governing sources and live execution gate.
+The authority boundary established by **Mission authorization**: the exact frozen **Mission plan**, scope, deferrals, and completion boundary for one coordinated run. When used, the **Ticket dispatcher** alone owns its compact mechanical routing state and outcomes. Each fresh **Ticket coordinator** receives exactly one Ticket identity and resolves that Ticket's governing sources and applicable live execution gate.
 _Avoid_: adjacent-work authorization, child-selected work
 
 **Ticket dispatcher**:
@@ -52,22 +72,22 @@ _Avoid_: Ticket coordinator, implementation worker, query resolver, semantic sup
 
 **One-Ticket convenience entry**:
 The user-only `implement` skill. It accepts exactly one explicitly authorized Ticket and, in the same root invocation, composes that identity unchanged as a one-item **Mission plan** through `dispatch-tickets`. It never creates a coordinator, invokes `orchestrate`, or owns implementation, review, or delivery.
-_Avoid_: direct implementation path, root coordinator, orchestrate alias
+_Avoid_: same-context implementation by `implement`, root coordinator, orchestrate alias
 
 **Ticket coordinator**:
-The fresh isolated agent running `orchestrate` for exactly one explicitly authorized Ticket. A human/invoker or context-rich parent may dispatch it directly for smaller work. It validates the selected Ticket's explicit authorization, live execution gate, scope, required repository setup and actual execution capabilities, not its parent's role or provenance; it neither inspects ancestors nor rejects a `role=user` prompt or missing dispatcher/depth assertion. It reads every governing source, owns writer and reviewer delegation, performs surviving corrections and verification, completes delivery and tracker obligations, and returns one compact **Ticket outcome**. Missing required repository setup during a headless Ticket run produces a blocker; the coordinator does not open interactive setup through the dispatcher.
+The fresh isolated agent running `orchestrate` for exactly one explicitly authorized Ticket in the managed Mission or Unattended route. A human/invoker or context-rich parent may dispatch it directly for smaller work. It validates the selected Ticket's explicit authorization, live execution gate when applicable, scope, required repository setup and actual execution capabilities, not its parent's role or provenance; it neither inspects ancestors nor rejects a `role=user` prompt or missing dispatcher/depth assertion. It reads every governing source, owns writer and reviewer delegation, performs surviving corrections and verification, completes delivery and tracker obligations, and returns one compact **Ticket outcome**. Missing required repository setup during a headless Ticket run produces a blocker; the coordinator does not open interactive setup through the dispatcher.
 _Avoid_: Ticket dispatcher, sequence owner, leaf writer, leaf reviewer
 
 **Ticket outcome**:
-The single-line JSON terminal envelope returned as a **Ticket coordinator**'s final assistant message. Matching `delivered` is the only result that satisfies an identity in the frozen **Mission plan**; `blocked`, `failed`, or `cancelled` stop the Mission. It contains only the Ticket identity, status, an essential durable reference when available, and one short blocker when applicable; detailed evidence remains in the tracker, repository, and coordinator session. A missing, malformed, mismatched, duplicate, truncated, wrong-path, or unexpected outcome fails closed.
+The single-line JSON terminal envelope returned as a **Ticket coordinator**'s final assistant message. Matching `delivered` is the only result that satisfies the selected Ticket and, in Mission topology, its identity in the frozen **Mission plan**; `blocked`, `failed`, or `cancelled` stop that delivery. It contains only the Ticket identity, status, an essential durable reference when available, and one short blocker when applicable; detailed evidence remains in the tracker, repository, and coordinator session. A missing, malformed, mismatched, duplicate, truncated, wrong-path, or unexpected outcome fails closed.
 _Avoid_: implementation report, review summary, diff, handoff transcript
 
 **Mission complete**:
-The terminal state in which every Ticket selected by the **Mission authorization** is delivered and the Mission's completion boundary is satisfied. It describes the global mission, not merely the current agent turn or one dispatched worker.
+The terminal state in Mission topology in which every Ticket selected by the **Mission authorization** is delivered and the Mission's completion boundary is satisfied. It describes the global Mission, not merely the current agent turn or one dispatched worker.
 _Avoid_: turn complete, worker accepted, work started
 
 **Safe turn boundary**:
-A state in which the current agent turn may end without abandoning authorized work. It exists only after **Mission complete**, at a genuine blocker, at an explicit user gate, or under an **Accepted continuation mechanism**.
+A state in which the current agent turn may end without abandoning authorized work. It exists only after Direct delivery or the Mission is complete, at a genuine blocker, at an explicit user gate, or under an **Accepted continuation mechanism**.
 _Avoid_: work started, context restored, intent stated
 
 **Accepted continuation mechanism**:
@@ -96,26 +116,35 @@ _Avoid_: prompt wording test, regex comprehension proof, duplicate prose impleme
 - A **Spec** is broken down into many **Tickets** and is never implemented directly
 - A triaged **Ticket** carries one category **Triage role** and one state **Triage role**
 - The final Ticket Issue is the recoverable implementation contract; conversations and audit transcripts carry no hidden authority
-- A code or behavior-changing **Ticket** becomes `ready-for-agent` only with a current `PASS` or explicit `BYPASS` **Prompt audit status** for its exact contract
-- `ready-for-agent` and a current `PASS` or `BYPASS` make a Ticket eligible; only **Mission authorization** selects it for execution
-- **Prompt Audit** gathers interpreter and reviewer evidence sequentially, records its status, and ends without dispatch or implementation
+- **Delivery topology** and **Maintainer availability** are resolved independently at the adaptive **Delivery mode gate**, without a fixed matrix or fixed questionnaire
+- Direct Assisted work may use an untracked request or exactly one selected **Ticket**; its confirmed conversation is the active contract, with no Ticket, Agent Brief, readiness state, or Prompt Audit required by default unless the contract must survive the conversation
+- Direct Assisted work that materially changes existing **Governing authority** updates the applicable Ticket, **Spec**, ADR, workflow, security, or other durable source before delivery
+- More than one selected Ticket, or real dependency, conflict, integration, shared-resource, or multiple-writer coordination, requires **Mission topology**
+- A code or behavior-changing **Ticket** becomes `ready-for-agent` for Unattended execution only with a current `PASS` or explicit `BYPASS` **Prompt audit status** for its exact contract
+- `ready-for-agent` and a current `PASS` or `BYPASS` make a Ticket eligible for Unattended execution; only **Mission authorization** selects it
+- **Prompt Audit** is optional on request for Assisted work and remains mandatory for Unattended execution; it gathers interpreter and reviewer evidence sequentially, records its status, and ends without dispatch or implementation
 - A **Ticket** may retain multiple historical **Prompt audit statuses**, but only its newest applicable status governs that exact unchanged contract
 - A human/invoker or context-rich parent may dispatch one fresh **Ticket coordinator** directly for smaller work; the **Ticket dispatcher** remains the thin route for long finite multi-Ticket Missions, with its mechanical authority boundaries unchanged when used
 - The **One-Ticket convenience entry** retains its composition of a one-Ticket selection as a one-item frozen **Mission plan** through the dispatcher in the same root invocation
 - The invoker, not the dispatcher, supplies and authorizes every identity, sequential phase, compatible parallel group, blocker, and conflict before dispatch
 - Ticket breakdown approval includes complete relations, sequential phases and explicitly compatible parallel groups, accounting for shared resources outside Git. When independence is not established, planning proposes serial work; dispatch never silently serializes an authorized group.
-- Every implementation Ticket, including one-item and integration Tickets, owns an exclusive worktree and branch established by its coordinator after preflight and before its writer. All candidate work, review, corrections and checks share that path, branch and fixed base, with exact writer, review and final commits.
+- Every implementation Ticket handled by a **Ticket coordinator**, including one-item and integration Tickets, owns an exclusive worktree and branch established after preflight and before its writer. All candidate work, review, corrections and checks share that path, branch and fixed base, with exact writer, review and final commits.
 - Parallel members deliver verified, committed, pushed branch artifacts, not implicit merges to the shared target. Each group has a preplanned ordinary integration Ticket blocked by every member; it identifies predecessors, intended base/target and combination requirements. Other Tickets explicitly state their normal integration target.
 - Integration coordinators verify every predecessor's durable tracker evidence, repository/remote branch reference and exact full commit before combining those results in their own candidate. Combined-state review, verification and durable input-to-result evidence precede dependent work.
 - Coordinators own candidate disposition. Branch artifacts and recoverable work remain until delivery and all integration consumers no longer need them; cleanup covers only positively identified, safe, no-longer-needed Ticket resources. Unrelated, failed, cancelled, dirty and unintegrated work stays recoverable, with retention reasons recorded.
 - An N-member parallel group requires affirmative evidence of the active harness's root concurrency bound and same-batch start support in the current delivery mode. Child-only ceilings do not prove root capacity; unknown or exceeded capacity rejects before any Ticket starts, without splitting, serialization, retries or runtime changes.
 - When used, the **Ticket dispatcher** starts one fresh `orchestrate` **Ticket coordinator** per runnable identity according to the frozen topology; parallel coordinators exist only in a declared compatible group, and the next phase waits for the active group to be delivered
-- Once a Ticket is selected, a current `PASS` or `BYPASS` transfers its in-scope implementation decisions to its **Ticket coordinator** without creating another user decision gate
+- Once a Ticket is selected for Unattended execution, a current `PASS` or `BYPASS` transfers its in-scope implementation decisions to its **Ticket coordinator** without creating another user decision gate
 - A **Ticket coordinator** owns complete delivery of exactly one Ticket through the acyclic `Ticket coordinator -> writer -> Ticket coordinator -> reviewer -> Ticket coordinator` graph
 - Writer and reviewer are fresh, isolated, non-delegating, single-pass leaves; the **Ticket coordinator** adjudicates findings, performs surviving corrections directly, verifies, integrates, and decides the one-Ticket outcome
-- Standard caller, coordinator, writer, and reviewer roles follow **Role inheritance** and actual harness capability/depth ceilings; direct caller authority does not permit same-context implementation, work discovery/substitution, or delegating leaves
+- Standard caller, coordinator, writer, and reviewer roles follow **Role inheritance** and actual harness capability/depth ceilings; direct caller authority does not permit same-context implementation in the managed route, work discovery/substitution, or delegating leaves
+- In Direct Assisted work, the responsible conversational agent may implement in its current context; bounded investigation leaves do not share implementation ownership
+- Independent Assisted investigations should use available parallel capacity together when independence and capacity are established; routine local inspection stays local when delegation would cost more context than it saves
+- Assisted code or behavior changes and changes to Specs, ADRs, workflow, security, or other governing authority receive one fresh independent review. Purely editorial documentation may be self-reviewed. Review receives the concise current contract, governing sources, complete candidate, and verification instructions; material corrections require re-review
 - Explicitly targeted steering may reach one active coordinator literally without changing the plan; untargeted conversation remains at the dispatcher root
 - Text or documentation work that cannot change behavior does not require a **Prompt audit status**
+- Moving from Assisted to Unattended work requires a new explicit gate: preserve recoverable current state, establish durable current contracts and resolved relations, obtain a current `PASS` or explicit `BYPASS`, and receive explicit **Mission authorization**. Silence never authorizes the transition
+- Once Unattended work starts, it completes within the durable contract or stops at a genuine blocker rather than opening ordinary interactive Questions
 - The dispatcher does not inspect or mediate missing setup; a headless **Ticket coordinator** returns a blocker when required repository configuration is unavailable
 - An interactive dispatcher turn may end after the harness accepts its asynchronous coordinator dispatch as an **Accepted continuation mechanism**; **Mission complete** still requires a matching `delivered` outcome for every selected identity
 - A **Mission observer** is separate from implementation and routing, and bounded observation never becomes persistent workflow state or a continuation guarantee
