@@ -207,7 +207,12 @@ Planning declares each delivery boundary. Parallel members deliver verified,
 committed, pushed branch artifacts, not an implicit shared-target merge or group
 completion. Every parallel group has a preplanned ordinary integration Ticket
 blocked by all members, naming predecessor identities, intended base/target and
-combination requirements. Other Tickets state their normal integration target.
+combination requirements. Other Tickets state their normal integration target
+and whether delivery uses a pull request. Pull requests remain optional unless
+repository policy or the accepted request requires one; Direct Assisted commits
+to an allowed target do not acquire a branch or pull-request requirement merely
+from this decision.
+
 The integration coordinator resolves and verifies each predecessor's durable
 tracker delivery evidence, repository/remote branch reference and exact full
 commit SHA before combining those exact results in its own candidate through
@@ -215,14 +220,21 @@ the same writer/reviewer graph. Missing, mismatched or unresolved inputs stop
 safe integration; floating tips, child prose and dispatcher inspection cannot
 replace evidence. Only authorized conflicts are resolved. Complete combined
 review from the fixed base, final verification and durable input-to-result
-commit evidence precede dependent work.
+commit evidence precede dependent work. Whenever a pull request is used,
+including non-member and one-item delivery, squash-merge it into the declared
+target and durably map every exact source commit to the resulting target commit
+before calling the Ticket delivered.
 
 The coordinator owns resource disposition. Retain branch artifacts and
 recoverable work until declared delivery and all integration consumers no longer
-need them. Cleanup is limited to positively identified Ticket-owned resources
-that are safe and no longer needed; preserve unrelated, failed, cancelled, dirty
-or unintegrated work and required inputs, recording retention reasons. No blanket
-or forced cleanup, history rewrite or force-push is authorized.
+need them. After verifying delivery on the target, remove every positively
+identified clean Ticket-owned worktree and delete its verified-delivered local
+and remote source branches. A squash-delivered source is intentionally not a
+target ancestor; its verified pull-request result and durable source-to-target
+mapping authorize local deletion despite that expected lack of ancestry.
+Preserve unrelated, failed, cancelled, dirty, undelivered, or still-consumed work
+and required inputs, recording retention reasons. No blanket cleanup, history
+rewrite or force-push is authorized.
 
 ### Proportionate independent review
 

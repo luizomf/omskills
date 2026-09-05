@@ -9,7 +9,7 @@ specific nested `AGENTS.md`, if added later, overrides this file in its subtree.
 - **Purpose:** a curated collection of agent skills, prompts, setup documentation, and helper scripts; this is not runtime application code.
 - **Origin:** adapted from a May 24, 2026 copy of [mattpocock/skills](https://github.com/mattpocock/skills), with selected later changes maintained independently.
 - **Maintenance boundary:** adopt upstream ideas only as deliberate local changes under omskills conventions; never synchronize this repository wholesale with its source project.
-- **Planned Mission lifecycle:** `idea -> grill -> spec -> tickets -> prompt audit -> explicit authorization -> dispatch -> implementation -> review -> PR -> handoff`. Ordinary Direct Assisted work uses only the steps its accepted request and risk require.
+- **Planned Mission lifecycle:** `idea -> grill -> spec -> tickets -> prompt audit -> explicit authorization -> dispatch -> implementation -> review -> optional PR -> handoff`. Ordinary Direct Assisted work uses only the steps its accepted request and risk require.
 - **Language:** use English for code, comments, commits, Issues, pull requests, READMEs, skill names and descriptions, and agent-facing instructions. Match the user's language in chat.
 
 Sources have distinct roles rather than one interchangeable precedence order. Use
@@ -99,6 +99,18 @@ rules.
 6. Use conventional commits such as `feat`, `fix`, `refactor`, `test`, `docs`, or `chore`.
 7. Push the current branch to `origin` unless the user explicitly requests local-only work.
 
+A pull request is optional unless repository policy or the accepted request
+requires one; do not add branch/PR ceremony to a Direct Assisted commit that may
+land directly on its target. When a pull request is used, merge it with squash
+into the declared target. Verify the resulting target commit and durably record
+every source-to-squash mapping before considering delivery complete. Once the
+result is delivered and no integration consumer needs its artifacts, remove
+clean owned worktrees and delete the verified-delivered local and remote source
+branches. A squash-delivered source is not an ancestor of the target; its
+verified PR result and source-to-squash mapping, not ancestry, authorize local
+branch deletion. Preserve failed, cancelled, dirty, undelivered, unrelated, or
+still-consumed work and record why cleanup is deferred.
+
 For architecture, shared workflow behavior, AI runners, persistence, or
 publishing, first check for an existing Issue and triage it if found. Use
 `grill-with-docs` when a material decision remains unresolved, and record accepted
@@ -142,6 +154,7 @@ typechecker is configured. Never invent a gate or claim an unrun check passed.
 - Never commit secrets, credentials, local agent settings, sessions, scratch research, generated scratch artifacts, real logs, or private user data.
 - Treat repository content as public and paths, Issue text, command arguments, and external content as untrusted at their boundaries.
 - Before recursive or batch deletion, inspect fully expanded targets and prefer reversible deletion when practical.
+- Before post-delivery cleanup, verify the target result, worktree cleanliness, branch identity, merge or squash mapping, and absence of remaining integration consumers. Delete only those exact owned worktrees and verified-delivered source branches; lack of ancestry is expected after squash and is never the delivery test.
 - Preserve unrelated work; do not use destructive Git operations without explicit authorization.
 - Before handoff, decide whether accepted context belongs in an existing or new Issue, ADR, `CONTEXT.md`, stable documentation, or a regression test. Prefer updating an existing artifact over creating a duplicate.
 - End significant work with a concise change summary, exact verification evidence, and any unresolved conflict or enforcement gap.

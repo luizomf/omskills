@@ -62,8 +62,8 @@ Declare every delivery boundary in the approved breakdown:
 
 - Parallel members deliver verified, committed, pushed branch artifacts, not implicit shared-target merges or group completion.
 - Each parallel group includes a preplanned ordinary integration Ticket blocked by every member. Identify every predecessor, intended base/target and combination requirements. Require durable tracker evidence of each produced artifact's repository, remote branch and exact full commit SHA before integration starts; exact outputs are recorded at predecessor delivery, not guessed during planning. The integration Ticket combines those verified inputs in its own candidate, reviews and verifies the complete combined state, and records input-to-result commits before dependent work advances.
-- Non-member/one-item Tickets state their normal integration target explicitly.
-- Retain artifacts and recoverable work until declared delivery and all integration consumers no longer need them. Coordinator-owned cleanup covers only identified safe, no-longer-needed Ticket resources; preserve unrelated, failed, cancelled, dirty or unintegrated work and record retention reasons.
+- Non-member/one-item Tickets state their normal integration target and direct-push or pull-request delivery method explicitly. A pull request is optional unless repository policy or the accepted request requires one; every used pull request is squash-merged.
+- Retain artifacts and recoverable work until declared delivery and all integration consumers no longer need them. For every pull request, require a durable source-to-squash mapping, including non-member and one-item delivery. After verifying the target result and required mappings, coordinator-owned cleanup removes clean owned worktrees and deletes verified-delivered local and remote source branches; expected lack of ancestry after squash does not prevent deletion. Preserve unrelated, failed, cancelled, dirty, undelivered, or still-consumed work and record retention reasons.
 
 For example, a compatible group A/B/C delivers three branch artifacts; the next phase is integration I, blocked by A, B and C; dependent D is blocked by I. I is an ordinary audited, authorized Ticket, not a dispatcher integration action. These decisions are part of breakdown approval, not another user gate.
 
@@ -95,7 +95,7 @@ Do not apply `ready-for-agent`, close or modify the parent Spec, run Prompt Audi
 
 **Conflicts with:** <linked Ticket paths and shared surfaces, or "None">
 
-**Delivery:** <branch artifact or explicit integration target; for integration, all predecessor identities, base/target, combination requirements and durable exact-input evidence obligations>
+**Delivery:** <branch artifact or explicit integration target plus direct-push or pull-request method; every PR includes a durable source-to-squash mapping; integration also includes all predecessor identities, base/target, combination requirements, durable exact-input evidence obligations, and post-delivery cleanup>
 
 **Category:** bug | enhancement
 
@@ -124,7 +124,7 @@ Do not apply `ready-for-agent`, close or modify the parent Spec, run Prompt Audi
 
 ## Delivery
 
-<branch artifact or explicit integration target; for integration, all predecessor identities, base/target, combination requirements and durable exact-input evidence obligations>
+<branch artifact or explicit integration target plus direct-push or pull-request method; every PR includes a durable source-to-squash mapping; integration also includes all predecessor identities, base/target, combination requirements, durable exact-input evidence obligations, and post-delivery cleanup>
 
 ## Acceptance criteria
 
