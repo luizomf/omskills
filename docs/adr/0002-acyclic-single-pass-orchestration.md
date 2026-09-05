@@ -57,10 +57,16 @@ state, coordinator references, cancellation intent, and Ticket outcomes when
 used. It provides thin dispatch for long finite multi-Ticket Missions, not
 exclusive permission to start every coordinator. It starts one fresh
 `orchestrate` coordinator for every identity runnable under the frozen topology.
-A parallel group may run concurrently only when the
-invoker declared it compatible. The next phase waits until every identity in the
-active group returns matching `delivered`; a blocked, failed, cancelled, missing,
-malformed, mismatched, or otherwise invalid transition stops the Mission.
+An N-member parallel group requires invoker-declared compatibility, including
+shared resources outside Git, and affirmative evidence of the active harness's
+root concurrency bound and same-batch start capability in the current delivery
+mode. Child-only ceilings or an absent exposed bound do not establish root
+capacity. Unknown or unsupported capacity rejects before any Ticket starts;
+dispatch never serializes, splits, retries or changes runtime limits to fit it.
+The next phase waits until every identity in the active group returns matching
+`delivered`; a blocked, failed, cancelled, missing, malformed, mismatched, or
+otherwise invalid transition stops new dispatch. Every accepted sibling still
+settles and retains its valid outcome, without reviving the stopped Mission.
 
 Explicitly targeted steering may be forwarded literally to one active
 coordinator. It cannot change the plan or select an adjacent Ticket. Untargeted
@@ -120,6 +126,43 @@ them. Unsupported execution capabilities remain blockers.
 The managed dispatcher/coordinator lineage does not require `wormhole` or
 `tmux-worker`. Both remain generic optional interactive transports outside that
 lineage and own no Mission topology or cross-Ticket continuation.
+
+### Exclusive candidates and delivery boundaries
+
+Every implementation Ticket, including one-item and integration Tickets, owns an
+exclusive worktree and branch. After authorization, live gate, setup, relations,
+exact-base and child-capability preflight succeeds, its coordinator establishes
+and verifies that candidate before the sole writer starts. Preflight blockers
+remain `blocked`; operational setup and execution failures are `failed`. Unsafe
+reuse or collision never authorizes touching another owner's candidate.
+
+Writer, reviewer, coordinator corrections and verification share the candidate
+path, branch and fixed base. The writer returns its exact committed HEAD; the
+coordinator inspects and fixes the complete review HEAD; review captures that
+exact range; final checks record the final SHA. Unexpected branch/HEAD drift or
+incomplete capture cannot count as review. The caller checkout stays untouched
+by candidate work, and unrelated changes are preserved during integration.
+
+Planning declares each delivery boundary. Parallel members deliver verified,
+committed, pushed branch artifacts, not an implicit shared-target merge or group
+completion. Every parallel group has a preplanned ordinary integration Ticket
+blocked by all members, naming predecessor identities, intended base/target and
+combination requirements. Other Tickets state their normal integration target.
+The integration coordinator resolves and verifies each predecessor's durable
+tracker delivery evidence, repository/remote branch reference and exact full
+commit SHA before combining those exact results in its own candidate through
+the same writer/reviewer graph. Missing, mismatched or unresolved inputs stop
+safe integration; floating tips, child prose and dispatcher inspection cannot
+replace evidence. Only authorized conflicts are resolved. Complete combined
+review from the fixed base, final verification and durable input-to-result
+commit evidence precede dependent work.
+
+The coordinator owns resource disposition. Retain branch artifacts and
+recoverable work until declared delivery and all integration consumers no longer
+need them. Cleanup is limited to positively identified Ticket-owned resources
+that are safe and no longer needed; preserve unrelated, failed, cancelled, dirty
+or unintegrated work and required inputs, recording retention reasons. No blanket
+or forced cleanup, history rewrite or force-push is authorized.
 
 ### External bounded observation
 
