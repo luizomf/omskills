@@ -75,9 +75,9 @@ Choose delivery from the current Pi mode:
 - Interactive mode: use `delivery: "async"` for every call. Acceptance supplies each owner-scoped coordinator ID while the root remains responsive.
 - Print mode: use `delivery: "direct"` for every call. Each call remains pending through its bounded terminal result and emits no later pong.
 
-Issue all N calls for a parallel phase together in the same assistant tool-call batch in the selected mode. Do not wait for any acceptance or result before issuing the other declared starts. Any start rejection stops the Mission and records `dispatch-<reason>` for that identity. Track every accepted call in the batch, start nothing else, and allow every accepted sibling to settle normally before the final stop report. Do not retry a rejected start.
+Issue all N calls for a parallel phase together in the same assistant tool-call batch in the selected mode. Do not wait for any acceptance or result before issuing the other declared starts. Any start rejection stops the Mission and records `dispatch-<reason>` for that identity. Track every accepted call in the batch, start no other coordinator from this Mission, and allow every accepted sibling to settle normally before the final stop report. Do not retry a rejected start.
 
-Capture each accepted coordinator ID and any native child session reference. No identity outside the active phase may start, and the next phase remains closed while any accepted coordinator in this phase is unsettled.
+Capture each accepted coordinator ID and any native child session reference. No identity from this Mission outside the active phase may start, and the next phase remains closed while any accepted coordinator in this phase is unsettled.
 
 In interactive mode, report the accepted start batch and end the response without waiting, sleeping, polling, listing subagents, or doing dependent work. In print mode, emit no interim report while direct calls are pending.
 
@@ -118,7 +118,7 @@ A mode-correct pong proves that asynchronous runtime has closed even when its en
 
 If a wrong-path event names one accepted coordinator but does not prove it closed, call `subagent_interrupt` once for that coordinator solely for managed-lineage cleanup and consume its terminal path before marking it settled. That cleanup has no cancellation intent and remains failed even if its terminal outcome is `interrupted`. An unexpected or stale ID settles none of the active coordinators; record the transport failure and let every accepted coordinator settle through its own path. Do not interrupt accepted siblings. Never discard an active ID before its own terminal settlement, call `subagent_continue`, inspect a native session, sleep, poll, or use a status/list operation.
 
-After any failure or non-delivered result, launch nothing new. Continue consuming only the already accepted active phase results. Preserve every sibling's mechanically valid compact outcome even though that outcome cannot restart or complete the stopped Mission.
+After any failure or non-delivered result, launch no new coordinator from this Mission. Continue consuming only the already accepted active phase results. Preserve every sibling's mechanically valid compact outcome even though that outcome cannot restart or complete the stopped Mission.
 
 This step is complete only when a running Mission has all active phase coordinators settled for transition, or a stopping Mission has every coordinator accepted before the stop mechanically settled.
 
