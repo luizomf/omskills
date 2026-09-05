@@ -58,7 +58,7 @@ These domain and ADR writes remain inline interview behavior under their own gat
 
 Begin completion only when the recomputed Question frontier is genuinely empty because no unresolved Question or unresolved fact could materially change the plan. An empty frontier caused by an unresolved prerequisite is not completion.
 
-For implementation-bound work, include known dependencies, conflicts, shared-resource constraints, and integration decisions in the shared understanding. Leave the phase proposal to `to-tickets` during breakdown approval.
+For implementation-bound work, include known dependencies, conflicts, shared resources outside Git, exclusive candidates for every Ticket, and delivery/integration decisions in the shared understanding. Distinguish parallel branch artifacts from combined-target delivery, durable exact predecessor inputs and retention through all consumers. Leave complete phases and a preplanned ordinary integration Ticket blocked by every parallel member to `to-tickets` during breakdown approval.
 
 Use these two gates in order:
 

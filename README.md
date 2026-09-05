@@ -22,7 +22,7 @@ The skills act as checkpoints: clarify before planning, document before ticketin
 
 ### Runtime Relationship with ompi
 
-This collection has no package or checkout dependency on [ompi](https://github.com/luizomf/ompi), and many skills remain usable in any compatible coding-agent harness. However, the advanced `implement` -> `dispatch-tickets` -> `orchestrate` workflow depends on isolated subagents, bounded nesting, direct and asynchronous delivery, capability inheritance, and managed cancellation semantics currently implemented and validated by ompi. Using that workflow outside ompi requires a harness that provides the same contract. Its Ticket identity format is currently `owner/repository#integer`; local Markdown paths and nested GitLab namespaces are not supported by this delivery route, even though planning and triage support those trackers.
+This collection has no package or checkout dependency on [ompi](https://github.com/luizomf/ompi), and many skills remain usable in any compatible coding-agent harness. However, the advanced `implement` -> `dispatch-tickets` -> `orchestrate` workflow depends on isolated subagents, bounded nesting, direct and asynchronous delivery, capability inheritance, and managed cancellation semantics currently implemented and validated by ompi. Using that workflow outside ompi requires a harness that provides the same contract. A human/invoker or context-rich parent may also dispatch one fresh isolated `orchestrate` coordinator directly for smaller work; this still requires explicit selected-Ticket authorization, live gates and actual child capabilities, not parent provenance or role/depth assertions. These texts prescribe prompt obligations, not runtime guarantees. Parallel groups require affirmative active ROOT capacity and same-batch start evidence in the current mode; child limits or an absent bound cannot establish capacity. Its Ticket identity format is currently `owner/repository#integer`; local Markdown paths and nested GitLab namespaces are not supported by this delivery route, even though planning and triage support those trackers.
 
 The relationship also runs in the other direction: ompi's skill-enabled profiles consume selected skills from this repository. Each repository remains independently installed and maintained; neither checkout is synchronized from the other.
 
@@ -43,7 +43,9 @@ Before asking an agent to "build it", classify the moment:
 - Need to pause without losing context: `/handoff`
 - Need a fresh agent window that retires the old Pi after transfer: `/wormhole`
 
-For `/implement`, select one fully qualified Ticket and confirm that its external blockers and conflicts are resolved; the convenience entry does not inspect the tracker.
+For `/implement`, select one fully qualified Ticket and confirm that its external blockers and conflicts are resolved; the convenience entry does not inspect the tracker. Direct dispatch of one fresh coordinator is also allowed; when `/dispatch-tickets` is used, its root remains strictly mechanical.
+
+Every implementation Ticket owns an exclusive coordinator-established worktree and branch; writer, reviewer, corrections and checks share its exact candidate/base/HEAD handoffs. Approved parallel plans include an ordinary integration Ticket blocked by every member. Members deliver verified pushed branch artifacts with durable repository/remote branch/full-SHA tracker evidence; integration delivers the verified combined state to its declared target before dependent work. Other Tickets state their normal target explicitly. Retain artifacts and recoverable work until delivery and all integration consumers no longer need them; cleanup never discards unrelated, failed, cancelled, dirty or unintegrated work.
 
 The core habit is to ask: "Is this clear enough to become code?"
 
@@ -130,7 +132,7 @@ By default, the script writes to `~/.agents/skills`, the shared user-level skill
 OMSKILLS_DEST=/tmp/omskills-test ./scripts/link-skills.sh
 ```
 
-Active skills are installed by the plugin independently of discovery state. Supporting harnesses include agent-discoverable skills in the model's system context, while active user-only skills remain installed without permanent context load. `design`, `teach`, `dispatch-tickets`, `implement`, and `orchestrate` are the current active user-only skills. Select `design`, `teach`, `dispatch-tickets`, or `implement` deliberately; `orchestrate` is loaded explicitly only by the dispatcher. The groupings below describe the selection and composition path, not discovery status.
+Active skills are installed by the plugin independently of discovery state. Supporting harnesses include agent-discoverable skills in the model's system context, while active user-only skills remain installed without permanent context load. `design`, `teach`, `dispatch-tickets`, `implement`, and `orchestrate` are the current active user-only skills. Select `design`, `teach`, `dispatch-tickets`, or `implement` deliberately; `orchestrate` is loaded explicitly in a fresh coordinator by an authorized direct caller or the dispatcher. The groupings below describe the selection and composition path, not discovery status.
 
 2. In each repo that will consume these skills, run:
 
@@ -175,9 +177,9 @@ For mature projects, the eligible Ticket set should favor small, vertical, verif
 - **[dispatch-tickets](./skills/engineering/dispatch-tickets/SKILL.md)**: dispatches one finite pre-resolved sequential/parallel Mission plan from the canonical minimal root.
 - **[implement](./skills/engineering/implement/SKILL.md)**: composes one audited, Mission-authorized Ticket as a one-item Mission through `dispatch-tickets`.
 
-**Dispatcher-composed**
+**Fresh-coordinator execution**
 
-- **[orchestrate](./skills/engineering/orchestrate/SKILL.md)**: runs only as a fresh one-Ticket coordinator created by `dispatch-tickets` and owns one writer/reviewer delivery graph.
+- **[orchestrate](./skills/engineering/orchestrate/SKILL.md)**: runs as a fresh one-Ticket coordinator dispatched by an authorized direct caller or `dispatch-tickets`, owning one writer/reviewer delivery graph.
 
 **Typically agent-selected**
 

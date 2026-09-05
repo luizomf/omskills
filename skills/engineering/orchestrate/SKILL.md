@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # Orchestrate
 
-Run only as one fresh isolated depth-2 **Ticket coordinator** created by `dispatch-tickets`. Accept exactly one explicitly Mission-authorized Ticket identity from that dispatcher, preserve its supplied representation verbatim for the terminal outcome, and deliver only that Ticket. Never act as a root entry, accept work directly from `implement`, discover, select, or substitute another Ticket. If the required dispatcher-created depth-2 route is absent, stop before preflight or mutation and report the invalid route to the caller.
+Run as one fresh isolated **Ticket coordinator** for exactly one explicitly Mission-authorized Ticket. A human/invoker or context-rich parent may dispatch you directly for smaller work; `dispatch-tickets` provides mechanical dispatch for finite multi-Ticket Missions when used. Preserve the supplied identity verbatim for the terminal outcome. Read the selected Ticket before applying any conflicting installed entry precondition. Check authorization and actual capabilities, not parent provenance, ancestors, `role=user`, or caller-supplied role/depth assertions. Never discover or substitute work, or implement in the caller's existing context. `implement` retains its one-item dispatcher composition.
 
 Use the harness's isolated-subagent mechanism with direct delivery. The delivery graph is acyclic and sequential:
 
@@ -14,47 +14,57 @@ Use the harness's isolated-subagent mechanism with direct delivery. The delivery
 Ticket coordinator -> writer -> Ticket coordinator -> reviewer -> Ticket coordinator
 ```
 
-The writer and reviewer are fresh, non-delegating, single-pass depth-3 leaves. They return only to the coordinator and never exchange work. The coordinator alone owns decisions, corrections, verification, integration, delivery, and the terminal outcome.
+The standard managed hierarchy places the coordinator at depth 2 and its writer and reviewer at depth 3, with no depth 4. Actual harness tool/depth/child ceilings govern; prompt assertions neither prove nor override them. Roles inherit the active provider, model, reasoning, tools and repository route unless an authorized caller explicitly overrides them. The writer and reviewer are fresh, non-delegating, single-pass leaves. They return only to the coordinator and never exchange work. The coordinator alone owns decisions, corrections, verification, integration, delivery, and the terminal outcome.
 
 ## 1. Resolve and preflight the Ticket
 
 Before any repository mutation or writer dispatch, resolve the Ticket's complete live tracker, Prompt Audit, governing, repository, dependency, conflict, code, and test context just in time:
 
 - Read repository instructions and the configured issue-tracker and domain-document locations. Read the complete Ticket, labels, assignment state, comments, accepted brief, governing Spec, domain terms, ADRs, dependency and conflict relations, and newest applicable Prompt Audit status.
-- Inspect the live base branch and repository state, relevant history, competing changes, affected code, tests, and repository-required checks. Fix one exact base commit for implementation and review.
+- Inspect the live base branch and repository state, relevant history, competing changes, affected code, tests, and repository-required checks. Fix one exact full base commit for implementation and review. Confirm the declared delivery boundary: a parallel member's pushed branch artifact, or the explicit integration target for a non-member/one-item or integration Ticket. Check shared resources outside Git as well as worktree/branch isolation feasibility.
 - Confirm that the supplied identity alone has explicit Mission authorization; the Ticket is open, `ready-for-agent`, and unblocked; and its exact current contract has a current `PASS` or explicit maintainer-authorized `BYPASS`. A material contract change makes an older status stale.
 - Resolve every in-scope decision from accepted sources and repository evidence. Authorization is non-transitive: do not widen the Ticket or implement findings outside it.
 - Preflight both required child calls. The harness must support direct delivery to exactly one fresh depth-3 writer with the required write, test, and commit capabilities and exactly one fresh depth-3 read-only reviewer that can follow `code-review`, inspect the complete candidate, and return complete findings. Both leaves must have no child delegation capability.
 
-Return `blocked` before writer dispatch, without mutating the repository, when authorization or the gate is missing, stale, or failed; an open blocker or conflict prevents safe work; hard setup is missing; the base cannot be fixed safely; a required child capability is unavailable; or authority is genuinely unresolved. Do not start interactive setup, open a hidden user Question, or choose other work.
+For an integration Ticket, resolve every predecessor's durable tracker delivery evidence into its Ticket identity, repository, remote branch reference and exact full produced commit SHA. Verify availability and identity against that evidence and the accepted base/target and combination requirements. Missing, mismatched or unresolved inputs block integration; floating branch tips, child prose and dispatcher inspection cannot substitute for these inputs.
 
-After every preflight succeeds, authorized execution starts with writer dispatch. From that point, an operational writer, reviewer, verification, integration, or delivery failure returns `failed` rather than `blocked`.
+Return `blocked` without repository mutation when authorization or the gate is missing, stale, or failed; a blocker or conflict prevents safe work; hard setup or isolation is unavailable; the base or integration inputs cannot be fixed safely; a required child capability is unavailable; or authority is genuinely unresolved. Do not start interactive setup, open a hidden user Question, or choose other work.
+
+After every preflight succeeds, authorized execution starts with coordinator-owned candidate setup. From that point, operational setup, writer, reviewer, verification, integration or delivery failures return `failed`, not `blocked`.
 
 ## 2. Produce the candidate
 
-Dispatch exactly one fresh depth-3 writer for the whole Ticket by direct delivery. Supply the repository and workspace paths, exact identity, complete governing context, fixed base, scope and deferrals, acceptance criteria, repository rules, required verification, and result contract.
+Establish and verify an exclusive Ticket-owned worktree and branch at the fixed base before starting the writer, including for one-item and integration Tickets. Record their exact path, branch and starting HEAD. Preserve the caller checkout and unrelated work. Collision or unsafe reuse fails setup; it never permits touching another owner's candidate.
 
-Require the writer to work directly without reviewing, spawning, delegating, or touching another Ticket. It must iterate locally, commit the complete candidate, and return its exact commit SHA, changed files, verification results, deviations, and concerns.
+Dispatch exactly one fresh depth-3 writer for the whole Ticket by direct delivery. Supply the candidate path as its workspace, exact branch, starting HEAD and fixed full base SHA, Ticket identity, complete governing context, scope and deferrals, acceptance criteria, repository rules, required verification and result contract. For integration, supply every verified exact predecessor input; combine only those results and resolve only authorized integration conflicts.
+
+Require the writer to verify path/branch/HEAD and stop on unexpected drift. It works directly in this candidate without reviewing, spawning, delegating, creating competing workspaces, cleaning resources, or touching another Ticket. It must iterate locally, commit the complete candidate, and return its exact full committed HEAD, changed files, verification results, deviations and concerns.
 
 Keep the coordinator's active turn alive through dispatch and direct settlement. Neither child acceptance nor settlement is a **Safe turn boundary** or Ticket delivery.
 
-When the writer returns, inspect its result and the exact diff from the fixed base. Resolve every acceptance gap directly, run focused checks, and commit coordinator corrections. Never return work to the writer. Proceed only when `HEAD` is one complete review candidate.
+When the writer returns, verify the same candidate path/branch and exact writer HEAD, then inspect its result and complete diff from the fixed base. Resolve every acceptance gap directly there, run focused checks, and commit coordinator corrections. Never return work to the writer. Fix and record the exact full review HEAD only when it is one complete committed candidate; unexpected drift stops execution.
 
 ## 3. Review once
 
-Dispatch exactly one fresh depth-3 read-only reviewer by direct delivery with `code-review` as its governing contract. Supply committed mode, the fixed base through candidate `HEAD`, exact commands for capturing the complete diff and history, the Ticket and governing sources, repository instructions, and the direct result contract.
+Dispatch exactly one fresh depth-3 read-only reviewer by direct delivery with `code-review` as its governing contract. Supply committed mode, the same candidate path and branch, exact full base and review HEAD SHAs, read-only commands for capturing the complete diff and history there, the Ticket and governing sources, repository instructions, and the direct result contract. Require identity verification and complete exact-range capture; unexpected branch/HEAD drift or incomplete capture is not review of this candidate.
 
 The reviewer performs the designated depth-3 `code-review` path directly in one pass. It must not edit, commit, push, spawn, delegate, correct, or review again. Recover its complete decision-bearing findings through the direct result before proceeding.
 
-Keep the coordinator's active turn alive through review settlement. Adjudicate every finding against accepted authority, apply every surviving in-scope correction directly, and commit it. Do not delegate corrections or request another review. Preserve out-of-scope findings without implementing or creating work from them.
+Keep the coordinator's active turn alive through review settlement. Verify that the findings identify the fixed candidate/base/review HEAD and that the candidate path/branch/HEAD has not drifted before corrections. Adjudicate every finding against accepted authority, apply every surviving in-scope correction directly in that candidate, and commit it. Do not delegate corrections or request another review. Preserve out-of-scope findings without implementing or creating work from them.
 
 ## 4. Verify and deliver
 
-Run all repository-required checks and focused acceptance checks against the final state. Inspect the exact final diff and repository status, preserve unrelated work, and complete the repository's required integration, push, tracker, and cleanup obligations.
+Verify the same candidate path/branch and expected HEAD, then run all repository-required and focused acceptance checks there against its exact final HEAD. Unexpected drift fails execution; checks cannot silently switch candidates. Inspect the complete final diff from the fixed base and repository status. Record the candidate path/branch and full base, writer, review and final SHAs, checks and corrections in durable tracker delivery evidence.
 
-Remain alive through the complete active turn. Writer or reviewer completion never delivers the Ticket. Use `delivered` only after the final state is durable, verified, integrated as required, and safe to leave.
+Deliver to the declared boundary, preserving unrelated work:
 
-Keep detailed writer, review, correction, verification, and delivery evidence in durable repository or tracker sources and the coordinator session, not in the terminal outcome.
+- A parallel member verifies, commits and pushes its branch artifact without force. Record its repository, remote branch and exact full commit SHA in the tracker before returning `delivered`. This is neither an implicit merge to the shared target nor completion of its group.
+- An integration Ticket uses the same fresh coordinator and sole writer/reviewer graph in its own candidate. Review the complete combined diff from its fixed base, verify the final combined state, and integrate/push to the declared target. Durably record every predecessor input-to-result commit mapping and the exact target result before dependent work advances.
+- A non-member/one-item Ticket completes normal integration and push to its explicitly declared target.
+
+The coordinator alone owns candidate disposition. Retain branch artifacts and recoverable work until declared delivery and all integration consumers no longer need them. Clean only positively identified Ticket-owned resources that are safe and no longer needed. Preserve unrelated, failed, cancelled, dirty or otherwise unintegrated work and required integration inputs; record retained paths/branches and reasons. No blanket deletion, forced cleanup, history rewrite or force-push.
+
+Remain alive through the complete active turn. Writer or reviewer completion never delivers the Ticket. Use `delivered` only after the declared boundary is durable, verified and safe to leave, with tracker obligations complete. Keep detailed evidence in durable repository/tracker sources and the coordinator session, not in the terminal outcome.
 
 ## 5. Return one outcome
 

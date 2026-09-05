@@ -23,9 +23,10 @@ Review against two separately reported criteria sets:
 
 ### Committed mode
 
-1. Use the fixed point supplied by the user. If none was supplied, infer one and ask only when none can be established.
-2. Capture the complete `git diff <fixed-point>...HEAD` and `git log <fixed-point>..HEAD --oneline`.
-3. If the diff is empty, stop and report that there are no committed changes to review.
+1. Use the fixed point supplied by the caller. If none was supplied, infer one and ask only when none can be established. Resolve base and review HEAD to exact full SHAs.
+2. In a coordinated Ticket review, verify the supplied candidate path, branch and exact HEAD before capture. Use that exclusive candidate, never an inherited caller checkout; do not create another workspace. Unexpected branch/HEAD drift stops review as incomplete.
+3. Capture the complete `git diff <base-sha> <review-sha>` and `git log <base-sha>..<review-sha> --oneline` in that candidate. Check that its identity/HEAD remains unchanged after capture; report exact path, branch, base and review SHAs with any capture limitations.
+4. If the diff is empty, stop and report that there are no committed changes to review.
 
 ### WIP mode
 
@@ -50,7 +51,7 @@ Choose a complete result-recovery channel before dispatch. Prefer the full termi
 
 ## Dispatch one isolated reviewer
 
-Start exactly one fresh, read-only, non-delegating reviewer. Supply the selected mode, complete candidate or exact read-only commands that reproduce it, governing contract, applicable repository instructions, the selected result channel, and this contract:
+Start exactly one fresh, read-only, non-delegating reviewer. Supply the selected mode, candidate path and branch, exact base/review SHAs for committed mode (or complete staged/unstaged/untracked capture for WIP), complete candidate or exact read-only commands that reproduce it there, governing contract, applicable repository instructions, the selected result channel, and this contract:
 
 ```text
 Review every supplied candidate path in one pass against Standards and Spec. Perform the review directly and return all decision-bearing findings, not a lossy summary. Report only concrete findings with file/line and evidence. Separate blockers from non-blocking observations and label each finding Standards or Spec. Treat capture limitations explicitly. Do not edit the candidate, push, approve, merge, spawn, delegate, invoke code-review, invent requirements, or expand the reviewed scope. If and only if a findings artifact path was supplied, write the complete result there and report that exact path.
@@ -60,6 +61,6 @@ Review every supplied candidate path in one pass against Standards and Spec. Per
 
 Verify every reported finding against the candidate and cited authority only after the reviewer has settled and the complete selected result channel has been recovered. Reject speculative hardening, style preferences, invented requirements, and claims contradicted by repository conventions.
 
-Inside a Ticket with a current Prompt Audit `PASS` or explicit `BYPASS`, the Ticket coordinator adjudicates all in-scope findings from the accepted sources, performs surviving corrections directly, and opens no other user decision gate. If the sources cannot determine required behavior, report that Ticket as blocked rather than guessing or widening it. Findings outside the Ticket remain findings and never authorize new work.
+Inside a Ticket with a current Prompt Audit `PASS` or explicit `BYPASS`, the Ticket coordinator adjudicates all in-scope findings from the accepted sources, performs surviving corrections directly, and opens no other user decision gate. If the sources cannot determine required behavior, report the unresolved authority rather than guessing or widening it; the Ticket coordinator applies its preflight `blocked` versus operational setup/execution `failed` boundary. Findings outside the Ticket remain findings and never authorize new work.
 
 Report the selected mode, capture limitations, blockers ordered by severity, non-blocking observations, and a short verdict. Do not dispatch another reviewer or create a correction/re-review loop.

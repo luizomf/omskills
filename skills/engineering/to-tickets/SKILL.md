@@ -52,7 +52,16 @@ Present a numbered draft. For each ticket, include:
 - **Conflicts with:** every conflicting ticket and its shared surface, or none; and
 - **What it delivers:** the end-to-end behavior that becomes demonstrable or verifiable.
 
-Before requesting approval, show proposed sequential/parallel phases within the current dispatcher and harness limits. For each parallel group, require exclusive worktrees and branches, account for shared resources outside Git, and include a Ticket that integrates and verifies every member before dependent work. Record each Ticket's delivery boundary explicitly. Prefer a serial plan when independence is not established. This is part of breakdown approval, not another user gate.
+Before requesting approval, show complete sequential phases, compatible parallel groups, blockers and conflicts, including shared resources outside Git. Every implementation Ticket, even a one-item or integration Ticket, requires an exclusive worktree and branch established by its coordinator after preflight and before its writer. Prefer serial work when independence is not established during planning; dispatch must not silently serialize an authorized parallel group. Parallel N must fit affirmative evidence of active ROOT capacity and same-batch start support in the current delivery mode; child-only limits and unknown bounds are insufficient.
+
+Declare every delivery boundary in the approved breakdown:
+
+- Parallel members deliver verified, committed, pushed branch artifacts, not implicit shared-target merges or group completion.
+- Each parallel group includes a preplanned ordinary integration Ticket blocked by every member. Identify every predecessor, intended base/target and combination requirements. Require durable tracker evidence of each produced artifact's repository, remote branch and exact full commit SHA before integration starts; exact outputs are recorded at predecessor delivery, not guessed during planning. The integration Ticket combines those verified inputs in its own candidate, reviews and verifies the complete combined state, and records input-to-result commits before dependent work advances.
+- Non-member/one-item Tickets state their normal integration target explicitly.
+- Retain artifacts and recoverable work until declared delivery and all integration consumers no longer need them. Coordinator-owned cleanup covers only identified safe, no-longer-needed Ticket resources; preserve unrelated, failed, cancelled, dirty or unintegrated work and record retention reasons.
+
+For example, a compatible group A/B/C delivers three branch artifacts; the next phase is integration I, blocked by A, B and C; dependent D is blocked by I. I is an ordinary audited, authorized Ticket, not a dispatcher integration action. These decisions are part of breakdown approval, not another user gate.
 
 Ask the user to identify:
 
@@ -82,6 +91,8 @@ Do not apply `ready-for-agent`, close or modify the parent Spec, run Prompt Audi
 
 **Conflicts with:** <linked Ticket paths and shared surfaces, or "None">
 
+**Delivery:** <branch artifact or explicit integration target; for integration, all predecessor identities, base/target, combination requirements and durable exact-input evidence obligations>
+
 **Category:** bug | enhancement
 
 **Status:** needs-triage
@@ -107,6 +118,10 @@ Do not apply `ready-for-agent`, close or modify the parent Spec, run Prompt Audi
 
 <the end-to-end behavior this ticket makes work from the user's perspective>
 
+## Delivery
+
+<branch artifact or explicit integration target; for integration, all predecessor identities, base/target, combination requirements and durable exact-input evidence obligations>
+
 ## Acceptance criteria
 
 - [ ] Criterion 1
@@ -122,10 +137,10 @@ Do not apply `ready-for-agent`, close or modify the parent Spec, run Prompt Audi
 
 </issue-template>
 
-Describe behavior and acceptance criteria without file paths, layer-by-layer implementation lists, or code snippets. Exception: when prototype output contains a state machine, reducer, schema, type shape, or other snippet that encodes an established decision more precisely than prose can, include only its decision-bearing parts and identify it as prototype output.
+Describe behavior and acceptance criteria without incidental file paths, layer-by-layer implementation lists, or code snippets. Preserve exact repository/remote branch references and candidate or delivery identities when they define required handoffs. Exception: when prototype output contains a state machine, reducer, schema, type shape, or other snippet that encodes an established decision more precisely than prose can, include only its decision-bearing parts and identify it as prototype output.
 
 The publish step is complete when every approved Ticket exists separately with one category and `needs-triage`, and every parent, blocking, and conflict relation is recorded.
 
 ## Next-phase handoff
 
-Ticket creation never authorizes implementation. Triage verifies and stabilizes each Ticket and its Agent Brief; `prompt-comprehension-audits` then checks semantic comprehension and one-context fit. Only a current `PASS` or explicit maintainer `BYPASS` transitions that exact Ticket to `ready-for-agent`, making it eligible without selecting it. Explicit Mission authorization is a separate later phase: supply one finite pre-resolved Mission plan to `dispatch-tickets`, or use `implement` to compose exactly one selected Ticket as that dispatcher's one-item plan. Only `dispatch-tickets` creates fresh `orchestrate` Ticket coordinators; no route discovers ready work or derives authorization from a query.
+Ticket creation never authorizes implementation. Triage verifies and stabilizes each Ticket and its Agent Brief; `prompt-comprehension-audits` then checks semantic comprehension and one-context fit. Only a current `PASS` or explicit maintainer `BYPASS` transitions that exact Ticket to `ready-for-agent`, making it eligible without selecting it. Explicit Mission authorization is a separate later phase: supply one finite pre-resolved Mission plan to `dispatch-tickets`, or use `implement` to compose exactly one selected Ticket as that dispatcher's one-item plan. For smaller work, a human/invoker or context-rich parent may directly dispatch one fresh isolated `orchestrate` coordinator for the explicitly selected Ticket. It checks live gates and actual capabilities, not parent provenance or role/depth assertions. When used, the dispatcher remains mechanical with frozen topology; no route discovers ready work or derives authorization from a query.

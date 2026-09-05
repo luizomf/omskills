@@ -1,6 +1,6 @@
 # Engineering
 
-Core skills for code work, issue workflow, and architecture decisions. The groups describe selection and composition. `dispatch-tickets`, `implement`, and `orchestrate` are active user-only skills; the other current skills in this bucket remain agent-discoverable. Readiness and a current Prompt Audit gate make a Ticket eligible but do not select it. Route a finite pre-resolved Mission plan through `dispatch-tickets`; `implement` is its one-Ticket convenience entry, and only the dispatcher loads `orchestrate` as a fresh coordinator.
+Core skills for code work, issue workflow, and architecture decisions. The groups describe selection and composition. `dispatch-tickets`, `implement`, and `orchestrate` are active user-only skills; the other current skills in this bucket remain agent-discoverable. Readiness and a current Prompt Audit gate make a Ticket eligible but do not select it. Route a finite pre-resolved Mission plan through `dispatch-tickets`; `implement` is its one-Ticket convenience entry, and an authorized human/invoker or context-rich parent may also dispatch one fresh isolated `orchestrate` coordinator directly. Live gates and actual child capabilities remain mandatory without parent-provenance checks. Every Ticket owns an exclusive candidate through writer, review and corrections. Parallel members deliver durable exact branch artifacts; a preplanned ordinary integration Ticket blocked by every member verifies and delivers the combined target before dependent work. Parallel N requires evidenced active ROOT capacity and same-batch starts; unknown capacity rejects rather than serializes.
 
 ## Typically user-selected
 
@@ -14,9 +14,9 @@ Core skills for code work, issue workflow, and architecture decisions. The group
 - **[dispatch-tickets](./dispatch-tickets/SKILL.md)** - Dispatch one finite pre-resolved sequential/parallel Mission plan from the canonical minimal root.
 - **[implement](./implement/SKILL.md)** - Compose one audited, Mission-authorized Ticket as a one-item Mission through `dispatch-tickets`.
 
-## Dispatcher-composed
+## Fresh-coordinator execution
 
-- **[orchestrate](./orchestrate/SKILL.md)** - Run as the fresh one-Ticket coordinator created by `dispatch-tickets`, owning one writer/reviewer delivery graph.
+- **[orchestrate](./orchestrate/SKILL.md)** - Run as a fresh one-Ticket coordinator dispatched by an authorized direct caller or `dispatch-tickets`, owning one writer/reviewer delivery graph.
 
 ## Typically agent-selected
 

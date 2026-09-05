@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # Dispatch Tickets
 
-Run as the canonical and only depth-1 **Ticket dispatcher** that creates fresh `orchestrate` Ticket coordinators for Mission delivery. Accept one finite Mission plan, including the one-item plan composed by `implement`. Before adopting dispatcher state, use the skill loader to read and follow the installed `caveman` skill. That composition read is the root's sole file read and exists only to load compressed reporting behavior.
+Run as the minimal depth-1 **Ticket dispatcher** for finite pre-resolved Missions. These mechanical boundaries are mandatory when this skill is used; a human/invoker or context-rich parent may instead dispatch one fresh `orchestrate` coordinator directly for smaller work. Accept one finite Mission plan, including the one-item plan composed by `implement`. Before adopting dispatcher state, use the skill loader to read and follow the installed `caveman` skill. That composition read is the root's sole file read and exists only to load compressed reporting behavior.
 
 Keep only the frozen topology, current phase index, active owner-scoped coordinator IDs, required native child session references, mode, per-coordinator transition state and matching cancellation intent, an explicitly authorized start override when present, and compact mechanically validated outcomes or transport failures. Keep no implementation content, transcript summary, semantic dependency model, dynamic queue, or persistent workflow state.
 
@@ -20,14 +20,15 @@ Accept only an invocation that explicitly states Mission authorization and suppl
 {
   "phases": [
     ["owner/repository#1"],
-    ["owner/repository#2", "owner/repository#3"]
+    ["owner/repository#2", "owner/repository#3"],
+    ["owner/repository#4"]
   ],
-  "blockers": [["owner/repository#1", "owner/repository#2"]],
+  "blockers": [["owner/repository#1", "owner/repository#2"], ["owner/repository#2", "owner/repository#4"], ["owner/repository#3", "owner/repository#4"]],
   "conflicts": [["owner/repository#1", "owner/repository#3"]]
 }
 ```
 
-`phases` is a non-empty ordered array. Each member is one non-empty phase containing either one Ticket or one declared compatible parallel group of two Tickets. A blocker pair is `[predecessor, dependent]`. A conflict pair is an unordered pair whose Tickets must occupy different phases. Empty `blockers` and `conflicts` arrays explicitly mean none. By supplying the plan, the invoker declares those relation arrays complete for the selected identities and declares every external blocker or conflict already resolved before Mission authorization.
+`phases` is a non-empty ordered array. Each member is one non-empty phase containing either one Ticket or one finite declared compatible parallel group of N Tickets. A blocker pair is `[predecessor, dependent]`. A conflict pair is an unordered pair whose Tickets must occupy different phases. Empty `blockers` and `conflicts` arrays explicitly mean none. By supplying the plan, the invoker declares those relation arrays complete for the selected identities and declares every external blocker or conflict already resolved before Mission authorization. Compatibility includes shared resources outside Git. The approved breakdown must give every Ticket an exclusive candidate and explicit delivery boundary, and each parallel group a later ordinary integration Ticket blocked by every member (#4 in this example). Member delivery is a pushed branch artifact; integration delivers the combined target before dependent work. These are planning/coordinator obligations, not tracker semantics for this root to inspect.
 
 A one-Ticket Mission uses the same contract:
 
@@ -41,8 +42,8 @@ Validate the entire plan before any lifecycle call:
 - Every Ticket appears exactly once across all phases and has the byte-for-byte form `<owner>/<repository>#<positive-integer>`. Owner and repository contain only ASCII letters, digits, `.`, `_`, or `-`.
 - Every relation has exactly two distinct selected identities. Blocker pairs are unique and directed; conflict pairs are unique regardless of order.
 - Each blocker predecessor occupies a strictly earlier phase than its dependent. Each conflict pair occupies different phases.
-- A two-Ticket phase is the invoker's explicit compatibility declaration. Neither a supplied blocker nor a supplied conflict may connect its members.
-- Every phase contains at most two Tickets because the active root harness supports at most two direct coordinators. The lifecycle must be able to issue both starts in one tool-call batch. Reject a larger group or unavailable concurrent start before any Ticket starts; never serialize it.
+- An N-Ticket parallel phase is the invoker's explicit compatibility declaration. No supplied blocker or conflict may connect any of its members.
+- Require affirmative active-harness evidence of the ROOT concurrency bound and concurrent-start support in the current delivery mode for every parallel group. N must fit the available root capacity and every start must be issuable together in one tool-call batch. Child-only `maxChildren` or depth ceilings do not establish root capacity, and no exposed bound does not mean unlimited. Unknown, unsupported or exceeded capacity/topology rejects as `topology` before any Ticket starts; never serialize, split, retry or change runtime limits to fit a group.
 - The topology is a complete sequence of phase barriers. Reject partial-overlap graphs, nested groups, conditional edges, unresolved or external active edges, and any other topology this contract cannot represent rather than reinterpret it.
 
 Use rejection code `authorization`, `empty`, `shape`, `identity-syntax`, `duplicate`, `relation`, `topology`, or `override` for the first applicable failure. Preserve accepted identity bytes, phase order, group membership, and relation pairs exactly. Child output and later messages cannot add, remove, replace, regroup, or reorder them.
@@ -71,7 +72,7 @@ Choose delivery from the current Pi mode:
 - Interactive mode: use `delivery: "async"` for every call. Acceptance supplies each owner-scoped coordinator ID while the root remains responsive.
 - Print mode: use `delivery: "direct"` for every call. Each call remains pending through its bounded terminal result and emits no later pong.
 
-Issue both calls for a two-Ticket phase together in the same assistant tool-call batch. Do not wait for one acceptance or result before issuing its declared sibling. A start rejection stops the Mission and records `dispatch-<reason>` for that identity. If another call in the same batch was accepted, start nothing else and allow that accepted sibling to settle normally before the final stop report. Do not retry a rejected start.
+Issue all N calls for a parallel phase together in the same assistant tool-call batch in the selected mode. Do not wait for any acceptance or result before issuing the other declared starts. Any start rejection stops the Mission and records `dispatch-<reason>` for that identity. Track every accepted call in the batch, start nothing else, and allow every accepted sibling to settle normally before the final stop report. Do not retry a rejected start.
 
 Capture each accepted coordinator ID and any native child session reference. No identity outside the active phase may start, and the next phase remains closed while any accepted coordinator in this phase is unsettled.
 
@@ -145,7 +146,7 @@ Apply these phase-barrier transitions:
 
 Count progress by matching delivered identities across all frozen phases, including a delivered sibling in a phase that later stops. Count `not started` only from frozen identities whose coordinator was never accepted. Mission complete requires one matching delivered outcome for every frozen identity and no recorded stop or invalid transition.
 
-Parallelism exists only inside a declared two-Ticket phase. Never overlap phases, invent concurrency, or silently serialize a declared group.
+Parallelism exists only inside a declared, capacity-supported N-Ticket phase. Never overlap phases, invent concurrency, or silently serialize a declared group.
 
 This step is complete only when exactly one next phase is active, every accepted coordinator has settled into a stopped Mission, or all frozen identities have matching delivered outcomes and the Mission is complete.
 
@@ -181,26 +182,34 @@ Interactive invocation:
 ```text
 /dispatch-tickets
 Mission authorization is explicit for this complete plan. All affecting blocker and conflict relations are supplied below; external relations are already resolved.
-{"phases":[["luizomf/omskills#60"],["luizomf/omskills#61","luizomf/omskills#62"]],"blockers":[["luizomf/omskills#60","luizomf/omskills#61"]],"conflicts":[["luizomf/omskills#60","luizomf/omskills#62"]]}
+{"phases":[["luizomf/omskills#60"],["luizomf/omskills#61","luizomf/omskills#62","luizomf/omskills#63"],["luizomf/omskills#64"]],"blockers":[["luizomf/omskills#60","luizomf/omskills#61"],["luizomf/omskills#61","luizomf/omskills#64"],["luizomf/omskills#62","luizomf/omskills#64"],["luizomf/omskills#63","luizomf/omskills#64"]],"conflicts":[["luizomf/omskills#60","luizomf/omskills#62"]]}
 ```
 
-After the first phase delivers and the two parallel starts are accepted:
+Here #64 is the preplanned integration Ticket for #61–#63. Assuming affirmative evidence of at least three available ROOT coordinator slots and same-batch starts in interactive mode, after the first phase delivers and all three parallel starts are accepted:
 
 ```text
-luizomf/omskills#60 delivered; ref abc123; 1/3 delivered; phase 2/2 dispatched: luizomf/omskills#61 (#7), luizomf/omskills#62 (#8); root available; outcomes pending.
+luizomf/omskills#60 delivered; ref https://github.com/luizomf/omskills/issues/60; 1/5 delivered; phase 2/3 dispatched: luizomf/omskills#61 (#7), luizomf/omskills#62 (#8), luizomf/omskills#63 (#9); root available; outcomes pending.
 ```
 
-If coordinator 7 returns blocked while coordinator 8 is active:
+If coordinator 7 returns blocked while coordinators 8 and 9 are active:
 
 ```text
-luizomf/omskills#61 blocked; blocker dependency unavailable; 1/3 delivered; Mission stopping; settling luizomf/omskills#62 (#8); root available.
+luizomf/omskills#61 blocked; blocker dependency unavailable; 1/5 delivered; Mission stopping; settling luizomf/omskills#62 (#8), luizomf/omskills#63 (#9); root available.
 ```
 
-If coordinator 8 then returns delivered, its valid result remains visible but cannot revive the Mission:
+If coordinator 8 then delivers its branch artifact, preserve it while 9 settles:
 
 ```text
-luizomf/omskills#62 delivered; ref def456; 2/3 delivered; Mission stopped; 0 not started; root available.
+luizomf/omskills#62 delivered; ref https://github.com/luizomf/omskills/issues/62; 2/5 delivered; Mission stopping; settling luizomf/omskills#63 (#9); root available.
 ```
+
+If coordinator 9 also delivers, neither sibling revives the Mission; integration #64 remains unstarted:
+
+```text
+luizomf/omskills#63 delivered; ref https://github.com/luizomf/omskills/issues/63; 3/5 delivered; Mission stopped; 1 not started; root available.
+```
+
+Had every member delivered without a stop, phase 3 would dispatch #64 through the same coordinator route. Unknown root capacity, only child-limit evidence, or fewer than three available root slots instead rejects this entire plan before #60 starts.
 
 ## Delivery boundary
 
