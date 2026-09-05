@@ -1,20 +1,20 @@
 ---
 name: dispatch-tickets
-description: Dispatch one finite pre-resolved sequential/parallel Mission plan through fresh Ticket coordinators.
+description: Dispatch one finite pre-resolved Assisted or Unattended Mission plan through fresh Ticket coordinators.
 disable-model-invocation: true
 ---
 
 # Dispatch Tickets
 
-Run as the minimal depth-1 **Ticket dispatcher** for finite pre-resolved Missions. These mechanical boundaries are mandatory when this skill is used; a human/invoker or context-rich parent may instead dispatch one fresh `orchestrate` coordinator directly for smaller work. Accept one finite Mission plan, including the one-item plan composed by `implement`. Before adopting dispatcher state, use the skill loader to read and follow the installed `caveman` skill. That composition read is the root's sole file read and exists only to load compressed reporting behavior.
+Run as the minimal depth-1 **Ticket dispatcher** for finite pre-resolved Missions. Mission identifies coordinated topology; the separately supplied availability is `Assisted` or `Unattended`. These mechanical boundaries are mandatory when this skill is used; a human/invoker or context-rich parent may instead dispatch one fresh `orchestrate` coordinator directly for smaller work. Accept one finite Mission plan, including the one-item plan composed by `implement`. Before adopting dispatcher state, use the skill loader to read and follow the installed `caveman` skill. That composition read is the root's sole file read and exists only to load compressed reporting behavior.
 
-Keep only the frozen topology, current phase index, active owner-scoped coordinator IDs, required native child session references, mode, per-coordinator transition state and matching cancellation intent, an explicitly authorized start override when present, and compact mechanically validated outcomes or transport failures. Keep no implementation content, transcript summary, semantic dependency model, dynamic queue, or persistent workflow state.
+Keep only the frozen topology, availability, current phase index, active owner-scoped coordinator IDs, required native child session references, transport mode, per-coordinator transition state and matching cancellation intent, an explicitly authorized start override when present, and compact mechanically validated outcomes or transport failures. Keep no implementation content, transcript summary, semantic dependency model, dynamic queue, or persistent workflow state.
 
-Keep the root's normal tools active for coordinator inheritance. After composing `caveman`, use them only for routing preflight, subagent lifecycle operations, mechanical plan and outcome validation, and compact reporting. The dispatcher performs no tracker, repository, or remote discovery and reads no tracker material, governing source, repository file, code, diff, test, writer output, reviewer finding, or native child session.
+Keep the root's normal tools active for coordinator inheritance. For Mission work after composing `caveman`, use them only for routing preflight, subagent lifecycle operations, mechanical plan and outcome validation, and compact reporting. The dispatcher performs no tracker, repository, or remote discovery and reads no tracker material, governing source, repository file, code, diff, test, writer output, reviewer finding, or native child session. Unrelated root interaction remains outside the Mission and may use actual unreserved capacity without changing its envelope or routing state.
 
 ## 1. Accept and freeze one Mission plan
 
-Accept only an invocation that explicitly states Mission authorization and supplies one complete JSON plan with exactly these keys:
+Accept only an invocation whose meaning explicitly supplies Mission authorization, establishes `Assisted` or `Unattended` availability, and supplies one complete JSON plan with exactly these keys. Evaluate that authority from the request's semantics, selected identities, and finite plan—not from a required phrase or the caller's provenance, ancestry, role, depth, or dispatcher wording. Those attributes neither establish nor augment authority:
 
 ```json
 {
@@ -36,17 +36,19 @@ A one-Ticket Mission uses the same contract:
 {"phases":[["owner/repository#1"]],"blockers":[],"conflicts":[]}
 ```
 
-Validate the entire plan before any lifecycle call:
+Validate the entire plan and availability before any lifecycle call:
 
+- Mission authorization selects every plan identity and is explicit in meaning. Selection, readiness, discovery, caller lineage, and role/depth assertions are not substitutes.
+- Availability resolves independently to exactly `Assisted` or `Unattended`; Mission topology alone does not imply either value.
 - The JSON is finite and literal: no ellipsis, range, conditional, optional branch, generated remainder, or prose placeholder.
 - Every Ticket appears exactly once across all phases and has the byte-for-byte form `<owner>/<repository>#<positive-integer>`. Owner and repository contain only ASCII letters, digits, `.`, `_`, or `-`.
 - Every relation has exactly two distinct selected identities. Blocker pairs are unique and directed; conflict pairs are unique regardless of order.
 - Each blocker predecessor occupies a strictly earlier phase than its dependent. Each conflict pair occupies different phases.
 - An N-Ticket parallel phase is the invoker's explicit compatibility declaration. No supplied blocker or conflict may connect any of its members.
-- Require affirmative active-harness evidence of the ROOT concurrency bound and concurrent-start support in the current delivery mode for every parallel group. N must fit the available root capacity and every start must be issuable together in one tool-call batch. Child-only `maxChildren` or depth ceilings do not establish root capacity, and no exposed bound does not mean unlimited. Unknown, unsupported or exceeded capacity/topology rejects as `topology` before any Ticket starts; never serialize, split, retry or change runtime limits to fit a group.
+- Require affirmative active-harness evidence of the ROOT concurrency bound and concurrent-start support in the current transport mode for every parallel group. N must fit the actually available root capacity after other active work and every start must be issuable together in one tool-call batch. An active Mission consumes only its occupied slots; it creates no semantic claim over capacity-supported independent work. Child-only `maxChildren` or depth ceilings do not establish root capacity, and no exposed bound does not mean unlimited. Unknown, unsupported or exceeded capacity/topology rejects as `topology` before any Ticket starts; never serialize, split, retry or change runtime limits to fit a group.
 - The topology is a complete sequence of phase barriers. Reject partial-overlap graphs, nested groups, conditional edges, unresolved or external active edges, and any other topology this contract cannot represent rather than reinterpret it.
 
-Use rejection code `authorization`, `empty`, `shape`, `identity-syntax`, `duplicate`, `relation`, `topology`, or `override` for the first applicable failure. Preserve accepted identity bytes, phase order, group membership, and relation pairs exactly. Child output and later messages cannot add, remove, replace, regroup, or reorder them.
+Use rejection code `authorization`, `availability`, `empty`, `shape`, `identity-syntax`, `duplicate`, `relation`, `topology`, or `override` for the first applicable failure. Preserve accepted identity bytes, phase order, group membership, and relation pairs exactly. Child output and later messages cannot add, remove, replace, regroup, or reorder them.
 
 Normal starts inherit the active route. An invoker may additionally authorize one Mission-wide start override containing only exact `tools`, `cwd`, `model`, or `reasoning` lifecycle values. Validate and freeze that override before dispatch and reject unknown or unsupported fields as `override`. It cannot change delivery mode, `maxDepth`, `maxChildren`, the coordinator prompt, or Mission topology. No override exists merely because a caller mentions routing preferences without explicitly authorizing their lifecycle values.
 
@@ -59,6 +61,7 @@ Treat every identity in `phases[phase]` as runnable because the invoker already 
 ```text
 Repository: <repository>
 Ticket: <ticket>
+Availability: <Assisted|Unattended>
 Load and follow installed `orchestrate`. Resolve all governing context and complete this Ticket yourself.
 Return exactly one single-line JSON object with required string fields "ticket": "<ticket>" and "status": one of "delivered", "blocked", "failed", or "cancelled". Include non-empty string "ref" only for an essential durable reference and non-empty string "blocker" only when applicable. Include no other fields or output.
 ```
@@ -82,7 +85,7 @@ This step is complete only when every identity in the active phase has one accep
 
 ## 3. Route interactive control to one coordinator
 
-While interactive coordinators are active, keep unrelated root conversation local without changing Mission state.
+While interactive coordinators are active, keep unrelated root conversation local without changing Mission state. The Mission reserves no idle root slots: independent work outside its envelope may proceed when compatibility and actual remaining capacity are affirmatively established. Keep that work's authority, lifecycle, and outcomes separate from Mission state.
 
 Forward an instruction only when the user explicitly targets exactly one current owner-scoped coordinator ID. Call `subagent_steer` for that ID with the user's instruction literally, including original wording and formatting. Do not interpret, summarize, expand, or retain its implementation content. An untargeted message, a Ticket-only reference, a group target, or an inactive or ambiguous coordinator target is not forwarded.
 
@@ -181,7 +184,7 @@ Interactive invocation:
 
 ```text
 /dispatch-tickets
-Mission authorization is explicit for this complete plan. All affecting blocker and conflict relations are supplied below; external relations are already resolved.
+This request authorizes the complete Mission plan below with Assisted availability. All affecting blocker and conflict relations are supplied; external relations are already resolved.
 {"phases":[["luizomf/omskills#60"],["luizomf/omskills#61","luizomf/omskills#62","luizomf/omskills#63"],["luizomf/omskills#64"]],"blockers":[["luizomf/omskills#60","luizomf/omskills#61"],["luizomf/omskills#61","luizomf/omskills#64"],["luizomf/omskills#62","luizomf/omskills#64"],["luizomf/omskills#63","luizomf/omskills#64"]],"conflicts":[["luizomf/omskills#60","luizomf/omskills#62"]]}
 ```
 

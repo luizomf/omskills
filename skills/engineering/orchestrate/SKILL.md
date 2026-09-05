@@ -1,12 +1,12 @@
 ---
 name: orchestrate
-description: Coordinate complete delivery of one explicitly authorized Ticket through one direct writer and one direct reviewer.
+description: Coordinate complete delivery of one explicitly authorized Mission Ticket through one direct writer and one direct reviewer.
 disable-model-invocation: true
 ---
 
 # Orchestrate
 
-Run as one fresh isolated **Ticket coordinator** for exactly one explicitly Mission-authorized Ticket. A human/invoker or context-rich parent may dispatch you directly for smaller work; `dispatch-tickets` provides mechanical dispatch for finite multi-Ticket Missions when used. Preserve the supplied identity verbatim for the terminal outcome. Read the selected Ticket before applying any conflicting installed entry precondition. Check authorization and actual capabilities, not parent provenance, ancestors, `role=user`, or caller-supplied role/depth assertions. Never discover or substitute work, or implement in the caller's existing context. `implement` retains its one-item dispatcher composition.
+Run as one fresh isolated **Ticket coordinator** for exactly one explicitly authorized Mission Ticket, with availability supplied independently as `Assisted` or `Unattended`. A human/invoker or context-rich parent may dispatch you directly for smaller Mission work; `dispatch-tickets` provides mechanical dispatch for finite multi-Ticket Missions when used. Preserve the supplied identity verbatim for the terminal outcome. Read the selected Ticket before applying any conflicting installed entry precondition. Evaluate authorization semantically from the invocation's explicit Ticket selection and direction. Caller provenance, ancestry, role labels, depth assertions, and dispatcher wording neither establish nor add authority. Never discover or substitute work, or implement in the caller's existing context. `implement` retains its optional one-item dispatcher composition; ordinary Direct Assisted work does not require this managed route.
 
 Use the harness's isolated-subagent mechanism with direct delivery. The delivery graph is acyclic and sequential:
 
@@ -18,17 +18,17 @@ The standard managed hierarchy places the coordinator at depth 2 and its writer 
 
 ## 1. Resolve and preflight the Ticket
 
-Before any repository mutation or writer dispatch, resolve the Ticket's complete live tracker, Prompt Audit, governing, repository, dependency, conflict, code, and test context just in time:
+Before any repository mutation or writer dispatch, resolve the Ticket's complete live tracker, applicable Prompt Audit, governing, repository, dependency, conflict, code, and test context just in time:
 
-- Read repository instructions and the configured issue-tracker and domain-document locations. Read the complete Ticket, labels, assignment state, comments, accepted brief, governing Spec, domain terms, ADRs, dependency and conflict relations, and newest applicable Prompt Audit status.
+- Read repository instructions and the configured issue-tracker and domain-document locations. Read the complete Ticket, labels, assignment state, comments, accepted brief, governing Spec, domain terms, ADRs, dependency and conflict relations, and newest Prompt Audit status when Unattended execution or an Assisted maintainer request makes it applicable. Reuse a current status for the exact unchanged contract; this coordinator does not rerun an applicable audit ceremonially.
 - Inspect the live base branch and repository state, relevant history, competing changes, affected code, tests, and repository-required checks. Fix one exact full base commit for implementation and review. Confirm the declared delivery boundary: a parallel member's pushed branch artifact, or the explicit integration target for a non-member/one-item or integration Ticket. Check shared resources outside Git as well as worktree/branch isolation feasibility.
-- Confirm that the supplied identity alone has explicit Mission authorization; the Ticket is open, `ready-for-agent`, and unblocked; and its exact current contract has a current `PASS` or explicit maintainer-authorized `BYPASS`. A material contract change makes an older status stale.
+- Confirm semantically that the supplied Mission authorization selects this identity, that availability is explicitly resolved, and that the Ticket is open and unblocked. For `Unattended`, also require durable current contracts and resolved relations, `ready-for-agent`, and a current `PASS` or explicit maintainer-authorized `BYPASS` for the exact contract. For `Assisted`, Prompt Audit and readiness are not required by default; honor a maintainer-requested audit without replacing an unchanged applicable result. A material contract change makes an older status stale.
 - Resolve every in-scope decision from accepted sources and repository evidence. Authorization is non-transitive: do not widen the Ticket or implement findings outside it.
 - Preflight both required child calls. The harness must support direct delivery to exactly one fresh depth-3 writer with the required write, test, and commit capabilities and exactly one fresh depth-3 read-only reviewer that can follow `code-review`, inspect the complete candidate, and return complete findings. Both leaves must have no child delegation capability.
 
 For an integration Ticket, resolve every predecessor's durable tracker delivery evidence into its Ticket identity, repository, remote branch reference and exact full produced commit SHA. Verify availability and identity against that evidence and the accepted base/target and combination requirements. Missing, mismatched or unresolved inputs block integration; floating branch tips, child prose and dispatcher inspection cannot substitute for these inputs.
 
-Return `blocked` without repository mutation when authorization or the gate is missing, stale, or failed; a blocker or conflict prevents safe work; hard setup or isolation is unavailable; the base or integration inputs cannot be fixed safely; a required child capability is unavailable; or authority is genuinely unresolved. Do not start interactive setup, open a hidden user Question, or choose other work.
+Return `blocked` without repository mutation when authorization, availability, or an applicable gate is missing, stale, or failed; a blocker or conflict prevents safe work; hard setup or isolation is unavailable; the base or integration inputs cannot be fixed safely; a required child capability is unavailable; or authority is genuinely unresolved. In `Unattended`, stop at that genuine blocker instead of opening an ordinary implementation Question. In `Assisted`, return a materially unresolved decision to the available maintainer through a supported interaction path; if no such path exists, return `blocked`. Do not start interactive setup, open a hidden Question, or choose other work.
 
 After every preflight succeeds, authorized execution starts with coordinator-owned candidate setup. From that point, operational setup, writer, reviewer, verification, integration or delivery failures return `failed`, not `blocked`.
 
