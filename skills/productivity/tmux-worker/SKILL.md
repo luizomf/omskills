@@ -9,6 +9,8 @@ Use the current project's tmux session when the root needs to work or converse w
 
 `tmux-worker` owns only this visible transport and lifecycle: worker-window creation, readiness, literal message and callback transport, continued dialogue, and directed retirement. The invoking agent or skill owns task instructions, message meaning, result artifacts, callback meaning, completion, post-callback decisions, and whether its current turn may end.
 
+For shell-based documentation checks, disable interactive pagers (for example, `MANPAGER=cat PAGER=cat man tmux`) and set a short tool timeout so a lookup cannot stall the agent.
+
 1. Capture the current socket, coordinator pane, and session as literal values:
 
 ```bash
