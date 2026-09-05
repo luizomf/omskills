@@ -23,7 +23,7 @@ Review against two separately reported criteria sets:
 
 ### Committed mode
 
-1. Use the fixed point supplied by the caller. If none was supplied, infer one and ask only when none can be established. Resolve base and review HEAD to exact full SHAs.
+1. Use the fixed point supplied by the caller. If none was supplied, infer one and ask only when none can be established. Resolve review HEAD to a full SHA. For standalone committed review, resolve the base as the merge base of that fixed point and review HEAD, preserving the `fixed-point...HEAD` candidate. For coordinated review, use the supplied exact full base SHA and verify it is an ancestor of review HEAD.
 2. In a coordinated Ticket review, verify the supplied candidate path, branch and exact HEAD before capture. Use that exclusive candidate, never an inherited caller checkout; do not create another workspace. Unexpected branch/HEAD drift stops review as incomplete.
 3. Capture the complete `git diff <base-sha> <review-sha>` and `git log <base-sha>..<review-sha> --oneline` in that candidate. Check that its identity/HEAD remains unchanged after capture; report exact path, branch, base and review SHAs with any capture limitations.
 4. If the diff is empty, stop and report that there are no committed changes to review.
