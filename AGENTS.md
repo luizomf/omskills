@@ -9,7 +9,7 @@ specific nested `AGENTS.md`, if added later, overrides this file in its subtree.
 - **Purpose:** a curated collection of agent skills, prompts, setup documentation, and helper scripts; this is not runtime application code.
 - **Origin:** adapted from a May 24, 2026 copy of [mattpocock/skills](https://github.com/mattpocock/skills), with selected later changes maintained independently.
 - **Maintenance boundary:** adopt upstream ideas only as deliberate local changes under omskills conventions; never synchronize this repository wholesale with its source project.
-- **Skill lifecycle:** `idea -> grill -> spec -> tickets -> prompt audit -> explicit authorization -> dispatch -> implementation -> review -> PR -> handoff`.
+- **Planned Mission lifecycle:** `idea -> grill -> spec -> tickets -> prompt audit -> explicit authorization -> dispatch -> implementation -> review -> PR -> handoff`. Ordinary Direct Assisted work uses only the steps its accepted request and risk require.
 - **Language:** use English for code, comments, commits, Issues, pull requests, READMEs, skill names and descriptions, and agent-facing instructions. Match the user's language in chat.
 
 Sources have distinct roles rather than one interchangeable precedence order. Use
@@ -58,12 +58,38 @@ sync with the accepted behavior.
 Repository maintenance normally follows **accepted request -> focused change ->
 verification -> conventional commit -> push**.
 
-A code or behavior-changing Ticket is eligible for autonomous execution only
-when it is `ready-for-agent` with a current Prompt Audit `PASS` or explicit
-maintainer `BYPASS`; see `CONTEXT.md` and ADR 0002. Eligibility does not select
-work. The accepted user or invoker request must explicitly authorize the Ticket or
-supply the finite pre-resolved Mission plan.
+Before the first implementation mutation, apply the adaptive Delivery mode gate.
+Honor topology and maintainer availability already established by the request and
+ask only about a dimension that remains materially unresolved; do not require a
+fixed questionnaire, magic wording, caller provenance, or redundant confirmation.
+Read-only inspection, investigation, and reproduction may precede this gate.
+
+Use Direct Assisted work by default for an untracked request or exactly one
+selected Ticket when the maintainer is available and no real coordination is
+required. The conversational responsible agent owns investigation, decisions,
+implementation, verification, review adjudication, corrections, and delivery.
+Readiness and Prompt Audit are not required by default. Material changes to an
+existing Governing authority must update that durable source before delivery.
+
+Use Mission topology for multiple selected Tickets or real dependency, conflict,
+integration, shared-resource, or multiple-writer coordination. Resolve availability
+independently: a Mission may be Assisted or Unattended. For Unattended execution,
+each code or behavior-changing Ticket must be `ready-for-agent` with a current
+Prompt Audit `PASS` or explicit maintainer `BYPASS`, and the finite pre-resolved
+Mission plan requires explicit authorization. Eligibility does not select work.
+Changing Direct Assisted work to Unattended requires a new explicit gate,
+recoverable current state, durable current contracts, resolved relations, a current
+audit gate, and explicit Mission authorization; silence never authorizes the
+transition.
+
 Text or documentation work that cannot change behavior may proceed directly.
+Assisted code or behavior changes and changes to Specs, ADRs, workflow, security,
+or other Governing authority require one fresh independent review. Purely
+editorial documentation may be self-reviewed. Bounded non-delegating Assisted
+investigations may run in parallel when independence, capacity, and resources are
+established; safe Mission Ticket phases should likewise prefer proven parallelism
+without weakening their planning, candidate, artifact, integration, or settlement
+rules.
 
 1. Inspect Git status, recent history, relevant Issues, and live dependency/conflict state. Before substantial workflow, architecture, or publishing work, confirm whether the explicitly selected request is open, blocked, deferred, already delivered, or conflicts with another change. A ready-work query is discovery, not Mission authorization.
 2. Read the accepted request, affected skills, supporting files, and governing contracts before editing. Ask only when behavior, safety, scope, workflow, or authority remains materially unresolved.

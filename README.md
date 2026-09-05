@@ -14,27 +14,35 @@ This repository is maintained independently and does not track or synchronize wi
 
 `omskills` is not runtime application code. It is a curated set of agent skills, prompts, setup docs, and helper scripts for working with Codex and other coding agents.
 
-The main flow this repo reinforces is:
+For ordinary work, the default is Direct Assisted delivery: one conversational responsible agent handles an untracked request or exactly one selected Ticket while the maintainer remains available. Use only the planning and implementation skills the request needs.
+
+For coordinated or Unattended work, the planned Mission flow is:
 
 `idea -> grill -> spec -> tickets -> prompt audit -> explicit authorization -> dispatch -> implementation -> review -> PR -> handoff`
 
-The skills act as checkpoints: clarify before planning, document before ticketing, triage before implementation, authorize before autonomous execution, test before coding, review before shipping, and hand off before context is lost.
+The skills act as proportionate checkpoints: clarify before planning, document durable authority before changing it, triage and audit Unattended work, test before coding, review behavior and governing documents before shipping, and hand off before context is lost.
 
 ### Runtime Relationship with ompi
 
-This collection has no package or checkout dependency on [ompi](https://github.com/luizomf/ompi), and many skills remain usable in any compatible coding-agent harness. However, the advanced `implement` -> `dispatch-tickets` -> `orchestrate` workflow depends on isolated subagents, bounded nesting, direct and asynchronous delivery, capability inheritance, and managed cancellation semantics currently implemented and validated by ompi. Using that workflow outside ompi requires a harness that provides the same contract. A human/invoker or context-rich parent may also dispatch one fresh isolated `orchestrate` coordinator directly for smaller work; this still requires explicit selected-Ticket authorization, live gates and actual child capabilities, not parent provenance or role/depth assertions. These texts prescribe prompt obligations, not runtime guarantees. Parallel groups require affirmative active ROOT capacity and same-batch start evidence in the current mode; child limits or an absent bound cannot establish capacity. Its Ticket identity format is currently `owner/repository#integer`; local Markdown paths and nested GitLab namespaces are not supported by this delivery route, even though planning and triage support those trackers.
+This collection has no package or checkout dependency on [ompi](https://github.com/luizomf/ompi), and many skills remain usable in any compatible coding-agent harness. However, the advanced Mission-oriented `implement` -> `dispatch-tickets` -> `orchestrate` workflow depends on isolated subagents, bounded nesting, direct and asynchronous delivery, capability inheritance, and managed cancellation semantics currently implemented and validated by ompi. Using that workflow outside ompi requires a harness that provides the same contract. A human/invoker or context-rich parent may also dispatch one fresh isolated `orchestrate` coordinator directly for smaller Mission work; this still requires explicit selected-Ticket authorization, applicable live gates and actual child capabilities, not parent provenance or role/depth assertions. Ordinary Direct Assisted work does not require this graph. These texts prescribe prompt obligations, not runtime guarantees. Parallel groups require affirmative active ROOT capacity and same-batch start evidence in the current transport mode; child limits or an absent bound cannot establish capacity. Its Ticket identity format is currently `owner/repository#integer`; local Markdown paths and nested GitLab namespaces are not supported by this delivery route, even though planning and triage support those trackers.
 
 The relationship also runs in the other direction: ompi's skill-enabled profiles consume selected skills from this repository. Each repository remains independently installed and maintained; neither checkout is synchronized from the other.
 
 ## Operating Model
 
-Before asking an agent to "build it", classify the moment:
+Before asking an agent to "build it", resolve delivery topology and maintainer availability independently. Read-only exploration may happen first, but implementation mutation waits for this adaptive semantic gate. Do not turn it into a fixed questionnaire: ask only about a materially unresolved dimension and accept choices already clear from the request.
+
+- Untracked request or exactly one selected Ticket, with the maintainer available and no real coordination: use Direct Assisted delivery. The conversational responsible agent owns the work end to end; readiness, Prompt Audit, dispatcher, separate coordinator, and writer are not required by default.
+- Multiple selected Tickets or real dependency, conflict, integration, shared-resource, or multiple-writer coordination: use Mission topology. A Mission may be Assisted or Unattended.
+- Moving Direct Assisted work to Unattended: preserve recoverable state and establish durable contracts, resolved relations, a current Prompt Audit `PASS` or explicit `BYPASS`, and explicit one-Ticket Mission authorization. Silence is not authorization.
+
+Then select only the skills the work needs:
 
 - Need to think through an idea: `/grill-me` or `/grill-with-docs`
 - The work is too large or foggy for one session: `/wayfinder`
 - Know the goal, but not the implementation Tickets: `/to-spec`, then `/to-tickets`
-- Want one explicitly Mission-authorized Ticket delivered through the canonical dispatcher route: `/implement`
-- Want one or more Mission-authorized Tickets dispatched from a pre-resolved phased plan: `/dispatch-tickets`
+- Want one explicitly Mission-authorized Ticket delivered through the dispatcher route: `/implement`
+- Want a Mission-authorized phased plan dispatched: `/dispatch-tickets`
 - Want the diff checked before it ships: `/code-review`
 - Something broke: `/diagnosing-bugs`
 - Need high-trust reading legwork: `/research`
@@ -43,9 +51,11 @@ Before asking an agent to "build it", classify the moment:
 - Need to pause without losing context: `/handoff`
 - Need a fresh agent window that retires the old Pi after transfer: `/wormhole`
 
-For `/implement`, select one fully qualified Ticket and confirm that its external blockers and conflicts are resolved; the convenience entry does not inspect the tracker. Direct dispatch of one fresh coordinator is also allowed; when `/dispatch-tickets` is used, its root remains strictly mechanical.
+For `/implement`, select one fully qualified Ticket, state Assisted or Unattended availability, and confirm that its external blockers and conflicts are resolved; the convenience entry does not inspect the tracker. Direct dispatch of one fresh coordinator is also allowed for Mission work; when `/dispatch-tickets` is used, its root remains strictly mechanical.
 
-Every implementation Ticket owns an exclusive coordinator-established worktree and branch; writer, reviewer, corrections and checks share its exact candidate/base/HEAD handoffs. Approved parallel plans include an ordinary integration Ticket blocked by every member. Members deliver verified pushed branch artifacts with durable repository/remote branch/full-SHA tracker evidence; integration delivers the verified combined state to its declared target before dependent work. Other Tickets state their normal target explicitly. Retain artifacts and recoverable work until delivery and all integration consumers no longer need them; cleanup never discards unrelated, failed, cancelled, dirty or unintegrated work.
+Every implementation Ticket handled through the managed Mission route owns an exclusive coordinator-established worktree and branch; writer, reviewer, corrections and checks share its exact candidate/base/HEAD handoffs. Approved parallel plans include an ordinary integration Ticket blocked by every member. Members deliver verified pushed branch artifacts with durable repository/remote branch/full-SHA tracker evidence; integration delivers the verified combined state to its declared target before dependent work. Other Tickets state their normal target explicitly. Retain artifacts and recoverable work until delivery and all integration consumers no longer need them; cleanup never discards unrelated, failed, cancelled, dirty or unintegrated work. Prefer independent investigations and Ticket phases in parallel when independence, capacity, shared resources, and integration boundaries are established; otherwise fail closed or plan serial work rather than silently changing an authorized group.
+
+Direct Assisted code or behavior changes receive one fresh independent review. Specs, ADRs, workflow, security, and other governing documents are also first-class review subjects; only purely editorial documentation may be self-reviewed.
 
 The core habit is to ask: "Is this clear enough to become code?"
 
@@ -60,11 +70,11 @@ If there is a conflict, architectural ambiguity, unresolved dependency, or two p
 The risk in an empty repo is inventing too much architecture too early.
 
 1. Create the minimum project identity: `README.md`, `AGENTS.md`, license if needed, and the stack decision if it is already known.
-2. Run `/setup-omskills` to record issue tracker, triage labels, and docs layout.
-3. Use `/grill-with-docs` before substantial coding to clarify domain language, constraints, and the smallest useful first slice.
-4. Use `/to-spec` if the direction needs a durable spec.
-5. Use `/to-tickets` to break the spec into small, vertical tickets.
-6. Explicitly Mission-authorize the Ticket, then use `/implement` only when it is clear, verifiable, `ready-for-agent`, and carries a current Prompt Audit `PASS` or explicit `BYPASS`.
+2. Run `/setup-omskills` before tracker-backed planning or delivery to record the issue tracker, triage labels, and docs layout.
+3. Use `/grill-with-docs` before substantial coding when domain language, constraints, or the smallest useful slice remains unclear.
+4. Use `/to-spec` when the direction needs durable planning authority.
+5. Use `/to-tickets` when the Spec needs multiple small, vertical implementation units.
+6. For one bounded request with the maintainer available, proceed through Direct Assisted delivery once the adaptive gate is resolved. Use `/implement` only when selecting the Mission route; Unattended execution also requires `ready-for-agent`, a current Prompt Audit `PASS` or explicit `BYPASS`, and explicit authorization.
 
 Good prompt:
 
@@ -77,11 +87,11 @@ Before implementing, help identify the smallest useful first slice.
 The risk in an existing project is enforcing process before understanding the system.
 
 1. Start with normal repo exploration and, when the request is broad, `/research` or `/wayfinder`.
-2. Run `/setup-omskills` to connect the repo to the skills.
+2. Run `/setup-omskills` when tracker-backed planning or delivery needs repository configuration.
 3. Use `/grill-with-docs` if project language is unclear or undocumented.
-4. Use `/triage` to establish which work is eligible before explicitly selecting any Ticket for execution.
+4. Use `/triage` when a tracked request is unclear or needs Unattended eligibility established.
 5. Use `/improve-codebase-architecture` when coupling or structure needs attention; treat the output as diagnosis and issue material, not blanket permission to refactor.
-6. Explicitly Mission-authorize the Ticket, then use `/implement` when it is mature, `ready-for-agent`, and carries a current Prompt Audit `PASS` or explicit `BYPASS`.
+6. Use Direct Assisted delivery for one bounded request while the maintainer is available. Use `/implement` for an explicitly authorized one-Ticket Mission; Unattended execution also requires a mature `ready-for-agent` Ticket and a current Prompt Audit `PASS` or explicit `BYPASS`.
 
 Good prompt:
 
@@ -94,9 +104,9 @@ Before changing code, explain how this request fits into the current system.
 The risk in a prepared repo is ignoring decisions that already exist.
 
 1. Read the local instructions and context: `AGENTS.md`, `CONTEXT.md`, `docs/agents/*`, and `docs/adr/*`.
-2. Start from an existing issue or ticket when possible.
-3. Use `/triage` if the task is new or unclear.
-4. Explicitly Mission-authorize the Ticket, then use `/implement` if it is small, mature, has acceptance criteria, and carries a current Prompt Audit `PASS` or explicit `BYPASS`.
+2. Start from an existing issue or Ticket when durable authority already exists or the work must survive the conversation.
+3. Use `/triage` if tracked work is unclear or needs Unattended eligibility established.
+4. Use Direct Assisted delivery for one bounded selected Ticket while the maintainer is available. Use `/implement` only for an explicitly authorized one-Ticket Mission; Unattended execution additionally requires maturity, `ready-for-agent`, acceptance criteria, and a current Prompt Audit `PASS` or explicit `BYPASS`.
 5. Use `/grill-with-docs` if the issue conflicts with domain language or decisions.
 6. Stop and discuss when the task conflicts with an ADR, changes architecture, or has meaningful tradeoffs.
 7. Use `/handoff` before pausing a long session.
@@ -155,7 +165,7 @@ States:
 
 - `needs-triage`: maintainer needs to evaluate.
 - `needs-info`: missing information from the reporter/author.
-- `ready-for-agent`: well-specified issue eligible for autonomous execution when a current Prompt Audit gate and explicit Mission authorization also exist; the state does not select the issue.
+- `ready-for-agent`: well-specified issue eligible for Unattended execution when a current Prompt Audit gate and explicit Mission authorization also exist; the state does not select the issue and is not required for Direct Assisted work by default.
 - `ready-for-human`: needs human implementation or decision-making.
 - `wontfix`: will not be actioned.
 
@@ -174,18 +184,18 @@ For mature projects, the eligible Ticket set should favor small, vertical, verif
 - **[to-spec](./skills/engineering/to-spec/SKILL.md)**: turns the current conversation context into a spec and publishes it to the issue tracker.
 - **[to-tickets](./skills/engineering/to-tickets/SKILL.md)**: breaks a plan, spec, or conversation into tracer-bullet tickets with blocking and conflict edges.
 - **[wayfinder](./skills/engineering/wayfinder/SKILL.md)**: maps a huge or foggy effort into investigation tickets on the issue tracker.
-- **[dispatch-tickets](./skills/engineering/dispatch-tickets/SKILL.md)**: dispatches one finite pre-resolved sequential/parallel Mission plan from the canonical minimal root.
-- **[implement](./skills/engineering/implement/SKILL.md)**: composes one audited, Mission-authorized Ticket as a one-item Mission through `dispatch-tickets`.
+- **[dispatch-tickets](./skills/engineering/dispatch-tickets/SKILL.md)**: dispatches one finite pre-resolved Assisted or Unattended Mission plan from the canonical minimal root.
+- **[implement](./skills/engineering/implement/SKILL.md)**: composes one explicitly authorized Ticket as a one-item Assisted or Unattended Mission through `dispatch-tickets`.
 
 **Fresh-coordinator execution**
 
-- **[orchestrate](./skills/engineering/orchestrate/SKILL.md)**: runs as a fresh one-Ticket coordinator dispatched by an authorized direct caller or `dispatch-tickets`, owning one writer/reviewer delivery graph.
+- **[orchestrate](./skills/engineering/orchestrate/SKILL.md)**: runs as a fresh Mission Ticket coordinator dispatched by an authorized direct caller or `dispatch-tickets`, owning one writer/reviewer delivery graph.
 
 **Typically agent-selected**
 
 - **[prototype](./skills/engineering/prototype/SKILL.md)**: creates throwaway prototypes to validate logic, state, or UI alternatives.
 - **[diagnosing-bugs](./skills/engineering/diagnosing-bugs/SKILL.md)**: disciplined loop for hard bugs and regressions: reproduce, minimise, hypothesise, instrument, fix, and regression-test.
-- **[research](./skills/engineering/research/SKILL.md)**: investigates a question against high-trust primary sources and saves cited findings in the repo.
+- **[research](./skills/engineering/research/SKILL.md)**: investigates a bounded question or produces a durable cited research artifact from high-trust primary sources.
 - **[tdd](./skills/engineering/tdd/SKILL.md)**: red -> green -> refactor development at confirmed test seams.
 - **[codebase-design](./skills/engineering/codebase-design/SKILL.md)**: shared vocabulary and principles for designing deep modules.
 - **[code-review](./skills/engineering/code-review/SKILL.md)**: reviews a committed range or complete WIP candidate along Standards and Spec axes.
