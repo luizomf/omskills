@@ -22,12 +22,14 @@ Use the coordinator process's `$TMUX_PANE` as the callback target even when anot
 
 Wait until the worker displays its normal input-ready editor. A project-trust selector is a user gate, not an input-ready editor: send no message and leave that choice to the user. Never auto-approve trust. Do not use a non-interactive print mode; the session must remain visible for user observation and input. Setup is ready for transport only when the worker pane is retained and its normal editor is input-ready; at a trust gate it remains intentionally paused.
 
-3. Send each caller-supplied message through a unique tmux buffer, then send `Enter` separately. Do not pass caller-controlled content as a tmux command argument: tmux may reinterpret leading options or command separators even when the shell preserves one argument. Choose each buffer name as a unique identifier containing only ASCII letters, digits, hyphens, and underscores, and keep the recorded addresses shell-quoted:
+3. Keep every tmux message short and on one physical line, with no embedded or trailing CR/LF characters. For long or multiline text, save the full message in a uniquely named file in the OS temporary directory or a verified Git-ignored scratch directory. Confirm the recipient can read that path; a local temporary file is not automatically accessible on another machine. Keep it available until the recipient has read it, and send only a short pointer, for example: `Read /absolute/path/worker-prompt.md in full and follow its instructions.` Do not split a document into successive chat messages. Apply this rule in both directions, including callbacks.
+
+Send the single-line message through a unique tmux buffer, then send `Enter` separately. Use `paste-buffer -p` as additional protection: tmux normally converts LF to CR, which an editor may interpret as submission; `-p` adds paste brackets only when the application has enabled bracketed paste. It does not replace the single-line rule. Do not pass caller-controlled content as a tmux command argument: tmux may reinterpret leading options or command separators even when the shell preserves one argument. Choose each buffer name as a unique identifier containing only ASCII letters, digits, hyphens, and underscores, and keep the recorded addresses shell-quoted:
 
 ```bash
 printf '%s' "$message" |
   tmux -S "$socket" load-buffer -b "$buffer_name" -
-tmux -S "$socket" paste-buffer -b "$buffer_name" -t "$worker_pane" -d
+tmux -S "$socket" paste-buffer -p -b "$buffer_name" -t "$worker_pane" -d
 tmux -S "$socket" send-keys -t "$worker_pane" Enter
 ```
 
@@ -40,7 +42,7 @@ After submission, the invoking agent or skill may continue its own work, continu
 ```bash
 printf '%s' "$callback_message" |
   tmux -S "$callback_socket" load-buffer -b "$callback_buffer_name" -
-tmux -S "$callback_socket" paste-buffer \
+tmux -S "$callback_socket" paste-buffer -p \
   -b "$callback_buffer_name" -t "$callback_pane" -d
 tmux -S "$callback_socket" send-keys -t "$callback_pane" Enter
 ```
