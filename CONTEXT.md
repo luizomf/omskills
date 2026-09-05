@@ -47,15 +47,19 @@ The topology for an untracked request or exactly one selected **Ticket** when no
 _Avoid_: unreviewed work, implicit multi-writer coordination, mandatory dispatcher route
 
 **Maintainer availability**:
-The delivery dimension that records whether the maintainer remains available for ordinary implementation **Questions**. **Assisted** means available; **Unattended** means execution must complete within durable pre-resolved authority or stop at a genuine blocker. Availability is independent of **Delivery topology**, and silence never changes it.
+The delivery dimension that records whether the maintainer remains available for ordinary implementation **Questions**. **Assisted** means available; **Unattended** means execution must continue as an **Unattended Mission** within durable pre-resolved authority or stop at a genuine blocker. Availability is independent of **Delivery topology**, but changing one Direct Assisted item to Unattended establishes a one-Ticket Mission rather than an unattended direct path. Silence never changes availability.
 _Avoid_: direct versus Mission topology, inferred absence, fixed mode matrix
+
+**Unattended Mission**:
+A **Mission**, including a one-Ticket Mission created when Direct Assisted work changes availability, explicitly authorized to continue without the maintainer participating in ordinary implementation decisions. Its durable Ticket contracts, resolved relations, execution gates, and stopping conditions must support safe progress while the maintainer is absent.
+_Avoid_: Assisted work, unattended direct delivery, every Mission
 
 **Delivery mode gate**:
 The adaptive gate before the first implementation mutation. Read-only inspection, investigation, and reproduction may precede it. The responsible agent asks only for a topology or availability dimension that remains materially unresolved; an explicit semantic choice satisfies that dimension without magic wording, caller ancestry, role labels, or redundant confirmation.
 _Avoid_: fixed questionnaire, provenance check, post-mutation confirmation
 
 **Mission authorization**:
-Explicit user or invoker direction that selects one Ticket or supplies one finite, non-empty, pre-resolved **Mission plan**. It is required for Unattended delivery and authorizes execution there without ordinary interactive decisions; when Mission topology is used, it supplies the plan regardless of maintainer availability. Readiness and a valid **Prompt audit status** are eligibility gates, not selection. Authorization is non-transitive: findings and newly imagined work outside the selected identities are reported, not converted into implementation.
+Explicit user or invoker direction that selects one Ticket or supplies one finite, non-empty, pre-resolved **Mission plan**. It is required for an **Unattended Mission** and authorizes execution there without ordinary interactive decisions; when Mission topology is used, it supplies the plan regardless of maintainer availability. Readiness and a valid **Prompt audit status** are eligibility gates, not selection. Authorization is non-transitive: findings and newly imagined work outside the selected identities are reported, not converted into implementation.
 _Avoid_: ready-work query, discovery request, open-ended mandate
 
 **Mission plan**:
@@ -75,7 +79,7 @@ The user-only `implement` skill. It accepts exactly one explicitly authorized Ti
 _Avoid_: same-context implementation by `implement`, root coordinator, orchestrate alias
 
 **Ticket coordinator**:
-The fresh isolated agent running `orchestrate` for exactly one explicitly authorized Ticket in the managed Mission or Unattended route. A human/invoker or context-rich parent may dispatch it directly for smaller work. It validates the selected Ticket's explicit authorization, live execution gate when applicable, scope, required repository setup and actual execution capabilities, not its parent's role or provenance; it neither inspects ancestors nor rejects a `role=user` prompt or missing dispatcher/depth assertion. It reads every governing source, owns writer and reviewer delegation, performs surviving corrections and verification, completes delivery and tracker obligations, and returns one compact **Ticket outcome**. Missing required repository setup during a headless Ticket run produces a blocker; the coordinator does not open interactive setup through the dispatcher.
+The fresh isolated agent running `orchestrate` for exactly one explicitly authorized Ticket in the managed Mission route. A human/invoker or context-rich parent may dispatch it directly for smaller work. It validates the selected Ticket's explicit authorization, live execution gate when applicable, scope, required repository setup and actual execution capabilities, not its parent's role or provenance; it neither inspects ancestors nor rejects a `role=user` prompt or missing dispatcher/depth assertion. It reads every governing source, owns writer and reviewer delegation, performs surviving corrections and verification, completes delivery and tracker obligations, and returns one compact **Ticket outcome**. Missing required repository setup during a headless Ticket run produces a blocker; the coordinator does not open interactive setup through the dispatcher.
 _Avoid_: Ticket dispatcher, sequence owner, leaf writer, leaf reviewer
 
 **Ticket outcome**:
@@ -143,8 +147,8 @@ _Avoid_: prompt wording test, regex comprehension proof, duplicate prose impleme
 - Assisted code or behavior changes and changes to Specs, ADRs, workflow, security, or other governing authority receive one fresh independent review. Purely editorial documentation may be self-reviewed. Review receives the concise current contract, governing sources, complete candidate, and verification instructions; material corrections require re-review
 - Explicitly targeted steering may reach one active coordinator literally without changing the plan; untargeted conversation remains at the dispatcher root
 - Text or documentation work that cannot change behavior does not require a **Prompt audit status**
-- Moving from Assisted to Unattended work requires a new explicit gate: preserve recoverable current state, establish durable current contracts and resolved relations, obtain a current `PASS` or explicit `BYPASS`, and receive explicit **Mission authorization**. Silence never authorizes the transition
-- Once Unattended work starts, it completes within the durable contract or stops at a genuine blocker rather than opening ordinary interactive Questions
+- Moving from Direct Assisted work to Unattended establishes a one-Ticket **Unattended Mission** and requires a new explicit gate: preserve recoverable current state, establish durable current contracts and resolved relations, obtain a current `PASS` or explicit `BYPASS`, and receive explicit **Mission authorization**. Silence never authorizes the transition
+- Once an **Unattended Mission** starts, it completes within the durable contract or stops at a genuine blocker rather than opening ordinary interactive Questions
 - The dispatcher does not inspect or mediate missing setup; a headless **Ticket coordinator** returns a blocker when required repository configuration is unavailable
 - An interactive dispatcher turn may end after the harness accepts its asynchronous coordinator dispatch as an **Accepted continuation mechanism**; **Mission complete** still requires a matching `delivered` outcome for every selected identity
 - A **Mission observer** is separate from implementation and routing, and bounded observation never becomes persistent workflow state or a continuation guarantee

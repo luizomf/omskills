@@ -56,13 +56,13 @@ investigations should start together when independence and active capacity are
 affirmatively established. Routine local inspection stays local when delegation
 would cost more context than it saves.
 
-Changing from Assisted to Unattended requires a new explicit gate. Before the
-transition, preserve recoverable current state, establish durable current
-contracts and resolved relations, obtain a current Prompt Audit `PASS` or
-explicit maintainer `BYPASS`, and receive explicit Mission authorization.
-Silence never changes availability. Once Unattended work starts, it completes
-within that authority or stops at a genuine blocker instead of opening ordinary
-interactive Questions.
+Changing Direct Assisted work to Unattended establishes a one-Ticket Mission
+and requires a new explicit gate. Before the transition, preserve recoverable
+current state, establish durable current contracts and resolved relations,
+obtain a current Prompt Audit `PASS` or explicit maintainer `BYPASS`, and receive
+explicit Mission authorization. Silence never changes availability. Once an
+Unattended Mission starts, it completes within that authority or stops at a
+genuine blocker instead of opening ordinary interactive Questions.
 
 ### Ticket contract and execution gate
 
@@ -98,8 +98,8 @@ never dispatches or implements.
 ### Frozen Mission plans and mechanical dispatch
 
 When Mission topology is used, Mission authorization supplies one finite,
-non-empty, pre-resolved plan. For Unattended Direct delivery, it may instead
-select exactly one Ticket without requiring dispatcher composition. Before
+non-empty, pre-resolved plan. A transition from Direct Assisted work supplies a
+one-Ticket Mission plan; this does not require a fixed mode matrix. Before
 Mission dispatch, the plan contains
 fully qualified unique Ticket identities, ordered sequential phases, declared
 compatible parallel groups, blockers, and conflicts. A one-Ticket Mission is a
@@ -137,8 +137,8 @@ a coordinator, or owns an independent implementation, review, or delivery path.
 
 ### Managed one-Ticket ownership and role inheritance
 
-When Mission topology or Unattended delivery uses the managed Ticket route, a
-human/invoker or context-rich parent may dispatch one fresh isolated Ticket
+When Mission topology uses the managed Ticket route, a human/invoker or
+context-rich parent may dispatch one fresh isolated Ticket
 coordinator directly for smaller work. Each coordinator runs `orchestrate` and
 owns exactly one explicitly authorized Ticket end to end through the existing
 acyclic graph:
@@ -157,7 +157,7 @@ remain sequential even when independent Tickets occupy a declared parallel
 group.
 
 The coordinator checks the selected Ticket's explicit authorization, scope,
-setup and actual execution capabilities and, for Unattended work, its live
+setup and actual execution capabilities and, for an Unattended Mission, its live
 `PASS` or explicit `BYPASS`. It does not authenticate its parent's role or
 provenance, inspect ancestors, or reject merely because its prompt has
 `role=user` or lacks a dispatcher/depth assertion. It never discovers or
@@ -269,8 +269,9 @@ The accepted dual-axis architecture in Spec #61 and Issue #62 amends this ADR's
 universal autonomous-pipeline requirements only where they conflict: Direct
 Assisted work no longer requires a Ticket, Prompt Audit, dispatcher, separate
 Ticket coordinator, or writer, and Prompt Audit gates Unattended rather than
-Assisted execution. Mission topology is now selected by real coordination, not
-maintainer absence, and availability is resolved independently. This amendment
+Assisted execution. Mission topology is selected by real coordination or the
+explicit transition to an Unattended Mission, not merely by maintainer absence;
+availability is resolved independently. This amendment
 preserves #52 and #58 as historical delivery evidence without rewriting their
 Issues, audit records, or delivery records.
 
