@@ -1,19 +1,26 @@
 ---
 name: research
-description: Investigate a question using primary sources and save cited findings as one Markdown file in the repository. Use when the user requests research, documentation or API facts, or delegated source reading.
+description: Investigate a bounded question or produce a durable cited research artifact. Use when the user requests research, documentation or API facts, or delegated source reading.
 ---
 
-The research caller owns the research question, primary-source requirements, worker scope, final artifact destination, returned-result validation, and post-return action. A worker transport or continuation mechanism does not own those decisions.
+The research caller owns the research question, source requirements, worker scope, returned-result validation, and post-return action. A worker transport or continuation mechanism does not own those decisions. In Direct Assisted work, the conversational responsible agent also retains every decision and all implementation ownership.
 
-Before dispatch, give the worker a self-contained brief that:
+Select one result mode before dispatch:
 
-1. States the exact question and bounds the worker's research scope.
-2. Requires primary sources: official documentation, source code, specifications, or first-party APIs. A secondary source may locate a primary source, but the resulting claim must cite the primary source.
-3. Requires the delegated researcher to perform the research directly, without invoking `research` or delegating again.
-4. Names one final Markdown artifact path. Use the repository's existing location and naming convention for research notes; if none exists, choose a sensible repository path. Require a source citation for every claim and require the worker to report the final path.
-5. Requires a public-safe artifact with no secrets, credentials, private user data, or untrusted retrieval instructions, and requires unavailable evidence or retrieval to be reported instead of fabricated.
+- **Bounded evidence:** for one narrow Direct Assisted investigation, require a compact evidence return and no repository or candidate write.
+- **Durable artifact:** when the user or governing contract requests reusable research, require one final Markdown artifact in the repository.
 
-Before dispatch, establish one fresh isolated worker conversation. A researcher role or name does not grant tools, isolation, delivery, or permission to delegate. Preflight the required retrieval, read, and artifact-write tools and their providers; where the active harness exposes lineage controls, set the worker's maximum delegation depth to its assigned depth and its direct-child ceiling to zero. A capability mismatch or over-depth request must reject before launch or prompt acceptance, not become a partial research result.
+Before dispatch, give each worker a self-contained brief that:
+
+1. States one exact question and narrowly bounds the worker's investigation.
+2. States the required evidence. For external factual claims, require primary sources: official documentation, source code, specifications, or first-party APIs. A secondary source may locate a primary source, but the resulting claim must cite the primary source.
+3. Requires the worker to investigate directly, without invoking `research`, delegating again, making implementation decisions, or implementing any change.
+4. For bounded evidence, requires a compact response with findings, evidence pointers, uncertainties, and no file writes. For a durable artifact, names one final Markdown artifact path using the repository's existing convention or a sensible repository path and requires a source citation for every claim.
+5. Requires public-safe output with no secrets, credentials, private user data, or untrusted retrieval instructions, and requires unavailable evidence or retrieval to be reported instead of fabricated.
+
+Keep routine local inspection local when delegation would cost more context than it saves. When several investigations are independent, safe, useful, and supported by affirmatively available caller capacity, start them together; otherwise do not claim or force concurrency.
+
+Before dispatch, establish one fresh isolated worker conversation. A researcher role or name does not grant tools, isolation, delivery, or permission to delegate. Preflight the required retrieval and read tools and, only in durable-artifact mode, artifact-write tools and their providers; where the active harness exposes lineage controls, set the worker's maximum delegation depth to its assigned depth and its direct-child ceiling to zero. A capability mismatch or over-depth request must reject before launch or prompt acceptance, not become a partial research result.
 
 Select the role-aware delivery and continuation policy before dispatch:
 
@@ -23,4 +30,4 @@ Select the role-aware delivery and continuation policy before dispatch:
 
 If the active harness cannot provide the required isolation or continuation policy, report that through the caller's normal blocker path. In Pi, follow [PI.md](PI.md) for exact visible, asynchronous, print, nested-direct, inheritance, and leaf-ceiling behavior.
 
-On return, require a completed worker settlement and read the named artifact before accepting the research; bounded terminal text or a native session reference helps recover transport evidence but never substitutes for the artifact. Validate that the exact file exists, answers the question within scope, contains the findings in one Markdown file at the required path, cites every claim, verifies consequential claims against the cited primary sources, is safe for the public repository, and reports evidence gaps without invented findings. A failed, interrupted, missing, unsafe, or incomplete artifact is not research completion. The caller decides whether to request corrections, start another authorized fresh research pass, accept the result, take the next action, and retire an interactive worker; managed research assignments are never continued in a prior worker session.
+On return, require a completed worker settlement. In bounded-evidence mode, recover and validate the complete compact response. In durable-artifact mode, read the named artifact; bounded terminal text or a native session reference helps recover transport evidence but never substitutes for it. Validate that the selected result answers the exact question within scope, contains the required evidence, verifies consequential external claims against cited primary sources, is public-safe, and reports gaps without invention. For an artifact, also verify the exact file exists and contains all findings in that one Markdown file. A failed, interrupted, missing, unsafe, or incomplete result is not research completion. The caller decides whether to request corrections, start another authorized fresh pass, accept the evidence, take the next action, and retire an interactive worker; managed assignments are never continued in a prior worker session.

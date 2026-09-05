@@ -48,6 +48,6 @@ Choose the recommendation by these criteria:
 - **Existing Spec or Ticket update:** an existing tracked item already governs the result; update it instead of recommending a duplicate.
 - **Domain language or ADR:** shared domain meaning belongs in `CONTEXT.md`, or a durable decision belongs in an ADR, only when the destination satisfies that artifact's existing recording gate.
 
-After the user confirms the destination, report the confirmed recommendation and a concise continuation summary in the conversation only. `grill-me` never carries out the route: it never writes a Scratchpad, Spec, tracked-item update, domain document, ADR, or any other repository artifact. It never starts implementation or bypasses existing Prompt Audit, readiness, implementation, review, PR, or handoff authority.
+After the user confirms the destination, report the confirmed recommendation and a concise continuation summary in the conversation only. `grill-me` never carries out the route: it never writes a Scratchpad, Spec, tracked-item update, domain document, ADR, or any other repository artifact. It never starts implementation, resolves the later Delivery mode gate, or bypasses the implementation, proportionate review, repository delivery, or route-specific readiness, Prompt Audit, and authorization rules.
 
 

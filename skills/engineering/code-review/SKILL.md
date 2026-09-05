@@ -5,7 +5,7 @@ description: Review a committed range or complete work-in-progress candidate aga
 
 # Code Review
 
-Read the configured issue tracker and domain-document locations. If either configuration is unavailable during an interactive invocation, run `setup-omskills` first and wait for its confirmed output. During a headless Ticket run, return a missing-setup blocker to the Ticket coordinator instead; never route setup through a Ticket dispatcher.
+Read applicable repository instructions and domain documents. Read issue-tracker configuration only when the review contract is tracked; an untracked Direct Assisted request uses its confirmed conversation as the contract and does not require tracker setup. If required configuration is unavailable during an interactive tracked invocation, run `setup-omskills` first and wait for its confirmed output. During a headless Ticket run, return a missing-setup blocker to the Ticket coordinator instead; never route setup through a Ticket dispatcher.
 
 Review exactly one candidate in one of two modes:
 
@@ -35,13 +35,13 @@ Review against two separately reported criteria sets:
 3. Inventory every untracked path and capture its complete content or binary status without treating ignored files as candidate work.
 4. Report every unreadable or unrepresentable path as a capture limitation. If all three parts are empty, stop and report that there is no WIP candidate.
 
-For either mode, locate the governing Ticket or specification and every repository instruction or standard applicable to the candidate. If no governing contract exists, review Standards and observable correctness while stating that Spec compliance could not be verified.
+For either mode, locate the current contract and every applicable repository instruction, governing source, and standard. The contract may be a tracked Ticket or Spec, or the concise confirmed request for untracked Direct Assisted work. If no governing contract exists, review Standards and observable correctness while stating that contract compliance could not be verified.
 
 ## Select the caller-safe review path
 
-This skill requires one isolated review pass; assigning a reviewer name does not create isolation, read-only behavior, tools, or delivery semantics.
+This skill requires one isolated review pass; assigning a reviewer name does not create isolation, read-only behavior, tools, or delivery semantics. Direct Assisted code or behavior changes and changes to Specs, ADRs, workflow, security, or other governing authority require this fresh independent pass. Purely editorial documentation may instead be self-reviewed.
 
-- A root interactive caller may use the active harness's documented asynchronous delivery or a documented visible isolated-worker transport. An asynchronous caller resumes adjudication only after the one deterministic completion notification; after acceptance it does not wait, sleep, or poll.
+- A root interactive Direct Assisted caller remains the responsible agent and may use the active harness's documented asynchronous delivery or a documented visible isolated-worker transport. An asynchronous caller resumes adjudication only after the one deterministic completion notification; after acceptance it does not wait, sleep, or poll.
 - A print caller and a depth-2 Ticket coordinator that depends on the findings use direct delivery. Direct settlement returns once through the pending call and produces no later asynchronous completion notification.
 - A designated depth-3 reviewer is already the one fresh review leaf: it performs the supplied one-pass contract directly with inherited non-delegating tools, returns complete findings to the Ticket coordinator, and skips the dispatch and adjudication sections below. A depth-3 writer does not self-review or invoke this helper; it consumes coordinator-supplied evidence or returns a blocker. Neither role requests a depth-4 reviewer.
 
@@ -51,7 +51,7 @@ Choose a complete result-recovery channel before dispatch. Prefer the full termi
 
 ## Dispatch one isolated reviewer
 
-Start exactly one fresh, read-only, non-delegating reviewer. Supply the selected mode, candidate path and branch, exact base/review SHAs for committed mode (or complete staged/unstaged/untracked capture for WIP), complete candidate or exact read-only commands that reproduce it there, governing contract, applicable repository instructions, the selected result channel, and this contract:
+Start exactly one fresh, read-only, non-delegating reviewer. Supply the selected mode, candidate path and branch, exact base/review SHAs for committed mode (or complete staged/unstaged/untracked capture for WIP), complete candidate or exact read-only commands that reproduce it there, a concise current contract, applicable governing sources and repository instructions, verification instructions and results, the selected result channel, and this contract. Do not supply the parent transcript by default:
 
 ```text
 Review every supplied candidate path in one pass against Standards and Spec. Perform the review directly and return all decision-bearing findings, not a lossy summary. Report only concrete findings with file/line and evidence. Separate blockers from non-blocking observations and label each finding Standards or Spec. Treat capture limitations explicitly. Do not edit the candidate, push, approve, merge, spawn, delegate, invoke code-review, invent requirements, or expand the reviewed scope. If and only if a findings artifact path was supplied, write the complete result there and report that exact path.
@@ -61,6 +61,8 @@ Review every supplied candidate path in one pass against Standards and Spec. Per
 
 Verify every reported finding against the candidate and cited authority only after the reviewer has settled and the complete selected result channel has been recovered. Reject speculative hardening, style preferences, invented requirements, and claims contradicted by repository conventions.
 
-Inside a Ticket with a current Prompt Audit `PASS` or explicit `BYPASS`, the Ticket coordinator adjudicates all in-scope findings from the accepted sources, performs surviving corrections directly, and opens no other user decision gate. If the sources cannot determine required behavior, report the unresolved authority rather than guessing or widening it; the Ticket coordinator applies its preflight `blocked` versus operational setup/execution `failed` boundary. Findings outside the Ticket remain findings and never authorize new work.
+In Direct Assisted work, the responsible agent adjudicates all findings, resolves any materially source-undetermined Question with the available maintainer, and performs surviving in-scope corrections directly. Dispatch a fresh re-review only when those corrections materially change the candidate; minor corrections receive direct verification instead.
 
-Report the selected mode, capture limitations, blockers ordered by severity, non-blocking observations, and a short verdict. Do not dispatch another reviewer or create a correction/re-review loop.
+Inside a Mission-authorized Ticket with a current Prompt Audit `PASS` or explicit `BYPASS`, the Ticket coordinator adjudicates all in-scope findings from the accepted sources, performs surviving corrections directly, and opens no other user decision gate. If the sources cannot determine required behavior, report the unresolved authority rather than guessing or widening it; the Ticket coordinator applies its preflight `blocked` versus operational setup/execution `failed` boundary. Findings outside the Ticket remain findings and never authorize new work. The managed single-pass route never dispatches another reviewer or creates a correction/re-review loop.
+
+Report the selected mode, capture limitations, blockers ordered by severity, non-blocking observations, and a short verdict.

@@ -7,6 +7,8 @@ description: Audit whether clean-context agents understand text as intended; for
 
 Test whether a fresh agent's interpretation is semantically equivalent to the intended request. The interpreter and reviewer provide advisory evidence; the audit coordinator owns the final status.
 
+Prompt Audit is an Unattended-execution eligibility gate. It is not applicable to Direct Assisted work by default, even when that work selects exactly one Ticket; run it there only when the maintainer requests an audit for complex intent. Its absence never forces an Assisted request through triage, a dispatcher, a separate Ticket coordinator, or a writer.
+
 For a tracked Ticket, read the configured issue tracker and triage-label mapping before delegation. If either is unavailable during an interactive invocation, run `setup-omskills` first and wait for its confirmed output. During a headless Ticket run, return a missing-setup blocker to the Ticket coordinator instead; never route setup through a Ticket dispatcher. Untracked prompt audits require neither configuration.
 
 ## Fix the reference intent

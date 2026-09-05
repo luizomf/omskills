@@ -9,13 +9,15 @@ description: Create agent skills with SKILL.md, progressive disclosure, and bund
 
 1. **Load the governing reference.** Before drafting, load and follow the installed `writing-great-skills` skill and its complete `GLOSSARY.md`. This step is complete only after the full reference has been read and its discovery, information-hierarchy, splitting, completion, and pruning rules govern the planned skill.
 
-2. **Establish requirements and authority.** Resolve all of these questions:
+2. **Establish requirements and authority.** Read-only inspection may precede the adaptive Delivery mode gate; drafting may not. Honor any semantic topology and availability choices already established, and ask only for a materially unresolved dimension. An untracked request or exactly one selected Ticket may remain Direct Assisted work without mandatory readiness, Prompt Audit, dispatcher, separate Ticket coordinator, or writer.
+
+   Resolve all of these questions:
    - What task or domain does the skill cover?
    - Which use cases must it handle?
    - Does it require executable scripts, instructions, or both?
    - Which reference materials must it include?
    - Will it remain user-only by default, or does it qualify as agent-discoverable under [Description and Discovery](#description-and-discovery)?
-   - If it handles Tickets, does it preserve the boundary between readiness and explicit Mission authorization, preserve mechanical `dispatch-tickets` boundaries when used, allow an authorized human/invoker or context-rich parent to dispatch one fresh isolated coordinator directly, and retain `implement`'s one-item dispatcher composition?
+   - If it handles Tickets, does it keep Direct Assisted work distinct from Mission routing, preserve the boundary between readiness and explicit Mission authorization, preserve mechanical `dispatch-tickets` boundaries when used, allow an authorized human/invoker or context-rich parent to dispatch one fresh isolated coordinator directly, and retain `implement`'s one-item dispatcher composition?
    - If it selects among several user-only skills, is it a skill-selection Router Skill rather than a Ticket dispatcher?
 
    In standalone interactive use, resolve what the repository and conversation already establish, then ask the user a Question for each genuinely missing requirement. In a Mission-authorized Ticket with a current `PASS` or explicit maintainer `BYPASS`, resolve established requirements from the accepted Ticket, governing Spec, repository sources, and conversation without asking the user to reconfirm source-determined choices. Resolve minor residual choices through established repository conventions. If a material requirement remains genuinely unresolved, stop and return it as a blocker directly to the Ticket coordinator. An audited writer, including a depth-3 writer, remains a single-pass leaf: it does not delegate or route the blocker through the Ticket dispatcher. In any other print/headless invocation, report unresolved material requirements to the caller and stop rather than waiting for conversational input.
@@ -29,9 +31,9 @@ description: Create agent skills with SKILL.md, progressive disclosure, and bund
 
    Follow [Splitting and Disclosure](#splitting-and-disclosure). This step is complete only when the draft represents every accepted use case and every required bundled resource exists and is directly referenced.
 
-4. **Verify and review.** Apply every item in the [Review Checklist](#review-checklist), checking the decision-bearing content of every bundled resource against every accepted use case. In standalone interactive use, present the draft and, when useful, request user review; incorporate accepted feedback and repeat the exhaustive check. In audited or other print/headless work, return the draft and verification evidence to the caller without opening a user review Question.
+4. **Verify and review.** Apply every item in the [Review Checklist](#review-checklist), checking the decision-bearing content of every bundled resource against every accepted use case. A Direct Assisted skill behavior change receives one fresh independent `code-review` pass with the concise current contract, applicable governing sources, complete candidate, and verification instructions; the responsible agent adjudicates findings and applies corrections. Re-review only when corrections materially change the candidate. Purely editorial documentation may be self-reviewed. In a managed Ticket route, return the draft and verification evidence to the coordinator for its required independent review instead of starting another reviewer. User feedback may supplement but never substitute for required independent review.
 
-   The skill is complete only when every accepted use case and every decision-bearing bundled resource is accounted for, every checklist item passes, and any requested interactive review is resolved.
+   The skill is complete only when every accepted use case and every decision-bearing bundled resource is accounted for, every checklist item passes, and the applicable review is resolved.
 
 ## Skill Structure
 
@@ -101,7 +103,7 @@ After drafting, verify every item:
 - [ ] The description satisfies the format rules; an agent-discoverable description contains one trigger per distinct branch.
 - [ ] Instructions contain no time-sensitive information, including current-date statements, unpinned `latest` values, expiring URLs, or versions that require future manual revision.
 - [ ] Each concept has one term, used consistently; Router Skill wording cannot imply Ticket-dispatch ownership.
-- [ ] Ticket routing, when present, treats readiness as eligibility and requires explicit Mission authorization.
+- [ ] Ticket routing, when present, permits Direct Assisted work without readiness by default and treats readiness as eligibility rather than Mission authorization.
 - [ ] Every skill or sequence split has the required discovery or observed-sequence evidence.
 - [ ] Every bundled context pointer links directly to its target, with no chained bundled reference.
 - [ ] The decision-bearing content of every bundled resource has been inspected and agrees with every accepted use case and governing source.

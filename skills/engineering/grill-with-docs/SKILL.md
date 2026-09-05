@@ -86,7 +86,7 @@ Only after the user separately confirms the destination, take the corresponding 
 - Route an existing Spec or Ticket update through the configured issue-tracker skill or invoking tracker workflow that owns that operation. Update the governing item instead of creating a duplicate.
 - Apply a domain-language or ADR destination only under the recording gates above. Inline updates already required during the interview remain valid and are not delayed until completion.
 
-None of these routes starts implementation. A destination confirmation, Scratchpad, Spec, tracked-item update, domain document, or ADR does not bypass existing Prompt Audit, readiness, implementation, review, PR, or handoff authority.
+None of these routes starts implementation. A destination confirmation, Scratchpad, Spec, tracked-item update, domain document, or ADR does not resolve the later Delivery mode gate or bypass the implementation, proportionate review, repository delivery, or route-specific readiness, Prompt Audit, and authorization rules.
 
 ### Scratchpad contract
 

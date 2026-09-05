@@ -9,7 +9,7 @@ Use a **shared map** to determine the route from a loose idea to a named **desti
 
 ## Plan by default
 
-Investigations determine the route to the destination rather than implementing it. A request to work through a map authorizes selecting and resolving one in-scope investigation per session; continue established steps without asking for reconfirmation. The map is complete when no decision remains before execution. When the next step would implement the destination, hand off to the normal Ticket delivery workflow with its readiness, audit, and explicit Mission authorization gates. Even Notes that include execution do not bypass those gates.
+Investigations determine the route to the destination rather than implementing it. A request to work through a map authorizes selecting and resolving one in-scope investigation per session; continue established steps without asking for reconfirmation. The map is complete when no decision remains before execution. When the next step would implement the destination, pass it through the adaptive Delivery mode gate. Exactly one selected Ticket may use Direct Assisted work without readiness or Prompt Audit by default when the maintainer remains available; Mission and Unattended routes retain their applicable durable-contract, readiness, audit, relation, and authorization gates. Even Notes that include execution do not bypass whichever gates the resolved route requires.
 
 ## Refer to issues by title
 

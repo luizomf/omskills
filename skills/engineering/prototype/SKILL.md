@@ -7,6 +7,8 @@ description: Build a throwaway prototype to evaluate logic or state behavior, or
 
 Build throwaway code that answers a design question.
 
+Read-only inspection may establish the question and likely scope first. Before creating or changing prototype files, pass the adaptive Delivery mode gate. Honor topology and maintainer availability already stated semantically and ask only for a materially unresolved dimension. An untracked request or exactly one selected Ticket may remain Direct Assisted work with the conversational responsible agent; it does not require readiness, Prompt Audit, dispatcher, separate Ticket coordinator, or writer by default.
+
 ## Select one branch
 
 Determine the question from the user's prompt and the surrounding code. If both branches remain plausible and the user is available, ask which question to answer.

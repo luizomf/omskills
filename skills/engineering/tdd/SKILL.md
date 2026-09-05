@@ -9,6 +9,8 @@ Use a red → green → refactor loop. Apply the test-seam, test-quality, anti-p
 
 When exploring the codebase, read `CONTEXT.md` if it exists and use its domain terms in test names and interface vocabulary. Follow ADRs that apply to the code under test.
 
+Before writing the first test or changing implementation, pass the adaptive Delivery mode gate. Read-only inspection and reproduction may precede it. Treat an explicit semantic choice as sufficient; ask only when topology or maintainer availability remains materially unresolved. An untracked request or exactly one selected Ticket may remain Direct Assisted work without readiness, Prompt Audit, dispatcher, separate Ticket coordinator, or writer. The conversational responsible agent owns its decisions and implementation; material Questions go to the available maintainer without repeating choices already established by accepted sources or conversation.
+
 ## Test criteria
 
 A test must exercise behavior through a confirmed **test seam** and assert a caller-visible result. It must not depend on private methods or internal structure. Name the test for the capability and condition it verifies, such as `user can checkout with valid cart`.

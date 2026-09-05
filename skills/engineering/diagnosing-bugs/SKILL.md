@@ -9,6 +9,8 @@ A discipline for hard bugs. Complete these phases in order, and skip a phase onl
 
 When exploring the codebase, read `CONTEXT.md` if it exists and follow ADRs that apply to the affected modules.
 
+Read-only inspection and reproduction may begin immediately. Before creating a harness or test, adding instrumentation, applying a fix, or making any other implementation mutation, pass the adaptive Delivery mode gate. Honor topology and maintainer availability already established semantically; ask only for a materially unresolved dimension. An untracked request or exactly one selected Ticket may remain with the conversational responsible agent as Direct Assisted work without mandatory readiness, Prompt Audit, dispatcher, separate Ticket coordinator, or writer.
+
 ## Phase 1 — Build a feedback loop
 
 Create one command that executes the bug's code path and returns a pass/fail verdict for the exact symptom reported by the user.
