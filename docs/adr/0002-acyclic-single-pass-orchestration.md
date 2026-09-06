@@ -167,10 +167,13 @@ After Unattended selection, the current execution gate transfers the exact
 contract's in-scope decisions to the coordinator without another user gate. The
 coordinator resolves source-determined divergences and minor safe defaults. If
 authorized sources cannot determine required behavior, external authority is
-unavailable, or required repository setup is missing during a headless run, it
-returns a blocked outcome rather than widening, guessing, or starting
-interactive setup. In an Assisted Mission, a materially unresolved decision may
-instead return to the available maintainer.
+unavailable, or required repository setup cannot be completed under the scoped
+authorization rule in ADR 0001, it returns a blocked outcome rather than
+widening, guessing, or starting interactive setup. Separately authorized,
+deterministic setup may precede Ticket implementation without expanding its
+Mission envelope; read-only leaves and shared-resource boundaries still apply.
+In an Assisted Mission, a materially unresolved decision may instead return to
+the available maintainer.
 
 The standard dispatcher, coordinator, writer, and reviewer roles inherit the
 active provider, model, reasoning level, tools, and repository route unless an

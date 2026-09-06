@@ -21,7 +21,7 @@ The map is the authoritative issue for the effort in the configured tracker, lab
 
 The map indexes decisions; each decision's detail exists only in its ticket. **Decisions so far** contains a one-line gist and link.
 
-Tracker storage, child relationships, blocking, and frontier queries are tracker-specific. Read the configured issue tracker's "Wayfinding operations" section. If configuration is missing during an interactive invocation, run `setup-omskills` and wait for its confirmed output; if the approved configuration selects local markdown, use it. During a headless Ticket run, return a missing-setup blocker to the Ticket coordinator instead and never route setup through a Ticket dispatcher.
+Tracker storage, child relationships, blocking, and frontier queries are tracker-specific. Read the configured issue tracker's "Wayfinding operations" section. If configuration is missing, follow `setup-omskills` and its scoped authorization gate before continuing, including in headless runs; use local markdown when that is the resolved configuration. Respect read-only roles and return unresolved prerequisites to the responsible caller; never route setup through a Ticket dispatcher.
 
 ### Map body
 

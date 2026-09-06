@@ -150,7 +150,7 @@ Active skills are installed by the plugin independently of discovery state. Supp
 /setup-omskills
 ```
 
-This setup records where issues live, which triage labels the repo uses, and how the agent should consume `CONTEXT.md` and ADRs. All `.scratch/` artifacts stay local and Git-ignored; choose paths as needed and prefer the durable issue tracker for project-relevant requirements, decisions, and delivery history.
+This setup records where issues live, which triage labels the repo uses, and how the agent should consume `CONTEXT.md` and ADRs. Explicit task or standing standard setup permission can cover repositories within a stated scope, including required missing triage labels, without repeated approvals. Existing configuration is preserved. With authorized, resolved choices and deterministic defaults, setup can run headlessly; unresolved authority or material choices/conflicts require interactive confirmation or a headless blocker. Repository access or skill use alone grants no setup permission. Setup never expands Mission implementation scope, and the Ticket dispatcher never inspects or performs it. All `.scratch/` artifacts stay local and Git-ignored; choose paths as needed and prefer the durable issue tracker for project-relevant requirements, decisions, and delivery history.
 
 ## Triage Model
 

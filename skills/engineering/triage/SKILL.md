@@ -35,7 +35,7 @@ Assign exactly one state role:
 
 For a PR, evaluate the states against its attached code: `ready-for-agent` means an agent brief identifies the next action on the diff; `ready-for-human` means a human can merge it without another triage step.
 
-These are canonical role names. Read their tracker-specific label mapping. If the mapping is missing during an interactive invocation, run `setup-omskills` and wait for its confirmed output. During a headless Ticket run, return a missing-setup blocker to the Ticket coordinator instead; never route setup through a Ticket dispatcher. If an item has multiple category roles or multiple state roles, report the conflict and obtain maintainer direction before any other triage action.
+These are canonical role names. Read their tracker-specific label mapping. If the mapping is missing, follow `setup-omskills` and its scoped authorization gate before continuing, including in headless runs. Respect read-only roles and return unresolved prerequisites to the responsible caller; never route setup through a Ticket dispatcher. If an item has multiple category roles or multiple state roles, report the conflict and obtain maintainer direction before any other triage action.
 
 Normal transitions are:
 

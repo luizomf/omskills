@@ -5,7 +5,7 @@ description: Review a committed range or complete work-in-progress candidate aga
 
 # Code Review
 
-Read applicable repository instructions and domain documents. Read issue-tracker configuration only when the review contract is tracked; an untracked Direct Assisted request uses its confirmed conversation as the contract and does not require tracker setup. If required configuration is unavailable during an interactive tracked invocation, run `setup-omskills` first and wait for its confirmed output. During a headless Ticket run, return a missing-setup blocker to the Ticket coordinator instead; never route setup through a Ticket dispatcher.
+Read applicable repository instructions and domain documents. Read issue-tracker configuration only when the review contract is tracked; an untracked Direct Assisted request uses its confirmed conversation as the contract and does not require tracker setup. If required configuration is unavailable, follow `setup-omskills` and its scoped authorization gate before review. A read-only reviewer returns the missing prerequisite to its responsible caller instead of writing setup; never route setup through a Ticket dispatcher.
 
 Review exactly one candidate in one of two modes:
 

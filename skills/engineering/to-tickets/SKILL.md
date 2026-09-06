@@ -10,7 +10,7 @@ Create **tracer-bullet tickets** with two scheduling relations:
 - A **blocking edge** means the blocked ticket cannot start or integrate until the blocker is complete.
 - A **conflict edge** means two otherwise unblocked tickets should not have active writers concurrently because they materially overlap in files, contracts, artifacts, or integration assumptions.
 
-Read the configured issue tracker and triage-label vocabulary. If either configuration is unavailable during an interactive invocation, run `setup-omskills` first and wait for its confirmed output. During a headless Ticket run, return a missing-setup blocker to the Ticket coordinator instead; never route setup through a Ticket dispatcher.
+Read the configured issue tracker and triage-label vocabulary. If either configuration is unavailable, follow `setup-omskills` and its scoped authorization gate before continuing, including in headless runs. Respect read-only roles and return unresolved prerequisites to the responsible caller; never route setup through a Ticket dispatcher.
 
 ## Process
 
