@@ -52,6 +52,7 @@ sync with the accepted behavior.
 - Refer to another skill by its installed name. Use relative links only for files bundled inside the current skill directory.
 - Prefer Codex-oriented language and paths. Use Claude-specific references only when a skill targets Claude Code.
 - Absence from the active set does not authorize deletion; establish the destination or status first.
+- Local skill installation, including manual one-skill links, must use relative symlink targets calculated from the destination directory's physical path to the source. Preserve the existing relative-link layout; never embed `/Users/...`, `/home/...`, or another absolute target. Respect the user's selected harness directory rather than assuming the shared default. Use `scripts/link-skills.sh` with `OMSKILLS_DEST` for a full active-catalog installation; do not install the full catalog when only one link was requested. Verify each requested link with `readlink` and a readable target `SKILL.md`. Relative links remain portable between macOS and Linux when the directory layout is preserved.
 
 ## Workflow and authorization
 
