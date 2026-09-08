@@ -46,6 +46,7 @@ Then select only the skills the work needs:
 - Want the diff checked before it ships: `/code-review`
 - Something broke: `/diagnosing-bugs`
 - Need high-trust reading legwork: `/research`
+- Need a model choice for a delegated task: `/model-routing`
 - The architecture is getting muddy: `/improve-codebase-architecture`
 - Want to learn a topic over multiple sessions: `/teach`
 - Need to pause without losing context: `/handoff`
@@ -62,6 +63,24 @@ The core habit is to ask: "Is this clear enough to become code?"
 If the answer is not clearly yes, use grill, triage, specs, tickets, research, or wayfinder before implementation.
 
 If there is a conflict, architectural ambiguity, unresolved dependency, or two plausible options with real tradeoffs, stop and discuss.
+
+### Delegation model selection
+
+`model-routing` provides one compact task-to-model table for OpenAI, Anthropic
+and Google, including model identifiers and suggested effort. Rows are practical
+candidates within each provider, not measured cross-provider parity. Selection
+uses the child's remaining uncertainty, impact and verification needs; long
+transcripts or mechanical edits do not automatically inherit a frontier model.
+Explicit user choices and authorized provider/model boundaries take precedence.
+
+Delegating skills load this user-only policy on demand. `/setup-omskills` can add
+its installed-skill pointer to repository instructions for ordinary delegations
+outside those skills. To adopt it directly, tell the agent: "Use model-routing
+for future subagents within my authorized providers; preserve my explicit
+choices." Harnesses requiring explicit routing authorization still enforce it.
+No agent can apply a policy it never loads, and no skill can change the internal
+model of a tool that exposes no model-selection control. Current conversations
+and `wormhole` transfers retain their selected route unless explicitly changed.
 
 ## Common Scenarios
 
@@ -142,7 +161,7 @@ By default, the script writes to `~/.agents/skills`, the shared user-level skill
 OMSKILLS_DEST=/tmp/omskills-test ./scripts/link-skills.sh
 ```
 
-Active skills are installed by the plugin independently of discovery state. Supporting harnesses include agent-discoverable skills in the model's system context, while active user-only skills remain installed without permanent context load. `design`, `teach`, `dispatch-tickets`, `implement`, and `orchestrate` are the current active user-only skills. Select `design`, `teach`, `dispatch-tickets`, or `implement` deliberately; `orchestrate` is loaded explicitly in a fresh coordinator by an authorized direct caller or the dispatcher. The groupings below describe the selection and composition path, not discovery status.
+Active skills are installed by the plugin independently of discovery state. Supporting harnesses include agent-discoverable skills in the model's system context, while active user-only skills remain installed without permanent context load. `design`, `teach`, `dispatch-tickets`, `implement`, `orchestrate`, and `model-routing` are the current active user-only skills. Select `design`, `teach`, `dispatch-tickets`, or `implement` deliberately; `orchestrate` is loaded explicitly in a fresh coordinator by an authorized direct caller or the dispatcher; `model-routing` is composed by callers before model-selectable delegation. The groupings below describe the selection and composition path, not discovery status.
 
 2. In each repo that will consume these skills, run:
 
@@ -202,6 +221,10 @@ For mature projects, the eligible Ticket set should favor small, vertical, verif
 - **[resolving-merge-conflicts](./skills/engineering/resolving-merge-conflicts/SKILL.md)**: resolves an in-progress git merge or rebase conflict.
 
 ### Productivity
+
+**Shared delegation policy**
+
+- **[model-routing](./skills/productivity/model-routing/SKILL.md)**: selects a model and supported reasoning level from a sourced cross-provider task table, respecting explicit user routes and harness capabilities.
 
 **Typically user-selected**
 

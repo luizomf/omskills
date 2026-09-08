@@ -198,10 +198,35 @@ Mission envelope; read-only leaves and shared-resource boundaries still apply.
 In an Assisted Mission, a materially unresolved decision may instead return to
 the available maintainer.
 
-The standard dispatcher, coordinator, writer, and reviewer roles inherit the
-active provider, model, reasoning level, tools, and repository route unless an
-authorized caller explicitly overrides them. Role names define ownership, not
-reduced intelligence or capability. A coordinator may be the conversational root
+The standard dispatcher, coordinator, writer, and reviewer roles inherit tools
+and repository route unless explicitly overridden. Before a model-selectable
+delegation, its caller loads the shared user-only `model-routing` skill. Explicit
+model/reasoning choices win; authorized task-based routing selects a concrete
+available candidate from the maintained provider table; otherwise inheritance
+remains the fallback. Selection considers remaining uncertainty, impact and
+verification, not task length or the parent's capability alone. A thin dispatcher
+and a Ticket coordinator that owns review adjudication and corrections are
+different assignments.
+
+The public table contains model candidates and supported effort guidance, not
+prices, personal defaults or claims of measured cross-provider parity. Named
+model references are an intentionally maintained compatibility catalog rather
+than timeless process instructions. User-selected provider/model boundaries,
+standing routing agreements and actual harness authorization/capabilities govern
+application. Routing neither switches the current conversation nor creates
+permission to retry, weaken review, or widen work. Helpers with internally fixed
+models remain outside caller-selectable routing.
+
+The dispatcher may compose `model-routing` and its bundled model table alongside
+`caveman`, but reads no Ticket or implementation content for selection. It uses
+the declared coordinator assignment and supplied constraints, retaining only
+compact route values and literal scoped instructions. Generic references in
+steering still belong to the coordinator, not root discovery. Other callers
+classify their own delegated task; no separate routing agent or runtime service
+is introduced. Repository setup can add an installed-skill pointer for generic
+delegations without creating a model configuration file or changing providers.
+
+Role names define ownership, not reduced intelligence or capability. A coordinator may be the conversational root
 when invoked by the maintainer
 or a child when invoked by a dispatcher. Its writers and reviewers remain
 non-delegating leaves regardless of their absolute depth. The harness enforces

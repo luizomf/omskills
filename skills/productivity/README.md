@@ -2,6 +2,10 @@
 
 General workflow tools, not code-specific. Active skills are grouped by their typical selection path; optional skills are user-only. `wormhole` and `tmux-worker` remain generic optional interactive transports outside managed Ticket subagent lineage and own no Ticket sequence state.
 
+## Shared delegation policy
+
+- **[model-routing](./model-routing/SKILL.md)** - Select a model and supported reasoning level for a delegated task using a cross-provider task table. User-only; composed on demand by callers rather than added to permanent discovery.
+
 ## Typically user-selected
 
 - **[grill-me](./grill-me/SKILL.md)** - Run bounded Question rounds without touching code or docs.

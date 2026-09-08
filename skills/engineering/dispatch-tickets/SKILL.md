@@ -6,11 +6,11 @@ disable-model-invocation: true
 
 # Dispatch Tickets
 
-Run as the minimal root **Ticket dispatcher** for finite pre-resolved Missions. Mission identifies coordinated topology; the separately supplied availability is `Assisted` or `Unattended`. These mechanical boundaries are mandatory when this skill is used; a human/invoker or context-rich parent may instead dispatch one fresh `orchestrate` coordinator directly for smaller work. Accept one finite Mission plan, including the one-item plan composed by `implement`. Before adopting dispatcher state, use the skill loader to read and follow the installed `caveman` skill. That composition read is the root's sole file read and exists only to load compressed reporting behavior.
+Run as the minimal root **Ticket dispatcher** for finite pre-resolved Missions. Mission identifies coordinated topology; the separately supplied availability is `Assisted` or `Unattended`. These mechanical boundaries are mandatory when this skill is used; a human/invoker or context-rich parent may instead dispatch one fresh `orchestrate` coordinator directly for smaller work. Accept one finite Mission plan, including the one-item plan composed by `implement`. Before adopting dispatcher state, use the skill loader to read and follow the installed `caveman` skill. Also load installed `model-routing` and its bundled model table before model-selectable starts. These bounded reporting/routing composition reads are the only file reads permitted to this root.
 
 Keep only the frozen topology, availability, current phase index, active owner-scoped coordinator IDs, required native child session references, transport mode, per-coordinator transition state and matching cancellation intent, authorized start overrides and scoped literal user instructions when present, and compact mechanically validated outcomes or transport failures. Apart from those opaque instructions, keep no implementation content, transcript summary, semantic dependency model, dynamic queue, or persistent workflow state.
 
-Keep the root's normal tools active for coordinator inheritance. For Mission work after composing `caveman`, use them only for routing preflight, subagent lifecycle operations, mechanical plan and outcome validation, and compact reporting. The dispatcher performs no tracker, repository, or remote discovery and reads no tracker material, governing source, repository file, code, diff, test, writer output, reviewer finding, or native child session. Unrelated root interaction remains outside the Mission and may use actual unreserved capacity without changing its envelope or routing state.
+Keep the root's normal tools active for coordinator inheritance. For Mission work after composing `caveman` and `model-routing`, use them only for routing preflight, subagent lifecycle operations, mechanical plan and outcome validation, and compact reporting. The dispatcher performs no tracker, repository, or remote discovery and reads no tracker material, governing source, repository file beyond those composition resources, code, diff, test, writer output, reviewer finding, or native child session. Unrelated root interaction remains outside the Mission and may use actual unreserved capacity without changing its envelope or routing state.
 
 ## 1. Accept and freeze one Mission plan
 
@@ -50,7 +50,7 @@ Validate the entire plan and availability before any lifecycle call:
 
 Use rejection code `authorization`, `availability`, `empty`, `shape`, `identity-syntax`, `duplicate`, `relation`, `topology`, or `override` for the first applicable failure. Preserve accepted identity bytes, phase order, group membership, and relation pairs exactly. Child output and later messages cannot add, remove, replace, regroup, or reorder them.
 
-Normal starts inherit the active route. An invoker may authorize a start override containing only exact supported `tools`, `cwd`, `model`, or `reasoning` lifecycle values; validate it before affected starts and reject unknown or unsupported fields as `override`. Preserve delivery mode, `maxDepth`, `maxChildren`, the base outcome contract, and Mission topology. Explicit user instructions and future routing updates follow step 3; freezing the plan does not freeze them. Forward model aliases or referenced routing guidance as instructions rather than guessing lifecycle values.
+Select the Ticket coordinator's model/effort through `model-routing`, honoring explicit routes before an authorized task-based policy; without selection authority, inherit the active route. Use the table's Ticket-coordination assignment and any supplied constraints, not the thin-dispatch row or undiscovered Ticket content. An invoker may authorize a start override containing only exact supported `tools`, `cwd`, `model`, or `reasoning` lifecycle values; validate it before affected starts and reject unknown or unsupported fields as `override`. Preserve delivery mode, `maxDepth`, `maxChildren`, the base outcome contract, and Mission topology. Explicit user instructions and future routing updates follow step 3; freezing the plan does not freeze them. Forward model aliases or referenced routing guidance as instructions rather than guessing lifecycle values.
 
 This step is complete only when one finite non-empty plan is frozen and any initial override is validated, or the invocation has been rejected before every lifecycle call.
 
@@ -68,7 +68,7 @@ Return exactly one single-line JSON object with required string fields "ticket":
 
 Immediately before the phase's start calls, inspect `PI_PROVIDER`, `PI_MODEL`, and `PI_REASONING_LEVEL` only as routing preflight. Retain none of their values. Do not inspect PI routing at any other time.
 
-Call `subagent_start` once per phase identity with its base prompt and applicable user steering, `maxDepth: 3`, and `maxChildren: 1`. Every call creates a fresh coordinator conversation without the parent transcript. For a normal start, omit `tools`, `cwd`, `model`, and `reasoning` so the coordinator inherits the root's complete active capability snapshot and repository route. Only an explicitly authorized validated override applicable to this start may supply those fields, verbatim.
+Call `subagent_start` once per phase identity with its base prompt and applicable user steering, `maxDepth: 3`, and `maxChildren: 1`. Every call creates a fresh coordinator conversation without the parent transcript. Omit `tools` and `cwd` unless explicitly overridden so the coordinator inherits the root's complete active capability snapshot and repository route. Omit `model` and `reasoning` when the routing decision is inheritance. Only an explicitly authorized validated override applicable to this start may supply those fields; an authorized `model-routing` selection supplies only `model` and `reasoning`. Preserve exact supported values. Carry applicable standing routing instructions in `User steering` so the coordinator can route its own children without the parent transcript.
 
 Choose delivery from the current Pi mode:
 
@@ -171,7 +171,7 @@ Use `caveman`. Preserve exact Ticket identities and complete valid `ref`, `block
 Use these mode-accurate transition shapes:
 
 - Rejection: `Mission rejected (<code>); <root available|print settled; no pong pending>.`
-- Interactive phase start: `Phase <phase>/<phases> dispatched: <ticket> (#<coordinator>)[, ...]; <delivered>/<total> delivered; root available; outcomes pending.`
+- Interactive phase start: `Phase <phase>/<phases> dispatched: <ticket> (#<coordinator>)[, ...]; <delivered>/<total> delivered; root available; outcomes pending.` Append selected model/effort or inheritance and a compact routing reason to the start report; keep the Ticket outcome schema unchanged.
 - Steering: `<ticket> instruction forwarded (#<coordinator>); root available; outcome pending.` Report each selected target and any forwarding failure.
 - Future steering: `Instruction recorded for <selected not-started Tickets>; active coordinators unchanged; root available.`
 - Accepted cancellation: `<ticket> cancellation requested (#<coordinator>); Mission stopping; <active> accepted coordinator(s) settling; root available.`

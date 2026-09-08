@@ -19,6 +19,7 @@ description: Create agent skills with SKILL.md, progressive disclosure, and bund
    - Will it remain user-only by default, or does it qualify as agent-discoverable under [Description and Discovery](#description-and-discovery)?
    - If it handles Tickets, does it keep Direct Assisted work distinct from Mission routing, preserve the boundary between readiness and explicit Mission authorization, preserve mechanical `dispatch-tickets` boundaries when used, allow an authorized human/invoker or context-rich parent to dispatch one fresh isolated coordinator directly, and retain `implement`'s one-item dispatcher composition?
    - If it selects among several user-only skills, is it a skill-selection Router Skill rather than a Ticket dispatcher?
+   - If it launches model-selectable workers, does its caller compose `model-routing` rather than copy the parent's model or maintain a separate model table?
 
    In Direct Assisted work, resolve what the repository and accepted conversation already establish, then ask only about genuinely missing material requirements. A Mission writer resolves requirements from the accepted Ticket, governing sources and explicitly routed maintainer steering, regardless of audit applicability or absolute depth. Material steering must reach durable authority and applicable gates through the coordinator before affected drafting; other conversation supplies no hidden requirement. Resolve minor choices through repository conventions. Return unresolved material requirements directly to the coordinator, who consults the available maintainer in Assisted work or blocks when Unattended authority cannot resolve them. The writer remains non-delegating and does not route Questions through the dispatcher. Other print/headless invocations report unresolved material requirements to their caller rather than waiting for conversational input.
 
@@ -101,7 +102,7 @@ After drafting, verify every item:
 - [ ] Every ordered step has a checkable completion criterion, exhaustive where coverage is required.
 - [ ] `disable-model-invocation: true` is present unless the skill qualifies as agent-discoverable under [Description and Discovery](#description-and-discovery).
 - [ ] The description satisfies the format rules; an agent-discoverable description contains one trigger per distinct branch.
-- [ ] Instructions contain no time-sensitive information, including current-date statements, unpinned `latest` values, expiring URLs, or versions that require future manual revision.
+- [ ] Process instructions avoid time-sensitive assumptions, expiring URLs, and unpinned `latest` values. An explicitly requested maintained compatibility/model catalog is isolated in a sourced reference with its verification basis, rather than copied into workflow instructions.
 - [ ] Each concept has one term, used consistently; Router Skill wording cannot imply Ticket-dispatch ownership.
 - [ ] Ticket routing, when present, permits Direct Assisted work without readiness by default and treats readiness as eligibility rather than Mission authorization.
 - [ ] Every skill or sequence split has the required discovery or observed-sequence evidence.

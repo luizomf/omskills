@@ -20,6 +20,7 @@ USER_ONLY_ACTIVE_SKILLS = {
     "design",
     "dispatch-tickets",
     "implement",
+    "model-routing",
     "orchestrate",
     "teach",
 }

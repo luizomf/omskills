@@ -20,6 +20,8 @@ Use the accepted question as the brief for local work; give each delegated worke
 
 Keep routine local inspection local when delegation would cost more context than it saves, and honor an explicit request to investigate directly without delegation. Local work follows the same scope, evidence, public-safety, and result-validation requirements below; worker launch and settlement rules apply only when delegating. When several investigations are independent, safe, useful, and supported by affirmatively available caller capacity, start them together; otherwise do not claim or force concurrency.
 
+Before a model-selectable dispatch, load installed `model-routing` and select for the worker's exact investigation or extraction task within authorized scope. Long source material alone does not require the parent's model. Helper tools with internally fixed routing remain governed by their own contracts.
+
 Before dispatch, establish one fresh isolated worker conversation. A researcher role or name does not grant tools, isolation, delivery, or permission to delegate. Preflight the required retrieval and read tools and, only in durable-artifact mode, artifact-write tools and their providers; where the active harness exposes lineage controls, inherit the existing depth ceiling and set the worker's direct-child ceiling to zero or remove delegation capability. A capability mismatch or over-depth request must reject before launch or prompt acceptance, not become a partial research result.
 
 Select the role-aware delivery and continuation policy before dispatch:

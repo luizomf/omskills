@@ -124,6 +124,7 @@ explicit authorization.
 
 ## Engineering, tests, and documentation
 
+- Before a model-selectable delegation, load installed `model-routing` and select for the delegated task rather than copying the parent's model. Honor explicit user routes and authorized provider/model scope; harness selection requirements still apply. If the skill is unavailable, report that limitation rather than claiming routing was applied.
 - Prefer test-driven development (TDD) whenever practical.
 - Prefer simple, explicit, readable code and prompts over cleverness or pattern purity.
 - Avoid unnecessary abstraction, high complexity, deep nesting, and god files. Split by cohesive responsibility, not arbitrary line counts.

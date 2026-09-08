@@ -9,6 +9,8 @@ Use the current project's tmux session when the root needs to work or converse w
 
 `tmux-worker` owns only this visible transport and lifecycle: worker-window creation, readiness, literal message and callback transport, continued dialogue, and directed retirement. The invoking agent or skill owns task instructions, message meaning, result artifacts, callback meaning, completion, post-callback decisions, and whether its current turn may end.
 
+Before a model-selectable worker launch, the invoking agent uses installed `model-routing` for the worker's actual assignment. Apply its authorized route through the launcher's supported mechanism; this transport does not independently reclassify the task. A continuation of the user's own conversation, such as `wormhole`, preserves its route unless the user requests a change.
+
 For shell-based documentation checks, disable interactive pagers (for example, `MANPAGER=cat PAGER=cat man tmux`) and set a short tool timeout so a lookup cannot stall the agent.
 
 1. Capture the current socket, coordinator pane, and session as literal values:
@@ -20,7 +22,7 @@ tmux display-message -t "$TMUX_PANE" -p \
 
 Use the coordinator process's `$TMUX_PANE` as the callback target even when another window is active. Continue once all three values have been recorded literally.
 
-2. Resolve the interactive launcher from the active harness and repository instructions, then start it as the top-level command in a detached tmux window in the current working directory and retain the worker pane's literal ID. The launcher owns skill discovery and configured profiles: do not hard-code a global skill directory or disable normal discovery unless that launcher's recorded contract explicitly requires it. For Pi, prefer the configured Pi/ompi profile; preserve the active provider, model, and reasoning through the launcher's supported mechanism unless the user requested an override. Stop rather than guessing when no suitable interactive launcher or routing mechanism can be identified.
+2. Resolve the interactive launcher from the active harness and repository instructions, then start it as the top-level command in a detached tmux window in the current working directory and retain the worker pane's literal ID. The launcher owns skill discovery and configured profiles: do not hard-code a global skill directory or disable normal discovery unless that launcher's recorded contract explicitly requires it. For Pi, prefer the configured Pi/ompi profile; apply the caller's authorized model/reasoning selection, or preserve the active route when inheritance was selected. Stop rather than guessing when no suitable interactive launcher or routing mechanism can be identified.
 
 Wait until the worker displays its normal input-ready editor. A project-trust selector is a user gate, not an input-ready editor: send no message and leave that choice to the user. Never auto-approve trust. Do not use a non-interactive print mode; the session must remain visible for user observation and input. Setup is ready for transport only when the worker pane is retained and its normal editor is input-ready; at a trust gate it remains intentionally paused.
 

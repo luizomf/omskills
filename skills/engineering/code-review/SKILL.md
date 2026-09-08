@@ -51,6 +51,8 @@ Choose a complete result-recovery channel before dispatch. Prefer the full termi
 
 ## Dispatch one isolated reviewer
 
+Load installed `model-routing` before selecting the reviewer's model/effort. Select for the candidate's remaining uncertainty and impact, respecting explicit user routes and required review independence; being a reviewer does not itself require the parent's model.
+
 Start exactly one fresh, read-only, non-delegating reviewer. Supply the selected mode, candidate path and branch, exact base/review SHAs for committed mode (or complete staged/unstaged/untracked capture for WIP), complete candidate or exact read-only commands that reproduce it there, a concise current contract, applicable governing sources and repository instructions, verification instructions and results, the selected result channel, and this contract. Do not supply the parent transcript by default:
 
 ```text
