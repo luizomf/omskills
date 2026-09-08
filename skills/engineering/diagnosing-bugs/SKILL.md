@@ -5,111 +5,87 @@ description: Reproduction-first diagnosis loop for hard bugs and performance reg
 
 # Diagnosing Bugs
 
-A discipline for hard bugs. Complete these phases in order, and skip a phase only when explicitly justified.
+Prefer reproduction before a fix. Use these phases as a feedback loop, not a rigid waterfall: a falsifiable hypothesis or targeted instrumentation may be needed to obtain the first reproduction. State what the evidence establishes and what remains uncertain.
 
 When exploring the codebase, read `CONTEXT.md` if it exists and follow ADRs that apply to the affected modules.
 
 Read-only inspection and reproduction may begin immediately. Before creating a harness or test, adding instrumentation, applying a fix, or making any other implementation mutation, pass the adaptive Delivery mode gate. Honor topology and maintainer availability already established semantically; ask only for a materially unresolved dimension. An untracked request or exactly one selected Ticket may remain with the conversational responsible agent as Direct Assisted work without mandatory readiness, Prompt Audit, dispatcher, separate Ticket coordinator, or writer.
 
-## Phase 1 — Build a feedback loop
+## Phase 1 — Establish the symptom and feedback loop
 
-Create one command that executes the bug's code path and returns a pass/fail verdict for the exact symptom reported by the user.
+Identify the expected behavior, observed failure, relevant environment, and available evidence. Prefer one command that reaches the actual bug path and distinguishes the reported symptom from unrelated failures.
 
-Try these methods in roughly this order:
+Choose the smallest useful approach:
 
-1. A failing unit, integration, or end-to-end test at a seam that reaches the bug.
-2. A curl or HTTP script against a running development server.
-3. A CLI command with fixture input that compares stdout with a known-good result.
-4. A Playwright or Puppeteer script that asserts on the DOM, console, or network.
-5. A replay of a captured request, payload, or event log through the isolated code path.
-6. A throwaway harness containing the minimum service set and dependencies required to call the bug path.
-7. For intermittent wrong output, a property or fuzz loop over 1,000 random inputs.
-8. When the regression is bounded by two commits, datasets, or versions, a harness compatible with `git bisect run`.
-9. A differential loop that compares the same input across the old and new versions or two configurations.
-10. When a human action is unavoidable, a `scripts/hitl-loop.template.sh` script that records the human action and resulting output.
+1. An existing unit, integration, or end-to-end test at a seam that reaches the bug.
+2. A CLI fixture, HTTP request, browser interaction, or replay of a captured event/log.
+3. A throwaway harness containing the minimum callers and dependencies needed to reach the failure.
+4. A property/fuzz run, concurrency workload, or differential comparison with recorded inputs and conditions.
+5. A timing harness, profiler, query plan, or bounded `git bisect` investigation when history and evidence make it useful.
+6. A [`scripts/hitl-loop.template.sh`](scripts/hitl-loop.template.sh) record when a human action is unavoidable.
 
-After the command exists:
+Assert the symptom, not merely process success. Reduce avoidable setup and control time, random seeds, and external dependencies where practical without removing the behavior under investigation.
 
-- assert the reported symptom rather than only checking for process success;
-- reduce setup and unrelated initialization without changing the symptom; aim for seconds, not minutes;
-- pin time and random seeds and isolate filesystem and network dependencies when they affect the verdict.
+For intermittent bugs, record attempts or exposure, observed failures, conditions, and reproduction rate. Choose a bounded workload proportionate to the observed frequency, cost, and operational risk; no fixed number of attempts or minimum failure rate determines whether investigation may continue. Non-recurrence alone does not disprove a rare failure.
 
-For a non-deterministic bug, run the trigger 100 times under recorded conditions. Use parallel execution, load, narrower timing windows, or injected delays to raise the reproduction rate. Continue until the reproduction rate is high enough to debug against; one reproduction per 100 is insufficient.
+If a reliable loop is unavailable, use captured evidence and an explicit falsifiable hypothesis to design a discriminating probe under phases 3–4. Ask for missing artifacts or access only when they are genuinely needed. Production instrumentation requires appropriate authorization; do not infer it from permission to debug locally. If neither evidence nor authorized investigation can advance the question, report the concrete blocker instead of inventing a cause.
 
-If no method produces a loop, stop. Report every method attempted and request one of:
-
-- access to an environment that reproduces the bug;
-- a captured HAR file, log dump, core dump, or timestamped screen recording;
-- permission to add temporary production instrumentation.
-
-Do not generate hypotheses before a feedback-loop command exists.
-
-### Phase 1 completion
-
-Phase 1 is complete only when you report one command, its output from at least one completed run, and evidence that it:
-
-- [ ] executes the actual bug path and fails on the user's reported symptom;
-- [ ] returns the same verdict on every deterministic run, or reproduces at a pinned rate high enough to debug against for a non-deterministic bug;
-- [ ] excludes avoidable setup and reports why any remaining minutes-long runtime is necessary to reproduce the symptom;
-- [ ] runs unattended, except through `scripts/hitl-loop.template.sh`.
-
-Do not begin Phase 2 until all four conditions hold.
+This phase is complete when the symptom and environment are identified and either a runnable feedback loop has an observed result, or the evidence gap and next authorized discriminating probe are explicit. Record commands, outcomes, and limitations; do not label an unobserved reproduction as successful.
 
 ## Phase 2 — Reproduce and minimise
 
-Run the Phase 1 command and confirm that:
+Use the feedback loop or captured evidence to distinguish the original symptom from nearby failures. Preserve the exact error, output difference, or timing for comparison.
 
-- [ ] it produces the user's reported failure rather than a different nearby failure;
-- [ ] it reproduces on at least two runs, or at the recorded rate for a non-deterministic bug;
-- [ ] the exact error, output difference, or timing is captured for comparison after the fix.
+Remove inputs, callers, configuration, data, and steps one at a time when doing so preserves the relevant failure path. Re-run after each meaningful reduction and restore a removed part when evidence shows it was necessary. For rare failures, account for exposure and uncertainty rather than treating one passing run as proof that a reduction removed the bug.
 
-Then remove inputs, callers, configuration, data, and steps one at a time. Re-run the command after each removal. Restore an element when its removal changes the verdict to green.
+This phase is complete when the smallest currently supported reproduction or evidence packet is identified, with any remaining minimisation limits stated. Return to hypotheses or instrumentation when more evidence is needed; exhaustive minimisation is not a prerequisite for a useful probe.
 
-Phase 2 is complete when the failure still reproduces and removing any remaining element makes the command green. Do not begin Phase 3 before both conditions hold.
+## Phase 3 — Form and test hypotheses
 
-## Phase 3 — Hypothesise
+State the evidence-backed candidate cause and its falsifiable prediction:
 
-Before testing any cause, write and rank 3–5 hypotheses. For each hypothesis, state its testable prediction in this format:
+> If <X> is the cause, then <changing Y> will remove the symptom or <observing Z> will distinguish it from the alternatives.
 
-> If <X> is the cause, then <changing Y> will remove the symptom or <changing Z> will increase it.
+One strong hypothesis is enough to begin. Add and rank alternatives when the evidence supports them or a failed probe leaves competing explanations; do not manufacture a quota. A maintainer-supplied hypothesis is a candidate to test, not a confirmed cause.
 
-Discard or revise any hypothesis without a falsifiable prediction. Show the ranked list to the user before testing. If the user is unavailable, proceed without waiting and retain the stated ranking.
+Show the current hypothesis and planned probe concisely. Continue within established authorization without a ceremonial approval gate; ask only when the probe's scope or risk needs a new decision.
 
-## Phase 4 — Instrument
+This phase is complete when each hypothesis being tested has a discriminating prediction and an authorized probe. Revise or discard it when observations contradict it.
 
-Map each probe to one Phase 3 prediction and change one variable per probe.
+## Phase 4 — Instrument and compare
 
-Prefer tools in this order:
+Map each probe to its prediction and change one causal variable at a time where practical. Prefer a debugger, REPL, focused trace, profiler, or logs at the relevant boundary over broad logging. Mark temporary instrumentation so it can be found and removed, for example with a unique `[DEBUG-a4f2]` tag.
 
-1. A debugger or REPL when the environment supports the required observation.
-2. Logs only at boundaries that distinguish the ranked hypotheses.
+Preserve useful error context without capturing secrets or unnecessary user data. Record when instrumentation may change timing or mask the failure. Compare before and after under equivalent conditions.
 
-Do not emit broad logs for later filtering. Prefix every temporary debug log with a unique tag such as `[DEBUG-a4f2]`.
+For a performance regression, record a numerical baseline before claiming improvement. Use history or bisect when it helps isolate the regression; neither is mandatory when the relevant cause can be tested directly.
 
-For a performance regression, establish a numerical baseline with a timing harness, profiler, or query plan, then bisect. Do not apply a performance fix before recording the baseline.
+This phase is complete when the probe has an observed result that supports, contradicts, or narrows the hypothesis. An inconclusive result returns to investigation; it is not evidence of a fix.
 
-## Phase 5 — Fix and regression test
+## Phase 5 — Fix and regression evidence
 
-Write the regression test before the fix only when an available seam reproduces the bug pattern as it occurs at the call site. A seam is not valid when it omits required callers or call-chain behavior.
+Apply the smallest correction supported by the investigation. Prefer a regression test before the fix when an available seam reaches the bug pattern through its actual callers; a test that omits the faulty ordering or coordination is not that regression test.
 
-If no such seam exists, document that limitation and carry it into Phase 6. Do not add a test at a seam that cannot reproduce the pattern.
+When a valid seam exists:
 
-If a valid seam exists, in order:
+1. Convert the reproduction into a test and capture its failure on the original symptom.
+2. Apply the fix and capture the passing result.
+3. Run relevant existing checks and the original, unminimised scenario.
 
-1. Convert the minimised reproduction into a test at that seam.
-2. Run it and capture the failing result.
-3. Apply the fix.
-4. Run the test and capture the passing result.
-5. Run the Phase 1 command against the original, unminimised scenario.
+When no faithful automated seam exists, document that limitation and use the strongest available before/after evidence. Do not fabricate a test or weaken a valid one to make the candidate pass. A candidate correction with incomplete causal verification remains explicitly provisional.
 
-## Phase 6 — Cleanup and post-mortem
+This phase is complete when the correction and applicable checks have observed results, and any remaining causal or regression-coverage uncertainty is stated.
+
+## Phase 6 — Cleanup and handoff
 
 Before reporting completion:
 
-- [ ] Re-run the Phase 1 command and confirm that the original symptom is absent.
-- [ ] Confirm that the regression test passes, or document the missing valid seam.
-- [ ] Search for every `[DEBUG-...]` prefix created during diagnosis and remove all matching instrumentation.
-- [ ] Remove throwaway prototypes created during diagnosis or move them to a location whose path marks them as debug artifacts.
-- [ ] State the confirmed hypothesis in any commit or PR message produced for the fix.
+- Re-run the original scenario or equivalent probe and report the result. For intermittent bugs, include exposure and observed failure counts rather than claiming that non-recurrence proves elimination.
+- Report regression-test and repository-check results, or the exact missing evidence.
+- Remove owned temporary instrumentation unless retaining it was explicitly authorized; preserve unrelated diagnostics and work.
+- Remove throwaway harnesses or keep useful ones in a clearly marked location according to repository retention rules.
+- Describe the supported cause and correction in the commit or handoff; separate confirmed evidence from remaining hypotheses.
 
-After the fix, ask what would have prevented the bug. If prevention requires an architectural change, such as adding a valid test seam or removing demonstrated caller coupling, pass those findings to `improve-codebase-architecture`. Make this recommendation only after the fix is complete.
+This phase is complete when the candidate, evidence, cleanup, and remaining limitations are accounted for. A verified fix may be delivered under the repository workflow; unresolved verification must not be reported as confirmed success.
+
+If the investigation exposes a durable architectural problem, explain what would prevent recurrence and recommend `improve-codebase-architecture` when a separate design investigation is useful. Do not automatically launch adjacent work.

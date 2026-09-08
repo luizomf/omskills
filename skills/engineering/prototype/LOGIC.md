@@ -1,6 +1,6 @@
 # Logic Prototype
 
-A tiny interactive terminal app that lets the user drive a state model by hand. Use this when the question is about **business logic, state transitions, or data shape** — the kind of thing that looks reasonable on paper but only feels wrong once you push it through real cases.
+An executable experiment for **business logic, state transitions, or data shape**. Use focused probes, assertions, or tests when concrete examples answer the question; use a tiny interactive terminal app when the user needs to explore the model by hand. The TUI steps below apply only to that interactive shape.
 
 ## When this is the right shape
 
@@ -23,22 +23,24 @@ Use whatever the host project uses. If the project has no obvious runtime (e.g. 
 
 Match the project's existing conventions for tooling — don't add a new package manager or runtime just for the prototype.
 
-### 3. Isolate the logic in a portable module
+### 3. Choose the smallest logic surface
 
-Put the actual logic — the bit answering the question — behind a small, pure interface that is easy to inspect and can serve as a reference or starting point later. The logic and TUI remain prototype code until a separate implementation Ticket explicitly promotes the validated idea.
+Use an existing callable seam when it answers the question. A probe against an existing API or state function needs no new module. When the experiment requires new logic, isolate it behind a small inspectable interface where that separation helps evaluation or later reuse. New logic and any TUI remain prototype code until explicit implementation authorization promotes the validated result under the repository workflow.
 
-The right shape depends on the question:
+When new logic is needed, its shape depends on the question:
 
 - **A pure reducer** — `(state, action) => state`. Good when actions are discrete events and state is a single value.
 - **A state machine** — explicit states and transitions. Good when "which actions are even legal right now" is part of the question.
 - **A small set of pure functions** over a plain data type. Good when there's no implicit current state — just transformations.
 - **A class or module with a clear method surface** when the logic genuinely owns ongoing internal state.
 
-Pick whichever shape best fits the question being asked, *not* whichever is easiest to wire to a TUI. Keep it pure: no I/O, no terminal code, no `console.log` for control flow. The TUI imports it and calls into it; nothing flows the other direction.
+Pick whichever shape best fits the question being asked, not whichever is easiest to wire to a TUI. Prefer pure logic when I/O is not part of the question; keep presentation separate where useful rather than refactoring existing code merely to satisfy a prototype shape.
 
-### 4. Build the smallest TUI that exposes the state
+### 4. Exercise the model
 
-Build it as a **lightweight TUI** — on every tick, clear the screen (`console.clear()` / `print("\033[2J\033[H")` / equivalent) and re-render the whole frame.
+For concrete-case probes, provide executable inputs, expected results, and visible actual state or assertion failures. Run them and record what they demonstrate, including limitations. No TUI is required when those results answer the question.
+
+For interactive exploration, build it as a **lightweight TUI** — on every tick, clear the screen (`console.clear()` / `print("\033[2J\033[H")` / equivalent) and re-render the whole frame.
 
 Each frame has two parts, in this order:
 
@@ -56,14 +58,12 @@ The whole frame should fit on one screen.
 
 ### 5. Make it runnable in one command
 
-Add a script to the project's existing task runner (`package.json` scripts, `Makefile`, `justfile`, `pyproject.toml`). The user should run `pnpm run <prototype-name>` or equivalent — never need to remember a path.
-
-If the host project has no task runner, just put the command at the top of the prototype's README.
+Reuse an existing test or execution command when it runs the probe. Add a task-runner entry only when it makes a new experiment easier to run; no new runner or script is required for an existing command. Put the exact command in the handoff or prototype notes.
 
 ### 6. Hand it over
 
-Give the user the run command. They'll drive it themselves; the interesting moments are when they say "wait, that shouldn't be possible" or "huh, I assumed X would be different" — those are the bugs in the _idea_, which is the whole point. If they want new actions added, add them.
+Give the user the run command and any observed probe results. For a TUI, they can drive the model themselves; surprising transitions expose bugs in the idea. Add requested cases or actions within the experiment's scope.
 
 ### 7. Capture the answer and the prototype
 
-Once the prototype has answered its question, capture the answer and prototype as [SKILL.md](SKILL.md) describes. Record which reducer, machine, or function set may inform later production work. Do not lift it into the real module during the prototype invocation; an explicitly authorized implementation Ticket decides whether and how to reuse it.
+Once the prototype has answered its question, capture the answer and prototype as [SKILL.md](SKILL.md) describes. Record which reducer, machine, or function set may inform later production work. Prototype selection alone does not authorize production changes. Explicitly authorized implementation may reuse the validated code and add the production checks or hardening it needs; no rewrite or new Ticket is required solely because of its prototype origin.

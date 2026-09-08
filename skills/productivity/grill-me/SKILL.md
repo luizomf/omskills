@@ -35,10 +35,10 @@ Begin completion only when the recomputed Question frontier is genuinely empty b
 
 For implementation-bound work, include known dependencies, conflicts, shared resources outside Git, exclusive candidates for every Ticket, and delivery/integration decisions in the shared understanding. Distinguish parallel branch artifacts from combined-target delivery, durable exact predecessor inputs and retention through all consumers. Leave complete phases and a preplanned ordinary integration Ticket blocked by every parallel member to `to-tickets` during breakdown approval.
 
-Use these two gates in order:
+Resolve these two decisions in order, reusing explicit choices already supplied:
 
 1. **Confirm the shared understanding.** Consolidate the established decisions, constraints, exclusions, relevant evidence, and any unresolved Questions, including why the unresolved Questions do not block completion. Ask the user to confirm or correct that complete understanding, then wait. Do not recommend a destination yet. If the user corrects it, update the decision tree, resume grilling when needed, and repeat this gate until the user explicitly confirms the revised understanding.
-2. **Confirm the destination separately.** Only after the user explicitly confirms the shared understanding, recommend exactly one destination from the criteria below and give a concise reason. Mention alternatives only when they are materially relevant to safe continuation. Ask the user to confirm that destination in a separate prompt, then wait. Never combine the two confirmations or route work before this second confirmation.
+2. **Resolve the destination.** After the shared understanding is confirmed, use an explicitly authorized destination if it still fits that understanding; no second confirmation is needed. Otherwise recommend exactly one destination from the criteria below, explain why, and ask for confirmation. Mention alternatives only when materially relevant. A destination chosen earlier or in the same response as the understanding confirmation counts; if changed scope makes it unsuitable or ambiguous, resolve that difference before completion.
 
 Choose the recommendation by these criteria:
 
@@ -48,6 +48,6 @@ Choose the recommendation by these criteria:
 - **Existing Spec or Ticket update:** an existing tracked item already governs the result; update it instead of recommending a duplicate.
 - **Domain language or ADR:** shared domain meaning belongs in `CONTEXT.md`, or a durable decision belongs in an ADR, only when the destination satisfies that artifact's existing recording gate.
 
-After the user confirms the destination, report the confirmed recommendation and a concise continuation summary in the conversation only. `grill-me` never carries out the route: it never writes a Scratchpad, Spec, tracked-item update, domain document, ADR, or any other repository artifact. It never starts implementation, resolves the later Delivery mode gate, or bypasses the implementation, proportionate review, repository delivery, or route-specific readiness, Prompt Audit, and authorization rules.
+After the shared understanding is confirmed and the destination is authorized, report the chosen destination and a concise continuation summary in the conversation only. `grill-me` never carries out the route: it never writes a Scratchpad, Spec, tracked-item update, domain document, ADR, or any other repository artifact. It never starts implementation, resolves the later Delivery mode gate, or bypasses the implementation, proportionate review, repository delivery, or route-specific readiness, Prompt Audit, and authorization rules.
 
 

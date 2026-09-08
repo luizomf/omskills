@@ -71,14 +71,7 @@ If code or styling would be used by a second lesson, place it in `assets/` and l
 
 Before creating a lesson, interview the user about why they want to learn the topic when `MISSION.md` is absent, empty, or does not state both a concrete real-world goal and observable success criteria.
 
-When the user proposes a mission change or learning evidence indicates that the mission may have changed:
-
-1. State the proposed change.
-2. Obtain the user's confirmation.
-3. Update `MISSION.md`.
-4. Add a learning record that captures the change.
-
-Do not change the mission before confirmation.
+When the user explicitly directs a concrete mission change, state it, update `MISSION.md`, and add a learning record without asking for the same approval again. If the user is exploring a possibility, the change is inferred from learning evidence, or its meaning remains materially ambiguous, propose the change and obtain confirmation before updating the mission and learning record. Preserve unchanged goals and constraints.
 
 ## Zone of Proximal Development
 

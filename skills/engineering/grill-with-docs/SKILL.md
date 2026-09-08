@@ -60,10 +60,10 @@ Begin completion only when the recomputed Question frontier is genuinely empty b
 
 For implementation-bound work, include known dependencies, conflicts, shared resources outside Git, exclusive candidates for every Ticket, and delivery/integration decisions in the shared understanding. Distinguish parallel branch artifacts from combined-target delivery, durable exact predecessor inputs and retention through all consumers. Leave complete phases and a preplanned ordinary integration Ticket blocked by every parallel member to `to-tickets` during breakdown approval.
 
-Use these two gates in order:
+Resolve these two decisions in order, reusing explicit choices already supplied:
 
 1. **Confirm the shared understanding.** Consolidate the established decisions, constraints, exclusions, relevant evidence, and any unresolved Questions, including why the unresolved Questions do not block completion. Ask the user to confirm or correct that complete understanding, then wait. Do not recommend a destination yet. If the user corrects it, update the decision tree, resume grilling when needed, and repeat this gate until the user explicitly confirms the revised understanding.
-2. **Confirm the destination separately.** Only after the user explicitly confirms the shared understanding, recommend exactly one destination from the criteria below and give a concise reason. Mention alternatives only when they are materially relevant to safe continuation. Ask the user to confirm that destination in a separate prompt, then wait. Never combine the two confirmations or route work before this second confirmation.
+2. **Resolve the destination.** After the shared understanding is confirmed, use an explicitly authorized destination if it still fits that understanding; no second confirmation is needed. Otherwise recommend exactly one destination from the criteria below, explain why, and ask for confirmation. Mention alternatives only when materially relevant. A destination chosen earlier or in the same response as the understanding confirmation counts; if changed scope makes it unsuitable or ambiguous, resolve that difference before routing.
 
 Choose the recommendation by these criteria:
 
@@ -78,7 +78,7 @@ Destination confirmation does not replace the domain or ADR recording gates.
 
 ## Route the confirmed destination
 
-Only after the user separately confirms the destination, take the corresponding action:
+After the shared understanding is confirmed and the destination is authorized, take the corresponding action:
 
 - For conversation-only completion, finish with the confirmed summary and write no new artifact.
 - Write a confirmed Scratchpad directly under the safety and content contract below.

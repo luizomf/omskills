@@ -94,10 +94,10 @@ Surface the URL (and the `?variant=` keys). The user will flip through whenever 
 
 ### 6. Capture the answer
 
-Once a variant has won, record which variant won, why, and which parts may serve as a reference or starting point. Capture the prototype as [SKILL.md](SKILL.md) describes and stop without changing production code. A later explicitly authorized implementation Ticket may use the winner as a base, rewrite it under production constraints, and remove prototype-only variants and switching behavior.
+Once a variant has won, record which variant won, why, and which parts may serve as a reference or starting point. Capture the prototype as [SKILL.md](SKILL.md) describes and stop without changing production code. Explicitly authorized implementation may reuse the winner, adapt and test it under production constraints, and remove prototype-only variants and switching behavior. Prototype origin alone does not require a rewrite or new Ticket.
 
 ## Anti-patterns
 
 - **Sharing too much code between variants.** A shared `<Header>` is fine; a shared `<Layout>` defeats the point. Each variant should be free to throw out the layout.
 - **Wiring variants to real mutations.** Read-only prototypes are fine. If a variant needs to mutate, point it at a stub — the question is "what should this look like", not "does the backend work".
-- **Treating prototype selection as production authorization.** Selection records a design decision only. Promotion is a separate implementation Ticket that rewrites and tests the chosen direction as needed.
+- **Treating prototype selection as production authorization.** Selection records a design decision only. Promotion requires explicit implementation authorization and production verification; reuse suitable code and adapt only what needs changing.

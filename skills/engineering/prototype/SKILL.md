@@ -13,16 +13,16 @@ Read-only inspection may establish the question and likely scope first. Before c
 
 Determine the question from the user's prompt and the surrounding code. If both branches remain plausible and the user is available, ask which question to answer.
 
-- **Logic or state-model question:** follow [LOGIC.md](LOGIC.md). Build a tiny interactive terminal app that pushes the state machine through cases that are hard to reason about on paper.
+- **Logic or state-model question:** follow [LOGIC.md](LOGIC.md). Use the smallest executable shape that answers the question: focused probes or tests for concrete cases, or a tiny interactive terminal app when exploring transitions by hand is useful.
 - **UI appearance question:** follow [UI.md](UI.md). Build several radically different UI variants on one route, selectable through a URL search parameter and a floating bottom bar.
 
 If both branches remain plausible and the user is unavailable, select logic for a backend module or UI for a page or component, and record that assumption at the top of the prototype.
 
 ## Rules for both branches
 
-1. **Mark it as throwaway.** Put the prototype beside the module or page it evaluates, and name it so a casual reader can identify it as a prototype.
+1. **Mark experimental code clearly.** Use a prototype filename, name, or comment so a reader can distinguish the experiment from production behavior. Reuse an appropriate existing test location for a focused probe; new standalone prototypes normally live beside the module or page they evaluate.
 2. **Provide one run command.** Use the existing task runner, such as `pnpm <name>`, `python <path>`, or `bun <path>`.
 3. **Keep state in memory by default.** If the stated question explicitly involves a database, use a scratch database or a local file with a clear `PROTOTYPE — wipe me` name.
-4. **Implement only what is required to run the prototype and answer the question.** Do not add tests. Add no abstractions or error handling beyond what makes the prototype runnable.
-5. **Expose state.** After every logic action or UI variant switch, print or render the full state relevant to the prototype question, including state that can affect later transitions or output.
-6. **Capture the result.** Record the question, observed answer, and any prototype elements that may serve as reference or a starting point for later production work. The prototype remains non-production and is never promoted automatically. Preserve it on a clearly throwaway branch only when the user or repository requires the artifact. Production promotion is a separate, explicitly authorized implementation Ticket that may reuse the idea or code as a base but rewrites and tests it as needed.
+4. **Implement only what answers the question safely.** Use small tests, assertions, or executable examples when they expose the behavior being evaluated. Add a reusable seam or error handling when the experiment needs it; avoid speculative architecture and production-grade scaffolding unrelated to the question.
+5. **Expose the result.** For probes, assertions and failure output may be enough to show the relevant behavior. For interactive logic or UI exploration, print or render the state needed to understand transitions and output after each action or variant switch.
+6. **Capture the result.** Record the question, observed answer, and any prototype elements that may serve as reference or a starting point for later production work. The prototype remains non-production and is never promoted automatically. Preserve it on a clearly throwaway branch only when the user or repository requires the artifact. Production promotion requires explicit implementation authorization under the repository's delivery workflow, not necessarily a separate Ticket. Reuse validated code when it meets production requirements; adapt and test what needs hardening rather than rewriting merely because it began as a prototype.
