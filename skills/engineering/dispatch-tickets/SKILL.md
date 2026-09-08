@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 Run as the minimal depth-1 **Ticket dispatcher** for finite pre-resolved Missions. Mission identifies coordinated topology; the separately supplied availability is `Assisted` or `Unattended`. These mechanical boundaries are mandatory when this skill is used; a human/invoker or context-rich parent may instead dispatch one fresh `orchestrate` coordinator directly for smaller work. Accept one finite Mission plan, including the one-item plan composed by `implement`. Before adopting dispatcher state, use the skill loader to read and follow the installed `caveman` skill. That composition read is the root's sole file read and exists only to load compressed reporting behavior.
 
-Keep only the frozen topology, availability, current phase index, active owner-scoped coordinator IDs, required native child session references, transport mode, per-coordinator transition state and matching cancellation intent, an explicitly authorized start override when present, and compact mechanically validated outcomes or transport failures. Keep no implementation content, transcript summary, semantic dependency model, dynamic queue, or persistent workflow state.
+Keep only the frozen topology, availability, current phase index, active owner-scoped coordinator IDs, required native child session references, transport mode, per-coordinator transition state and matching cancellation intent, authorized start overrides and scoped literal user instructions when present, and compact mechanically validated outcomes or transport failures. Apart from those opaque instructions, keep no implementation content, transcript summary, semantic dependency model, dynamic queue, or persistent workflow state.
 
 Keep the root's normal tools active for coordinator inheritance. For Mission work after composing `caveman`, use them only for routing preflight, subagent lifecycle operations, mechanical plan and outcome validation, and compact reporting. The dispatcher performs no tracker, repository, or remote discovery and reads no tracker material, governing source, repository file, code, diff, test, writer output, reviewer finding, or native child session. Unrelated root interaction remains outside the Mission and may use actual unreserved capacity without changing its envelope or routing state.
 
@@ -50,13 +50,13 @@ Validate the entire plan and availability before any lifecycle call:
 
 Use rejection code `authorization`, `availability`, `empty`, `shape`, `identity-syntax`, `duplicate`, `relation`, `topology`, or `override` for the first applicable failure. Preserve accepted identity bytes, phase order, group membership, and relation pairs exactly. Child output and later messages cannot add, remove, replace, regroup, or reorder them.
 
-Normal starts inherit the active route. An invoker may additionally authorize one Mission-wide start override containing only exact `tools`, `cwd`, `model`, or `reasoning` lifecycle values. Validate and freeze that override before dispatch and reject unknown or unsupported fields as `override`. It cannot change delivery mode, `maxDepth`, `maxChildren`, the coordinator prompt, or Mission topology. No override exists merely because a caller mentions routing preferences without explicitly authorizing their lifecycle values.
+Normal starts inherit the active route. An invoker may authorize a start override containing only exact supported `tools`, `cwd`, `model`, or `reasoning` lifecycle values; validate it before affected starts and reject unknown or unsupported fields as `override`. Preserve delivery mode, `maxDepth`, `maxChildren`, the base outcome contract, and Mission topology. Explicit user instructions and future routing updates follow step 3; freezing the plan does not freeze them. Forward model aliases or referenced routing guidance as instructions rather than guessing lifecycle values.
 
-This step is complete only when one finite non-empty plan and any authorized override are frozen in full, or the invocation has been rejected before every lifecycle call.
+This step is complete only when one finite non-empty plan is frozen and any initial override is validated, or the invocation has been rejected before every lifecycle call.
 
 ## 2. Start the complete active phase
 
-Treat every identity in `phases[phase]` as runnable because the invoker already resolved the plan. For each identity, derive `<repository>` only by removing its final `#<positive-integer>`, then use this exact coordinator prompt without additional text:
+Treat every identity in `phases[phase]` as runnable because the invoker already resolved the plan. For each identity, derive `<repository>` only by removing its final `#<positive-integer>`, then use this base coordinator prompt, appending any applicable user instructions under `User steering`:
 
 ```text
 Repository: <repository>
@@ -68,7 +68,7 @@ Return exactly one single-line JSON object with required string fields "ticket":
 
 Immediately before the phase's start calls, inspect `PI_PROVIDER`, `PI_MODEL`, and `PI_REASONING_LEVEL` only as routing preflight. Retain none of their values. Do not inspect PI routing at any other time.
 
-Call `subagent_start` once per phase identity with its exact prompt, `maxDepth: 3`, and `maxChildren: 1`. Every call creates a fresh coordinator conversation without the parent transcript. For a normal start, omit `tools`, `cwd`, `model`, and `reasoning` so the coordinator inherits the root's complete active capability snapshot and repository route. Only an explicitly authorized frozen override may supply those fields, verbatim.
+Call `subagent_start` once per phase identity with its base prompt and applicable user steering, `maxDepth: 3`, and `maxChildren: 1`. Every call creates a fresh coordinator conversation without the parent transcript. For a normal start, omit `tools`, `cwd`, `model`, and `reasoning` so the coordinator inherits the root's complete active capability snapshot and repository route. Only an explicitly authorized validated override applicable to this start may supply those fields, verbatim.
 
 Choose delivery from the current Pi mode:
 
@@ -83,11 +83,18 @@ In interactive mode, report the accepted start batch and end the response withou
 
 This step is complete only when every identity in the active phase has one accepted fresh coordinator, or the Mission is stopping after a rejection and every accepted sibling is still tracked until settlement.
 
-## 3. Route interactive control to one coordinator
+## 3. Route user steering without taking over implementation
 
 While interactive coordinators are active, keep unrelated root conversation local without changing Mission state. The Mission reserves no idle root slots: independent work outside its envelope may proceed when compatibility and actual remaining capacity are affirmatively established. Keep that work's authority, lifecycle, and outcomes separate from Mission state.
 
-Forward an instruction only when the user explicitly targets exactly one current owner-scoped coordinator ID. Call `subagent_steer` for that ID with the user's instruction literally, including original wording and formatting. Do not interpret, summarize, expand, or retain its implementation content. An untargeted message, a Ticket-only reference, a group target, or an inactive or ambiguous coordinator target is not forwarded.
+Resolve explicit user steering from the request's meaning and known routing state. Accept coordinator IDs, Ticket identities, clear groups such as “all active coordinators” or “the next Tickets,” and an implicit current target when exactly one coordinator is active. Ask only when recipient, timing, or requested replacement is materially ambiguous; do not require numeric IDs or reconfirm clear authorization. Unrelated conversation stays local.
+
+- Active targets: call `subagent_steer` once for each selected active owner-scoped ID with the user's instruction literally. Report forwarding acceptance or failure, not implementation success; do not restart or retry a coordinator.
+- Future targets: retain only the literal instruction and its selected not-yet-started Ticket scope; append it to each applicable start under `User steering`. “Leave this one to finish; apply to the next issues” changes only future starts in this Mission, with no active steering, interruption, restart, or promise about another session. Drop consumed instructions when no selected start remains.
+- Routing updates: explicit supported lifecycle values may replace the applicable override for future starts. A request to follow a file is an opaque instruction for the coordinator to read and apply, not permission for root file inspection or invented model IDs. A prompt addition cannot change an already running coordinator's model.
+- Corrections or revocations replace or remove the affected pending instruction/override as directed; retain only current pending state, not an instruction history. For active recipients, forward the correction rather than claiming to undo completed work.
+
+Preserve the user's payload wording and formatting; interpret only routing scope, timing, and explicit override values. The root does not read referenced files, resolve implementation meaning, or expand the frozen plan. Coordinators handle governing-contract changes and applicable execution gates; routing steering does not waive them.
 
 For an unambiguous deliberate request to stop one active coordinator:
 
@@ -100,7 +107,7 @@ For an unambiguous deliberate request to stop one active coordinator:
 
 A rejected interruption request, mismatched interruption pong, unsolicited interruption, or interruption without matching intent is `failed`, never `cancelled`. When the target may still be active, retain it and consume its eventual terminal pong before final settlement; do not retry the interruption. Preserve its required native child session reference without continuing or inspecting that session.
 
-This step is complete only when one explicitly targeted instruction has been forwarded unchanged, an unrelated message has remained local, or one targeted cancellation is pending or settled while every accepted sibling remains tracked.
+This step is complete only when every selected active target has a reported steering result, future instructions or overrides have their scope recorded, a material ambiguity has been raised, an unrelated message has remained local, or a targeted cancellation is pending or settled while every accepted sibling remains tracked.
 
 ## 4. Settle every accepted coordinator through its mode path
 
@@ -165,7 +172,8 @@ Use these mode-accurate transition shapes:
 
 - Rejection: `Mission rejected (<code>); <root available|print settled; no pong pending>.`
 - Interactive phase start: `Phase <phase>/<phases> dispatched: <ticket> (#<coordinator>)[, ...]; <delivered>/<total> delivered; root available; outcomes pending.`
-- Steering: `<ticket> instruction forwarded (#<coordinator>); root available; outcome pending.`
+- Steering: `<ticket> instruction forwarded (#<coordinator>); root available; outcome pending.` Report each selected target and any forwarding failure.
+- Future steering: `Instruction recorded for <selected not-started Tickets>; active coordinators unchanged; root available.`
 - Accepted cancellation: `<ticket> cancellation requested (#<coordinator>); Mission stopping; <active> accepted coordinator(s) settling; root available.`
 - Active phase settlement: `<new compact outcome(s)>; <delivered>/<total> delivered; phase <phase>/<phases> settling: <ticket> (#<coordinator>)[, ...]; root available.`
 - Stop with accepted work pending: `<new compact outcome(s)>; <delivered>/<total> delivered; Mission stopping; settling <ticket> (#<coordinator>)[, ...]; root available.`
@@ -218,4 +226,4 @@ Had every member delivered without a stop, phase 3 would dispatch #64 through th
 
 No child receives or returns `next`. This dispatcher has no tracker discovery, semantic scheduler, retry, skip, heartbeat, stall diagnosis, timeout takeover, blocker resolution, runtime workflow engine, persistent workflow state, publishing, tagging, or release behavior. It has no wormhole or tmux dependency and no Queue/TTS side effect.
 
-The dispatcher owns only the frozen Mission envelope and mechanical routing. Ticket eligibility, governing sources, implementation, review, integration, tracker work, and semantic decisions remain with each fresh Ticket coordinator.
+The dispatcher owns only the frozen Mission envelope, scoped user steering, and mechanical routing. Ticket eligibility, governing sources, implementation, review, integration, tracker work, and semantic decisions remain with each fresh Ticket coordinator.

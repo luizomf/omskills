@@ -123,10 +123,21 @@ The next phase waits until every identity in the active group returns matching
 otherwise invalid transition stops new dispatch. Every accepted sibling still
 settles and retains its valid outcome, without reviving the stopped Mission.
 
-Explicitly targeted steering may be forwarded literally to one active
-coordinator. It cannot change the plan or select an adjacent Ticket. Untargeted
-conversation remains at the dispatcher root. Authorization remains
-non-transitive: no child receives later identities or returns `next` work, and
+Explicit user steering is routed by unambiguous scope, not mandatory numeric
+IDs: one active coordinator, named Tickets, all active coordinators, or selected
+not-yet-started Tickets. The dispatcher forwards the literal instruction to
+active targets or retains it with its scope for future start prompts. Clear
+requests need no repeated confirmation. Future-only steering leaves accepted
+coordinators untouched and does not restart the Mission. Explicit lifecycle
+routing updates apply to not-yet-issued starts; referenced routing guidance is
+passed to coordinators without root file inspection or guessed model IDs.
+Only this compact instruction/routing state is mutable; topology, phase barriers,
+settlement, capacity, and outcome contracts remain unchanged. Coordinators own
+referenced content, applicable durable contract updates and execution gates;
+steering does not silently bypass them. Unrelated conversation stays local.
+This maintainer-authorized correction supersedes the earlier single-ID-only
+steering and immutable-prompt/start-override restrictions, not the frozen plan.
+Authorization remains non-transitive: no child receives later identities or returns `next` work, and
 adjacent findings are reported without entering the plan. Mission completion
 requires every selected identity to be delivered.
 
