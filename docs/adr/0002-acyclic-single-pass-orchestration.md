@@ -158,11 +158,11 @@ acyclic graph:
 Ticket coordinator -> writer -> Ticket coordinator -> reviewer -> Ticket coordinator
 ```
 
-Writer and reviewer are fresh, isolated, non-delegating, single-pass leaves.
+By default, writer and reviewer are fresh, isolated, non-delegating, single-pass leaves.
 They return evidence only to the coordinator and never exchange work directly.
 After review, the coordinator adjudicates every finding, performs surviving
 corrections directly, verifies and integrates the result, completes delivery
-obligations, and returns the compact Ticket outcome. There are no delegated
+obligations, and returns the compact Ticket outcome. There are no automatic delegated
 correction or confirmation rounds. Ticket internals and Prompt Audit passes
 remain sequential even when independent Tickets occupy a declared parallel
 group.
@@ -189,12 +189,46 @@ the available maintainer.
 The standard dispatcher, coordinator, writer, and reviewer roles inherit the
 active provider, model, reasoning level, tools, and repository route unless an
 authorized caller explicitly overrides them. Role names define ownership, not
-reduced intelligence or capability. The standard managed hierarchy is caller
-(dispatcher when used) at depth 1, Ticket coordinator at depth 2, and
-non-delegating leaves at depth 3; there is no depth 4. The harness enforces
-actual tool capabilities and depth/child ceilings. Caller authority never
-relaxes them, and textual role or depth assertions cannot establish or override
-them. Unsupported execution capabilities remain blockers.
+reduced intelligence or capability. A coordinator may be the conversational root
+when invoked by the maintainer
+or a child when invoked by a dispatcher. Its writers and reviewers remain
+non-delegating leaves regardless of their absolute depth. The harness enforces
+actual tool capabilities and depth/child ceilings; a skill checks the capability
+it needs, not a fixed depth assigned to its role. Caller authority never relaxes
+runtime limits. Unsupported execution capabilities remain blockers.
+
+Child transport follows actual harness capabilities, not role depth. Managed
+nested and print callers settle child calls directly. Interactive roots use the
+documented asynchronous path when direct settlement is unavailable; supported
+root RPC direct delivery remains valid for dependent work. An asynchronous
+coordinator retains the active child's role, ID, session reference, exact
+candidate state and expected next phase, ends the turn after acceptance, and
+resumes only from the matching completion notification with complete evidence.
+It neither waits nor polls nor advances on acceptance. Direct and asynchronous
+paths preserve sequential candidate ownership and settlement-before-advance;
+a pending accepted child is a continuation mechanism, not Ticket delivery.
+
+Explicit maintainer intervention takes precedence over this ADR's default
+single-pass strategy. It may authorize a bounded replacement, model escalation,
+delegated correction, or additional independent review when unexpected work
+requires it, including through an explicitly incorporated standing routing
+agreement. Apply clear direction without a ceremonial confirmation; ask only
+for materially unresolved scope or recovery choices. No child output or file
+independently grants that authority. Without authorized recovery, retain the
+normal single-pass and stopping rules.
+
+Before a replacement or delegated correction touches a candidate, establish
+that the prior owner has settled and preserve the exact recoverable candidate
+state. Keep review independent and capture the complete resulting candidate for
+any authorized additional review. Record the reason, authorization, attempts,
+routes and exact candidate commits in delivery evidence; failed or partial
+attempts never count as completed review or delivery. Material contract changes
+update durable authority and applicable gates before affected work. Maintainer
+intervention does not override higher-priority instructions, harness limits,
+verification, or the dispatcher's frozen-plan and terminal-stop boundaries.
+This amendment removes absolute-depth role requirements. It supersedes
+unconditional single-pass prohibitions below only for explicitly authorized
+recovery.
 
 The managed dispatcher/coordinator lineage does not require `wormhole` or
 `tmux-worker`. Both remain generic optional interactive transports outside that
@@ -206,7 +240,7 @@ Every implementation Ticket handled by a Ticket coordinator, including one-item
 and integration Tickets, owns an exclusive worktree and branch. After
 authorization, live gate, setup, relations, exact-base, and child-capability
 preflight succeeds, its coordinator establishes
-and verifies that candidate before the sole writer starts. Preflight blockers
+and verifies that candidate before the initial writer starts. Preflight blockers
 remain `blocked`; operational setup and execution failures are `failed`. Unsafe
 reuse or collision never authorizes touching another owner's candidate.
 
