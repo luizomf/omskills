@@ -43,7 +43,7 @@ Normal transitions are:
 - `needs-triage` → `needs-info`, `ready-for-agent`, `ready-for-human`, or `wontfix`; and
 - `needs-info` → `needs-triage` after reporter activity.
 
-A maintainer may override any transition. When a requested transition is outside this list, state that fact and wait for confirmation before applying it.
+A maintainer may override any transition. Explicit direction authorizes the requested exceptional transition without another confirmation; state the exception and exact changes before applying them. Ask only when the target state or intended consequences remain materially ambiguous. The `ready-for-agent` audit boundary below still applies.
 
 ## Invocation routing
 

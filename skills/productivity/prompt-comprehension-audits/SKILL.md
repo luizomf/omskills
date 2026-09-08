@@ -1,6 +1,6 @@
 ---
 name: prompt-comprehension-audits
-description: Audit whether clean-context agents understand text as intended; for repository implementation units, also check tracer-bullet fit before autonomous work.
+description: Audit whether clean-context agents understand text as intended. Use for Unattended Ticket eligibility or an explicitly requested comprehension audit.
 ---
 
 # Audit Prompt Comprehension
@@ -9,7 +9,7 @@ Test whether a fresh agent's interpretation is semantically equivalent to the in
 
 Prompt Audit is an Unattended-execution eligibility gate. It is not applicable to Direct Assisted work by default, even when that work selects exactly one Ticket; run it there only when the maintainer requests an audit for complex intent. Its absence never forces an Assisted request through triage, a dispatcher, a separate Ticket coordinator, or a writer.
 
-For a tracked Ticket, read the configured issue tracker and triage-label mapping before delegation. If either is unavailable, follow `setup-omskills` and its scoped authorization gate before delegation, including in headless runs. Read-only audit leaves return missing prerequisites to their responsible caller instead of writing setup; never route setup through a Ticket dispatcher. Untracked prompt audits require neither configuration.
+Resolve from the invocation whether this audit establishes Unattended eligibility or only supplies requested comprehension evidence; do not infer a readiness transition from an Assisted audit request. For a tracked Ticket, read the configured issue tracker before delegation, and read the triage-label mapping only when establishing Unattended eligibility. If required configuration is unavailable, follow `setup-omskills` and its scoped authorization gate before delegation, including in headless runs. Read-only audit leaves return missing prerequisites to their responsible caller instead of writing setup; never route setup through a Ticket dispatcher. Untracked prompt audits require neither configuration.
 
 ## Fix the reference intent
 
@@ -23,18 +23,18 @@ When the maintainer explicitly waives the comprehension audit for the exact cont
 
 ## Select isolated pass delivery
 
-Every delegated pass is a fresh, independent, read-only, non-delegating leaf that performs its assigned comparison directly. A role or name does not grant isolation, tools, or delivery behavior. Never continue a prior pass session or give a later pass hidden access to it.
+Every delegated pass is a fresh, independent, read-only, non-delegating leaf that performs its assigned comparison directly. A role or name does not grant isolation, tools, or delivery behavior. Never continue a prior pass session or give a later pass hidden access to it. Explicit maintainer recovery may replace a mechanically settled but incomplete pass with a fresh isolated pass before terminal status recording. Keep the fixed reference and required role inputs unchanged, retain failed-attempt evidence in the audit record, and preserve interpreter-before-reviewer order. Unknown acceptance is not settled failure. This exception does not rerun a completed semantic judgment, edit the contract, or reopen a terminal audit.
 
-Before each launch, preflight the tools and providers required for that pass and the absence of inherited conversation. Where the active harness exposes lineage controls, set the child's maximum delegation depth to its assigned depth and its direct-child ceiling to zero. A depth-3 leaf cannot launch the required depth-4 clean pass. Any unavailable isolation, over-depth rejection, or capability mismatch before prompt acceptance requires `FAIL`; record it through the status process below and stop.
+Before each launch, preflight the tools and providers required for that pass and the absence of inherited conversation. Where the active harness exposes lineage controls, inherit the existing depth ceiling and set the child's direct-child ceiling to zero or remove delegation capability. A designated pass leaf performs its assigned comparison directly without launching another pass. Missing isolation or capability requires `FAIL` unless explicitly authorized recovery can establish a fresh valid pass; a role's absolute depth is not itself a failure.
 
-Choose delivery from the caller's role:
+Choose delivery from actual harness mode:
 
-- A root interactive coordinator may use the active harness's documented asynchronous delivery. After acceptance it does not wait, sleep, or poll; it resumes the audit from the single deterministic completion notification.
-- A print coordinator and a depth-2 coordinator that depends on the pass use direct delivery. Direct settlement returns once through the pending call and emits no later asynchronous completion notification.
+- A root interactive coordinator may use the active harness's documented asynchronous delivery. After acceptance it does not wait, sleep, or poll; it resumes the audit from the matching completion notification.
+- A print or managed nested coordinator uses direct delivery, as may a root RPC coordinator for dependent work when supported. Direct settlement returns once through the pending call and emits no later asynchronous completion notification.
 
 Run the passes sequentially even when asynchronous delivery is available: the interpreter must settle before the reviewer starts. Never issue these passes as concurrent siblings or assess the interpreter for the reviewer.
 
-For every pass, require a mechanically completed terminal outcome and a complete decision-bearing response. When terminal text is bounded, recover the complete response from the returned native session reference or another predeclared durable result channel before assessment. Reading persisted evidence does not add context to the child. If the pass is failed, interrupted, cancelled, missing its response, or cannot be recovered without weakening isolation, choose and durably record `FAIL`; do not fabricate evidence, treat a partial response as `PASS`, continue the child, or rerun the pass.
+For every pass, require a mechanically completed terminal outcome and a complete decision-bearing response. When terminal text is bounded, recover the complete response from the returned native session reference or another predeclared durable result channel before assessment. Reading persisted evidence does not add context to the child. If the pass is failed, interrupted, cancelled, missing its response, or cannot be recovered without weakening isolation, apply only an already authorized fresh-pass recovery as defined above; otherwise record `FAIL` and end. A partial response cannot support `PASS`, and recovery cannot reuse the failed child's context.
 
 ## Run two isolated agent passes
 
@@ -75,7 +75,7 @@ For every reported difference:
 - If the fixed reference determines one clear meaning and the differing reading is not supported, record that adjudication and continue.
 - If plausible readings materially differ, authority remains unresolved, or fixing the ambiguity would change the audited contract, choose `FAIL` and require a separate contract correction and fresh Prompt Audit.
 
-Choose `PASS` only when no material semantic divergence survives adjudication. Do not edit the contract, run a confirmation pass, rerun a failed pass, or create another semantic-review loop in this invocation.
+Choose `PASS` only when no material semantic divergence survives adjudication. Adjudication does not edit the contract, run confirmation passes, or repeat semantic comparisons to obtain a preferred verdict. Fresh-pass recovery applies only to incomplete evidence under the explicit authorization above.
 
 ## Check implementation-unit fit when applicable
 
@@ -101,7 +101,7 @@ When the execution contract is a tracked issue or an agent brief on one, post a 
 
 For an untracked prompt, report the same fields to the invoking workflow. A newer status supersedes an older one only when it applies to the same execution contract. A material change to the requested outcome, scope, required workflow or order, deliverables, acceptance criteria, relations, or completion point makes the prior status stale.
 
-For a tracked code or behavior-changing Ticket, transition it to `ready-for-agent` only after its final body, Agent Brief, parent, blocking, and conflict relations are stable, it carries exactly one category role, and this audit returns `PASS` or an explicit maintainer `BYPASS`. Replace `needs-triage`; do not leave two state roles. A `FAIL` remains outside `ready-for-agent`. The audit never creates adjacent Tickets or extends the audited contract. `ready-for-agent` plus `PASS` or `BYPASS` establishes eligibility, not Mission authorization.
+Only when the invocation establishes Unattended eligibility for a tracked code or behavior-changing Ticket, transition it to `ready-for-agent` after its final body, Agent Brief, parent, blocking, and conflict relations are stable, it carries exactly one category role, and this audit returns `PASS` or explicit maintainer `BYPASS`. Replace `needs-triage`; do not leave two state roles. A `FAIL` must remain outside `ready-for-agent`; remove stale readiness when this eligibility audit fails. An Assisted-only audit records its status without changing triage labels or requiring an Agent Brief that the audited request did not incorporate. The audit never creates adjacent Tickets or extends the audited contract. `ready-for-agent` plus `PASS` or `BYPASS` establishes eligibility, not Mission authorization.
 
 ## End the audit invocation
 

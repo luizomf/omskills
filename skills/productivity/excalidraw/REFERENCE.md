@@ -63,4 +63,4 @@ Use one pair consistently for the same concept. Use `#3b4fa6` as a neutral or pr
 
 ## Exhaustive check
 
-For every output element, verify the common fields, type-specific fields, unique ID, and valid bounds. For every binding, verify both participants reference each other and exist in the output scene.
+For every new element, verify all common and type-specific fields. For an existing element, verify changed fields and their affected constraints while preserving valid unrelated fields; do not normalize retained elements to the new-element example. Across the output scene, verify parseability, unique IDs, valid bounds, and reciprocal bindings whose participants exist. Report a pre-existing structural defect that prevents these checks rather than silently rewriting unrelated content.

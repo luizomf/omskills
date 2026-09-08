@@ -27,7 +27,7 @@ Use this shape for every visible Question:
 
 Keep each identifier unchanged and unambiguous while its round is visible; identifiers need not be global across rounds. The recommendation informs the user's decision and does not settle it.
 
-Question assumptions, undefined or multiply defined terms, contradictions, boundary cases, and missing constraints when they could change the outcome or scope. Keep the session stateless and read-only: do not write or modify repository artifacts, invoke a writing workflow, or execute the resulting plan.
+Question assumptions, undefined or multiply defined terms, contradictions, boundary cases, and missing constraints when they could change the outcome or scope. Keep repository state unchanged and the decision tree only in the conversation: do not write or modify repository artifacts, invoke a writing workflow, or execute the resulting plan.
 
 ## Complete the grill
 

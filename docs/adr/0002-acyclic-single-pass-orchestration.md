@@ -93,7 +93,19 @@ answer. The coordinator adjudicates the evidence, records exactly `PASS`,
 
 `PASS` means no material semantic divergence survives adjudication. `BYPASS` is
 an explicit maintainer waiver and is never represented as `PASS`. Prompt Audit
-never dispatches or implements.
+never dispatches or implements. An Assisted-only audit records comprehension
+evidence and ends without readiness-label mutation or requiring Unattended
+triage artifacts; readiness transition belongs only to an invocation establishing
+Unattended eligibility.
+
+Explicit maintainer recovery may replace a mechanically settled but incomplete
+pass with a fresh isolated pass before terminal status recording. Preserve the
+fixed reference, sequential interpreter/reviewer order and all attempt evidence;
+only complete results support adjudication. Replacement does not authorize
+semantic verdict shopping, contract edits, or reuse of a prior pass context.
+Unknown dispatch acceptance is not proof of settlement. Without authorized
+recovery, an incomplete pass records `FAIL`; after terminal status, further audit
+work is a separately authorized invocation.
 
 ### Frozen Mission plans and mechanical dispatch
 
