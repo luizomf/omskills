@@ -17,5 +17,7 @@ jobs:
         run: ./scripts/check-catalog.py
       - name: Test portable skill pointers
         run: python3 -B tests/test-skill-pointers.py
+      - name: Test architecture report scaffold
+        run: python3 -B tests/test-html-report.py
       - name: Test safe local linking
         run: ./tests/test-link-skills.sh

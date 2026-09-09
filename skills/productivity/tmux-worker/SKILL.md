@@ -41,7 +41,20 @@ The message may be direct conversational text or point to a caller-owned prompt 
 
 After submission, the invoking agent or skill may continue its own work, continue the dialogue, or follow another caller-owned policy. Sending a message neither imposes a yield nor decides whether the invoking turn may end.
 
-4. When the caller requests a response, give the worker the literal callback socket and coordinator pane. The worker returns any caller-defined callback through the same buffered transport, with a new safe unique buffer name:
+4. When the caller requests a response, agree on the result transport before dispatch. A buffer and bracketed paste protect literal content, not an editor's existing draft: pasting a callback and sending `Enter` can submit the human's partially typed text together with the callback.
+
+For a coordinator pane shared with human input, prefer a native result event that preserves the editor. If none is available, save the caller-owned result artifact and use a unique named tmux event when the caller can await it synchronously with a bounded tool timeout:
+
+```bash
+# Caller awaits the agreed event; this does not inspect the editor or poll.
+tmux -S "$socket" wait-for "$callback_event"
+# Worker signals once after saving the terminal result, including a blocker.
+tmux -S "$callback_socket" wait-for -S "$callback_event"
+```
+
+Choose an event name unique to the invocation, using only ASCII letters, digits, hyphens, and underscores. A signal carries no result payload and proves neither success nor delivery: after it arrives, read the agreed artifact and verify the required evidence. On timeout, inspect the known worker/result for the next decision rather than resubmitting the task. If neither a native event nor a synchronous wait is available, use a status-line notice and leave the result for the caller's next natural turn; the notice does not wake an idle agent. These options do not create a background observer or an Accepted continuation mechanism.
+
+Use buffered editor callbacks only when the caller has explicitly reserved that destination for agent input without concurrent human editing. A momentary empty-editor capture is not such a reservation. Give the worker the literal socket and reserved pane, and use a new safe unique buffer name:
 
 ```bash
 printf '%s' "$callback_message" |
@@ -51,7 +64,7 @@ tmux -S "$callback_socket" paste-buffer -p \
 tmux -S "$callback_socket" send-keys -t "$callback_pane" Enter
 ```
 
-A callback is a cooperative transport event. It may carry a reply, question, progress message, or result pointer, and only the caller decides what it means and what follows. It is not an Accepted continuation mechanism by itself and does not justify ending an unattended autonomous turn. Repeat the buffered literal transport in either direction for as many conversational exchanges as the caller needs; each transport leg is complete when its paste deletes the unique buffer and separate `Enter` reaches the recorded pane.
+A callback is a cooperative transport event. It may carry a reply, question, progress message, or result pointer, and only the caller decides what it means and what follows. It is not an Accepted continuation mechanism by itself and does not justify ending an unattended autonomous turn. Repeat the agreed transport for as many conversational exchanges as the caller needs. A reserved-editor transport leg is complete when its paste deletes the unique buffer and separate `Enter` reaches the recorded pane; an event transport leg is complete when the caller receives the named signal and reads its result artifact.
 
 5. Keep the worker running throughout continued dialogue. Retire it only when the invoking agent or skill directs retirement. For Pi, send literal `/quit` and `Enter` in separate calls to the recorded worker pane:
 

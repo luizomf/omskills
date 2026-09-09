@@ -142,6 +142,7 @@ Run the smallest relevant check while developing; run the catalog checker and in
 
 - `./scripts/check-catalog.py` — verifies manifest mirroring, active README coverage, bucket membership, skill paths/names, discovery state, bucket README coverage, and cross-skill `SKILL.md` references.
 - `python3 -B tests/test-skill-pointers.py` — exercises file-pointer validation, hidden targets, relocated layouts, and physical resolution through relative symlinks.
+- `python3 -B tests/test-html-report.py` — checks mobile viewport metadata in the architecture report scaffold.
 - `./tests/test-link-skills.sh` — exercises installer destination, migration, ownership, collision, stale-link, and external-link behavior.
 - `./scripts/link-skills.sh --check` — verifies the current local installation; run it when manifests or local installation behavior change and the managed destination exists.
 

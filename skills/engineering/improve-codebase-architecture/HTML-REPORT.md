@@ -9,6 +9,7 @@ The architectural review is rendered as a single HTML file in the OS temp direct
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Architecture review — {{repo name}}</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script type="module">
@@ -105,7 +106,7 @@ One larger card. Candidate name, one sentence on why, anchor link to its card. I
 
 ## Completion checks and opener behavior
 
-After writing, read the file back before attempting to open it. Verify that it is non-empty, has the complete document scaffold, contains one card for every validated candidate, includes each card's required fields and diagrams, contains no unresolved template placeholders, and ends with either a top recommendation linked to its candidate card or an explicit no-candidate conclusion with coverage and evidence gaps. Report validation is based on this artifact, not on CDN availability or an opener exit status.
+After writing, read the file back before attempting to open it. Verify that it is non-empty, has the complete document scaffold including device-width viewport metadata, contains one card for every validated candidate, includes each card's required fields and diagrams, contains no unresolved template placeholders, and ends with either a top recommendation linked to its candidate card or an explicit no-candidate conclusion with coverage and evidence gaps. Report validation is based on this artifact, not on CDN availability or an opener exit status.
 
 Attempt the platform opener only after these checks. If no graphical opener is available, or it returns non-zero in a headless or print environment, preserve the report and state the failure explicitly with its absolute path. That failure is non-fatal once the report passes the completion checks. Do not retry with unrelated browser automation and do not weaken or broaden the report contract.
 
