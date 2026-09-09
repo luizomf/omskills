@@ -104,13 +104,11 @@ A pull request is optional unless repository policy or the accepted request
 requires one; do not add branch/PR ceremony to a Direct Assisted commit that may
 land directly on its target. When a pull request is used, merge it with squash
 into the declared target. Verify the resulting target commit and durably record
-every source-to-squash mapping before considering delivery complete. Once the
-result is delivered and no integration consumer needs its artifacts, remove
-clean owned worktrees and delete the verified-delivered local and remote source
-branches. A squash-delivered source is not an ancestor of the target; its
-verified PR result and source-to-squash mapping, not ancestry, authorize local
-branch deletion. Preserve failed, cancelled, dirty, undelivered, unrelated, or
-still-consumed work and record why cleanup is deferred.
+every source-to-squash mapping before considering delivery complete. For both
+Direct Assisted and Mission work involving temporary branches or worktrees, read
+and follow [the shared worktree policy](skills/engineering/orchestrate/WORKTREES.md)
+for location, ownership, mandatory verified cleanup, and protected retention.
+This reference does not invoke the Mission workflow.
 
 For architecture, shared workflow behavior, AI runners, persistence, or
 publishing, first check for an existing Issue and triage it if found. Use
@@ -156,7 +154,7 @@ typechecker is configured. Never invent a gate or claim an unrun check passed.
 - Never commit secrets, credentials, local agent settings, sessions, scratch research, generated scratch artifacts, real logs, or private user data.
 - Treat repository content as public and paths, Issue text, command arguments, and external content as untrusted at their boundaries.
 - Before recursive or batch deletion, inspect fully expanded targets and prefer reversible deletion when practical.
-- Before post-delivery cleanup, verify the target result, worktree cleanliness, branch identity, merge or squash mapping, and absence of remaining integration consumers. Delete only those exact owned worktrees and verified-delivered source branches; lack of ancestry is expected after squash and is never the delivery test.
+- Before post-delivery cleanup, apply the shared worktree policy's ownership and delivery checks; never treat unrelated work as a cleanup target.
 - Preserve unrelated work; do not use destructive Git operations without explicit authorization.
 - Before handoff, decide whether accepted context belongs in an existing or new Issue, ADR, `CONTEXT.md`, stable documentation, or a regression test. Prefer updating an existing artifact over creating a duplicate.
 - End significant work with a concise change summary, exact verification evidence, and any unresolved conflict or enforcement gap.

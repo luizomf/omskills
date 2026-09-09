@@ -310,16 +310,19 @@ including non-member and one-item delivery, squash-merge it into the declared
 target and durably map every exact source commit to the resulting target commit
 before calling the Ticket delivered.
 
-The coordinator owns resource disposition. Retain branch artifacts and
-recoverable work until declared delivery and all integration consumers no longer
-need them. After verifying delivery on the target, remove every positively
-identified clean Ticket-owned worktree and delete its verified-delivered local
-and remote source branches. A squash-delivered source is intentionally not a
-target ancestor; its verified pull-request result and durable source-to-target
-mapping authorize local deletion despite that expected lack of ancestry.
-Preserve unrelated, failed, cancelled, dirty, undelivered, or still-consumed work
-and required inputs, recording retention reasons. No blanket cleanup, history
-rewrite or force-push is authorized.
+The responsible agent owns resource disposition. In both Direct Assisted and
+Mission work, verified cleanup of eligible owned temporary artifacts is part of
+completion, not optional housekeeping after publication. Required integration
+inputs and unrelated or recoverable unfinished work remain protected; the
+integration coordinator owns eligible declared predecessor cleanup after the
+final consumer. Publication success cannot hide cleanup failure.
+
+The [shared worktree policy](../../skills/engineering/orchestrate/WORKTREES.md)
+is the single operational reference for home-relative project-grouped locations,
+parent creation, ownership, squash-aware cleanup, verification, and retention.
+Skills and repository instructions load that reference instead of duplicating
+its mechanics. This placement keeps the policy available in installed skills
+without requiring Mission execution for Direct Assisted work.
 
 ### Proportionate independent review
 

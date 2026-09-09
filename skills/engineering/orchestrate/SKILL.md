@@ -32,6 +32,8 @@ Before replacement or delegated correction, settle the prior candidate owner and
 
 ## 1. Resolve and preflight the Ticket
 
+Read [the worktree and temporary-branch policy](WORKTREES.md) before candidate preflight; it governs location, ownership, and mandatory cleanup.
+
 If required repository configuration is missing, first follow `setup-omskills` and its scoped authorization gate. Separately authorized deterministic setup may run headlessly as a prerequisite, respecting shared-resource ownership and repository delivery rules; it does not authorize Ticket implementation or expand the Mission. If that setup cannot safely complete, return a blocker with any partial setup changes reported. The dispatcher never inspects or mediates it.
 
 Before any Ticket implementation mutation or writer dispatch, resolve the Ticket's complete live tracker, applicable Prompt Audit, governing, repository, dependency, conflict, code, and test context just in time:
@@ -50,7 +52,7 @@ After every preflight succeeds, authorized execution starts with coordinator-own
 
 ## 2. Produce the candidate
 
-Establish and verify an exclusive Ticket-owned worktree and branch at the fixed base before starting the writer, including for one-item and integration Tickets. Record their exact path, branch and starting HEAD. Preserve the caller checkout and unrelated work. Collision or unsafe reuse fails setup; it never permits touching another owner's candidate.
+Establish and verify an exclusive Ticket-owned worktree and branch at the fixed base before starting the writer, including for one-item and integration Tickets. Apply the bundled worktree policy and record the exact path, branch and starting HEAD. Preserve the caller checkout and unrelated work. Collision or unsafe reuse fails setup.
 
 By default, dispatch one fresh non-delegating writer for the whole Ticket through the selected child transport. Supply the candidate path as its workspace, exact branch, starting HEAD and fixed full base SHA, Ticket identity, complete governing context, scope and deferrals, acceptance criteria, repository rules, required verification and result contract. For integration, supply every verified exact predecessor input; combine only those results and resolve only authorized integration conflicts.
 
@@ -78,7 +80,7 @@ Deliver to the declared boundary, preserving unrelated work:
 - An integration Ticket uses the same fresh coordinator and default writer/reviewer graph, including any maintainer-authorized recovery, in its own candidate. Review the complete combined diff from its fixed base and verify the final combined state. Deliver by the declared method: direct integration/push, or pull request followed by squash merge. For a pull request, verify the resulting target commit and durably record every predecessor and integration source-to-squash mapping before dependent work advances.
 - A non-member/one-item Ticket completes delivery to its explicit target by the declared direct-push or pull-request method. A pull request is optional unless repository policy or the accepted request requires it; when used, squash-merge it, verify the resulting target commit, and durably record every source-to-squash mapping.
 
-The coordinator alone owns candidate disposition. Retain branch artifacts and recoverable work until declared delivery and all integration consumers no longer need them. After verifying delivery, remove clean positively identified Ticket-owned worktrees and delete verified-delivered local and remote source branches. A squash-delivered source is not a target ancestor; its verified PR result and durable source-to-squash mapping authorize local deletion despite that expected lack of ancestry. An integration coordinator may clean verified predecessor artifacts only after every declared consumer has completed. Preserve unrelated, failed, cancelled, dirty, undelivered, or still-consumed work and required integration inputs; record retained paths/branches and reasons. No blanket deletion, history rewrite or force-push.
+The coordinator alone owns candidate disposition. Complete and verify cleanup under the bundled worktree policy before returning `delivered`, including eligible declared predecessor artifacts for integration. Record removed artifacts and protected retention reasons in delivery evidence. Cleanup failure returns `failed` even when push or merge succeeded.
 
 Continue through delivery after child settlement; only a supported asynchronous continuation, explicit user gate, or genuine blocker permits an earlier turn boundary. Writer or reviewer completion never delivers the Ticket. Use `delivered` only after the declared boundary is durable, verified and safe to leave, with tracker obligations complete. Keep detailed evidence in durable repository/tracker sources and the coordinator session, not in the terminal outcome.
 
