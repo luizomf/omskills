@@ -5,6 +5,8 @@ description: Categorize and verify issues or external pull requests, then move t
 
 # Triage
 
+Before reading relative links, run `cd '<loaded-skill-directory>' && pwd -P` with this loaded file's directory to obtain the physical base, then resolve links against that printed directory. Resolve the source symlink before applying `..`. Read linked files even when their skills are absent from the discovery list.
+
 Move tracker items through the category and state roles below. When the issue-tracker configuration treats external pull requests as a request surface, apply the same process to them: a PR is an issue plus attached code. Resolve a bare reference such as `#42` according to that configuration.
 
 Prefix every issue body or comment posted during triage with:
@@ -35,7 +37,7 @@ Assign exactly one state role:
 
 For a PR, evaluate the states against its attached code: `ready-for-agent` means an agent brief identifies the next action on the diff; `ready-for-human` means a human can merge it without another triage step.
 
-These are canonical role names. Read their tracker-specific label mapping. If the mapping is missing, follow `setup-omskills` and its scoped authorization gate before continuing, including in headless runs. Respect read-only roles and return unresolved prerequisites to the responsible caller; never route setup through a Ticket dispatcher. If an item has multiple category roles or multiple state roles, report the conflict and obtain maintainer direction before any other triage action.
+These are canonical role names. Read their tracker-specific label mapping. If the mapping is missing, follow [setup-omskills](../setup-omskills/SKILL.md) and its scoped authorization gate before continuing, including in headless runs. Respect read-only roles and return unresolved prerequisites to the responsible caller; never route setup through a Ticket dispatcher. If an item has multiple category roles or multiple state roles, report the conflict and obtain maintainer direction before any other triage action.
 
 Normal transitions are:
 
@@ -79,12 +81,12 @@ Show the count for each bucket and one line per item, then wait for the maintain
 
    Report one result: `confirmed`, with the exercised code path and observed result; `failed`, with the command or step that contradicted the claim; or `insufficient detail`, listing the exact missing input. Treat `insufficient detail` as evidence for `needs-info`, not as automatic authorization to change state.
 
-3. **Grill when required.** Use `grill-with-docs` whenever the request needs fleshing out, including when an unresolved answer could change scope, externally observable behavior, acceptance criteria, or a durable architecture decision. Apply its bounded Question-frontier rounds only within the one issue or PR currently being triaged: a round may group no more than three independent Questions about that request, and must never combine Questions from separate requests or tracker items. Update `CONTEXT.md` or ADRs as that skill requires.
+3. **Grill when required.** Use [grill-with-docs](../grill-with-docs/SKILL.md) whenever the request needs fleshing out, including when an unresolved answer could change scope, externally observable behavior, acceptance criteria, or a durable architecture decision. Apply its bounded Question-frontier rounds only within the one issue or PR currently being triaged: a round may group no more than three independent Questions about that request, and must never combine Questions from separate requests or tracker items. Update `CONTEXT.md` or ADRs as that skill requires.
 
 4. **Recommend.** After verification and any required grilling, present one category, one state, the evidence for each, and the relevant codebase findings. Wait for maintainer direction. If later evidence changes the recommendation, obtain new direction before applying it.
 
 5. **Apply the maintainer-approved outcome:**
-   - `ready-for-agent` — post a brief that satisfies [AGENT-BRIEF.md](AGENT-BRIEF.md), keep or restore `needs-triage`, and run `prompt-comprehension-audits` against the final Ticket and brief. Only its current `PASS` or explicit maintainer `BYPASS` applies `ready-for-agent`.
+   - `ready-for-agent` — post a brief that satisfies [AGENT-BRIEF.md](AGENT-BRIEF.md), keep or restore `needs-triage`, and run [prompt-comprehension-audits](../../productivity/prompt-comprehension-audits/SKILL.md) against the final Ticket and brief. Only its current `PASS` or explicit maintainer `BYPASS` applies `ready-for-agent`.
    - `ready-for-human` — use the same brief structure and identify the specific human requirement, such as judgment, external access, design approval, or manual testing.
    - `needs-info` — post the [needs-info template](#needs-info-template).
    - `wontfix` — select exactly one reason:
@@ -97,7 +99,7 @@ Outside a maintainer-approved quick state override, the item is triaged when it 
 
 Triage and readiness are not prerequisites for Direct Assisted work. An available maintainer may explicitly select exactly one Ticket for the conversational responsible agent without a Prompt Audit, dispatcher, separate Ticket coordinator, or writer; the confirmed conversation is the active contract, and any accepted material change to existing governing authority must update that authority.
 
-Mission-oriented execution retains its separate explicit authorization and routing contracts. Explicit direction supplies a finite pre-resolved Mission plan to `dispatch-tickets`; for exactly one selected Ticket, `implement` composes that same dispatcher route as a one-item plan. For smaller Mission work, a human/invoker or context-rich parent may directly dispatch one fresh isolated `orchestrate` coordinator for the selected Ticket. That coordinator checks live gates and actual capabilities, not parent provenance or role/depth assertions; dispatcher mechanical boundaries remain mandatory when used.
+Mission-oriented execution retains its separate explicit authorization and routing contracts. Explicit direction supplies a finite pre-resolved Mission plan to [dispatch-tickets](../dispatch-tickets/SKILL.md); for exactly one selected Ticket, [implement](../implement/SKILL.md) composes that same dispatcher route as a one-item plan. For smaller Mission work, a human/invoker or context-rich parent may directly dispatch one fresh isolated [orchestrate](../orchestrate/SKILL.md) coordinator for the selected Ticket, passing the resolved skill file path to that child. That coordinator checks live gates and actual capabilities, not parent provenance or role/depth assertions; dispatcher mechanical boundaries remain mandatory when used.
 
 ## Quick state override
 

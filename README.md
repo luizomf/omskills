@@ -74,10 +74,10 @@ transcripts or mechanical edits do not automatically inherit a frontier model.
 Explicit user choices and authorized provider/model boundaries take precedence.
 
 Delegating skills load this user-only policy on demand. `/setup-omskills` can add
-its installed-skill pointer to repository instructions for ordinary delegations
-outside those skills. To adopt it directly, tell the agent: "Use model-routing
-for future subagents within my authorized providers; preserve my explicit
-choices." Harnesses requiring explicit routing authorization still enforce it.
+a verified relative file pointer to repository instructions for ordinary
+delegations outside those skills. To adopt it directly, invoke `/model-routing`
+and request its use for future subagents within authorized providers, preserving
+explicit choices. Harnesses requiring explicit routing authorization still enforce it.
 No agent can apply a policy it never loads, and no skill can change the internal
 model of a tool that exposes no model-selection control. Current conversations
 and `wormhole` transfers retain their selected route unless explicitly changed.
@@ -162,6 +162,13 @@ OMSKILLS_DEST=/tmp/omskills-test ./scripts/link-skills.sh
 ```
 
 Active skills are installed by the plugin independently of discovery state. Supporting harnesses include agent-discoverable skills in the model's system context, while active user-only skills remain installed without permanent context load. `design`, `teach`, `dispatch-tickets`, `implement`, `orchestrate`, and `model-routing` are the current active user-only skills. Select `design`, `teach`, `dispatch-tickets`, or `implement` deliberately; `orchestrate` is loaded explicitly in a fresh coordinator by an authorized direct caller or the dispatcher; `model-routing` is composed by callers before model-selectable delegation. The groupings below describe the selection and composition path, not discovery status.
+
+Cross-skill instructions link directly to files; hidden does not mean unavailable.
+Resolve these links from the referring file's physical directory (follow symlinks),
+not the workspace or flat installation directory. This supports the repository
+layout and relative-symlink installs without adding hidden skills to discovery.
+Fresh child prompts receive resolved file paths. Separately copied skill folders
+must preserve the linked layout; missing targets are reported rather than guessed.
 
 2. In each repo that will consume these skills, run:
 

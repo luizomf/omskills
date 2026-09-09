@@ -16,7 +16,7 @@ tmux display-message -t "$TMUX_PANE" -p \
 
 Use the coordinator process's `$TMUX_PANE` as the callback target even when another window is active.
 
-2. Read `handoff` and follow its contract. Write the handoff under a unique Markdown filename in the OS temporary directory. Add this section near the top:
+2. Read [handoff](../handoff/SKILL.md) and follow its contract. First run `cd '<loaded-skill-directory>' && pwd -P` with this loaded file's directory; resolve the link from the printed physical base, not the workspace or symlink alias; read the linked file even when its skill is absent from the discovery list. Write the handoff under a unique Markdown filename in the OS temporary directory. Add this section near the top:
 
 ```md
 ## Wormhole context

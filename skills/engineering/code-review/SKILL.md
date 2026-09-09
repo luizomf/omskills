@@ -5,7 +5,7 @@ description: Review a committed range or complete work-in-progress candidate aga
 
 # Code Review
 
-Read applicable repository instructions and domain documents. Read issue-tracker configuration only when the review contract is tracked; an untracked Direct Assisted request uses its confirmed conversation as the contract and does not require tracker setup. If required configuration is unavailable, follow `setup-omskills` and its scoped authorization gate before review. A read-only reviewer returns the missing prerequisite to its responsible caller instead of writing setup; never route setup through a Ticket dispatcher.
+Read applicable repository instructions and domain documents. Read issue-tracker configuration only when the review contract is tracked; an untracked Direct Assisted request uses its confirmed conversation as the contract and does not require tracker setup. If required configuration is unavailable, follow [setup-omskills](../setup-omskills/SKILL.md) and its scoped authorization gate before review. A read-only reviewer returns the missing prerequisite to its responsible caller instead of writing setup; never route setup through a Ticket dispatcher.
 
 Review exactly one candidate in one of two modes:
 
@@ -51,7 +51,7 @@ Choose a complete result-recovery channel before dispatch. Prefer the full termi
 
 ## Dispatch one isolated reviewer
 
-Load installed `model-routing` before selecting the reviewer's model/effort. Select for the candidate's remaining uncertainty and impact, respecting explicit user routes and required review independence; being a reviewer does not itself require the parent's model.
+Read [model-routing](../../productivity/model-routing/SKILL.md) before selecting the reviewer's model/effort. Before reading relative links, run `cd '<loaded-skill-directory>' && pwd -P` with this loaded file's directory to obtain the physical base, then resolve links against that printed directory. Resolve the source symlink before applying `..`; read linked files even when their skills are absent from the discovery list. Select for the candidate's remaining uncertainty and impact, respecting explicit user routes and required review independence; being a reviewer does not itself require the parent's model.
 
 Start exactly one fresh, read-only, non-delegating reviewer. Supply the selected mode, candidate path and branch, exact base/review SHAs for committed mode (or complete staged/unstaged/untracked capture for WIP), complete candidate or exact read-only commands that reproduce it there, a concise current contract, applicable governing sources and repository instructions, verification instructions and results, the selected result channel, and this contract. Do not supply the parent transcript by default:
 

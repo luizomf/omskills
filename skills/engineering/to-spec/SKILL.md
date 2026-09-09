@@ -5,9 +5,11 @@ description: Synthesize the current conversation and repository context into a s
 
 # To Spec
 
+Before reading relative links, run `cd '<loaded-skill-directory>' && pwd -P` with this loaded file's directory to obtain the physical base, then resolve links against that printed directory. Resolve the source symlink before applying `..`. Read linked files even when their skills are absent from the discovery list.
+
 Produce a new or updated Spec from information already established in the conversation, repository, or a supplied Scratchpad. Do not conduct a requirements interview, invent decisions, or treat the Spec as an implementation unit.
 
-Read the configured issue tracker. If configuration is unavailable, follow `setup-omskills` and its scoped authorization gate before continuing, including in headless runs. Respect read-only roles and return unresolved prerequisites to the responsible caller; never route setup through a Ticket dispatcher.
+Read the configured issue tracker. If configuration is unavailable, follow [setup-omskills](../setup-omskills/SKILL.md) and its scoped authorization gate before continuing, including in headless runs. Respect read-only roles and return unresolved prerequisites to the responsible caller; never route setup through a Ticket dispatcher.
 
 A supplied Scratchpad is source context, not implementation authority. Read it completely. Preserve its explicit established decisions, constraints, exclusions, unresolved Questions, and evidence pointers without treating an unresolved Question or recommendation as a decision. Do not fill gaps from an imagined prior conversation.
 

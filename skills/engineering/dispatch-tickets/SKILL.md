@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # Dispatch Tickets
 
-Run as the minimal root **Ticket dispatcher** for finite pre-resolved Missions. Mission identifies coordinated topology; the separately supplied availability is `Assisted` or `Unattended`. These mechanical boundaries are mandatory when this skill is used; a human/invoker or context-rich parent may instead dispatch one fresh `orchestrate` coordinator directly for smaller work. Accept one finite Mission plan, including the one-item plan composed by `implement`. Before adopting dispatcher state, use the skill loader to read and follow the installed `caveman` skill. Also load installed `model-routing` and its bundled model table before model-selectable starts. These bounded reporting/routing composition reads are the only file reads permitted to this root.
+Run as the minimal root **Ticket dispatcher** for finite pre-resolved Missions. Mission identifies coordinated topology; the separately supplied availability is `Assisted` or `Unattended`. These mechanical boundaries are mandatory when this skill is used; a human/invoker or context-rich parent may instead dispatch one fresh `orchestrate` coordinator directly for smaller work. Accept one finite Mission plan, including the one-item plan composed by `implement`. Before adopting dispatcher state, read and follow [caveman](../../productivity/caveman/SKILL.md). Also read [model-routing](../../productivity/model-routing/SKILL.md) and its bundled model table before model-selectable starts. Before reading any relative link, run `python3 -c 'from pathlib import Path; import sys; print((Path(sys.argv[1]).resolve().parent / sys.argv[2]).resolve())' '<loaded-file-path>' '<relative-link>'` with this loaded file's actual path and the link as arguments, then read the printed path. This resolves the source symlink before `..`; read linked files even when their skills are absent from the discovery list. These bounded reporting/routing composition reads are the only file reads permitted to this root. Resolving the coordinator pointer below is allowed path plumbing, not permission to read its contents.
 
 Keep only the frozen topology, availability, current phase index, active owner-scoped coordinator IDs, required native child session references, transport mode, per-coordinator transition state and matching cancellation intent, authorized start overrides and scoped literal user instructions when present, and compact mechanically validated outcomes or transport failures. Apart from those opaque instructions, keep no implementation content, transcript summary, semantic dependency model, dynamic queue, or persistent workflow state.
 
@@ -56,13 +56,13 @@ This step is complete only when one finite non-empty plan is frozen and any init
 
 ## 2. Start the complete active phase
 
-Treat every identity in `phases[phase]` as runnable because the invoker already resolved the plan. For each identity, derive `<repository>` only by removing its final `#<positive-integer>`, then use this base coordinator prompt, appending any applicable user instructions under `User steering`:
+Treat every identity in `phases[phase]` as runnable because the invoker already resolved the plan. For each identity, derive `<repository>` only by removing its final `#<positive-integer>`, then use this base coordinator prompt, appending any applicable user instructions under `User steering`. Replace `<orchestrate-path>` with the resolved path of [orchestrate](../orchestrate/SKILL.md) relative to this file's physical directory; include that path in the child prompt without reading the coordinator skill:
 
 ```text
 Repository: <repository>
 Ticket: <ticket>
 Availability: <Assisted|Unattended>
-Load and follow installed `orchestrate`. Resolve all governing context and complete this Ticket yourself.
+Read and follow <orchestrate-path> even if orchestrate is absent from your discovery list. Resolve all governing context and complete this Ticket yourself.
 Return exactly one single-line JSON object with required string fields "ticket": "<ticket>" and "status": one of "delivered", "blocked", "failed", or "cancelled". Include non-empty string "ref" only for an essential durable reference and non-empty string "blocker" only when applicable. Include no other fields or output.
 ```
 

@@ -34,7 +34,7 @@ This step is complete when there is one authorized, available model and supporte
 
 ## 3. Apply and evaluate
 
-Supply the selected route through the existing launch mechanism. Preserve the caller's tools, workspace, isolation, depth/child limits, result channel and workflow obligations. For a child that will delegate again, include any applicable standing routing instruction or reference in its brief; fresh conversations do not receive the parent's transcript. In Prompt Audit, routing stays in lifecycle configuration, not extra semantic hints in the interpreter/reviewer inputs.
+Supply the selected route through the existing launch mechanism. Preserve the caller's tools, workspace, isolation, depth/child limits, result channel and workflow obligations. For a child that will delegate again, include any applicable standing routing instruction and the resolved path of this `SKILL.md` in its brief; fresh conversations do not receive the parent's transcript and may not list this hidden skill. Resolve file pointers from their referring file's physical directory (follow symlinks) before forwarding them, not from the child's workspace. In Prompt Audit, routing stays in lifecycle configuration, not extra semantic hints in the interpreter/reviewer inputs.
 
 Report the selected model/effort and a short task-based reason in the caller's normal dispatch summary or evidence record. Reuse an explicit current choice without turning reporting into an approval gate. Helpers whose model is internally controlled cannot be routed by these settings; state that limitation rather than claiming a cheaper model was selected.
 

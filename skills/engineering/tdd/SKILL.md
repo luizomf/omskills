@@ -19,7 +19,7 @@ Use [tests.md](tests.md) for examples and [mocking.md](mocking.md) for mocking g
 
 ## Test seams
 
-Use the architecture meaning of **seam** from `codebase-design`: a location where behavior can be altered without editing code at that location. A **test seam** is a seam exposed through the caller-visible interface that production callers and behavior tests share.
+Use the architecture meaning of **seam** from [codebase-design](../codebase-design/SKILL.md) (resolve this link from the physical base printed by `cd '<loaded-skill-directory>' && pwd -P`, not the workspace): a location where behavior can be altered without editing code at that location. A **test seam** is a seam exposed through the caller-visible interface that production callers and behavior tests share.
 
 Before writing any test:
 

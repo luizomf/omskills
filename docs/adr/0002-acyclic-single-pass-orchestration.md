@@ -223,8 +223,18 @@ the declared coordinator assignment and supplied constraints, retaining only
 compact route values and literal scoped instructions. Generic references in
 steering still belong to the coordinator, not root discovery. Other callers
 classify their own delegated task; no separate routing agent or runtime service
-is introduced. Repository setup can add an installed-skill pointer for generic
+is introduced. Repository setup can add a verified file pointer for generic
 delegations without creating a model configuration file or changing providers.
+
+Cross-skill composition uses direct relative file links, including for hidden
+user-only skills. Resolve skill links from the referring file's physical directory
+(follow symlinks), not the workspace or flat installation directory. Discovery
+visibility is not installation evidence: check the linked file before reporting
+it unavailable. A caller passes a resolved file path to a fresh child instead of
+expecting that child to discover a hidden name. This resolution is bounded
+composition plumbing, not permission for dispatcher repository discovery.
+Distributed text remains free of machine-specific absolute paths; generated
+repository instructions rebase verified pointers to their destination file.
 
 Role names define ownership, not reduced intelligence or capability. A coordinator may be the conversational root
 when invoked by the maintainer

@@ -49,7 +49,7 @@ sync with the accepted behavior.
 - Catalog status and discovery state are independent: active user-only skills remain in both manifests but stay out of permanent model context. `scripts/check-catalog.py` records and validates each active user-only exception.
 - New skills default to user-only with `disable-model-invocation: true`. Promotion to agent-discoverable requires observed need and maintainer approval of the permanent context load.
 - A rename updates the folder, frontmatter `name`, both READMEs, both manifests, and every hard-coded reference in one change.
-- Refer to another skill by its installed name. Use relative links only for files bundled inside the current skill directory.
+- Link cross-skill loading instructions directly to the target file using a relative Markdown path. Resolve skill links from the referring file's physical directory, not the workspace or flat installation directory: in Python, compute `(Path(loaded_file).resolve().parent / relative_link).resolve()`. Resolve the source symlink before applying `..`, then read the result. A hidden discovery entry is not evidence that the linked file is unavailable. Pass resolved paths to fresh agents; never hard-code machine-specific paths in distributed files.
 - Prefer Codex-oriented language and paths. Use Claude-specific references only when a skill targets Claude Code.
 - Absence from the active set does not authorize deletion; establish the destination or status first.
 - Local skill installation, including manual one-skill links, must use relative symlink targets calculated from the destination directory's physical path to the source. Preserve the existing relative-link layout; never embed `/Users/...`, `/home/...`, or another absolute target. Respect the user's selected harness directory rather than assuming the shared default. Use `scripts/link-skills.sh` with `OMSKILLS_DEST` for a full active-catalog installation; do not install the full catalog when only one link was requested. Verify each requested link with `readlink` and a readable target `SKILL.md`. Relative links remain portable between macOS and Linux when the directory layout is preserved.
@@ -122,7 +122,7 @@ explicit authorization.
 
 ## Engineering, tests, and documentation
 
-- Before a model-selectable delegation, load installed `model-routing` and select for the delegated task rather than copying the parent's model. Honor explicit user routes and authorized provider/model scope; harness selection requirements still apply. If the skill is unavailable, report that limitation rather than claiming routing was applied.
+- Before a model-selectable delegation, read [model-routing](skills/productivity/model-routing/SKILL.md) and select for the delegated task rather than copying the parent's model. Honor explicit user routes and authorized provider/model scope; harness selection requirements still apply. If the skill is unavailable, report that limitation rather than claiming routing was applied.
 - Prefer test-driven development (TDD) whenever practical.
 - Prefer simple, explicit, readable code and prompts over cleverness or pattern purity.
 - Avoid unnecessary abstraction, high complexity, deep nesting, and god files. Split by cohesive responsibility, not arbitrary line counts.
@@ -138,9 +138,10 @@ explicit authorization.
 
 ## Quality gates
 
-Run the smallest relevant check while developing and the first two commands before every handoff:
+Run the smallest relevant check while developing; run the catalog checker and installer tests before every handoff:
 
 - `./scripts/check-catalog.py` — verifies manifest mirroring, active README coverage, bucket membership, skill paths/names, discovery state, bucket README coverage, and cross-skill `SKILL.md` references.
+- `python3 -B tests/test-skill-pointers.py` — exercises file-pointer validation, hidden targets, relocated layouts, and physical resolution through relative symlinks.
 - `./tests/test-link-skills.sh` — exercises installer destination, migration, ownership, collision, stale-link, and external-link behavior.
 - `./scripts/link-skills.sh --check` — verifies the current local installation; run it when manifests or local installation behavior change and the managed destination exists.
 

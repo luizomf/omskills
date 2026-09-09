@@ -47,6 +47,18 @@ def frontmatter_name(skill_file: Path) -> str:
     return match.group(1).strip()
 
 
+def resolve_skill_reference(markdown_file: Path, reference: str, root: Path) -> Path:
+    """Resolve from the physical source before applying parent traversals."""
+    if Path(reference).is_absolute():
+        raise ValueError("skill file reference must be relative")
+    target = (markdown_file.resolve().parent / reference).resolve()
+    if not target.is_relative_to((root / "skills").resolve()):
+        raise ValueError("skill file reference points outside skills")
+    if not target.is_file():
+        raise ValueError("missing skill reference target")
+    return target
+
+
 def main() -> None:
     manifests = [json.loads(path.read_text()) for path in MANIFESTS]
     if manifests[0] != manifests[1]:
@@ -124,16 +136,20 @@ def main() -> None:
                 f"{skill_dir.relative_to(ROOT)}"
             )
         for markdown_file in skill_dir.rglob("*.md"):
+            # Fenced templates describe files in consuming repositories.
+            prose = re.sub(
+                r"(?ms)^```[^\n]*\n.*?^```[ \t]*$", "", markdown_file.read_text()
+            )
             for match in re.finditer(
-                r"\]\(((?:\./|\.\./)[^)]+/SKILL\.md)\)",
-                markdown_file.read_text(),
+                r"\]\(((?:\./|\.\./|/)[^)]+\.md)\)",
+                prose,
             ):
                 reference = match.group(1)
-                referenced_skill = (markdown_file.parent / reference).resolve()
-                if referenced_skill.parent != skill_dir:
+                try:
+                    resolve_skill_reference(markdown_file, reference, ROOT)
+                except ValueError as error:
                     fail(
-                        "cross-skill links must use installed skill names, not paths: "
-                        f"{markdown_file.relative_to(ROOT)} -> {reference}"
+                        f"{error}: {markdown_file.relative_to(ROOT)} -> {reference}"
                     )
         bucket_readme_path = skill_dir.parent / "README.md"
         if not bucket_readme_path.is_file():

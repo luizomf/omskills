@@ -105,4 +105,4 @@ A smaller caller-visible surface generally requires fewer tests and simpler setu
 
 - For deepening a cluster with known dependencies, read [DEEPENING.md](./DEEPENING.md) for dependency categories, seam discipline, and replace-don't-layer testing.
 - For comparing alternative interfaces, read [DESIGN-IT-TWICE.md](./DESIGN-IT-TWICE.md) for the optional one-designer comparison process. Use it only when the invoking workflow authorizes that designer role and the current caller can dispatch a non-delegating leaf within its inherited depth. A non-delegating leaf resolves accepted sources directly or returns a blocker to its caller.
-- To scan an entire repository for candidates, use `improve-codebase-architecture`.
+- To scan an entire repository for candidates, use [improve-codebase-architecture](../improve-codebase-architecture/SKILL.md). First run `cd '<loaded-skill-directory>' && pwd -P` with this loaded file's directory and resolve the link from that physical base. Read the target even when absent from discovery.

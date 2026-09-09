@@ -82,7 +82,7 @@ After the shared understanding is confirmed and the destination is authorized, t
 
 - For conversation-only completion, finish with the confirmed summary and write no new artifact.
 - Write a confirmed Scratchpad directly under the safety and content contract below.
-- Route a new Spec through `to-spec`; do not create a Spec under this skill's own authority.
+- Route a new Spec through [to-spec](../to-spec/SKILL.md); do not create a Spec under this skill's own authority. First run `cd '<loaded-skill-directory>' && pwd -P` with this loaded file's directory and resolve the link from that physical base. Read the target even when absent from discovery.
 - Route an existing Spec or Ticket update through the configured issue-tracker skill or invoking tracker workflow that owns that operation. Update the governing item instead of creating a duplicate.
 - Apply a domain-language or ADR destination only under the recording gates above. Inline updates already required during the interview remain valid and are not delayed until completion.
 

@@ -6,7 +6,7 @@ When alternative interfaces would expose a real tradeoff, one authorized clean d
 
 Use this optional pass only when the invoking workflow explicitly permits a designer and the current caller can create its fresh leaf within the inherited delegation depth. Standalone root design work may authorize it. The accepted one-Ticket `Ticket coordinator -> writer -> Ticket coordinator -> reviewer -> Ticket coordinator` graph does not by itself authorize a third specialist; neither its coordinator nor either leaf silently adds this pass. A non-delegating writer or reviewer resolves accepted sources directly and returns a blocker when a material design decision remains source-undetermined.
 
-Load installed `model-routing` before selecting the designer's model/effort; use the actual unresolved trade-offs and authorized routes, not the parent's model by default.
+Read [model-routing](../../productivity/model-routing/SKILL.md) before selecting the designer's model/effort. First run `cd '<loaded-skill-directory>' && pwd -P` with this loaded file's directory; resolve links from the printed physical base, not the workspace or symlink alias; read the linked file even when its skill is absent from the discovery list. For selection, use the actual unresolved trade-offs and authorized routes, not the parent's model by default.
 
 The designer is one fresh, isolated, non-delegating leaf. Its role name grants no capability. Preflight required source-reading tools and providers, and, where the harness exposes lineage controls, inherit the existing depth ceiling and set its direct-child ceiling to zero or remove delegation capability. Reject an over-depth or capability mismatch before launch or prompt acceptance.
 
@@ -28,4 +28,4 @@ Useful contrasting optimizations include minimal interface, simplest common call
 
 ## Decide
 
-The invoking caller checks each option against repository and domain constraints and may combine compatible strengths. Inside an implementation Ticket with a current Prompt Audit `PASS` or explicit `BYPASS`, the coordinator chooses the source-consistent design without opening another user decision gate. Outside that authorization, resolve evidence-determined choices directly and use `grill-with-docs` for any material trade-off the accepted sources leave open.
+The invoking caller checks each option against repository and domain constraints and may combine compatible strengths. Inside an implementation Ticket with a current Prompt Audit `PASS` or explicit `BYPASS`, the coordinator chooses the source-consistent design without opening another user decision gate. Outside that authorization, resolve evidence-determined choices directly and use [grill-with-docs](../grill-with-docs/SKILL.md) for any material trade-off the accepted sources leave open.

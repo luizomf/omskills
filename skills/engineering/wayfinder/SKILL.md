@@ -5,6 +5,8 @@ description: Plan work that exceeds one agent session as a shared map of investi
 
 # Wayfinder
 
+Before reading relative links, run `cd '<loaded-skill-directory>' && pwd -P` with this loaded file's directory to obtain the physical base, then resolve links against that printed directory. Resolve the source symlink before applying `..`. Read linked files even when their skills are absent from the discovery list. In Notes, provide a verified file pointer for each required skill, with an explicit base when stored outside the filesystem; a name alone is insufficient for a fresh session.
+
 Use a **shared map** to determine the route from a loose idea to a named **destination**. The destination may be a spec, a decision required before planning, or an in-place change such as a data-structure migration. The map may cover engineering, course content, or another domain.
 
 ## Plan by default
@@ -21,7 +23,7 @@ The map is the authoritative issue for the effort in the configured tracker, lab
 
 The map indexes decisions; each decision's detail exists only in its ticket. **Decisions so far** contains a one-line gist and link.
 
-Tracker storage, child relationships, blocking, and frontier queries are tracker-specific. Read the configured issue tracker's "Wayfinding operations" section. If configuration is missing, follow `setup-omskills` and its scoped authorization gate before continuing, including in headless runs; use local markdown when that is the resolved configuration. Respect read-only roles and return unresolved prerequisites to the responsible caller; never route setup through a Ticket dispatcher.
+Tracker storage, child relationships, blocking, and frontier queries are tracker-specific. Read the configured issue tracker's "Wayfinding operations" section. If configuration is missing, follow [setup-omskills](../setup-omskills/SKILL.md) and its scoped authorization gate before continuing, including in headless runs; use local markdown when that is the resolved configuration. Respect read-only roles and return unresolved prerequisites to the responsible caller; never route setup through a Ticket dispatcher.
 
 ### Map body
 
@@ -78,8 +80,8 @@ Use the tracker's native dependency relationship for blocking. Use a body conven
 Every ticket is either **HITL** (requires live input from a human speaking for themselves) or **AFK** (the agent can resolve it without live human input). An agent must not supply the human side of a HITL exchange.
 
 - **Research** (AFK): use when resolving the question requires knowledge outside the current working directory, such as external documentation, third-party APIs, or a local knowledge base. Produce and link a Markdown summary.
-- **Prototype** (HITL): use when a reaction to a concrete artifact is required to decide appearance or behavior. Produce and link a non-production outline, rough take, stub, or UI/logic prototype; use `prototype` for UI or logic code. The ticket resolves the design question only; promoting any result requires a separate implementation Ticket.
-- **Grilling** (HITL): use `grill-with-docs` and its bounded Question-frontier rounds. Keep every round inside the selected Ticket; several rounds may resolve that one Ticket, but no round may include Questions for another Ticket. Use this type when the other type conditions do not apply.
+- **Prototype** (HITL): use when a reaction to a concrete artifact is required to decide appearance or behavior. Produce and link a non-production outline, rough take, stub, or UI/logic prototype; use [prototype](../prototype/SKILL.md) for UI or logic code. The ticket resolves the design question only; promoting any result requires a separate implementation Ticket.
+- **Grilling** (HITL): use [grill-with-docs](../grill-with-docs/SKILL.md) and its bounded Question-frontier rounds. Keep every round inside the selected Ticket; several rounds may resolve that one Ticket, but no round may include Questions for another Ticket. Use this type when the other type conditions do not apply.
 - **Task** (HITL or AFK): use only for work that must finish before a later decision can be made, when the work itself contains no research, prototype, or decision. Examples: provision access, sign up for a service so its API can be evaluated, or move data so its shape can be inspected. The agent performs authorized in-scope preparation alone where it can; otherwise it gives the human a checklist. Destination implementation uses the delivery handoff above. Resolve the ticket when the work is complete, recording what changed and any facts later tickets require, such as credential location, URLs, or row counts.
 
 ## Fog of war and scope
@@ -100,7 +102,7 @@ Use one of the following modes. In either mode, resolve no more than one Ticket 
 
 Use when the user provides a loose idea.
 
-1. **Name the destination.** Use `grill-with-docs` to identify the spec, decision, or change that ends the effort. Confirm it before continuing because it sets scope.
+1. **Name the destination.** Use [grill-with-docs](../grill-with-docs/SKILL.md) to identify the spec, decision, or change that ends the effort. Confirm it before continuing because it sets scope.
 2. **Map breadth-first.** Grill across the full scope to identify currently stateable decisions, immediate actions, and fog before exploring any one branch in depth. If no fog remains and the route fits one session, stop without creating a map and ask the user how to proceed.
 3. **Create the map.** Apply `wayfinder:map`; fill **Destination**, **Notes**, **Not yet specified**, and **Out of scope**; leave **Decisions so far** empty.
 4. **Create stateable tickets.** Create all current child tickets first, then add blocking relationships in a second pass so every relationship can use a real issue id. Leave questions that cannot yet be stated in **Not yet specified**.
@@ -112,7 +114,7 @@ Use when the user provides a map URL or number. A specific ticket is optional.
 
 1. Load the map body without preloading every ticket.
 2. If the user named a ticket, select it. Otherwise select the first ticket in frontier order. Assign it to the developer driving the map before any other work.
-3. Resolve only that Ticket, including as many Question rounds as it needs. Do not select or resume another Ticket in this session. Load related or closed Ticket bodies only as needed and run every skill named in **Notes**. If in doubt, use `grill-with-docs`.
+3. Resolve only that Ticket, including as many Question rounds as it needs. Do not select or resume another Ticket in this session. Load related or closed Ticket bodies only as needed and run every skill named in **Notes**. If in doubt, use [grill-with-docs](../grill-with-docs/SKILL.md).
 4. Post the answer as a resolution comment, close the ticket, and append its linked title plus a one-line gist to **Decisions so far**.
 5. Create newly stateable tickets before adding their blocking relationships. Remove each graduated fog item from **Not yet specified**. Close and record out-of-scope tickets as specified above. Update or delete tickets invalidated by the resolution.
 

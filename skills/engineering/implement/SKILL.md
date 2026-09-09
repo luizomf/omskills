@@ -6,7 +6,9 @@ disable-model-invocation: true
 
 # Implement
 
-Accept exactly one semantically explicit Mission-authorized Ticket identity, independently resolved `Assisted` or `Unattended` availability, and explicit confirmation that all external blockers and conflicts are resolved. Required authority comes from the request's meaning, not caller provenance, ancestry, role, depth, dispatcher wording, or a magic phrase. In this same root invocation, load and follow installed `dispatch-tickets` with the identity unchanged in this complete one-item Mission plan:
+Before reading relative links, run `cd '<loaded-skill-directory>' && pwd -P` with this loaded file's directory to obtain the physical base, then resolve links against that printed directory. Resolve the source symlink before applying `..`. Read linked files even when their skills are absent from the discovery list.
+
+Accept exactly one semantically explicit Mission-authorized Ticket identity, independently resolved `Assisted` or `Unattended` availability, and explicit confirmation that all external blockers and conflicts are resolved. Required authority comes from the request's meaning, not caller provenance, ancestry, role, depth, dispatcher wording, or a magic phrase. In this same root invocation, read and follow [dispatch-tickets](../dispatch-tickets/SKILL.md) with the identity unchanged in this complete one-item Mission plan:
 
 ```json
 {"phases":[["<owner>/<repository>#<ticket>"]],"blockers":[],"conflicts":[]}

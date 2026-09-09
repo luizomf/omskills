@@ -28,7 +28,7 @@ Check every listed source that exists before making a recommendation:
 - root `docs/adr/` and context-specific `docs/adr/` directories located through `CONTEXT-MAP.md` or the observed package layout;
 - `docs/agents/` for prior setup output;
 - `.scratch/` for an existing local-markdown tracker convention;
-- the installed skill list for `triage` and `model-routing`; and
+- readable files at [triage](../triage/SKILL.md) and [model-routing](../../productivity/model-routing/SKILL.md), first run `cd '<loaded-skill-directory>' && pwd -P` with this loaded file's directory and resolve links from the printed physical base, not the workspace or symlink alias; discovery-list absence does not establish unavailability; and
 - monorepo indicators: `pnpm-workspace.yaml`, a `workspaces` field in `package.json`, or populated `packages/*` directories with their own `src/`.
 
 Inspection is complete when every existing listed source is accounted for and the target repository is unambiguous; conflicting remotes or scope require resolution before mutation.
@@ -124,8 +124,10 @@ Include the triage-label subsection and file only when `triage` is installed. Wh
 ```markdown
 ### Delegation models
 
-Before a model-selectable delegation, load installed `model-routing` and select for the delegated task rather than the parent's model. Honor explicit user choices and authorized provider/model scope. Follow the active harness's model-selection authorization requirements; use inheritance when no selection is authorized.
+Before a model-selectable delegation, read [model-routing](<verified-relative-model-routing-path>) even when absent from the discovery list, and select for the delegated task rather than the parent's model. Resolve the link relative to this instruction file, not the working directory. Honor explicit user choices and authorized provider/model scope. Follow the active harness's model-selection authorization requirements; use inheritance when no selection is authorized.
 ```
+
+Replace the placeholder with a relative path calculated from the destination instruction file's physical directory to the verified `model-routing/SKILL.md`. Verify the rebased link is readable before reporting setup complete. Do not copy this skill's relative link into another repository unchanged, use a machine-specific absolute path, or emit an unresolved placeholder; if no portable readable target is available, report that gap instead of claiming the pointer was installed.
 
 This pointer creates no model configuration file, enables no provider or credential, and grants no additional spending or cross-provider authority. It applies to ordinary delegations too, not only tracker-backed work.
 
