@@ -32,6 +32,15 @@ Resolve the table's API model ID to the actual harness route using its exposed c
 
 This step is complete when there is one authorized, available model and supported effort selection (or deliberate inheritance), or the missing authority/capability has been reported. The table supplies candidates, not evidence that an account can launch them.
 
+### Prompt Audit preference
+
+When suitable, prefer a smaller capable model for the interpreter's clarity check
+and a more capable model for the independent review of semantic differences.
+Adjust model and effort to the text's complexity, explicit user choices, authorized
+budget and available routes; using the same model for both can also be appropriate.
+The audit coordinator retains final adjudication. This pairing is a practical
+starting preference, with comprehension evidence specific to the tested run.
+
 ## 3. Apply and evaluate
 
 Supply the selected route through the existing launch mechanism. Preserve the caller's tools, workspace, isolation, depth/child limits, result channel and workflow obligations. For a child that will delegate again, include any applicable standing routing instruction and the resolved path of this `SKILL.md` in its brief; fresh conversations do not receive the parent's transcript and may not list this hidden skill. Resolve file pointers from their referring file's physical directory (follow symlinks) before forwarding them, not from the child's workspace. In Prompt Audit, routing stays in lifecycle configuration, not extra semantic hints in the interpreter/reviewer inputs.
