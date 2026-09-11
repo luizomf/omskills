@@ -102,9 +102,13 @@ rules.
 
 A pull request is optional unless repository policy or the accepted request
 requires one; do not add branch/PR ceremony to a Direct Assisted commit that may
-land directly on its target. When a pull request is used, merge it with squash
-into the declared target. Verify the resulting target commit and durably record
-every source-to-squash mapping before considering delivery complete. For both
+land directly on its target. Before reviewing, updating, or commenting on a pull
+request, verify its current state. Treat merged or closed pull requests as
+read-only historical records: do not modify or comment on them unless explicitly
+requested; put follow-up work in an Issue or a new pull request. When a pull
+request is used, merge it with squash into the declared target. Verify the
+resulting target commit and durably record every source-to-squash mapping before
+considering delivery complete. For both
 Direct Assisted and Mission work involving temporary branches or worktrees, read
 and follow [the shared worktree policy](skills/engineering/orchestrate/WORKTREES.md)
 for location, ownership, mandatory verified cleanup, and protected retention.
