@@ -128,13 +128,16 @@ explicit authorization.
 
 - Before a model-selectable delegation, read [model-routing](skills/productivity/model-routing/SKILL.md) and select for the delegated task rather than copying the parent's model. Honor explicit user routes and authorized provider/model scope; harness selection requirements still apply. If the skill is unavailable, report that limitation rather than claiming routing was applied.
 - Prefer test-driven development (TDD) whenever practical.
-- Prefer simple, explicit, readable code and prompts over cleverness or pattern purity.
-- Avoid unnecessary abstraction, high complexity, deep nesting, and god files. Split by cohesive responsibility, not arbitrary line counts.
+- Prefer simple, explicit, readable code and prompts over cleverness or pattern purity. First consider simplifying existing code to meet the current requirement; minimize what must be understood and maintained, not just line count. Do not hide behavior in dense expressions or compressed formatting.
+- Make the smallest coherent change that preserves required behavior, security, and applicable checks. Avoid parallel implementations, speculative extension points, and unrelated cleanup. Record larger cleanup separately rather than turning a focused change into a rewrite.
+- Avoid unnecessary abstraction, high complexity, deep nesting, and god files. Split by cohesive responsibility, not arbitrary line counts. Each new layer should remove a concrete difficulty in use or maintenance; prefer direct code over wrappers that only forward calls or rename concepts.
+- In helper scripts, keep validation and decisions separate from command execution, filesystem operations, and external-service details where this clarifies a real change or test boundary. A function or concrete module may be enough; do not introduce an interface for every component or prescribe an application architecture for this skill collection.
+- When a small change spreads across unrelated implementation layers, identify the coupling and improve the narrow boundary when practical and in scope. Required catalog mirrors and governing-document updates are consistency obligations, not duplication to remove.
 - Preserve useful error context; do not swallow failures or silently continue after invalid input.
 - Preserve established skill behavior unless the accepted request changes it. Keep prompts objective, concise, harness-neutral where practical, and explicit about completion criteria.
 - Keep deterministic invariants in scripts and observable behavior in tests. Validate external command inputs and quote filesystem paths in shell scripts.
 - Behavior changes need meaningful coverage; bug fixes need a regression test that fails without the fix.
-- Assert stable public behavior rather than incidental text, timestamps, generated IDs, internal calls, or mock counts unless those details are contractual.
+- Assert stable public behavior rather than incidental text, timestamps, generated IDs, internal calls, or mock counts unless those details are contractual. Use synthetic data and isolated fixtures; test filesystem and external-command contracts at their boundaries rather than requiring live services for ordinary decision tests. Executable tests establish code behavior and structural invariants, not comprehension of prose instructions.
 - Do not weaken or delete a valid test merely to make an implementation pass. Resolve the intended behavior first.
 - Comments should preserve non-obvious **why**, constraints, tradeoffs, or workarounds—not narrate visible code. Inspect governing docs, tests, Issues, and history before deleting surprising code or intent-bearing comments.
 - Do not add a dependency when the standard library or a small existing script is sufficient.
