@@ -20,12 +20,12 @@ This step is complete when the assignment's uncertainty, impact, verification ne
 
 ## 2. Select the route
 
-Read [MODELS.md](MODELS.md) for concrete model/effort candidates and their source basis. Load it once per conversation and reuse it while the policy and assignment remain applicable; routine dispatch does not require browsing vendor docs.
+Read [MODELS.md](MODELS.md) for the local routing policy, concrete model/effort candidates and their source basis. Load it once per conversation and reuse it while the policy and assignment remain applicable; routine dispatch does not require browsing vendor docs.
 
 Apply these choices in order:
 
 1. Honor an explicit user model/reasoning choice or incorporated standing agreement within its stated scope. A task-based routing instruction can authorize selection for future calls without reconfirming every child.
-2. Otherwise use the task table within the caller's authorized provider, model and budget scope. Stay with the current provider unless another is explicitly allowed. Task-based selection is not permission to enable credentials, purchase access, or override a harness requirement for explicit model values.
+2. Otherwise apply the local routing policy and task table within the caller's authorized provider, model and budget scope. Stay with the current provider unless another is explicitly allowed. Task-based selection is not permission to enable credentials, purchase access, or override a harness requirement for explicit model values.
 3. If no selection is authorized, preserve the harness's normal inheritance and state that limitation when it prevents the requested routing. If a requested candidate is unavailable, use an already authorized available alternative appropriate to the task; otherwise ask only for the missing route decision or return the caller's blocker. Do not silently fall back to an unrestricted frontier model.
 
 Resolve the table's API model ID to the actual harness route using its exposed catalog, a known working route, or explicit user configuration. Provider prefixes and aliases vary by harness. Use supported lifecycle values, not guessed spellings or prompt text pretending to change a model. Apply model and reasoning independently: an explicit model does not authorize changing an explicitly pinned reasoning value. Provider effort labels are not equivalent compute budgets.
