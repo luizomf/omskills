@@ -26,5 +26,5 @@ produces. Active skills are grouped by typical use; optional skills are user-onl
 
 ## Typically agent-selected
 
-- **[prompt-comprehension-audits](./prompt-comprehension-audits/SKILL.md)** - Gather sequential interpreter and reviewer evidence, record one audit status, and end without dispatch.
+- **[prompt-comprehension-audits](./prompt-comprehension-audits/SKILL.md)** - Gather sequential comprehension evidence and record status/readiness; authorized implementation continues only in fresh context.
 - **[write-a-skill](./write-a-skill/SKILL.md)** - Create new skills with SKILL.md, progressive disclosure, and bundled resources.

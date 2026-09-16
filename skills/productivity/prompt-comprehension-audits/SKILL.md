@@ -9,7 +9,7 @@ Test whether a fresh agent's interpretation is semantically equivalent to the in
 
 Prompt Audit is an Unattended-execution eligibility gate. It is not applicable to Direct Assisted work by default, even when that work selects exactly one Ticket; run it there only when the maintainer requests an audit for complex intent. Its absence never forces an Assisted request through triage, a dispatcher, a separate Ticket coordinator, or a writer.
 
-Resolve from the invocation whether this audit establishes Unattended eligibility or only supplies requested comprehension evidence; do not infer a readiness transition from an Assisted audit request. For a tracked Ticket, read the configured issue tracker before delegation, and read the triage-label mapping only when establishing Unattended eligibility. If required configuration is unavailable, follow [setup-omskills](../../engineering/setup-omskills/SKILL.md) and its scoped authorization gate before delegation, including in headless runs. Read-only audit leaves return missing prerequisites to their responsible caller instead of writing setup; never route setup through a Ticket dispatcher. Untracked prompt audits require neither configuration.
+For a tracked implementation Ticket, read the configured issue tracker and triage-label mapping before delegation. Requested audits use the same readiness rules regardless of maintainer availability. If required configuration is unavailable, follow [setup-omskills](../../engineering/setup-omskills/SKILL.md) and its scoped authorization gate before delegation, including in headless runs. Read-only audit leaves return missing prerequisites to their responsible caller instead of writing setup; never route setup through a Ticket dispatcher. Untracked prompt audits require neither configuration.
 
 ## Fix the reference intent
 
@@ -103,13 +103,13 @@ When the execution contract is a tracked issue or an agent brief on one, post a 
 
 For an untracked prompt, report the same fields to the invoking workflow. A newer status supersedes an older one only when it applies to the same execution contract. A material change to the requested outcome, scope, required workflow or order, deliverables, acceptance criteria, relations, or completion point makes the prior status stale.
 
-Only when the invocation establishes Unattended eligibility for a tracked code or behavior-changing Ticket, transition it to `ready-for-agent` after its final body, Agent Brief, parent, blocking, and conflict relations are stable, it carries exactly one category role, and this audit returns `PASS` or explicit maintainer `BYPASS`. Replace `needs-triage`; do not leave two state roles. A `FAIL` must remain outside `ready-for-agent`; remove stale readiness when this eligibility audit fails. An Assisted-only audit records its status without changing triage labels or requiring an Agent Brief that the audited request did not incorporate. The audit never creates adjacent Tickets or extends the audited contract. `ready-for-agent` plus `PASS` or `BYPASS` establishes eligibility, not Mission authorization.
+For a complete tracked implementation Ticket with stable parent, blocking and conflict relations and exactly one category role, current `PASS` or explicit maintainer `BYPASS` applies `ready-for-agent` regardless of availability. Replace the previous state role, including `needs-triage`; retain exactly one category and one state. The Ticket body may contain the whole execution contract without a separate Agent Brief. On `FAIL` or material staleness, remove readiness and restore `needs-triage`. The audit creates no adjacent work. Readiness validates the contract; it never selects work or authorizes implementation.
 
-## End the audit invocation
+## Complete the audit
 
-After recording the status and applying any valid readiness transition, report the recorded `PASS`, `FAIL`, or explicit `BYPASS` and end the current invocation. A current `PASS` or `BYPASS` establishes eligibility for the exact unchanged contract but does not select work. Existing Mission authorization does not change this endpoint.
+Report the recorded status and readiness transition. An audit-only request ends here; `FAIL` blocks implementation. An explicit combined audit-and-implement request already supplies implementation authorization: after `PASS` (or an explicitly authorized `BYPASS`), the owning workflow may continue without another approval, but only into a fresh implementation context.
 
-Prompt Audit never calls `dispatch-tickets`, invokes `orchestrate`, or performs Ticket implementation. A later, separately invoked workflow owns any authorized dispatch or delivery.
+The audit-coordinating context must not implement or correct the audited work. Transfer the complete durable contract to a fresh session or clean-context implementation owner, who owns decisions, one independent candidate review, adjudication, corrections, verification and delivery. No mandatory dispatcher layer or automatic writer/reviewer loop is introduced. For example, “audit #42” records readiness and stops; “audit and implement #42” continues after PASS through that fresh owner.
 
 ## Audit boundary
 

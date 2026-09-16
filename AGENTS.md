@@ -81,7 +81,18 @@ Mission plan requires explicit authorization. Eligibility does not select work.
 Changing Direct Assisted work to Unattended requires a new explicit gate,
 recoverable current state, durable current contracts, resolved relations, a current
 audit gate, and explicit Mission authorization; silence never authorizes the
-transition.
+transition. Dispatcher use is optional; alternative coordination preserves the same
+planning, ownership, safety, review and delivery obligations.
+
+Requested audits promote complete tracked implementation Tickets to `ready-for-agent`
+after current PASS or explicit BYPASS regardless of availability; remove failed or
+stale readiness. Readiness never authorizes work. Audit-only requests stop there;
+combined audit-and-implement authorization continues in a fresh implementation
+context without redundant approval. The audit context never implements or corrects
+that work. Explicit maintainer plan revisions pause affected starts and settle
+prior ownership before replacement or conflicting work, preserving delivered
+evidence and safely unaffected work. Owners update material contracts and
+revalidate applicable gates before affected implementation.
 
 Text or documentation work that cannot change behavior may proceed directly.
 Assisted code or behavior changes and changes to Specs, ADRs, workflow, security,

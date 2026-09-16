@@ -73,13 +73,15 @@ or order, deliverable, acceptance criterion, relation, and completion condition.
 Conversations, handoffs, coordinator analysis, and audit transcripts contain no
 secret implementation requirement.
 
-A current Prompt Audit `PASS` or explicit maintainer `BYPASS` for that exact
-contract is an Unattended-execution eligibility gate, not Mission selection.
-Only explicit Mission authorization selects Unattended work. Prompt Audit is not
-applicable to Assisted work by default, though the maintainer may request it for
-complex intent. A material change to outcome, scope, workflow or order,
+A current Prompt Audit `PASS` or explicit maintainer `BYPASS` promotes a complete
+tracked implementation Ticket to `ready-for-agent` regardless of availability,
+replacing the previous state role and preserving exactly one category role.
+Readiness never selects work or authorizes implementation. Unattended execution
+requires this gate; ordinary Assisted work does not require an audit. The Ticket
+body may contain the whole execution contract without a separate brief.
+A material change to outcome, scope, workflow or order,
 deliverables, acceptance criteria, relations, or completion makes the prior
-status stale.
+status stale; remove failed or stale readiness when encountered.
 
 ### Terminal sequential Prompt Audit
 
@@ -89,14 +91,17 @@ then completes its interpretation. Only after that completion, one fresh
 independent read-only non-delegating reviewer receives the reference intent and
 the completed interpretation, but not hidden coordinator analysis or a desired
 answer. The coordinator adjudicates the evidence, records exactly `PASS`,
-`FAIL`, or explicit `BYPASS`, and ends.
+`FAIL`, or explicit `BYPASS`.
 
 `PASS` means no material semantic divergence survives adjudication. `BYPASS` is
-an explicit maintainer waiver and is never represented as `PASS`. Prompt Audit
-never dispatches or implements. An Assisted-only audit records comprehension
-evidence and ends without readiness-label mutation or requiring Unattended
-triage artifacts; readiness transition belongs only to an invocation establishing
-Unattended eligibility.
+an explicit maintainer waiver and is never represented as `PASS`. An audit-only
+request ends after recording status and readiness. Explicit combined
+audit-and-implement authorization permits the owning workflow to continue after
+PASS without redundant approval, but the audit context must never implement or
+correct the audited work. A fresh implementation owner receives the complete
+durable contract and owns decisions, one independent candidate review,
+adjudication, corrections, verification and delivery. No extra dispatcher or
+writer is required for this transition.
 
 Explicit maintainer recovery may replace a mechanically settled but incomplete
 pass with a fresh isolated pass before terminal status recording. Preserve the
@@ -115,9 +120,10 @@ one-Ticket Mission plan; this does not require a fixed mode matrix. Before
 Mission dispatch, the plan contains
 fully qualified unique Ticket identities, ordered sequential phases, declared
 compatible parallel groups, blockers, and conflicts. A one-Ticket Mission is a
-one-item plan. The dispatcher validates and freezes the supplied topology; it
-never discovers, expands, removes, replaces, reorders, or semantically schedules
-work.
+one-item plan. The dispatcher validates and freezes the supplied topology against
+agent invention; it never discovers or semantically plans work. Using it is a maintainer
+choice regardless of Ticket count. Alternative coordination retains the same
+planning, ownership, safety, review and delivery obligations.
 
 The dispatcher owns only the frozen topology and compact mechanical routing
 state, coordinator references, cancellation intent, and Ticket outcomes when
@@ -143,12 +149,15 @@ requests need no repeated confirmation. Future-only steering leaves accepted
 coordinators untouched and does not restart the Mission. Explicit lifecycle
 routing updates apply to not-yet-issued starts; referenced routing guidance is
 passed to coordinators without root file inspection or guessed model IDs.
-Only this compact instruction/routing state is mutable; topology, phase barriers,
-settlement, capacity, and outcome contracts remain unchanged. Coordinators own
-referenced content, applicable durable contract updates and execution gates;
-steering does not silently bypass them. Unrelated conversation stays local.
-This maintainer-authorized correction supersedes the earlier single-ID-only
-steering and immutable-prompt/start-override restrictions, not the frozen plan.
+Explicit maintainer steering may also revise identities, phases, groups and
+relations. Pause affected starts, route direction to affected owners and establish
+settlement before replacement or conflicting work. Preserve delivered evidence
+and safely unaffected active/future work. The dispatcher applies literal supplied
+revisions with the same plan and capacity validation; semantic replanning belongs
+to the responsible planning context. Responsible owners update material contract
+changes durably and revalidate applicable audit gates before affected work.
+Unrelated conversation stays local; failed work requires explicit authorization
+to revive.
 Authorization remains non-transitive: no child receives later identities or returns `next` work, and
 adjacent findings are reported without entering the plan. Mission completion
 requires every selected identity to be delivered.
@@ -272,7 +281,7 @@ routes and exact candidate commits in delivery evidence; failed or partial
 attempts never count as completed review or delivery. Material contract changes
 update durable authority and applicable gates before affected work. Maintainer
 intervention does not override higher-priority instructions, harness limits,
-verification, or the dispatcher's frozen-plan and terminal-stop boundaries.
+verification, or settlement and independent ownership boundaries.
 This amendment removes absolute-depth role requirements. It supersedes
 unconditional single-pass prohibitions below only for explicitly authorized
 recovery.
@@ -399,8 +408,12 @@ dynamic discovery, or concurrency claim. Downstream skill, catalog, runtime, and
 user-facing behavior changes remain separately authorized work in #63, #65, and
 #64.
 
-This decision supersedes Issue #50's audit-to-dispatch completion branch while
-preserving #50 as historical delivery evidence for the fresh-context boundary.
+Issue #67 supersedes the Assisted-only readiness restriction, the mandatory
+separate invocation after combined audit-and-implement authorization, and the
+prohibition on explicit maintainer plan revisions. Simplify conflicting branches
+rather than layering exceptions; entry and availability changes preserve quality
+without arbitrary new prerequisites. Historical audits and deliveries remain
+unchanged.
 It also supersedes delivered Spec #33's serial-only/no-parallel limitation while
 preserving that Spec as historical evidence for the initial dispatcher. Their
 historical delivery records are not rewritten.

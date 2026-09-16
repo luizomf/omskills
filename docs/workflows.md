@@ -27,8 +27,8 @@ independent reviewer for behavior and governing-document changes. It accepts a
 committed range or the complete work in progress; the responsible agent adjudicates
 findings and fixes the candidate. Purely editorial documentation can be self-reviewed.
 Delivery follows the repository's commit/push and optional PR conventions.
-Readiness and Prompt Audit belong to the Unattended branch below; Direct Assisted
-work can proceed directly from the accepted request.
+Ordinary Direct Assisted work needs neither readiness nor Prompt Audit. When an
+audit is requested, its readiness meaning is the same in both availability modes.
 
 ## Turn an idea into a plan
 
@@ -61,7 +61,7 @@ and applies the maintainer-selected category/state. It also supports attention
 queries and explicit state changes. Its outcomes include a clarified brief,
 missing-information request, human work or closure.
 
-For **Unattended eligibility**, triage composes
+For **readiness**, triage composes
 [prompt-comprehension-audits](../skills/productivity/prompt-comprehension-audits/SKILL.md):
 
 ```text
@@ -71,9 +71,17 @@ explicit waiver: final contract → applicable fit/status checks → BYPASS
 ```
 
 The audit also checks implementation-Ticket fit using to-tickets. A current PASS
-or explicit BYPASS supports `ready-for-agent`; the maintainer's subsequent Mission
-authorization selects execution. Requested Assisted and untracked prompt audits
-use the same comprehension evidence where applicable and finish with their result.
+or explicit BYPASS promotes a complete tracked implementation Ticket to
+`ready-for-agent` regardless of availability; failed or materially stale readiness
+is removed. A complete Ticket body needs no duplicate brief. Readiness never
+authorizes execution.
+
+“Audit #42” records status/readiness and stops. “Audit and implement #42” already
+authorizes delivery: after PASS, the owning workflow continues in a fresh session
+or clean-context implementation agent without another approval. The audit context
+never implements or corrects that work. The fresh owner retains decisions, one
+independent candidate review, adjudication, corrections, verification and delivery;
+no extra dispatcher or automatic writer/reviewer loop is required.
 
 ## Deliver a coordinated Mission
 
@@ -83,7 +91,9 @@ with current durable contracts, resolved relations and the eligibility above.
 Changing an ongoing Direct Assisted task to Unattended carries its recoverable state
 into an explicitly authorized one-Ticket Mission.
 
-There are three entries:
+Dispatcher use is a maintainer choice, not a consequence of Ticket count.
+Alternative coordination retains the same planning, ownership, safety, review and
+delivery obligations. Available managed entries include:
 
 - One selected Ticket through [implement](../skills/engineering/implement/SKILL.md):
   it forwards a one-item plan to dispatch-tickets in the same root conversation.
@@ -107,7 +117,12 @@ coordinator: resolve Ticket and prepare exclusive worktree
 
 Writer and reviewer are isolated leaves. The coordinator retains decisions and
 corrections. The dispatcher tracks compact outcomes and forwards user steering;
-Ticket context stays with the coordinator.
+Ticket context stays with the coordinator. Explicit maintainer steering may revise
+instructions or the plan: pause affected starts, route direction to affected owners
+and settle prior ownership before replacement or conflicting work. Preserve
+delivered evidence and safely unaffected work. Owners update material contracts
+and revalidate applicable audits; a thin dispatcher applies literal supplied
+revisions while semantic replanning stays with the responsible planning context.
 
 A declared parallel group delivers branch artifacts for a later integration Ticket:
 

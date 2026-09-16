@@ -31,7 +31,7 @@ Assign exactly one state role:
 
 - `needs-triage` — maintainer evaluation is pending
 - `needs-info` — information required from the reporter is pending
-- `ready-for-agent` — fully specified and eligible for an AFK agent after a separate explicit Mission authorization
+- `ready-for-agent` — validated implementation contract regardless of availability; execution still requires explicit authorization
 - `ready-for-human` — implementation requires a human
 - `wontfix` — the request will not be actioned
 
@@ -86,7 +86,7 @@ Show the count for each bucket and one line per item, then wait for the maintain
 4. **Recommend.** After verification and any required grilling, present one category, one state, the evidence for each, and the relevant codebase findings. Wait for maintainer direction. If later evidence changes the recommendation, obtain new direction before applying it.
 
 5. **Apply the maintainer-approved outcome:**
-   - `ready-for-agent` — post a brief that satisfies [AGENT-BRIEF.md](AGENT-BRIEF.md), keep or restore `needs-triage`, and run [prompt-comprehension-audits](../../productivity/prompt-comprehension-audits/SKILL.md) against the final Ticket and brief. Only its current `PASS` or explicit maintainer `BYPASS` applies `ready-for-agent`.
+   - `ready-for-agent` — stabilize the complete execution contract in the Ticket body or an incorporated [Agent Brief](AGENT-BRIEF.md), without duplicating it. Reuse a current applicable `PASS` or explicit maintainer `BYPASS`; otherwise keep or restore `needs-triage` and run [prompt-comprehension-audits](../../productivity/prompt-comprehension-audits/SKILL.md). Only that current gate applies readiness, equally for Assisted and Unattended work.
    - `ready-for-human` — use the same brief structure and identify the specific human requirement, such as judgment, external access, design approval, or manual testing.
    - `needs-info` — post the [needs-info template](#needs-info-template).
    - `wontfix` — select exactly one reason:
@@ -95,17 +95,17 @@ Show the count for each bucket and one line per item, then wait for the maintain
      - **Rejected enhancement:** create the entry required by [OUT-OF-SCOPE.md](OUT-OF-SCOPE.md), link it in the comment, and close.
    - `needs-triage` — apply the role; add a comment only when partial findings need to persist.
 
-Outside a maintainer-approved quick state override, the item is triaged when it has exactly one category role, exactly one state role, and the required comment, brief, close action, or out-of-scope entry for that state. A code or behavior-changing item cannot finish at `ready-for-agent` without a current Prompt Audit `PASS` or explicit maintainer `BYPASS`. That result records Unattended eligibility only; it does not select the item or authorize a Mission.
+Outside a maintainer-approved quick state override, the item is triaged when it has exactly one category role, exactly one state role, and the required comment, brief, close action, or out-of-scope entry for that state. A code or behavior-changing item cannot finish at `ready-for-agent` without a current Prompt Audit `PASS` or explicit maintainer `BYPASS`. Remove readiness when its audit fails or becomes materially stale. Readiness does not select the item or authorize implementation.
 
 Triage and readiness are not prerequisites for Direct Assisted work. An available maintainer may explicitly select exactly one Ticket for the conversational responsible agent without a Prompt Audit, dispatcher, separate Ticket coordinator, or writer; the confirmed conversation is the active contract, and any accepted material change to existing governing authority must update that authority.
 
-Mission-oriented execution retains its separate explicit authorization and routing contracts. Explicit direction supplies a finite pre-resolved Mission plan to [dispatch-tickets](../dispatch-tickets/SKILL.md); for exactly one selected Ticket, [implement](../implement/SKILL.md) composes that same dispatcher route as a one-item plan. For smaller Mission work, a human/invoker or context-rich parent may directly dispatch one fresh isolated [orchestrate](../orchestrate/SKILL.md) coordinator for the selected Ticket, passing the resolved skill file path to that child. That coordinator checks live gates and actual capabilities, not parent provenance or role/depth assertions; dispatcher mechanical boundaries remain mandatory when used.
+Mission-oriented execution retains its separate explicit authorization and routing contracts. Dispatcher use is optional regardless of Ticket count; alternative coordination retains the same planning, ownership, safety, review and delivery obligations. Explicit direction may supply a finite pre-resolved Mission plan to [dispatch-tickets](../dispatch-tickets/SKILL.md); for exactly one selected Ticket, [implement](../implement/SKILL.md) composes that same dispatcher route as a one-item plan. For smaller Mission work, a human/invoker or context-rich parent may directly dispatch one fresh isolated [orchestrate](../orchestrate/SKILL.md) coordinator for the selected Ticket, passing the resolved skill file path to that child. That coordinator checks live gates and actual capabilities, not parent provenance or role/depth assertions; dispatcher mechanical boundaries remain mandatory when used.
 
 ## Quick state override
 
 When the maintainer explicitly requests a state, use that state without verification or grilling. Preserve the existing category. If no category exists, ask the maintainer to choose `bug` or `enhancement` before applying the state.
 
-Before acting, list the exact role changes, comment to be posted, and whether the item will close. A request to apply `ready-for-agent` does not itself bypass the Agent Brief or Prompt Audit: prepare the brief, keep `needs-triage`, and transition only after `PASS` or an explicit `BYPASS` in the maintainer's direction. Then apply the listed changes.
+Before acting, list the exact role changes, comment to be posted, and whether the item will close. A request to apply `ready-for-agent` does not waive contract completeness or Prompt Audit: use the complete Ticket body or incorporated brief, keep `needs-triage` unless a current gate already exists, and transition only with `PASS` or explicit `BYPASS`. Then apply the listed changes.
 
 ## Needs-info template
 
