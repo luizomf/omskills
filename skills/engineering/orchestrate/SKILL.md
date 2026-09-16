@@ -1,7 +1,6 @@
 ---
 name: orchestrate
 description: Coordinate complete delivery of one explicitly authorized Mission Ticket through isolated writing and independent review.
-disable-model-invocation: true
 ---
 
 # Orchestrate

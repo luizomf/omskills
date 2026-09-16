@@ -76,8 +76,9 @@ OMSKILLS_DEST="$HOME/.pi/agent/skills" ./scripts/link-skills.sh --check
 Active status and discovery are separate. Supporting harnesses keep
 agent-discoverable descriptions in model context; user-only skills are selected
 explicitly or loaded through a composing skill's file pointer. The active user-only
-skills are `design`, `teach`, `dispatch-tickets`, `implement`, `orchestrate`, and
-`model-routing`.
+skills are `design`, `teach`, `dispatch-tickets`, `implement`, and `model-routing`.
+`orchestrate` is agent-discoverable and supports direct invocation for one explicitly
+authorized Mission Ticket in a fresh coordinator; discovery does not authorize work.
 
 Cross-skill links resolve from the referring file's physical directory, following
 symlinks before parent traversal. This works across macOS/Linux when the directory

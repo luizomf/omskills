@@ -21,7 +21,6 @@ USER_ONLY_ACTIVE_SKILLS = {
     "dispatch-tickets",
     "implement",
     "model-routing",
-    "orchestrate",
     "teach",
 }
 

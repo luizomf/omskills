@@ -2,8 +2,8 @@
 
 Skills for code work, tracker requests and architecture decisions. See the
 [workflow map](../../docs/workflows.md) for entry paths, dependencies and outcomes.
-The groups below describe typical use; `dispatch-tickets`, `implement` and
-`orchestrate` are user-only, while the other skills here are agent-discoverable.
+The groups below describe typical use; `dispatch-tickets` and `implement`
+are user-only, while the other skills here are agent-discoverable.
 
 ## Typically user-selected
 
