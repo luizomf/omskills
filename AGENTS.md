@@ -123,7 +123,13 @@ considering delivery complete. For both
 Direct Assisted and Mission work involving temporary branches or worktrees, read
 and follow [the shared worktree policy](skills/engineering/orchestrate/WORKTREES.md)
 for location, ownership, mandatory verified cleanup, and protected retention.
-This reference does not invoke the Mission workflow.
+Create new Git worktrees only at
+`~/sannux-data/worktrees/<repo>/<worktree_name>`, never inside the checkout or
+beside it as a sibling checkout. This host-local root is excluded by `synchosts`;
+transfer required work deliberately between hosts. Leave existing worktrees
+where they are. This location policy does not apply to scratch folders, vendored
+source, or generated source copies. This reference does not invoke the Mission
+workflow.
 
 For architecture, shared workflow behavior, AI runners, persistence, or
 publishing, first check for an existing Issue and triage it if found. Use
