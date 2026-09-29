@@ -1,44 +1,92 @@
 ---
 name: write-a-skill
-description: Create agent skills with SKILL.md, progressive disclosure, and bundled resources.
+description:
+  Create agent skills with SKILL.md, progressive disclosure, and bundled
+  resources.
 ---
 
 # Writing Skills
 
 ## Process
 
-1. **Load the governing reference.** Before drafting, read and follow [writing-great-skills](../writing-great-skills/SKILL.md) and its complete [GLOSSARY.md](../writing-great-skills/GLOSSARY.md). First run `cd '<loaded-skill-directory>' && pwd -P` with this loaded file's directory; resolve links from the printed physical base, not the workspace or symlink alias. This step is complete only after the full reference has been read and its discovery, information-hierarchy, splitting, completion, and pruning rules govern the planned skill.
+1. **Load the governing reference.** Before drafting, read and follow
+   [writing-great-skills](../writing-great-skills/SKILL.md) and its complete
+   [GLOSSARY.md](../writing-great-skills/GLOSSARY.md). First run
+   `cd '<loaded-skill-directory>' && pwd -P` with this loaded file's directory;
+   resolve links from the printed physical base, not the workspace or symlink
+   alias. This step is complete only after the full reference has been read and
+   its discovery, information-hierarchy, splitting, completion, and pruning
+   rules govern the planned skill.
 
-2. **Establish requirements and authority.** Read-only inspection may precede the adaptive Delivery mode gate; drafting may not. Honor any semantic topology and availability choices already established, and ask only for a materially unresolved dimension. An untracked request or exactly one selected Ticket may remain Direct Assisted work without mandatory readiness, Prompt Audit, dispatcher, separate Ticket coordinator, or writer.
+2. **Establish requirements and authority.** Read-only inspection may precede
+   the adaptive Delivery mode gate; drafting may not. Honor any semantic
+   topology and availability choices already established, and ask only for a
+   materially unresolved dimension. An untracked request or exactly one selected
+   Ticket may remain Direct Assisted work without mandatory readiness, Prompt
+   Audit, or dispatcher.
 
    Resolve all of these questions:
    - What task or domain does the skill cover?
    - Which use cases must it handle?
    - Does it require executable scripts, instructions, or both?
    - Which reference materials must it include?
-   - Will it remain user-only by default, or does it qualify as agent-discoverable under [Description and Discovery](#description-and-discovery)?
-   - If it handles Tickets, does it keep Direct Assisted work distinct from Mission routing, preserve the boundary between readiness and explicit Mission authorization, preserve mechanical `dispatch-tickets` boundaries when used, allow an authorized human/invoker or context-rich parent to dispatch one fresh isolated coordinator directly, and retain `implement`'s one-item dispatcher composition?
-   - If it selects among several user-only skills, is it a skill-selection Router Skill rather than a Ticket dispatcher?
-   - If it launches model-selectable workers, does its caller compose `model-routing` rather than copy the parent's model or maintain a separate model table?
+   - Will it remain user-only by default, or does it qualify as
+     agent-discoverable under
+     [Description and Discovery](#description-and-discovery)?
+   - If it handles Tickets, does it preserve Direct Assisted work, readiness
+     versus execution authority, the dispatcher's queue/delivery responsibility,
+     the Ticket owner's continuous technical responsibility, and `implement`'s
+     one-item composition?
+   - If it selects among several user-only skills, is it a skill-selection
+     Router Skill rather than a Ticket dispatcher?
+   - If it launches model-selectable workers, does its caller compose
+     `model-routing` rather than copy the parent's model or maintain a separate
+     model table?
 
-   In Direct Assisted work, resolve what the repository and accepted conversation already establish, then ask only about genuinely missing material requirements. A Mission writer resolves requirements from the accepted Ticket, governing sources and explicitly routed maintainer steering, regardless of audit applicability or absolute depth. Material steering must reach durable authority and applicable gates through the coordinator before affected drafting; other conversation supplies no hidden requirement. Resolve minor choices through repository conventions. Return unresolved material requirements directly to the coordinator, who consults the available maintainer in Assisted work or blocks when Unattended authority cannot resolve them. The writer remains non-delegating and does not route Questions through the dispatcher. Other print/headless invocations report unresolved material requirements to their caller rather than waiting for conversational input.
+   Resolve established requirements from the accepted conversation, Ticket,
+   governing sources, and repository conventions. The responsible agent owns
+   drafting and material contract updates. Ask the available maintainer only
+   about genuinely missing material requirements; in Unattended work, report the
+   specific blocker. A delegated helper returns unresolved requirements to its
+   caller. Material steering updates durable authority and applicable gates
+   before affected drafting.
 
-   This step is complete only when every requirement is resolved or the applicable terminal blocker has been returned and drafting has stopped.
+   This step is complete only when every requirement is resolved or the
+   applicable terminal blocker has been returned and drafting has stopped.
 
 3. **Draft the skill.** Create:
    - a `SKILL.md` containing the instructions required by every branch;
-   - linked reference files when the governing information hierarchy assigns branch-specific reference behind a context pointer;
-   - utility scripts when any condition under [When to Add Scripts](#when-to-add-scripts) applies.
+   - linked reference files when the governing information hierarchy assigns
+     branch-specific reference behind a context pointer;
+   - utility scripts when any condition under
+     [When to Add Scripts](#when-to-add-scripts) applies.
 
-   Follow [Splitting and Disclosure](#splitting-and-disclosure). This step is complete only when the draft represents every accepted use case and every required bundled resource exists and is directly referenced.
+   Follow [Splitting and Disclosure](#splitting-and-disclosure). This step is
+   complete only when the draft represents every accepted use case and every
+   required bundled resource exists and is directly referenced.
 
-4. **Verify and review.** Apply every item in the [Review Checklist](#review-checklist), checking the decision-bearing content of every bundled resource against every accepted use case. A Direct Assisted skill behavior change receives one fresh independent [code-review](../../engineering/code-review/SKILL.md) pass with the concise current contract, applicable governing sources, complete candidate, and verification instructions; the responsible agent adjudicates findings and applies corrections. Re-review only when corrections materially change the candidate. Purely editorial documentation may be self-reviewed. In a managed Ticket route, return the draft and verification evidence to the coordinator for its required independent review instead of starting another reviewer. User feedback may supplement but never substitute for required independent review.
+4. **Verify and review.** Apply every item in the
+   [Review Checklist](#review-checklist), checking the decision-bearing content
+   of every bundled resource against every accepted use case. A skill behavior
+   change receives one fresh independent
+   [code-review](../../engineering/code-review/SKILL.md) pass with the concise
+   current contract, applicable governing sources, complete candidate, and
+   verification instructions; the responsible agent adjudicates findings and
+   applies corrections. Additional review follows material changes or
+   insufficient coverage, honoring explicit user limits. Purely editorial
+   documentation may be self-reviewed. A delegated helper returns its draft and
+   evidence to the responsible owner for that review. User feedback may
+   supplement but never substitute for required independent review.
 
-   The skill is complete only when every accepted use case and every decision-bearing bundled resource is accounted for, every checklist item passes, and the applicable review is resolved.
+   The skill is complete only when every accepted use case and every
+   decision-bearing bundled resource is accounted for, every checklist item
+   passes, and the applicable review is resolved.
 
 ## Skill Structure
 
-Every skill requires `skill-name/SKILL.md`. Add `REFERENCE.md`, `EXAMPLES.md`, or `scripts/helper.js` under the same skill directory only when the conditions below require them.
+Every skill requires `skill-name/SKILL.md`. Add `REFERENCE.md`, `EXAMPLES.md`,
+or `scripts/helper.js` under the same skill directory only when the conditions
+below require them.
 
 ## SKILL.md Template
 
@@ -48,12 +96,19 @@ name: skill-name
 description: One-sentence description of the operations or outcome.
 disable-model-invocation: true
 ---
+
 # Skill Name
+
 ## Quick start
+
 [Minimal working example]
+
 ## Workflows
+
 [Ordered processes and completion checklists]
+
 ## Advanced features
+
 [Context pointer: See [REFERENCE.md](REFERENCE.md)]
 ```
 
@@ -61,10 +116,24 @@ disable-model-invocation: true
 
 Every skill requires a description.
 
-- **User-only** is the default. Set `disable-model-invocation: true`. Write one command-facing sentence that identifies the capability; this metadata is excluded from the agent's system context.
-- **Agent-discoverable** requires observed use that demonstrates a need for autonomous selection plus maintainer approval of the permanent context load. Omit `disable-model-invocation`. State the capability first, followed by one trigger for each distinct branch that should select the skill.
+- **User-only** is the default. Set `disable-model-invocation: true`. Write one
+  command-facing sentence that identifies the capability; this metadata is
+  excluded from the agent's system context.
+- **Agent-discoverable** requires observed use that demonstrates a need for
+  autonomous selection plus maintainer approval of the permanent context load.
+  Omit `disable-model-invocation`. State the capability first, followed by one
+  trigger for each distinct branch that should select the skill.
 
-A loaded skill may compose a user-only skill through a direct relative file pointer under the loaded `writing-great-skills` discovery rules; composition does not require a visible discovery entry. A Router Skill selects an installed skill or disclosed reference to load; it does not own Mission identities, topology or Ticket dispatch. `dispatch-tickets` owns only mechanical routing when used; `implement` retains its one-item composition. An authorized human/invoker or context-rich parent may also dispatch one fresh isolated `orchestrate` coordinator directly. Coordinator entry validates selected-Ticket authority, live gates and actual capabilities, not caller provenance or role/depth assertions.
+A loaded skill may compose a user-only skill through a direct relative file
+pointer under the loaded `writing-great-skills` discovery rules; composition
+does not require a visible discovery entry. A Router Skill selects an installed
+skill or disclosed reference to load; it does not own Mission identities,
+topology or Ticket dispatch. `dispatch-tickets` owns Mission continuity,
+eligibility decisions within the selected queue, and delivery verification;
+`implement` retains its one-item composition. `orchestrate` keeps one Ticket's
+technical ownership through implementation, independent review, corrections, and
+delivery, including direct invocation. Entry checks selected-work authority,
+live gates, and actual capabilities.
 
 Every description must:
 
@@ -73,9 +142,12 @@ Every description must:
 - identify the operations or outcome the skill provides;
 - omit automatic trigger phrasing when the skill is user-only.
 
-- Agent-discoverable example: `Extract text and tables from PDF files, fill forms, and merge documents. Use when working with PDF files or when the user mentions PDFs, forms, or document extraction.`
-- User-only example: `Extract text and tables from PDF files, fill forms, and merge documents.`
-- Invalid example: `Helps with documents.` identifies neither an operation nor an outcome.
+- Agent-discoverable example:
+  `Extract text and tables from PDF files, fill forms, and merge documents. Use when working with PDF files or when the user mentions PDFs, forms, or document extraction.`
+- User-only example:
+  `Extract text and tables from PDF files, fill forms, and merge documents.`
+- Invalid example: `Helps with documents.` identifies neither an operation nor
+  an outcome.
 
 ## When to Add Scripts
 
@@ -87,11 +159,16 @@ Add a utility script when at least one condition applies:
 
 ## Splitting and Disclosure
 
-Use the `writing-great-skills` information hierarchy for progressive disclosure: keep instructions required by every branch in `SKILL.md`, and move branch-specific reference behind a direct context pointer.
+Use the `writing-great-skills` information hierarchy for progressive disclosure:
+keep instructions required by every branch in `SKILL.md`, and move
+branch-specific reference behind a direct context pointer.
 
-For a skill or sequence split, apply the loaded `writing-great-skills` splitting conditions.
+For a skill or sequence split, apply the loaded `writing-great-skills` splitting
+conditions.
 
-Line count, a separate domain, or rarity is not split evidence. Treat excess length as sprawl and apply the information hierarchy before considering a governed split.
+Line count, a separate domain, or rarity is not split evidence. Treat excess
+length as sprawl and apply the information hierarchy before considering a
+governed split.
 
 ## Review Checklist
 
@@ -99,12 +176,25 @@ After drafting, verify every item:
 
 - [ ] Every accepted use case maps to explicit instructions.
 - [ ] At least one concrete input/output or interaction example is included.
-- [ ] Every ordered step has a checkable completion criterion, exhaustive where coverage is required.
-- [ ] `disable-model-invocation: true` is present unless the skill qualifies as agent-discoverable under [Description and Discovery](#description-and-discovery).
-- [ ] The description satisfies the format rules; an agent-discoverable description contains one trigger per distinct branch.
-- [ ] Process instructions avoid time-sensitive assumptions, expiring URLs, and unpinned `latest` values. An explicitly requested maintained compatibility/model catalog is isolated in a sourced reference with its verification basis, rather than copied into workflow instructions.
-- [ ] Each concept has one term, used consistently; Router Skill wording cannot imply Ticket-dispatch ownership.
-- [ ] Ticket routing, when present, permits Direct Assisted work without readiness by default and treats readiness as eligibility rather than Mission authorization.
-- [ ] Every skill or sequence split has the required discovery or observed-sequence evidence.
-- [ ] Every bundled context pointer links directly to its target, with no chained bundled reference.
-- [ ] The decision-bearing content of every bundled resource has been inspected and agrees with every accepted use case and governing source.
+- [ ] Every ordered step has a checkable completion criterion, exhaustive where
+      coverage is required.
+- [ ] `disable-model-invocation: true` is present unless the skill qualifies as
+      agent-discoverable under
+      [Description and Discovery](#description-and-discovery).
+- [ ] The description satisfies the format rules; an agent-discoverable
+      description contains one trigger per distinct branch.
+- [ ] Process instructions avoid time-sensitive assumptions, expiring URLs, and
+      unpinned `latest` values. An explicitly requested maintained
+      compatibility/model catalog is isolated in a sourced reference with its
+      verification basis, rather than copied into workflow instructions.
+- [ ] Each concept has one term, used consistently; Router Skill wording cannot
+      imply Ticket-dispatch ownership.
+- [ ] Ticket routing, when present, permits Direct Assisted work without
+      readiness by default and treats readiness as eligibility rather than
+      Mission authorization.
+- [ ] Every skill or sequence split has the required discovery or
+      observed-sequence evidence.
+- [ ] Every bundled context pointer links directly to its target, with no
+      chained bundled reference.
+- [ ] The decision-bearing content of every bundled resource has been inspected
+      and agrees with every accepted use case and governing source.

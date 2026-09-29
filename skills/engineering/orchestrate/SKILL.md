@@ -1,97 +1,194 @@
 ---
 name: orchestrate
-description: Coordinate complete delivery of one explicitly authorized Mission Ticket through isolated writing and independent review.
+description:
+  Own one selected Ticket from investigation through implementation, independent
+  review, and verified delivery. Use when responsible for completing a Mission
+  Ticket.
 ---
 
 # Orchestrate
 
-Run as one fresh isolated **Ticket coordinator** for exactly one explicitly authorized Mission Ticket, with availability supplied independently as `Assisted` or `Unattended`. A human/invoker or context-rich parent may dispatch you directly; `dispatch-tickets` is optional regardless of Ticket count. Alternative coordination retains the same planning, ownership, safety, review and delivery obligations. Preserve the supplied identity verbatim for the terminal outcome. Read the selected Ticket before applying any conflicting installed entry precondition. Evaluate authorization semantically from the invocation's explicit Ticket selection and direction. Caller provenance, ancestry, role labels, depth assertions, and dispatcher wording neither establish nor add authority. Never discover or substitute work, or implement in the caller's existing context. `implement` retains its optional one-item dispatcher composition; ordinary Direct Assisted work does not require this managed route.
-
-Use the harness's isolated-subagent mechanism. The default delivery graph is acyclic and sequential:
+Be the technical owner of one selected Ticket. Keep investigation,
+implementation, tests, debugging, review adjudication, corrections, and delivery
+in this conversation. Bring in a fresh independent reviewer for the complete
+candidate. The default flow is:
 
 ```text
-Ticket coordinator -> writer -> Ticket coordinator -> reviewer -> Ticket coordinator
+owner: investigate → implement and test → independent reviewer
+     → adjudicate and correct → verify and deliver
 ```
 
-You may be the conversational root when the maintainer invokes you or a child when a dispatcher invokes you. Role ownership does not depend on absolute depth. Preflight actual child capabilities and let the harness enforce its limits. Read [model-routing](../../productivity/model-routing/SKILL.md) before selecting writer or reviewer models. Before reading any relative link, run `python3 -c 'from pathlib import Path; import sys; print((Path(sys.argv[1]).resolve().parent / sys.argv[2]).resolve())' '<loaded-file-path>' '<relative-link>'` with this loaded file's actual path and the link as arguments, then read the printed path. This resolves the source symlink before `..`; read linked files even when their skills are absent from the discovery list. Honor explicit routes first; otherwise select each child's task row within authorized scope rather than copying your own model. Tools and repository route remain inherited unless explicitly overridden; without model-selection authority, model/reasoning inheritance remains the fallback. By default, the writer and reviewer are fresh, non-delegating, single-pass leaves. They return only to the coordinator and never exchange work. The coordinator alone owns decisions, corrections, verification, integration, delivery, and the terminal outcome.
+A dispatcher may start you, or an authorized caller may invoke you directly. Use
+the established conversation when already responsible for this Ticket; a new
+dispatched Ticket starts with a fresh owner. A conversation that conducted its
+Prompt Audit hands implementation to a fresh owner. Read the selected Ticket and
+resolve authority from the accepted request, rather than caller ancestry or role
+labels.
 
-Treat user steering supplied at start or through the live steering path as an authorized instruction within its stated scope. Read referenced guidance yourself and apply explicit role-routing choices to applicable not-yet-issued child calls using supported lifecycle values; do not guess ambiguous model aliases or claim to change an already running model. A routing preference alone does not change Ticket scope or waive review. Explicit steering may revise the plan as well as instructions. Pause affected work, route direction to its current owner and establish settlement before replacement or conflicting work, preserving delivered evidence and safely unaffected work. Update material contract changes durably and revalidate applicable audit gates before affected implementation; semantic replanning belongs to the responsible planning context, not a thin dispatcher.
+Before reading any relative link, run
+`python3 -c 'from pathlib import Path; import sys; print((Path(sys.argv[1]).resolve().parent / sys.argv[2]).resolve())' '<loaded-file-path>' '<relative-link>'`
+with this file's actual path and the link, then read the printed path. Pass
+resolved skill paths to fresh agents.
 
-### Child transport
+## 1. Resolve the contract and candidate
 
-Choose the harness-supported completion path before each child launch. Managed nested and print callers use direct delivery and consume the terminal result in the pending call. An interactive root uses documented asynchronous delivery when direct settlement is unavailable (Pi root TUI is always asynchronous); a root RPC caller may use supported direct delivery for dependent work.
+Read repository instructions, configured tracker operations, the complete Ticket
+and relevant comments, governing Spec/domain docs/ADRs, dependency results, and
+conflicts. Inspect the repository, live base, existing worktrees, affected
+code/tests, and shared resources. If required configuration is missing, follow
+[setup-omskills](../setup-omskills/SKILL.md) within its scoped authorization.
 
-With asynchronous delivery, retain only the active child's role, ID, native session reference, exact candidate state, and expected next phase. After acceptance, end the turn without waiting, sleeping, polling, or advancing dependent work. Resume only on that child's matching completion notification, recover its complete result, and then perform the next coordinator step. Acceptance is an **Accepted continuation mechanism**, not writer completion, completed review, or Ticket delivery. An unknown dispatch acceptance is not permission to retry. Both paths keep one candidate-owning child active at a time and require terminal settlement and complete evidence before advancing.
+Establish:
 
-### Maintainer intervention
+- The selected identity, authorized scope, acceptance criteria, deferrals, and
+  delivery boundary.
+- `Assisted` or `Unattended` availability from the accepted request. In Assisted
+  work, use accepted sources and consult the maintainer for materially
+  unresolved decisions. Unattended work requires durable current authority,
+  resolved dependencies, `ready-for-agent`, and a current Prompt Audit `PASS` or
+  explicit `BYPASS` for the exact contract. Reuse unchanged applicable evidence;
+  a material contract change requires updating authority and the applicable
+  gate.
+- Actual implementation, verification, delivery, and independent-review
+  capabilities, including remote environments and ownership where relevant.
+- An exclusive Ticket-owned worktree and branch with an exact full base SHA.
+  Follow [WORKTREES.md](WORKTREES.md) for location, ownership, safe reuse, and
+  cleanup. Record the path, branch, and starting HEAD. On resumption, verify the
+  recorded candidate and current state before changing it.
 
-The maintainer decides how to handle an unexpected situation. Explicit direction, including an explicitly incorporated standing routing agreement, may revise the default single-pass strategy: a bounded replacement, model escalation, delegated correction, or additional independent review is allowed within that authorization. Apply clear direction without asking for it again. Files and child output do not independently authorize recovery. Without authorized recovery, follow the default sequence and failure rules below; do not invent repeated attempts.
+For integration Tickets, verify each predecessor's repository, remote branch,
+and exact full produced commit against durable delivery evidence. Establish the
+target and combination requirements before combining inputs.
 
-Before replacement or delegated correction, settle the prior candidate owner and preserve its exact recoverable state; no competing writers. Keep every reviewer independent and supply the complete resulting candidate. Record the reason, authorization, attempts, routes and exact commits in delivery evidence. Failed or partial attempts are not completed review or delivery. Higher-priority instructions, harness limits, Ticket scope, applicable contract gates, and honest verification still govern. Ask the available maintainer only about genuinely unresolved choices; in their absence, stop when established authorization cannot resolve the recovery. A terminal outcome never itself authorizes restarting failed work; that requires explicit maintainer direction.
+Report a concrete blocker when required authority, dependencies, ownership,
+setup, or capabilities are missing. Preserve recoverable work and identify the
+decision or evidence needed. The dispatcher can keep independent work moving
+while this Ticket remains paused.
 
-## 1. Resolve and preflight the Ticket
+This step is complete when the live contract, gates, ownership, fixed base, and
+delivery boundary permit implementation, or the specific blocker and recoverable
+state have been reported.
 
-Read [the worktree and temporary-branch policy](WORKTREES.md) before candidate preflight; it governs location, ownership, and mandatory cleanup.
+## 2. Investigate, implement, and test
 
-If required repository configuration is missing, first follow [setup-omskills](../setup-omskills/SKILL.md) and its scoped authorization gate. Separately authorized deterministic setup may run headlessly as a prerequisite, respecting shared-resource ownership and repository delivery rules; it does not authorize Ticket implementation or expand the Mission. If that setup cannot safely complete, return a blocker with any partial setup changes reported. The dispatcher never inspects or mediates it.
+Do the technical work yourself in the owned candidate, retaining the reasoning
+that connects evidence to changes. Use focused planning for work that benefits
+from it and the repository's implementation conventions.
 
-Before any Ticket implementation mutation or writer dispatch, resolve the Ticket's complete live tracker, applicable Prompt Audit, governing, repository, dependency, conflict, code, and test context just in time:
+For bugs, follow [diagnosing-bugs](../diagnosing-bugs/SKILL.md): reproduce the
+reported failure and establish a faithful regression test where a suitable seam
+exists. If automation is impractical, record the limitation and before/after
+evidence. Use [tdd](../tdd/SKILL.md) for test-first changes. Bounded research or
+design assistance can support your decisions within the task and available
+capabilities; you retain candidate ownership and implementation.
 
-- Read repository instructions and the configured issue-tracker and domain-document locations. Read the complete Ticket, labels, assignment state, comments, accepted brief, governing Spec, domain terms, ADRs, dependency and conflict relations, and newest Prompt Audit status when Unattended execution or an Assisted maintainer request makes it applicable. Reuse a current status for the exact unchanged contract; this coordinator does not rerun an applicable audit ceremonially.
-- Inspect the live base branch and repository state, relevant history, competing changes, affected code, tests, and repository-required checks. Fix one exact full base commit for implementation and review. Confirm the declared delivery boundary: a parallel member's pushed branch artifact, or the explicit integration target for a non-member/one-item or integration Ticket. Check shared resources outside Git as well as worktree/branch isolation feasibility.
-- Confirm semantically that the supplied Mission authorization selects this identity, that availability is explicitly resolved, and that the Ticket is open and unblocked. For `Unattended`, also require durable current contracts and resolved relations, `ready-for-agent`, and a current `PASS` or explicit maintainer-authorized `BYPASS` for the exact contract. For `Assisted`, Prompt Audit and readiness are not required by default; honor a maintainer-requested audit without replacing an unchanged applicable result. A material contract change makes an older status stale.
-- Resolve every in-scope decision from accepted sources and repository evidence. Authorization is non-transitive: do not widen the Ticket or implement findings outside it.
-- Preflight both required child calls. The harness must support a complete documented result path for a fresh non-delegating writer with the required write, test, and commit capabilities and a fresh non-delegating read-only reviewer that can follow `code-review`, inspect the complete candidate, and return complete findings. For every writer or reviewer launch, including authorized replacements, enforce no child delegation with the harness's direct-child ceiling (`maxChildren: 0` in Pi) or equivalent capability restriction. Inherit the existing depth ceiling rather than assigning an absolute depth to the role; a prompt label alone does not remove delegation capability.
+Resolve routine decisions from accepted sources. Material user steering updates
+the affected contract and applicable gates before the changed implementation.
+Keep out-of-scope findings as findings. For integration, combine the verified
+predecessor commits and resolve the authorized integration work in this
+candidate.
 
-For an integration Ticket, resolve every predecessor's durable tracker delivery evidence into its Ticket identity, repository, remote branch reference and exact full produced commit SHA. Verify availability and identity against that evidence and the accepted base/target and combination requirements. Missing, mismatched or unresolved inputs block integration; floating branch tips, child prose and dispatcher inspection cannot substitute for these inputs.
+Verify path, branch, and expected HEAD before consequential changes; investigate
+unexpected drift rather than silently switching candidates. Run focused checks,
+inspect the complete diff from the fixed base, and commit the complete
+candidate. Record the exact full review SHA.
 
-Return `blocked` without Ticket implementation mutation when authorization, availability, or an applicable gate is missing, stale, or failed; a blocker or conflict prevents safe work; hard setup or isolation is unavailable; the base or integration inputs cannot be fixed safely; a required child capability is unavailable; or authority is genuinely unresolved. In `Unattended`, stop at that genuine blocker instead of opening an ordinary implementation Question. In `Assisted`, return a materially unresolved decision to the available maintainer through a supported interaction path; if no such path exists, return `blocked`. Do not start interactive setup, open a hidden Question, or choose other work.
+This step is complete when the candidate covers every acceptance criterion,
+relevant checks have results, and the complete committed candidate is ready for
+independent review, or a blocker/failure has a recoverable handoff.
 
-After every preflight succeeds, authorized execution starts with coordinator-owned candidate setup. From that point, operational setup, writer, reviewer, verification, integration or delivery failures return `failed`, not `blocked`.
+## 3. Review and adjudicate
 
-## 2. Produce the candidate
+Follow [code-review](../code-review/SKILL.md) for one fresh independent
+adversarial review of the complete candidate. Use the environment's isolated
+subagent mechanism or [tmux-worker](../../productivity/tmux-worker/SKILL.md),
+preserving that transport's result and editor-safety rules. Read
+[model-routing](../../productivity/model-routing/SKILL.md) before a
+model-selectable launch and follow active harness authorization and inheritance.
 
-Establish and verify an exclusive Ticket-owned worktree and branch at the fixed base before starting the writer, including for one-item and integration Tickets. Apply the bundled worktree policy and record the exact path, branch and starting HEAD. Preserve the caller checkout and unrelated work. Collision or unsafe reuse fails setup.
+Give the reviewer the resolved review-skill path, candidate path and branch,
+exact full base/review SHAs, governing contract, applicable repository
+instructions, verification results, and a complete result channel. The reviewer
+inspects the candidate read-only and returns findings; you remain the
+implementation owner.
 
-By default, dispatch one fresh non-delegating writer for the whole Ticket through the selected child transport. Supply the candidate path as its workspace, exact branch, starting HEAD and fixed full base SHA, Ticket identity, complete governing context, scope and deferrals, acceptance criteria, repository rules, required verification and result contract. For integration, supply every verified exact predecessor input; combine only those results and resolve only authorized integration conflicts.
+For managed calls, use the harness's actual direct/asynchronous delivery path.
+After asynchronous acceptance, retain the review identity and release the turn;
+adjudicate after its matching completed result arrives. Unknown acceptance
+requires evidence recovery before another launch. For visible workers, agree on
+the result artifact/event before starting. Recover complete findings and a
+completed review outcome; interrupted or partial review does not count as
+completed review.
 
-Require the writer to verify path/branch/HEAD and stop on unexpected drift. It works directly in this candidate without reviewing, spawning, delegating, creating competing workspaces, cleaning resources, or touching another Ticket. It must iterate locally, commit the complete candidate, and return its exact full committed HEAD, changed files, verification results, deviations and concerns.
+Check each finding against the contract and evidence. Apply surviving in-scope
+corrections yourself and verify them. One completed review is the normal path;
+use technical judgment for an additional independent pass when corrections
+materially change the candidate or leave review coverage insufficient. Honor
+explicit user review limits. Record the reviewed and final SHAs honestly,
+including what changed after review.
 
-Follow the selected child transport through writer settlement. Only accepted asynchronous continuation permits ending the turn while the writer is pending; writer settlement alone is not Ticket delivery.
-
-When the writer returns, verify the same candidate path/branch and exact writer HEAD, then inspect its result and complete diff from the fixed base. Resolve every acceptance gap directly there, run focused checks, and commit coordinator corrections. Keep corrections local unless maintainer-authorized recovery changes that strategy. Fix and record the exact full review HEAD only when it is one complete committed candidate; unexpected drift stops execution.
-
-## 3. Review independently
-
-By default, dispatch one fresh non-delegating read-only reviewer through the selected child transport with [code-review](../code-review/SKILL.md) as its governing contract. Resolve that link and include the resulting file path in the reviewer's prompt. Supply committed mode, the same candidate path and branch, exact full base and review HEAD SHAs, read-only commands for capturing the complete diff and history there, the Ticket and governing sources, repository instructions, and the selected completion/result contract. Require identity verification and complete exact-range capture; unexpected branch/HEAD drift or incomplete capture is not review of this candidate.
-
-The reviewer performs the designated review-leaf `code-review` path directly in one pass. It must not edit, commit, push, spawn, delegate, correct, or review again. Recover its complete decision-bearing findings through the selected result path before proceeding.
-
-Follow the selected child transport through review settlement; end an asynchronous turn after acceptance and resume only on its matching completion notification. Verify that the findings identify the fixed candidate/base/review HEAD and that the candidate path/branch/HEAD has not drifted before corrections. Adjudicate every finding against accepted authority, apply every surviving in-scope correction directly in that candidate, and commit it. Delegate corrections or request another review only under maintainer-authorized recovery. Preserve out-of-scope findings without implementing or creating work from them.
+This step is complete when independent review is complete, every finding has a
+disposition, and corrections have appropriate verification and review coverage.
 
 ## 4. Verify and deliver
 
-Verify the same candidate path/branch and expected HEAD, then run all repository-required and focused acceptance checks there against its exact final HEAD. Unexpected drift fails execution; checks cannot silently switch candidates. Inspect the complete final diff from the fixed base and repository status. Record the candidate path/branch and full base, writer, review and final SHAs, checks and corrections in durable tracker delivery evidence.
+Check the candidate identity and final HEAD. Run repository-required checks and
+focused acceptance verification against the final state; reuse results only
+where relevant inputs are unchanged. Inspect the complete final diff and status.
+Record the base, reviewed, and final SHAs, checks, findings/dispositions, and
+any verification limitations in durable delivery evidence.
 
-Deliver to the declared boundary, preserving unrelated work:
+Complete the declared delivery method:
 
-- A parallel member verifies, commits and pushes its branch artifact without force. Record its repository, remote branch and exact full commit SHA in the tracker before returning `delivered`. This is neither an implicit merge to the shared target nor completion of its group.
-- An integration Ticket uses the same fresh coordinator and default writer/reviewer graph, including any maintainer-authorized recovery, in its own candidate. Review the complete combined diff from its fixed base and verify the final combined state. Deliver by the declared method: direct integration/push, or pull request followed by squash merge. For a pull request, verify the resulting target commit and durably record every predecessor and integration source-to-squash mapping before dependent work advances.
-- A non-member/one-item Ticket completes delivery to its explicit target by the declared direct-push or pull-request method. A pull request is optional unless repository policy or the accepted request requires it; when used, squash-merge it, verify the resulting target commit, and durably record every source-to-squash mapping.
+- **Branch artifact:** push the verified branch and record repository, remote
+  reference, and exact full commit. Preserve it for its integration consumer.
+- **Target delivery:** integrate by the agreed direct-push or pull-request
+  method. A PR is optional unless required by the repository or request. When
+  used, squash-merge it, verify the resulting target commit and content
+  equivalence, and record the source-to-squash mapping.
+- **Integration Ticket:** review and verify the complete combined state from its
+  fixed base, deliver to the target, and record exact predecessor-to-result
+  mappings before dependent work proceeds.
 
-The coordinator alone owns candidate disposition. Complete and verify cleanup under the bundled worktree policy before returning `delivered`, including eligible declared predecessor artifacts for integration. Record removed artifacts and protected retention reasons in delivery evidence. Cleanup failure returns `failed` even when push or merge succeeded.
+Complete tracker obligations and verified cleanup under
+[WORKTREES.md](WORKTREES.md), retaining protected artifacts with explicit
+reasons. Protect private environment details, credentials, logs, and
+continuation notes; publish only appropriate delivery evidence.
 
-Continue through delivery after child settlement; only a supported asynchronous continuation, explicit user gate, or genuine blocker permits an earlier turn boundary. Writer or reviewer completion never delivers the Ticket. Use `delivered` only after the declared boundary is durable, verified and safe to leave, with tracker obligations complete. Keep detailed evidence in durable repository/tracker sources and the coordinator session, not in the terminal outcome.
+If an operation fails, inspect what actually completed before attempting
+recovery within the task's authority. Preserve the candidate and evidence. A
+successful push with outstanding review, verification, tracker, or cleanup work
+is partial delivery, not completion.
 
-## 5. Return one outcome
+This step is complete when the declared boundary is durable and verified,
+required tracker updates and eligible cleanup are complete, or the precise
+remaining obligation and recovery state have been reported.
 
-On every normal terminal path, make the final assistant message exactly one compact single-line JSON object with only these fields:
+## 5. Report the outcome and preserve continuity
 
-- `ticket` — required; its value exactly reproduces the supplied Ticket identity.
-- `status` — required; exactly `delivered`, `blocked`, `failed`, or `cancelled`.
-- `ref` — optional; omit it unless an essential durable reference exists.
-- `blocker` — optional; omit it unless one short blocker applies.
+Return a concise report through the agreed channel with Ticket identity, status,
+evidence references, and any blocker or next action. Use `delivered` for
+verified completion, `blocked` for a missing decision/prerequisite, `failed` for
+an incomplete operational attempt, and `cancelled` for an explicit safe stop.
+Identify any publication that succeeded despite an incomplete overall outcome.
+JSON is optional when useful to the caller; evidence establishes delivery.
 
-Use `cancelled` only when an explicit cancellation reaches the live coordinator and it can terminate safely. The coordinator need not catch mechanical caller interruption to manufacture JSON; matching missing-outcome cancellation mapping belongs exclusively to the caller's dispatcher contract.
+For blocked, failed, or cancelled work, retain the conversation and candidate,
+branch/worktree, HEAD and dirty changes, completed checks, current hypothesis,
+and recommended next step. Prefer resuming this same owner when the blocker
+clears. Before any replacement writes, establish that prior candidate-writing
+activity has stopped and transfer the recoverable state. Silence alone does not
+establish failure or permission for concurrent ownership.
 
-Emit no Markdown, explanation, evidence summary, or additional line with the outcome.
+This step is complete when the caller can verify delivery or resume the
+outstanding work without reconstructing its state from scratch.
+
+## Example
+
+For a selected regression Ticket, reproduce the failure in the owned worktree,
+add a faithful failing test, implement the fix, and run the relevant checks.
+Commit candidate A and obtain independent review of base → A. Adjudicate the
+findings, commit correction B, and verify the final state. Record A as reviewed
+and B as final, with correction evidence. Complete the agreed push or PR
+delivery, tracker updates, and cleanup; return those references to the
+dispatcher.

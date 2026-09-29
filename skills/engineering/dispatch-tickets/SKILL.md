@@ -1,235 +1,200 @@
 ---
 name: dispatch-tickets
-description: Dispatch one finite pre-resolved Assisted or Unattended Mission plan through fresh Ticket coordinators.
-disable-model-invocation: true
+description:
+  Coordinate a multi-issue Mission by tracking dependencies, responsible agents,
+  blockers, and verified deliveries. Use when asked to carry a selected queue of
+  Tickets through completion.
 ---
 
 # Dispatch Tickets
 
-Run as the minimal root **Ticket dispatcher** for finite pre-resolved Missions. Mission identifies coordinated topology; the separately supplied availability is `Assisted` or `Unattended`. This route is optional regardless of Ticket count; alternative coordination preserves the same planning, ownership, safety, review and delivery obligations. These mechanical boundaries apply when this skill is used. Accept one finite Mission plan, including the one-item plan composed by `implement`. Before adopting dispatcher state, read and follow [caveman](../../productivity/caveman/SKILL.md). Also read [model-routing](../../productivity/model-routing/SKILL.md) and its bundled model table before model-selectable starts. Before reading any relative link, run `python3 -c 'from pathlib import Path; import sys; print((Path(sys.argv[1]).resolve().parent / sys.argv[2]).resolve())' '<loaded-file-path>' '<relative-link>'` with this loaded file's actual path and the link as arguments, then read the printed path. This resolves the source symlink before `..`; read linked files even when their skills are absent from the discovery list. These bounded reporting/routing composition reads are the only file reads permitted to this root. Resolving the coordinator pointer below is allowed path plumbing, not permission to read its contents.
+Own the continuity of a Mission. Each [orchestrate](../orchestrate/SKILL.md)
+agent owns one Ticket's technical work; you maintain the authorized queue,
+choose the next eligible work, support its responsible agent, and verify
+delivery. Read tracker and repository evidence for those decisions.
+Implementation and code review stay with the Ticket owner and its independent
+reviewer.
 
-Keep only the frozen topology, availability, current phase index, active owner-scoped coordinator IDs, required native child session references, transport mode, per-coordinator transition state and matching cancellation intent, authorized start overrides and scoped literal user instructions when present, and compact mechanically validated outcomes or transport failures. Apart from those opaque instructions, keep no implementation content, transcript summary, semantic dependency model, dynamic queue, or persistent workflow state.
+Use the environment's existing subagents or
+[tmux-worker](../../productivity/tmux-worker/SKILL.md). This is an agent
+workflow described in Markdown, with ordinary notes when useful; it needs no
+coordination code or runtime service.
 
-Keep the root's normal tools active for coordinator inheritance. For Mission work after composing `caveman` and `model-routing`, use them only for routing preflight, subagent lifecycle operations, mechanical plan and outcome validation, and compact reporting. The dispatcher performs no tracker, repository, or remote discovery and reads no tracker material, governing source, repository file beyond those composition resources, code, diff, test, writer output, reviewer finding, or native child session. Unrelated root interaction remains outside the Mission and may use actual unreserved capacity without changing its envelope or routing state.
+Before reading any relative link, run
+`python3 -c 'from pathlib import Path; import sys; print((Path(sys.argv[1]).resolve().parent / sys.argv[2]).resolve())' '<loaded-file-path>' '<relative-link>'`
+with this file's actual path and the link, then read the printed path. Resolve
+pointers before passing them to a fresh agent. Read
+[model-routing](../../productivity/model-routing/SKILL.md) before
+model-selectable launches; apply explicit routes and the active harness's
+authorization and inheritance rules.
 
-## 1. Accept and freeze one Mission plan
+## 1. Establish the Mission
 
-Accept only an invocation whose meaning explicitly supplies Mission authorization, establishes `Assisted` or `Unattended` availability, and supplies one complete JSON plan with exactly these keys. Evaluate that authority from the request's semantics, selected identities, and finite plan—not from a required phrase or the caller's provenance, ancestry, role, depth, or dispatcher wording. Those attributes neither establish nor augment authority:
+Resolve from the request and accepted sources:
 
-```json
-{
-  "phases": [
-    ["owner/repository#1"],
-    ["owner/repository#2", "owner/repository#3"],
-    ["owner/repository#4"]
-  ],
-  "blockers": [["owner/repository#1", "owner/repository#2"], ["owner/repository#2", "owner/repository#4"], ["owner/repository#3", "owner/repository#4"]],
-  "conflicts": [["owner/repository#1", "owner/repository#3"]]
-}
-```
+- The finite set of selected Tickets, repository/tracker identities, scope, and
+  completion boundary. A list, prose plan, or existing phased JSON plan can
+  supply them; one selected Ticket is also valid.
+- Required order, blocking and conflict relations, shared resources, and each
+  Ticket's delivery target. Distinguish a suggested priority order from a
+  required sequence or phase barrier. Preserve explicitly required order;
+  otherwise choose among eligible Tickets in priority order.
+- Maintainer availability: `Assisted` for ordinary Questions, or `Unattended`
+  for decisions within durable authority. Use the meaning already established in
+  the request; ask only about material missing choices.
+- Existing owners, conversations, candidates, completed deliveries, and the
+  permitted recovery scope. Check ongoing work before starting another owner.
 
-`phases` is a non-empty ordered array. Each member is one non-empty phase containing either one Ticket or one finite declared compatible parallel group of N Tickets. A blocker pair is `[predecessor, dependent]`. A conflict pair is an unordered pair whose Tickets must occupy different phases. Empty `blockers` and `conflicts` arrays explicitly mean none. By supplying the plan, the invoker declares those relation arrays complete for the selected identities and declares every external blocker or conflict already resolved before Mission authorization. Compatibility includes shared resources outside Git. The approved breakdown must give every Ticket an exclusive candidate and explicit delivery boundary, and each parallel group a later ordinary integration Ticket blocked by every member (#4 in this example). Member delivery is a pushed branch artifact; integration delivers the combined target before dependent work. These are planning/coordinator obligations, not tracker semantics for this root to inspect.
+Read the configured tracker operations and repository instructions. If required
+configuration is missing, follow [setup-omskills](../setup-omskills/SKILL.md)
+within its setup authorization. Read selected Tickets and their relations to
+determine eligibility. Follow external references as dependency evidence without
+adding them to the selected work. The Ticket owner rechecks its complete
+contract and applicable execution gates before implementation.
 
-A one-Ticket Mission uses the same contract:
+Prefer serial execution. Parallel work requires established independence,
+compatible shared resources, actual available capacity, and an agreed
+integration boundary. Preserve an accepted parallel plan's requirements; resolve
+unavailable capacity rather than silently changing a required topology. Planning
+through [to-tickets](../to-tickets/SKILL.md) supplies branch-artifact and
+integration boundaries when needed.
 
-```json
-{"phases":[["owner/repository#1"]],"blockers":[],"conflicts":[]}
-```
+Keep a concise Mission record: selected Tickets, order/relations, owner and
+conversation reference, candidate location, current state, blocker or next
+action, and delivery evidence. Use the current conversation or an ignored local
+Markdown note as appropriate. Durable requirements and delivery history belong
+in the configured tracker; private operational notes remain private.
 
-Validate the entire plan and availability before any lifecycle call:
+This step is complete when the selected queue, availability, constraints, and
+current ownership are known, or a specific missing decision prevents safe
+dispatch.
 
-- Mission authorization selects every plan identity and is explicit in meaning. Selection, readiness, discovery, caller lineage, and role/depth assertions are not substitutes.
-- Availability resolves independently to exactly `Assisted` or `Unattended`; Mission topology alone does not imply either value.
-- The JSON is finite and literal: no ellipsis, range, conditional, optional branch, generated remainder, or prose placeholder.
-- Every Ticket appears exactly once across all phases and has the byte-for-byte form `<owner>/<repository>#<positive-integer>`. Owner and repository contain only ASCII letters, digits, `.`, `_`, or `-`.
-- Every relation has exactly two distinct selected identities. Blocker pairs are unique and directed; conflict pairs are unique regardless of order.
-- Each blocker predecessor occupies a strictly earlier phase than its dependent. Each conflict pair occupies different phases.
-- An N-Ticket parallel phase is the invoker's explicit compatibility declaration. No supplied blocker or conflict may connect any of its members.
-- Require affirmative active-harness evidence of the ROOT concurrency bound and concurrent-start support in the current transport mode for every parallel group. N must fit the actually available root capacity after other active work and every start must be issuable together in one tool-call batch. An active Mission consumes only its occupied slots; it creates no semantic claim over capacity-supported independent work. Child-only `maxChildren` or depth ceilings do not establish root capacity, and no exposed bound does not mean unlimited. Unknown, unsupported or exceeded capacity/topology rejects as `topology` before any Ticket starts; never serialize, split, retry or change runtime limits to fit a group.
-- The topology is a complete sequence of phase barriers. Reject partial-overlap graphs, nested groups, conditional edges, unresolved or external active edges, and any other topology this contract cannot represent rather than reinterpret it.
+## 2. Start or resume the next eligible owner
 
-Use rejection code `authorization`, `availability`, `empty`, `shape`, `identity-syntax`, `duplicate`, `relation`, `topology`, or `override` for the first applicable failure. Preserve accepted identity bytes, phase order, group membership, and relation pairs exactly. Child output cannot revise the plan. Explicit maintainer revisions follow step 3.
+Check live dependency delivery, conflicts, existing ownership, and capacity
+before each start. A closed issue or a ready label alone does not establish
+delivery or authorization. For Unattended work, require the current readiness
+and Prompt Audit `PASS` or explicit `BYPASS` for the exact contract; ordinary
+Assisted work does not require them by default.
 
-Select the Ticket coordinator's model/effort through `model-routing`, honoring explicit routes before an authorized task-based policy; without selection authority, inherit the active route. Use the table's Ticket-coordination assignment and any supplied constraints, not the thin-dispatch row or undiscovered Ticket content. An invoker may authorize a start override containing only exact supported `tools`, `cwd`, `model`, or `reasoning` lifecycle values; validate it before affected starts and reject unknown or unsupported fields as `override`. Preserve delivery mode, harness ceilings and the base outcome contract. Explicit user instructions and future routing updates follow step 3; freezing the plan does not freeze them. Forward model aliases or referenced routing guidance as instructions rather than guessing lifecycle values.
+For a new Ticket, start one fresh responsible conversation with the resolved
+`orchestrate` path. Supply:
 
-This step is complete only when one finite non-empty plan is frozen and any initial override is validated, or the invocation has been rejected before every lifecycle call.
+- Ticket identity, repository/workspace, accepted scope and governing-source
+  pointers;
+- availability, relevant user decisions and routing instructions;
+- dependency results and changes already integrated that affect this Ticket;
+- delivery boundary, required checks, shared-resource ownership, and any
+  existing candidate;
+- the chosen result channel and evidence expected at delivery or a blocker.
 
-## 2. Start the complete active phase
+The owner investigates, implements, tests, obtains independent review,
+adjudicates, corrects, and delivers. Give it the capabilities to do that work
+and obtain its reviewer within actual harness limits. A role name is not a
+capability grant.
 
-Treat every identity in `phases[phase]` as runnable because the invoker already resolved the plan. For each identity, derive `<repository>` only by removing its final `#<positive-integer>`, then use this base coordinator prompt, appending any applicable user instructions under `User steering`. Replace `<orchestrate-path>` with the resolved path of [orchestrate](../orchestrate/SKILL.md) relative to this file's physical directory; include that path in the child prompt without reading the coordinator skill:
+For a paused Ticket, prefer the same conversation and candidate. Send the
+resolved blocker, accepted decisions, and relevant intervening deliveries.
+Revalidate affected contracts and gates before resuming implementation. Keep one
+active owner for each candidate.
 
-```text
-Repository: <repository>
-Ticket: <ticket>
-Availability: <Assisted|Unattended>
-Read and follow <orchestrate-path> even if orchestrate is absent from your discovery list. Resolve all governing context and complete this Ticket yourself.
-Return exactly one single-line JSON object with required string fields "ticket": "<ticket>" and "status": one of "delivered", "blocked", "failed", or "cancelled". Include non-empty string "ref" only for an essential durable reference and non-empty string "blocker" only when applicable. Include no other fields or output.
-```
+Honor the transport's delivery contract. Managed direct calls return through the
+pending call; after asynchronous acceptance, retain the owner/session identity
+and release the turn for its completion event. Unknown acceptance calls for
+evidence recovery, not a duplicate start. For visible workers, agree on a result
+artifact or supported event through `tmux-worker`, preserving the user's editor
+and the worker conversation.
 
-Immediately before the phase's start calls, inspect `PI_PROVIDER`, `PI_MODEL`, and `PI_REASONING_LEVEL` only as routing preflight. Retain none of their values. Do not inspect PI routing at any other time.
+This step is complete when the eligible Ticket has one known owner and result
+path, or its launch/resumption has a concrete unresolved outcome recorded.
 
-Call `subagent_start` once per phase identity with its base prompt and applicable user steering, `maxDepth: 3`, and `maxChildren: 1`. Every call creates a fresh coordinator conversation without the parent transcript. Omit `tools` and `cwd` unless explicitly overridden so the coordinator inherits the root's complete active capability snapshot and repository route. Omit `model` and `reasoning` when the routing decision is inheritance. Only an explicitly authorized validated override applicable to this start may supply those fields; an authorized `model-routing` selection supplies only `model` and `reasoning`. Preserve exact supported values. Carry applicable standing routing instructions in `User steering` so the coordinator can route its own children without the parent transcript.
+## 3. Maintain continuity
 
-Choose delivery from the current Pi mode:
+On a result, user message, or authorized reminder, inspect the evidence needed
+for the next decision:
 
-- Interactive mode: use `delivery: "async"` for every call. Acceptance supplies each owner-scoped coordinator ID while the root remains responsive.
-- Print mode: use `delivery: "direct"` for every call. Each call remains pending through its bounded terminal result and emits no later pong.
+- **Progress:** keep the current owner working. Quiet output and elapsed time
+  alone do not establish a stall.
+- **User steering:** forward it to the relevant active or paused owner, or
+  retain it for the selected future Tickets. Owners resolve technical details
+  and durably record material contract changes. Ask only when the recipient or
+  decision is genuinely ambiguous.
+- **Blocked Ticket:** record the missing decision or dependency and preserve the
+  owner, candidate, evidence, and next step. Continue another selected Ticket
+  when its independence is established and required order permits it. If all
+  remaining work is blocked, report what is needed to resume.
+- **Concrete failure:** inspect the known conversation, transport outcome,
+  candidate state, and available evidence. Prefer recovering the current owner.
+  Before replacement within the Mission's recovery authority, confirm the
+  previous owner and any candidate-writing activity have stopped; preserve
+  branch/worktree, HEAD, dirty changes, checks, current hypothesis, and next
+  action. Transfer those facts to the replacement. Uncertain ownership remains
+  unresolved until evidence settles it.
+- **Plan change or cancellation:** apply clear user direction, pause affected
+  starts, and route the change to affected owners. Settle prior ownership before
+  replacement or conflicting work, preserving unaffected progress and delivered
+  evidence.
 
-Issue all N calls for a parallel phase together in the same assistant tool-call batch in the selected mode. Do not wait for any acceptance or result before issuing the other declared starts. Any start rejection stops the Mission and records `dispatch-<reason>` for that identity. Track every accepted call in the batch, start no other coordinator from this Mission, and allow every accepted sibling to settle normally before the final stop report. Do not retry a rejected start.
+A delivery operation may have succeeded before its result was lost. Inspect the
+target and tracker before choosing a recovery action. Recover missing evidence
+or remaining obligations rather than repeating already completed implementation
+or publication.
 
-Capture each accepted coordinator ID and any native child session reference. No identity from this Mission outside the active phase may start, and the next phase remains closed while any accepted coordinator in this phase is unsettled.
+Reminders are optional when authorized and useful. Use the existing scheduler's
+payload-free reminder with a self-contained reentry instruction identifying this
+Mission, known owners, evidence to inspect, and the next decision. Follow its
+acceptance, wake, cancellation, and untrusted-output rules. Inspect once per
+wake, then choose the next action; cancel outstanding reminders when their
+purpose ends. A cooperative tmux callback alone is not an automatic continuation
+mechanism. State the supported continuation path honestly when releasing an
+unattended turn.
 
-In interactive mode, report the accepted start batch and end the response without waiting, sleeping, polling, listing subagents, or doing dependent work. In print mode, emit no interim report while direct calls are pending.
+This step is complete when each observed event has a next action or recorded
+blocker, current ownership remains unambiguous, and independent eligible work
+can proceed within the Mission's constraints.
 
-This step is complete only when every identity in the active phase has one accepted fresh coordinator, or the Mission is stopping after a rejection and every accepted sibling is still tracked until settlement.
+## 4. Verify delivery and advance
 
-## 3. Route user steering without taking over implementation
+Treat an owner's report as a pointer to evidence. Verify the selected Ticket's
+declared boundary against the actual tracker and repository:
 
-While interactive coordinators are active, keep unrelated root conversation local without changing Mission state. The Mission reserves no idle root slots: independent work outside its envelope may proceed when compatibility and actual remaining capacity are affirmatively established. Keep that work's authority, lifecycle, and outcomes separate from Mission state.
+- issue/PR state and the relevant delivery record;
+- exact reviewed and final candidate commits, completed independent review,
+  adjudication, and required check results for the final state;
+- the pushed branch artifact or resulting target commit, including
+  source-to-squash mapping and content equivalence when squash delivery is used;
+- required tracker updates, cleanup, and any protected retained artifacts or
+  downstream consumers.
 
-Resolve explicit user steering from the request's meaning and known routing state. Accept coordinator IDs, Ticket identities, clear groups such as “all active coordinators” or “the next Tickets,” and an implicit current target when exactly one coordinator is active. Ask only when recipient, timing, or requested replacement is materially ambiguous; do not require numeric IDs or reconfirm clear authorization. Unrelated conversation stays local.
+This is delivery verification, not a second code review. Follow the evidence far
+enough to establish the claimed result; return gaps to the same owner. A JSON
+status, callback, closed issue, or successful merge alone cannot satisfy the
+whole boundary. An interrupted review remains incomplete even if partial
+findings exist.
 
-- Active targets: call `subagent_steer` once for each selected active owner-scoped ID with the user's instruction literally. Report forwarding acceptance or failure, not implementation success; do not restart or retry a coordinator.
-- Future targets: retain only the literal instruction and its selected not-yet-started Ticket scope; append it to each applicable start under `User steering`. “Leave this one to finish; apply to the next issues” changes only future starts in this Mission, with no active steering, interruption, restart, or promise about another session. Drop consumed instructions when no selected start remains.
-- Routing updates: explicit supported lifecycle values may replace the applicable override for future starts. A request to follow a file is an opaque instruction for the coordinator to read and apply, not permission for root file inspection or invented model IDs. A prompt addition cannot change an already running coordinator's model.
-- Corrections or revocations replace or remove the affected pending instruction/override as directed; retain only current pending state, not an instruction history. For active recipients, forward the correction rather than claiming to undo completed work.
+Record verified delivery and pass relevant integrated changes to subsequent
+owners. Parallel branch artifacts remain inputs until their planned integration
+Ticket verifies the combined state. Advance dependents only when their required
+delivery boundary is satisfied.
 
-Preserve the user's payload wording and formatting; interpret only routing scope, timing, and explicit override values. The root does not read referenced files, resolve implementation meaning, or invent plan changes. Coordinators handle governing-contract changes and applicable execution gates; routing steering does not waive them.
+Report compactly: delivered work, active owner, blocked work and required
+decisions, next eligible work, and evidence references. Mission completion
+requires every currently selected Ticket and the overall completion boundary to
+be verified; report partial completion explicitly otherwise.
 
-### Explicit plan revisions
-
-Apply a clear maintainer-supplied revision without redundant confirmation, including additions, removals, replacements, regrouping or reordering. Pause affected starts and forward direction to affected active owners. Apply literal supplied changes to the retained plan and validate the resulting complete plan under step 1, counting retained active owners toward capacity rather than starting them again. If semantic replanning is needed, the responsible planning context supplies it, not the dispatcher. Preserve delivered outcomes and safely unaffected active/future work rather than restarting the Mission.
-
-Before replacement or conflicting work starts, consume the affected prior owners' terminal results through steps 4–5. If the revision requires stopping an owner, use the cancellation mechanics below. Retain its cancellation/failure evidence without treating it as delivery. A pending revision does not make unsettled work safe. Owners resolve material contract changes durably and revalidate applicable audits before affected implementation; the dispatcher only routes this obligation. Once settlement and validation are complete, the explicit revision authorizes the new plan to proceed; prior stops remain evidence, not a veto on this authorization. Use retained delivered outcomes and unaffected active owners to determine the revised phase's remaining starts. Start only authorized remaining work within proven available capacity, never duplicating an active owner or restarting delivered work. Retrying a settled failed or cancelled identity requires explicit maintainer authorization.
-
-For an unambiguous deliberate request to stop one active coordinator:
-
-1. Record cancellation intent containing that coordinator's exact Ticket and ID.
-2. Stop new dispatch immediately; an authorized plan revision may resume affected starts only after settlement and validation above.
-3. Call `subagent_interrupt` exactly once for that coordinator. Recursive descendant cleanup is harness-owned; do not enumerate or interrupt its writer or reviewer separately.
-4. Leave every accepted sibling running and tracked until its own normal settlement.
-5. Treat interrupt acceptance only as `cancelling`. In interactive mode, end the turn without waiting or polling for its automatic pong.
-6. Map a missing JSON outcome to `cancelled` only when the later pong is mechanically `interrupted` and matches the recorded Ticket, coordinator, and cancellation intent.
-
-A rejected interruption request, mismatched interruption pong, unsolicited interruption, or interruption without matching intent is `failed`, never `cancelled`. When the target may still be active, retain it and consume its eventual terminal pong before final settlement; do not retry the interruption. Preserve its required native child session reference without continuing or inspecting that session.
-
-This step is complete only when every selected active target has a reported steering result, future instructions or overrides have their scope recorded, a material ambiguity has been raised, an unrelated message has remained local, or a targeted cancellation is pending or settled while every accepted sibling remains tracked.
-
-## 4. Settle every accepted coordinator through its mode path
-
-Interactive mode accepts one later pong per active coordinator, in any order. Print mode consumes only each pending start's direct terminal result and accepts no pong for it.
-
-For each accepted coordinator, require:
-
-- the selected mode's return path;
-- the exact active owner-scoped coordinator ID;
-- outer outcome `completed`, except for the matching deliberate interruption case;
-- exactly one untruncated final assistant message; and
-- no earlier settlement for that coordinator.
-
-A mode-correct pong proves that asynchronous runtime has closed even when its envelope is invalid. A missing result, duplicate return, mismatched ID, unsolicited interrupted outcome, truncation, or wrong path stops the Mission as failed. Retain only its compact transport reason and required native child session reference.
-
-If a wrong-path event names one accepted coordinator but does not prove it closed, call `subagent_interrupt` once for that coordinator solely for managed-lineage cleanup and consume its terminal path before marking it settled. That cleanup has no cancellation intent and remains failed even if its terminal outcome is `interrupted`. An unexpected or stale ID settles none of the active coordinators; record the transport failure and let every accepted coordinator settle through its own path. Do not interrupt accepted siblings. Never discard an active ID before its own terminal settlement, call `subagent_continue`, inspect a native session, sleep, poll, or use a status/list operation.
-
-Without an explicit authorized revision under step 3, any failure or non-delivered result prevents new coordinator starts. Continue consuming only the already accepted active phase results. Preserve every sibling's mechanically valid compact outcome even though that outcome cannot restart or complete the stopped Mission.
-
-This step is complete only when a running Mission has all active phase coordinators settled for transition, or a stopping Mission has every coordinator accepted before the stop mechanically settled.
-
-## 5. Validate each Ticket outcome mechanically
-
-Apply every check below to the complete final assistant message for its coordinator:
-
-1. The trimmed message is exactly one physical line of valid JSON decoding to one top-level object. Reject `null`, arrays, scalar JSON, Markdown fences, prefixes, suffixes, multiple envelopes, and duplicate narrative.
-2. The object has required keys `ticket` and `status`, with only optional `ref` and `blocker`. Reject missing keys, unknown keys, or duplicate JSON keys.
-3. `ticket` and `status` are strings. A present `ref` or `blocker` is a non-empty string.
-4. `ticket` equals that coordinator's frozen Ticket byte-for-byte.
-5. `status` is exactly `delivered`, `blocked`, `failed`, or `cancelled`.
-
-Use `syntax`, `shape`, `identity`, or `status` for the first failed check, discard the raw output, and retain only `outcome-<code>`. Classify that identity as failed and stop the Mission from starting more work.
-
-Do not adjudicate implementation semantics. Never verify delivery, resolve a `ref`, assess a blocker, inspect descendants, or decide whether an optional field should exist.
-
-This step is complete only when each settled coordinator has one compact valid outcome or one compact mechanical failure and no raw invalid output remains.
-
-## 6. Advance, stop, or complete
-
-Apply these phase-barrier transitions:
-
-- A matching `delivered` preserves that identity's compact outcome immediately. While a declared sibling remains active, keep the current phase open; only an explicit validated revision under step 3 may authorize remaining starts in that phase.
-- When every identity in the current authorized phase has matching `delivered` and no unresolved stop remains, advance the phase index exactly once. Start the complete next phase under step 2, or report `Mission complete` when no phase remains.
-- A matching `blocked`, `failed`, or `cancelled`, any invalid return, any transport failure, or any start rejection stops later dispatch immediately. Let all coordinators already accepted in the active phase settle, preserve every valid outcome, and then report the Mission stopped.
-- A delivered sibling cannot erase a stop, satisfy a failed identity, or authorize a later phase. A stop never itself authorizes retries, skips, revised topology or replacement work; explicit maintainer revisions use step 3.
-
-Count progress by matching delivered identities in the current authorized plan, including a delivered sibling in a phase that later stops. Retain prior delivered evidence even if a revision removes its identity. Count `not started` only from frozen identities whose coordinator was never accepted. Mission complete requires one matching delivered outcome for every identity in the current authorized plan and no unresolved stop or invalid transition.
-
-Parallelism exists only inside a declared, capacity-supported N-Ticket phase. Never overlap phases, invent concurrency, or silently serialize a declared group.
-
-This step is complete only when exactly one next phase is active, every accepted coordinator has settled into a stopped Mission, or all frozen identities have matching delivered outcomes and the Mission is complete.
-
-## 7. Report compact mechanical state
-
-Use `caveman`. Preserve exact Ticket identities and complete valid `ref`, `blocker`, and required native session reference values when supplied. Render a compact outcome as:
-
-```text
-<ticket> <delivered|blocked|failed|cancelled>[ (<reason>)][; ref <ref>][; blocker <blocker>][; session <session>]
-```
-
-Use these mode-accurate transition shapes:
-
-- Rejection: `Mission rejected (<code>); <root available|print settled; no pong pending>.`
-- Interactive phase start: `Phase <phase>/<phases> dispatched: <ticket> (#<coordinator>)[, ...]; <delivered>/<total> delivered; root available; outcomes pending.` Append selected model/effort or inheritance and a compact routing reason to the start report; keep the Ticket outcome schema unchanged.
-- Steering: `<ticket> instruction forwarded (#<coordinator>); root available; outcome pending.` Report each selected target and any forwarding failure.
-- Future steering: `Instruction recorded for <selected not-started Tickets>; active coordinators unchanged; root available.`
-- Accepted cancellation: `<ticket> cancellation requested (#<coordinator>); Mission stopping; <active> accepted coordinator(s) settling; root available.`
-- Active phase settlement: `<new compact outcome(s)>; <delivered>/<total> delivered; phase <phase>/<phases> settling: <ticket> (#<coordinator>)[, ...]; root available.`
-- Stop with accepted work pending: `<new compact outcome(s)>; <delivered>/<total> delivered; Mission stopping; settling <ticket> (#<coordinator>)[, ...]; root available.`
-- Interactive advance: `<new compact outcome(s)>; <delivered>/<total> delivered; phase <next>/<phases> dispatched: <ticket> (#<coordinator>)[, ...]; root available; outcomes pending.`
-- Interactive terminal stop: `<new compact outcome(s)>; <delivered>/<total> delivered; Mission stopped; <not-started> not started; root available.`
-- Interactive completion: `<new compact outcome(s)>; <total>/<total> delivered; Mission complete; root available.`
-- Print terminal: `<compact outcome 1> | ... | <compact outcome n>; <delivered>/<total> delivered; <Mission complete|Mission stopped; <not-started> not started>; print settled; no pong pending.`
-
-For a phase start with mixed acceptance and rejection, report each accepted ID and each `dispatch-<reason>`, state `Mission stopping`, and name every accepted coordinator still settling. Emit a terminal stop only after all accepted siblings settle. Report each new valid outcome once; retained compact state and cumulative delivered count preserve earlier progress without repeating implementation narrative.
-
-This step is complete only when one truthful compact transition has been emitted for every accepted start batch, control action, settlement turn, rejection, stop, or completion.
+This step is complete when the delivery claim is verified or its exact gap is
+recorded, and the next eligible owner is selected or the Mission has reached
+completion or a genuine stopping point.
 
 ## Example
 
-Interactive invocation:
+The user authorizes #10, #11, and #12, with #12 blocked by #10 and #11
+independent. The list is priority order rather than a required sequence. #10
+reaches an unresolved product decision. Preserve its conversation and worktree,
+record the Question, and dispatch #11. After #11's target, checks, review,
+tracker state, and cleanup are verified, record its delivery. When the user
+resolves #10, resume its original owner with that decision and any relevant
+changes from #11. Verify #10's delivery before starting #12.
 
-```text
-/dispatch-tickets
-This request authorizes the complete Mission plan below with Assisted availability. All affecting blocker and conflict relations are supplied; external relations are already resolved.
-{"phases":[["luizomf/omskills#60"],["luizomf/omskills#61","luizomf/omskills#62","luizomf/omskills#63"],["luizomf/omskills#64"]],"blockers":[["luizomf/omskills#60","luizomf/omskills#61"],["luizomf/omskills#61","luizomf/omskills#64"],["luizomf/omskills#62","luizomf/omskills#64"],["luizomf/omskills#63","luizomf/omskills#64"]],"conflicts":[["luizomf/omskills#60","luizomf/omskills#62"]]}
-```
-
-Here #64 is the preplanned integration Ticket for #61–#63. Assuming affirmative evidence of at least three available ROOT coordinator slots and same-batch starts in interactive mode, after the first phase delivers and all three parallel starts are accepted:
-
-```text
-luizomf/omskills#60 delivered; ref https://github.com/luizomf/omskills/issues/60; 1/5 delivered; phase 2/3 dispatched: luizomf/omskills#61 (#7), luizomf/omskills#62 (#8), luizomf/omskills#63 (#9); root available; outcomes pending.
-```
-
-If coordinator 7 returns blocked while coordinators 8 and 9 are active:
-
-```text
-luizomf/omskills#61 blocked; blocker dependency unavailable; 1/5 delivered; Mission stopping; settling luizomf/omskills#62 (#8), luizomf/omskills#63 (#9); root available.
-```
-
-If coordinator 8 then delivers its branch artifact, preserve it while 9 settles:
-
-```text
-luizomf/omskills#62 delivered; ref https://github.com/luizomf/omskills/issues/62; 2/5 delivered; Mission stopping; settling luizomf/omskills#63 (#9); root available.
-```
-
-If coordinator 9 also delivers, neither sibling revives the Mission; integration #64 remains unstarted:
-
-```text
-luizomf/omskills#63 delivered; ref https://github.com/luizomf/omskills/issues/63; 3/5 delivered; Mission stopped; 1 not started; root available.
-```
-
-Had every member delivered without a stop, phase 3 would dispatch #64 through the same coordinator route. Unknown root capacity, only child-limit evidence, or fewer than three available root slots instead rejects this entire plan before #60 starts.
-
-## Delivery boundary
-
-No child receives or returns `next`. This dispatcher has no tracker discovery, semantic scheduler, automatic retry or skip, heartbeat, stall diagnosis, timeout takeover, blocker resolution, runtime workflow engine, persistent workflow state, publishing, tagging, or release behavior. It has no wormhole or tmux dependency and no Queue/TTS side effect.
-
-The dispatcher owns only the frozen Mission envelope, scoped user steering, and mechanical routing. Ticket eligibility, governing sources, implementation, review, integration, tracker work, and semantic decisions remain with each fresh Ticket coordinator.
+If the user instead required strict #10 → #11 → #12 execution, retain that order
+and report #10's blocker.

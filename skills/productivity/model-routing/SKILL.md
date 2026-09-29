@@ -26,15 +26,15 @@ is text work. Check modality and context/output requirements separately from
 reasoning difficulty.
 
 A detailed plan can make implementation suitable for a smaller model, but does
-not eliminate new design decisions, debugging, or verification. A Ticket
-coordinator owns context resolution, review adjudication, corrections and
-delivery; it is not merely a thin dispatcher. Classify the responsibility being
-delegated, not the role label alone.
+not eliminate new design decisions, debugging, or verification. A Ticket owner
+handles investigation, implementation, tests, review adjudication, corrections,
+and delivery. A Mission dispatcher handles queue decisions, blocker recovery,
+and delivery verification. Classify the responsibility being delegated, not the
+role label alone.
 
 This step is complete when the assignment's uncertainty, impact, verification
-needs and required modalities are known from the available brief. A thin
-dispatcher uses the declared Ticket-coordinator assignment and supplied
-constraints; it does not discover Ticket content to classify it.
+needs and required modalities are known from the available brief and relevant
+Ticket evidence.
 
 ## 2. Select the route
 
@@ -121,8 +121,9 @@ whether the child result is acceptable or the work is delivered.
 - A settled design needs code and tests: start with the bounded-implementation
   row; new unresolved architecture may justify a different route or a return to
   the coordinator.
-- A dispatcher launches `orchestrate`: use the coordination/review row unless an
-  explicit route or supplied risk changes it. The dispatcher still reads no
-  Ticket implementation context.
+- A dispatcher launches `orchestrate`: classify the full technical ownership,
+  including investigation and review adjudication, using the judgment row unless
+  an explicit route changes it. A dispatcher that diagnoses operational blockers
+  also needs judgment; it is broader than mechanical forwarding.
 - A user pins the reviewer to a supported model at medium effort: preserve that
   choice even if the table suggests another starting point.

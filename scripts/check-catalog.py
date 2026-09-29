@@ -8,7 +8,6 @@ import re
 import sys
 from pathlib import Path
 
-
 ROOT = Path(__file__).resolve().parent.parent
 MANIFESTS = [
     ROOT / ".codex-plugin/plugin.json",
@@ -18,7 +17,6 @@ ALLOWED_BUCKETS = {"engineering", "productivity", "misc"}
 FORBIDDEN_BUCKETS = {"deprecated", "in-progress", "personal"}
 USER_ONLY_ACTIVE_SKILLS = {
     "design",
-    "dispatch-tickets",
     "implement",
     "model-routing",
     "teach",
@@ -38,9 +36,7 @@ def frontmatter_text(skill_file: Path) -> str:
 
 
 def frontmatter_name(skill_file: Path) -> str:
-    match = re.search(
-        r"(?m)^name:\s*['\"]?([^'\"\n]+)", frontmatter_text(skill_file)
-    )
+    match = re.search(r"(?m)^name:\s*['\"]?([^'\"\n]+)", frontmatter_text(skill_file))
     if not match:
         fail(f"missing frontmatter name: {skill_file.relative_to(ROOT)}")
     return match.group(1).strip()
@@ -72,9 +68,7 @@ def main() -> None:
     active_section = root_readme.split("## Active Skills", 1)[1].split(
         "## Optional Skills", 1
     )[0]
-    documented_active = re.findall(
-        r"\(\./(skills/[^)]+?)/SKILL\.md\)", active_section
-    )
+    documented_active = re.findall(r"\(\./(skills/[^)]+?)/SKILL\.md\)", active_section)
     normalized_entries = [entry.removeprefix("./") for entry in entries]
     if len(documented_active) != len(set(documented_active)):
         fail("README Active Skills contains duplicate skill links")
@@ -147,9 +141,7 @@ def main() -> None:
                 try:
                     resolve_skill_reference(markdown_file, reference, ROOT)
                 except ValueError as error:
-                    fail(
-                        f"{error}: {markdown_file.relative_to(ROOT)} -> {reference}"
-                    )
+                    fail(f"{error}: {markdown_file.relative_to(ROOT)} -> {reference}")
         bucket_readme_path = skill_dir.parent / "README.md"
         if not bucket_readme_path.is_file():
             fail(f"missing bucket README: {bucket_readme_path.relative_to(ROOT)}")

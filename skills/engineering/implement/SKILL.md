@@ -1,19 +1,33 @@
 ---
 name: implement
-description: Compose one explicitly authorized Ticket as a one-item Assisted or Unattended Mission through dispatch-tickets.
+description:
+  Compose one selected Ticket as a one-item Assisted or Unattended Mission
+  through dispatch-tickets.
 disable-model-invocation: true
 ---
 
 # Implement
 
-Before reading relative links, run `cd '<loaded-skill-directory>' && pwd -P` with this loaded file's directory to obtain the physical base, then resolve links against that printed directory. Resolve the source symlink before applying `..`. Read linked files even when their skills are absent from the discovery list.
+Use this convenience entry for one selected Mission Ticket. Ordinary Direct
+Assisted work can stay with its conversational owner.
 
-Accept exactly one semantically explicit Mission-authorized Ticket identity, independently resolved `Assisted` or `Unattended` availability, and explicit confirmation that all external blockers and conflicts are resolved. Required authority comes from the request's meaning, not caller provenance, ancestry, role, depth, dispatcher wording, or a magic phrase. In this same root invocation, read and follow [dispatch-tickets](../dispatch-tickets/SKILL.md) with the identity unchanged in this complete one-item Mission plan:
+Before reading relative links, run `cd '<loaded-skill-directory>' && pwd -P`
+with this file's directory, then resolve links from that physical base. Read
+linked files even when absent from discovery.
 
-```json
-{"phases":[["<owner>/<repository>#<ticket>"]],"blockers":[],"conflicts":[]}
-```
+1. Resolve exactly one Ticket identity, repository, implementation
+   authorization, and `Assisted` or `Unattended` availability from the accepted
+   request. Preserve established choices and ask only about a materially missing
+   input. This step is complete when the selected work and availability are
+   clear.
+2. In this same conversation, read and follow
+   [dispatch-tickets](../dispatch-tickets/SKILL.md) with that one-item queue and
+   the relevant user instructions. The dispatcher checks live relations and
+   existing ownership, starts or resumes the responsible `orchestrate`
+   conversation, and verifies its delivery. This step is complete when the
+   dispatcher has taken responsibility for that queue or reported its concrete
+   blocker.
 
-Forward the authorization, availability, and confirmation with the plan; do not infer any of them from Ticket selection alone. The dispatcher then validates and freezes the plan and creates the fresh `orchestrate` Ticket coordinator.
-
-If the selected identity, authorization, availability, or external-relations confirmation is missing or invalid, report the missing or invalid input and stop before loading the dispatcher. Do not read Ticket or repository content, call `orchestrate`, create a child, or perform implementation, coordination, review, verification, or delivery here. This skill is only an optional one-Ticket Mission convenience entry and owns no execution path independent of `dispatch-tickets`; ordinary Direct Assisted work does not require it.
+Example: “Implement example/project#42; I'll be available for Questions”
+supplies one selected Ticket and Assisted availability. Forward that request to
+the dispatcher; its tracker checks establish whether #42 can start.

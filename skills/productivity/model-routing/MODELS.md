@@ -18,8 +18,9 @@ the precedence defined in `SKILL.md`.
   testing, even when execution is complex. Thin dispatch of a resolved plan also
   uses Sol.
 - Use Astra `medium` for planning, strategy, investigation, bug diagnosis,
-  review, and coordination that owns decisions, adjudication, or corrections.
-  Prompt Audit interpretation and review both require this judgment route.
+  review, and Ticket ownership or Mission coordination that owns decisions,
+  recovery, adjudication, or corrections. Prompt Audit interpretation and review
+  both require this judgment route.
 - Route by unresolved decisions, not implementation complexity alone. Diagnosing
   a bug uses Astra; implementing and testing its settled fix uses Sol.
 - Default to `medium` when effort is unspecified; Luna's `xhigh` policy is the
@@ -31,14 +32,14 @@ or blocker rule rather than silently changing effort.
 
 ## Quick selection table
 
-| Delegated task                                                                                                                              | OpenAI candidate     | Anthropic candidate      | Google candidate                                                     |
-| ------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- | ------------------------ | -------------------------------------------------------------------- |
-| Mechanical edits, extraction, formatting, transcript cleanup, short grounded summaries                                                      | GPT-6 Luna — xhigh   | Claude Sonnet 5 — low    | Gemini 3.8 Flash — low                                               |
-| Implementation, writing, and testing with settled design and clear acceptance checks, even when complex                                     | GPT-6 Sol — medium   | Claude Sonnet 5 — high   | Gemini 3.8 Flash — medium                                            |
-| Thin dispatch of an already resolved plan, without implementation decisions                                                                 | GPT-6 Sol — medium   | Claude Sonnet 5 — medium | Gemini 3.8 Flash — low                                               |
-| Investigation, planning, strategy, bug diagnosis, review, Prompt Audit interpretation, or Ticket coordination with adjudication/corrections | GPT-6 Astra — medium | Claude Opus 5 — high     | Gemini 3.8 Flash — medium                                            |
-| Ambiguous architecture, difficult cross-system trade-offs, or complex integration decisions                                                 | GPT-6 Astra — medium | Claude Fable 5.1 — high  | Gemini 3.8 Flash — high; evaluate on the workload                    |
-| Elusive causal bugs, novel algorithms, or high-risk security/concurrency/migration analysis requiring deep reasoning                        | GPT-6 Astra — medium | Claude Fable 5.1 — high  | Gemini 3.8 Flash — high; capability must be established for the risk |
+| Delegated task                                                                                                                   | OpenAI candidate     | Anthropic candidate      | Google candidate                                                     |
+| -------------------------------------------------------------------------------------------------------------------------------- | -------------------- | ------------------------ | -------------------------------------------------------------------- |
+| Mechanical edits, extraction, formatting, transcript cleanup, short grounded summaries                                           | GPT-6 Luna — xhigh   | Claude Sonnet 5 — low    | Gemini 3.8 Flash — low                                               |
+| Implementation, writing, and testing with settled design and clear acceptance checks, even when complex                          | GPT-6 Sol — medium   | Claude Sonnet 5 — high   | Gemini 3.8 Flash — medium                                            |
+| Thin dispatch of an already resolved plan, without implementation decisions                                                      | GPT-6 Sol — medium   | Claude Sonnet 5 — medium | Gemini 3.8 Flash — low                                               |
+| Investigation, planning, strategy, bug diagnosis, review, Prompt Audit interpretation, or Ticket/Mission ownership with judgment | GPT-6 Astra — medium | Claude Opus 5 — high     | Gemini 3.8 Flash — medium                                            |
+| Ambiguous architecture, difficult cross-system trade-offs, or complex integration decisions                                      | GPT-6 Astra — medium | Claude Fable 5.1 — high  | Gemini 3.8 Flash — high; evaluate on the workload                    |
+| Elusive causal bugs, novel algorithms, or high-risk security/concurrency/migration analysis requiring deep reasoning             | GPT-6 Astra — medium | Claude Fable 5.1 — high  | Gemini 3.8 Flash — high; capability must be established for the risk |
 
 Use the more demanding row when mistakes are consequential or the brief leaves
 material decisions unresolved. Do not raise the row merely because the input is
