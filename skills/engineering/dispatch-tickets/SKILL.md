@@ -119,10 +119,16 @@ for the next decision:
   retain it for the selected future Tickets. Owners resolve technical details
   and durably record material contract changes. Ask only when the recipient or
   decision is genuinely ambiguous.
-- **Blocked Ticket:** record the missing decision or dependency and preserve the
-  owner, candidate, evidence, and next step. Continue another selected Ticket
-  when its independence is established and required order permits it. If all
-  remaining work is blocked, report what is needed to resume.
+- **Correctable findings or failing checks:** keep resolution with the same
+  owner; these are work to finish, not by themselves a blocked Ticket. Return
+  premature stop reports to that owner with the available in-scope next action,
+  without starting a reviewer-approval loop.
+- **Blocked Ticket:** require a concrete missing decision, dependency,
+  permission, or capability that prevents further in-scope progress. Preserve
+  the owner, candidate, evidence, and next step. Continue other eligible selected
+  Tickets when required order and dependencies permit; a local blocker does not
+  end the Mission. If no remaining Ticket has an eligible next action, report
+  what is needed to resume.
 - **Concrete failure:** inspect the known conversation, transport outcome,
   candidate state, and available evidence. Prefer recovering the current owner.
   Before replacement within the Mission's recovery authority, confirm the

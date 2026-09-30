@@ -28,7 +28,9 @@ independent adversarial reviewer for behavior and governing-document changes.
 It accepts a committed range or the complete work in progress and requires all
 supported findings, without sugar-coating or a top-findings cutoff. The
 responsible agent adjudicates every finding, fixes the candidate within scope,
-and verifies corrections. Purely editorial documentation can be self-reviewed. Delivery follows the repository's commit/push and optional PR
+and verifies corrections. Review is a one-way handoff, not an approval loop;
+corrections stay with the author. Purely editorial documentation can be
+self-reviewed. Delivery follows the repository's commit/push and optional PR
 conventions. Ordinary Direct Assisted work needs neither readiness nor Prompt
 Audit. When an audit is requested, its readiness meaning is the same in both
 availability modes.
@@ -118,17 +120,19 @@ owner: resolve Ticket and prepare exclusive worktree
   → evidence report to dispatcher or caller
 ```
 
-One completed adversarial review is the normal path; the reviewer investigates
-the complete candidate without relying on a later pass to find remaining
-problems. Additional review follows material changes or insufficient coverage,
-honoring explicit user limits. Record reviewed and final commits honestly;
-interrupted review remains incomplete.
+The reviewer investigates the complete candidate in one adversarial pass. The
+owner then resolves findings and continues debugging and verification without
+sending corrections for reviewer approval or another review. Completion depends
+on the accepted requirements and final-state evidence, not reviewer agreement.
+Record reviewed and final commits honestly; interrupted review remains
+incomplete and follows the caller's recovery authority.
 
-Serial execution is the default. A local blocker preserves its Ticket's owner,
-candidate, evidence, and next step. The dispatcher may continue another selected
-Ticket when independence is established and required order permits it. Resume
-the same owner when the blocker clears, carrying relevant intervening
-deliveries.
+Serial execution is the default. Correctable findings and failing checks stay
+with the owner as work to resolve. A genuine missing prerequisite preserves the
+Ticket's owner, candidate, evidence, and next step; it does not end the whole
+Mission. The dispatcher continues other eligible selected Tickets where required
+order and dependencies permit. Resume the same owner when the prerequisite is
+resolved, carrying relevant intervening deliveries.
 
 Concrete failures prompt diagnosis and recovery of the current owner first.
 Replacement within authority requires the previous candidate-writing activity to

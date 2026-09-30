@@ -99,11 +99,13 @@ capacity, and agreed integration boundaries. Preserve a required parallel
 topology when capacity is unavailable by reporting the unmet prerequisite rather
 than silently changing the agreement.
 
-A local blocker preserves its Ticket's owner, conversation, candidate, evidence,
-and next action. Other selected work can continue when independence is
-established and required order permits. A Mission reaches a stopping point when
-remaining work lacks an eligible next action or the user stops it, rather than
-whenever any one Ticket blocks.
+Correctable findings and failing checks remain work for the same Ticket owner,
+not by themselves reasons to stop. A blocker requires a concrete missing
+prerequisite preventing further in-scope progress. Preserve that Ticket's owner,
+conversation, candidate, evidence, and next action, and continue other eligible
+selected work when required order and dependencies permit. A Mission reaches a
+stopping point when remaining work lacks an eligible next action or the user
+stops it, rather than whenever any one Ticket blocks.
 
 The dispatcher routes user decisions and carries relevant integrated changes to
 later owners. It verifies the declared delivery boundary through tracker/PR
@@ -155,15 +157,17 @@ complete candidate, continue after blockers, and report every supported problem
 without a finding quota or softened severity. Evidence, not a desired verdict,
 determines findings; adversarial review does not invent requirements or defects.
 
-One completed adversarial review is the normal path, so the reviewer must finish
-the investigation without relying on a later pass. The author records a
-disposition for every finding, corrects the same candidate within scope, and
-verifies corrections. Additional independent review follows technical judgment
-when changes are material or
-coverage is insufficient, honoring explicit user limits. This is not an
-additional approval gate for routine work. Interrupted or partial review remains
-incomplete. Record reviewed and final SHAs and the changes between them
-honestly.
+Review is a one-way handoff, not an approval loop. The reviewer finishes the
+complete investigation in one pass. The author records an evidence-based
+disposition for every finding and keeps implementing, debugging, and verifying
+in-scope corrections without sending them for reviewer approval or another
+review. Completion depends on accepted requirements and final-state evidence,
+not reviewer agreement or finding count. A delivery-blocking defect is work to
+resolve, not by itself a blocked Ticket.
+
+Interrupted or partial review remains incomplete and needs recovery under the
+caller's existing authority; it cannot be counted as a completed pass. Record
+reviewed and final SHAs and the changes between them honestly.
 
 ### Exclusive candidates and integration
 
@@ -240,9 +244,9 @@ semantic state machine or wording-test framework.
 
 This revision replaces the frozen mechanical dispatcher, compulsory JSON
 outcomes, default separate writer, automatic global stop on a local blocker,
-transport-specific Mission topology, and special approval requirement for every
-additional implementation review. Existing phase constraints remain usable when
-the accepted Mission actually requires them. Audit eligibility, scoped
+transport-specific Mission topology, and repeated review of author corrections.
+Existing phase constraints remain usable when the accepted Mission actually
+requires them. Audit eligibility, scoped
 authority, independent review, exclusive ownership, verified integration,
 privacy, and safe cleanup remain in force. Historical Issues, audits, and
 delivery records are preserved rather than rewritten.

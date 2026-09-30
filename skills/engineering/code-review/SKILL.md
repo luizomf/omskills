@@ -178,21 +178,27 @@ after the reviewer has settled and the complete selected result channel has been
 recovered. Reject speculative hardening, style preferences, invented
 requirements, and claims contradicted by repository conventions.
 
-The responsible implementation owner records a disposition for every finding,
-including non-blocking and out-of-scope findings, and applies surviving in-scope
-corrections directly, in Direct Assisted or Mission work. Justify rejection or
-deferral with evidence and scope rather than silently dropping a finding.
-Resolve materially source-undetermined Questions with the available maintainer;
-in Unattended work, report the missing authority as a blocker. Findings outside
-the accepted work remain findings.
+Treat review as a one-way handoff, not an approval loop. The reviewer delivers
+all supported findings in one completed pass. The author owns resolution:
+validate every finding against the contract and evidence, fix confirmed in-scope
+problems, and justify rejected or deferred findings, including non-blocking and
+out-of-scope ones. Continue implementation, debugging, and verification as
+needed; do not send corrections back for reviewer approval or launch another
+review of those corrections. Completion depends on the accepted requirements
+and verification evidence, not reviewer agreement or finding count.
 
-One completed independent pass is the default. Use technical judgment for a
-fresh additional pass when corrections materially change the candidate or leave
-review coverage insufficient; verify minor corrections directly. Honor explicit
-user review limits. Record the reviewed and final candidate states and the
-corrections between them, rather than implying the reviewer inspected later
-changes. An incomplete attempt does not satisfy the independent-review
-requirement.
+A finding is work to resolve, not by itself a reason to stop. A delivery-blocking
+defect requires correction before delivery; it does not make the Ticket
+`blocked` while the owner can resolve it within scope and available authority.
+Resolve routine technical decisions from accepted sources. Only a genuinely
+missing decision, dependency, permission, or capability that prevents further
+in-scope progress follows the caller's blocker path. Findings outside the
+accepted work remain findings rather than new implementation scope.
+
+Record the reviewed and final candidate states and the corrections between
+them, rather than implying the reviewer inspected later changes. An incomplete
+attempt does not satisfy the independent-review requirement; recover it under
+the caller's existing recovery authority, not as a review/correction loop.
 
 Report the selected mode, coverage and capture/verification limitations, all
 findings ordered by severity with their dispositions and correction evidence,

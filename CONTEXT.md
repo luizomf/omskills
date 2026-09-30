@@ -269,9 +269,12 @@ implementation
   One completed adversarial review is the default: the reviewer challenges the
   complete candidate and reports every supported problem without sugar-coating
   or a finding quota; the owner records a disposition for every finding. The
-  reviewer cannot rely on a later pass to finish the investigation. Material
-  changes or insufficient coverage can justify additional review under technical
-  judgment and explicit user limits. Incomplete review does not count.
+  reviewer cannot rely on a later pass to finish the investigation. Review is a
+  one-way handoff, not an approval loop: the owner keeps correcting and verifying
+  without sending corrections for another review. Completion depends on accepted
+  requirements and final-state evidence, not reviewer agreement. Correctable
+  findings are work, not by themselves a blocked Ticket. Incomplete review needs
+  recovery under existing authority and does not count as a completed pass.
 - The dispatcher verifies review/check records, exact candidate/target evidence,
   tracker obligations, and cleanup without becoming another code reviewer.
 - Recover the current owner first. Before replacement within authority, settle

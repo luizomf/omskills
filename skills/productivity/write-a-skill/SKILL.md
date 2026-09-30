@@ -73,11 +73,11 @@ description:
    current contract, applicable governing sources, complete candidate, and
    verification instructions. Apply its adversarial contract: the reviewer
    reports every supported problem in the single planned pass; the responsible
-   writer adjudicates every finding, applies in-scope corrections, and verifies
-   them. Additional review follows material changes or insufficient coverage,
-   honoring explicit user limits. Purely editorial
-   documentation may be self-reviewed. A delegated helper returns its draft and
-   evidence to the responsible owner for that review. User feedback may
+   writer follows code-review's one-way handoff, adjudicates every finding,
+   applies in-scope corrections, and verifies them without seeking reviewer
+   approval of the corrections. Purely editorial documentation may be
+   self-reviewed. A delegated helper returns its draft and evidence to the
+   responsible owner for that review. User feedback may
    supplement but never substitute for required independent review.
 
    The skill is complete only when every accepted use case and every

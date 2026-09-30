@@ -82,7 +82,10 @@ evidence. Use [tdd](../tdd/SKILL.md) for test-first changes. Bounded research or
 design assistance can support your decisions within the task and available
 capabilities; you retain candidate ownership and implementation.
 
-Resolve routine decisions from accepted sources. Material user steering updates
+Resolve routine decisions from accepted sources. Failing checks and correctable
+defects are implementation work: keep investigating, fixing, and verifying while
+an in-scope next action is available. Report a blocker only with the concrete
+missing prerequisite that prevents that progress. Material user steering updates
 the affected contract and applicable gates before the changed implementation.
 Keep out-of-scope findings as findings. For integration, combine the verified
 predecessor commits and resolve the authorized integration work in this
@@ -121,16 +124,14 @@ the result artifact/event before starting. Recover complete findings and a
 completed review outcome; interrupted or partial review does not count as
 completed review.
 
-Check every finding against the contract and evidence, recording a disposition
-for each, including non-blocking and out-of-scope findings. Apply surviving
-in-scope corrections yourself and verify them. One completed review is the
-normal path; use technical judgment for an additional independent pass when corrections
-materially change the candidate or leave review coverage insufficient. Honor
-explicit user review limits. Record the reviewed and final SHAs honestly,
-including what changed after review.
+Apply code-review's one-way handoff: adjudicate every finding, correct confirmed
+in-scope problems, and verify the final result yourself. Keep resolving failures
+without returning corrections for reviewer approval or another review. Record
+the reviewed and final SHAs honestly, including what changed after review.
 
-This step is complete when independent review is complete, every finding has a
-disposition, and corrections have appropriate verification and review coverage.
+This step is complete when the independent pass is complete, every finding has
+an evidence-based disposition, and confirmed in-scope problems have verified
+corrections.
 
 ## 4. Verify and deliver
 
