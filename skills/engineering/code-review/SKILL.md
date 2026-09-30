@@ -31,6 +31,38 @@ Review against two separately reported criteria sets:
 - **Spec:** the exact Ticket, accepted behavior, acceptance criteria, omissions,
   incorrect behavior, and changes outside scope.
 
+## Adversarial review contract
+
+Challenge the candidate rather than seek confirmation that the author is right.
+The normal path is one review followed by author corrections and verification;
+perform the complete investigation now instead of relying on a later pass.
+
+- Inspect every candidate path and contract requirement, reading surrounding
+  context and tracing affected callers, consumers, tests, and governing sources
+  wherever needed to establish correctness. Challenge assumptions, failure and
+  boundary cases, regressions, omissions, and contradictory instructions that
+  apply to this candidate; passing checks and author claims are evidence to
+  examine, not substitutes for inspection.
+- Continue across the complete candidate after finding a blocker. Return every
+  concrete, supported problem found, including non-blocking ones, without a
+  finding quota or a top-findings cutoff. Consolidate duplicates only when all
+  affected locations and distinct consequences remain explicit.
+- State defects, impact, and severity directly, without sugar-coating, praise
+  padding, or downgrading a finding to soften the verdict. Be adversarial toward
+  the work, not the author. Evidence determines severity; inventing requirements,
+  speculative defects, or stylistic preferences is not adversarial review.
+- For every finding, identify Standards or Spec, severity/blocking status,
+  file/line (or exact artifact section), the violated rule or expected behavior,
+  supporting evidence, and consequence. Distinguish evidence gaps from confirmed
+  defects. Report relevant discovered problems outside the authorized correction
+  scope as findings without expanding the investigation into unrelated work.
+
+The pass is complete only when every candidate path and applicable requirement
+has been examined and every supported finding is reported. State coverage and
+verification limitations explicitly; an unexamined required area makes the
+review incomplete, not clean. A complete pass with no supported findings reports
+that result without manufacturing faults or claiming proof of defect-free work.
+
 ## Prepare the complete candidate
 
 ### Committed mode
@@ -132,11 +164,11 @@ mode, candidate path and branch, exact base/review SHAs for committed mode (or
 complete staged/unstaged/untracked capture for WIP), complete candidate or exact
 read-only commands that reproduce it there, a concise current contract,
 applicable governing sources and repository instructions, verification
-instructions and results, the selected result channel, and this contract. Do not
-supply the parent transcript by default:
+instructions and results, the selected result channel, this skill's resolved
+path, and this contract. Do not supply the parent transcript by default:
 
 ```text
-Review every supplied candidate path in one pass against Standards and Spec. Perform the review directly and return all decision-bearing findings, not a lossy summary. Report only concrete findings with file/line and evidence. Separate blockers from non-blocking observations and label each finding Standards or Spec. Treat capture limitations explicitly. Do not edit the candidate, push, approve, merge, spawn, delegate, invoke code-review, invent requirements, or expand the reviewed scope. If and only if a findings artifact path was supplied, write the complete result there and report that exact path.
+Read the supplied code-review skill and apply its Adversarial review contract directly to every candidate path against Standards and Spec. This is the single planned review before author corrections: complete the investigation and return every supported finding, not only blockers or a top-findings summary. Report coverage and limitations as well as the full findings. Do not edit the candidate, push, approve, merge, spawn, delegate, recursively invoke code-review, invent requirements, or expand the reviewed scope. If and only if a findings artifact path was supplied, write the complete result there and report that exact path.
 ```
 
 ## Adjudicate and report
@@ -146,11 +178,13 @@ after the reviewer has settled and the complete selected result channel has been
 recovered. Reject speculative hardening, style preferences, invented
 requirements, and claims contradicted by repository conventions.
 
-The responsible implementation owner adjudicates findings and applies surviving
-in-scope corrections directly, in Direct Assisted or Mission work. Resolve
-materially source-undetermined Questions with the available maintainer; in
-Unattended work, report the missing authority as a blocker. Findings outside the
-accepted work remain findings.
+The responsible implementation owner records a disposition for every finding,
+including non-blocking and out-of-scope findings, and applies surviving in-scope
+corrections directly, in Direct Assisted or Mission work. Justify rejection or
+deferral with evidence and scope rather than silently dropping a finding.
+Resolve materially source-undetermined Questions with the available maintainer;
+in Unattended work, report the missing authority as a blocker. Findings outside
+the accepted work remain findings.
 
 One completed independent pass is the default. Use technical judgment for a
 fresh additional pass when corrections materially change the candidate or leave
@@ -160,5 +194,6 @@ corrections between them, rather than implying the reviewer inspected later
 changes. An incomplete attempt does not satisfy the independent-review
 requirement.
 
-Report the selected mode, capture limitations, blockers ordered by severity,
-non-blocking observations, and a short verdict.
+Report the selected mode, coverage and capture/verification limitations, all
+findings ordered by severity with their dispositions and correction evidence,
+and a short verdict. Keep the verdict concise without truncating the findings.

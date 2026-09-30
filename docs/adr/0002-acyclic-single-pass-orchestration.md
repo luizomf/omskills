@@ -149,11 +149,17 @@ review of the complete candidate. Purely editorial documentation can be
 self-reviewed in Direct Assisted work. The reviewer receives the concise
 contract, applicable standards, complete candidate, exact identity/range, and
 verification evidence. It remains read-only and non-delegating, returning full
-findings to the implementation owner.
+findings to the implementation owner. Apply the adversarial contract in
+[code-review](../../skills/engineering/code-review/SKILL.md): challenge the
+complete candidate, continue after blockers, and report every supported problem
+without a finding quota or softened severity. Evidence, not a desired verdict,
+determines findings; adversarial review does not invent requirements or defects.
 
-One completed adversarial review is the normal path. The author adjudicates
-findings, corrects the same candidate, and verifies corrections. Additional
-independent review follows technical judgment when changes are material or
+One completed adversarial review is the normal path, so the reviewer must finish
+the investigation without relying on a later pass. The author records a
+disposition for every finding, corrects the same candidate within scope, and
+verifies corrections. Additional independent review follows technical judgment
+when changes are material or
 coverage is insufficient, honoring explicit user limits. This is not an
 additional approval gate for routine work. Interrupted or partial review remains
 incomplete. Record reviewed and final SHAs and the changes between them

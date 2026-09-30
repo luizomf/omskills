@@ -266,9 +266,12 @@ implementation
   delivery evidence.
 - The technical owner performs implementation, independent-review adjudication,
   corrections, verification, tracker work, and cleanup in the same conversation.
-  One completed review is the default; material changes or insufficient coverage
-  can justify additional review under technical judgment and explicit user
-  limits. Incomplete review does not count.
+  One completed adversarial review is the default: the reviewer challenges the
+  complete candidate and reports every supported problem without sugar-coating
+  or a finding quota; the owner records a disposition for every finding. The
+  reviewer cannot rely on a later pass to finish the investigation. Material
+  changes or insufficient coverage can justify additional review under technical
+  judgment and explicit user limits. Incomplete review does not count.
 - The dispatcher verifies review/check records, exact candidate/target evidence,
   tracker obligations, and cleanup without becoming another code reviewer.
 - Recover the current owner first. Before replacement within authority, settle

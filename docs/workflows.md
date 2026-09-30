@@ -24,10 +24,11 @@ research for an open factual question. Existing instructions and a clear request
 can already settle the delivery mode; ask about genuinely missing choices.
 
 [code-review](../skills/engineering/code-review/SKILL.md) supplies a fresh
-independent reviewer for behavior and governing-document changes. It accepts a
-committed range or the complete work in progress; the responsible agent
-adjudicates findings and fixes the candidate. Purely editorial documentation can
-be self-reviewed. Delivery follows the repository's commit/push and optional PR
+independent adversarial reviewer for behavior and governing-document changes.
+It accepts a committed range or the complete work in progress and requires all
+supported findings, without sugar-coating or a top-findings cutoff. The
+responsible agent adjudicates every finding, fixes the candidate within scope,
+and verifies corrections. Purely editorial documentation can be self-reviewed. Delivery follows the repository's commit/push and optional PR
 conventions. Ordinary Direct Assisted work needs neither readiness nor Prompt
 Audit. When an audit is requested, its readiness meaning is the same in both
 availability modes.
@@ -117,9 +118,11 @@ owner: resolve Ticket and prepare exclusive worktree
   → evidence report to dispatcher or caller
 ```
 
-One completed review is the normal path. Additional review follows material
-changes or insufficient coverage, honoring explicit user limits. Record reviewed
-and final commits honestly; interrupted review remains incomplete.
+One completed adversarial review is the normal path; the reviewer investigates
+the complete candidate without relying on a later pass to find remaining
+problems. Additional review follows material changes or insufficient coverage,
+honoring explicit user limits. Record reviewed and final commits honestly;
+interrupted review remains incomplete.
 
 Serial execution is the default. A local blocker preserves its Ticket's owner,
 candidate, evidence, and next step. The dispatcher may continue another selected

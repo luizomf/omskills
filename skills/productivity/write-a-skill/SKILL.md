@@ -68,12 +68,14 @@ description:
 4. **Verify and review.** Apply every item in the
    [Review Checklist](#review-checklist), checking the decision-bearing content
    of every bundled resource against every accepted use case. A skill behavior
-   change receives one fresh independent
+   change receives one fresh independent adversarial
    [code-review](../../engineering/code-review/SKILL.md) pass with the concise
    current contract, applicable governing sources, complete candidate, and
-   verification instructions; the responsible agent adjudicates findings and
-   applies corrections. Additional review follows material changes or
-   insufficient coverage, honoring explicit user limits. Purely editorial
+   verification instructions. Apply its adversarial contract: the reviewer
+   reports every supported problem in the single planned pass; the responsible
+   writer adjudicates every finding, applies in-scope corrections, and verifies
+   them. Additional review follows material changes or insufficient coverage,
+   honoring explicit user limits. Purely editorial
    documentation may be self-reviewed. A delegated helper returns its draft and
    evidence to the responsible owner for that review. User feedback may
    supplement but never substitute for required independent review.

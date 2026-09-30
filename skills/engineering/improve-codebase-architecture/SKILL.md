@@ -24,6 +24,8 @@ Before a delegated scan, read [model-routing](../../productivity/model-routing/S
 
 The initial prompt must let the worker execute without inherited conversation context and include the worker role, repository path, authoritative domain and architecture references, scan scope, one exact findings-artifact path, and required finding fields. State that the worker is a non-delegating leaf, must not invoke this skill, and must report the artifact path. Do not create separate workers for candidates or alternatives. Treat an over-depth or capability rejection before prompt acceptance as no scan, not partial evidence.
 
+Require an adversarial scan in the worker brief, and apply the same standard locally: challenge the existing architecture against observed behavior and the governing references, stating problems and consequences directly without sugar-coating. Report every supported deepening opportunity within the scan scope, not just the strongest candidates; distinguish observed problems from speculative benefits, and invent no defects to fill the report.
+
 The worker must follow repository references based on observed code rather than stop at a fixed directory or match quota. Use these categories to classify observed friction; they are neither an exhaustive navigation checklist nor a requirement to produce one finding per category:
 
 - domain behavior that requires navigation across multiple modules;

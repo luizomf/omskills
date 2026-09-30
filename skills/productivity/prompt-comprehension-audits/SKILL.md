@@ -146,14 +146,20 @@ After interpreter settlement, give the reviewer only:
 - the interpreter's complete response.
 
 Withhold any coordinator assessment, desired verdict, or desired answer. Keep
-the reviewer read-only and non-delegating. Require `PASS` or `DIVERGENCE` with
-quoted or paraphrased evidence for every requested outcome, scope boundary,
-required action or order, deliverable, completion point, or material ambiguity
-it finds added, omitted, or changed. The reviewer compares semantic meaning and
-excludes requirements arising only from its preferred implementation workflow.
+the reviewer read-only and non-delegating. Require one adversarial comparison:
+actively challenge semantic equivalence across every requested outcome, scope
+boundary, required action and order, deliverable, completion point, and material
+ambiguity. Continue after the first divergence and return every supported
+addition, omission, or change with quoted or paraphrased evidence and its
+semantic consequence; there is no finding quota or top-findings cutoff. State
+problems directly without sugar-coating or softening their impact. Compare
+meaning, not wording or the reviewer's preferred implementation workflow, and
+invent no divergences to satisfy the adversarial role.
 
-Reviewer settlement is complete only when its full decision-bearing response is
-available to the coordinator.
+Require `PASS` or `DIVERGENCE` with the complete findings and any coverage or
+evidence limitations. Reviewer settlement is complete only when all comparison
+dimensions have been examined and its full decision-bearing response is
+available to the coordinator; incomplete coverage cannot support `PASS`.
 
 ### 3. Adjudicate both passes
 

@@ -109,8 +109,9 @@ model-selectable launch and follow active harness authorization and inheritance.
 Give the reviewer the resolved review-skill path, candidate path and branch,
 exact full base/review SHAs, governing contract, applicable repository
 instructions, verification results, and a complete result channel. The reviewer
-inspects the candidate read-only and returns findings; you remain the
-implementation owner.
+applies code-review's adversarial contract read-only and returns every supported
+finding, including non-blocking problems, in this single planned pass; you
+remain the implementation owner.
 
 For managed calls, use the harness's actual direct/asynchronous delivery path.
 After asynchronous acceptance, retain the review identity and release the turn;
@@ -120,9 +121,10 @@ the result artifact/event before starting. Recover complete findings and a
 completed review outcome; interrupted or partial review does not count as
 completed review.
 
-Check each finding against the contract and evidence. Apply surviving in-scope
-corrections yourself and verify them. One completed review is the normal path;
-use technical judgment for an additional independent pass when corrections
+Check every finding against the contract and evidence, recording a disposition
+for each, including non-blocking and out-of-scope findings. Apply surviving
+in-scope corrections yourself and verify them. One completed review is the
+normal path; use technical judgment for an additional independent pass when corrections
 materially change the candidate or leave review coverage insufficient. Honor
 explicit user review limits. Record the reviewed and final SHAs honestly,
 including what changed after review.
