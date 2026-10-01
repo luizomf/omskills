@@ -42,10 +42,10 @@ Resolve from the request and accepted sources:
   completion boundary. A list, prose plan, or existing phased JSON plan can
   supply them. Several files or subtasks inside one request do not by themselves
   make a multi-Ticket Mission.
-- Required order, blocking and conflict relations, shared resources, and each
-  Ticket's delivery target. Distinguish a suggested priority order from a
-  required sequence or phase barrier. Preserve explicitly required order;
-  otherwise choose among eligible Tickets in priority order.
+- The execution plan recorded in the Tickets or their incorporated sources:
+  planned concurrency, required order, blocking/conflict relations, shared
+  resources, and delivery targets. Distinguish priority from a required sequence
+  or phase barrier.
 - The authorized stopping point and maintainer availability: `Assisted` for
   ordinary Questions, or `Unattended` for continuing within established
   decisions while the maintainer is away. Reuse those choices from the request.
@@ -60,12 +60,11 @@ determine eligibility. Follow external references as dependency evidence without
 adding them to the selected work. The Ticket owner rechecks its complete
 contract and applicable execution gates before implementation.
 
-Prefer serial execution. Parallel work requires established independence,
-compatible shared resources, actual available capacity, and an agreed
-integration boundary. Preserve an accepted parallel plan's requirements; resolve
-unavailable capacity rather than silently changing a required topology. Planning
-through [to-tickets](../to-tickets/SKILL.md) supplies branch-artifact and
-integration boundaries when needed.
+Follow the recorded execution plan and Ticket relations.
+[to-tickets](../to-tickets/SKILL.md) owns the concurrency decisions and delivery
+boundaries; dispatch checks live prerequisites and capacity before carrying them
+out. Resolve a mismatch with the accepted plan before affected starts rather
+than silently changing its required topology.
 
 Keep a concise Mission record: selected Tickets, order/relations, owner and
 conversation reference, candidate location, start time, last observed progress,
@@ -78,7 +77,7 @@ This step is complete when the selected queue, availability, constraints, and
 current ownership are known, or a specific missing decision prevents safe
 dispatch.
 
-## 2. Start or resume the next eligible owner
+## 2. Start or resume eligible owners
 
 Check live dependency delivery, conflicts, existing ownership, and capacity
 before each start. A closed issue or a ready label alone does not establish
@@ -106,14 +105,15 @@ resolved blocker, accepted decisions, and relevant intervening deliveries.
 Revalidate affected contracts and gates before resuming implementation. Keep one
 active owner for each candidate.
 
-Honor the transport's delivery contract. Managed direct calls return through the
-pending call; after asynchronous acceptance, retain the owner/session identity
-and release the turn for its completion event. Unknown acceptance calls for
-evidence recovery, not a duplicate start. For visible workers, agree on a result
-artifact or supported event through `tmux-worker`, preserving the user's editor
-and the worker conversation.
+Use the transport's supported concurrent launch path for planned parallel work.
+Managed direct calls return through their pending calls; after asynchronous
+submissions, retain each owner/session identity and release the turn for
+completion events. Unknown acceptance calls for evidence recovery, not a
+duplicate start. For visible workers, agree on a result artifact or supported
+event through `tmux-worker`, preserving the user's editor and worker
+conversations.
 
-This step is complete when the eligible Ticket has one known owner and result
+This step is complete when each chosen Ticket has one known owner and result
 path, or its launch/resumption has a concrete unresolved outcome recorded.
 
 ## 3. Maintain continuity
@@ -210,13 +210,9 @@ completion or a genuine stopping point.
 
 ## Example
 
-The user authorizes #10, #11, and #12, with #12 blocked by #10 and #11
-independent. The list is priority order rather than a required sequence. #10
-reaches an unresolved product decision. Preserve its conversation and worktree,
-record the Question, and dispatch #11. After #11's target, checks, review,
-tracker state, and cleanup are verified, record its delivery. When the user
-resolves #10, resume its original owner with that decision and any relevant
-changes from #11. Verify #10's delivery before starting #12.
-
-If the user instead required strict #10 → #11 → #12 execution, retain that order
-and report #10's blocker.
+The selected Tickets record #10 and #11 as concurrent work, with #12 dependent
+on #10. Check the recorded prerequisites and live capacity, then launch #10 and
+#11 through the supported concurrent path. If #10 needs a missing product
+decision, preserve its owner while #11 continues. Resume that same owner when
+the decision arrives, and verify #10's delivery before #12 proceeds. The
+Tickets' plan supplies this schedule; their numbering alone does not.

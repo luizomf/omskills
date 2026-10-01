@@ -50,9 +50,10 @@ artifacts; planning and audit conversations carry no hidden requirements. Do not
 split cohesive work just to manufacture parallelism or invent serial
 dependencies.
 
-Assign every ticket its actual blocking and conflict edges. A ticket with no
-blockers enters the frontier. It is eligible for concurrent work only when
-repository evidence shows no material conflict with active tickets.
+Decide what can safely run in parallel to save time. Use the actual
+dependencies, conflicts, shared resources, and delivery needs to make that
+planning decision. Record it with each Ticket's blocking and conflict relations
+so dispatch can follow the plan rather than reconstruct it.
 
 #### Wide-refactor exception
 
@@ -81,7 +82,8 @@ Present a numbered draft. For each ticket, include:
 - **Title:** one line naming the delivered behavior;
 - **Blocked by:** every ticket that must complete first, or none;
 - **Conflicts with:** every conflicting ticket and its shared surface, or none;
-  and
+- **Execution:** the concurrency decisions and required order not already
+  expressed by those relations; and
 - **What it delivers:** the end-to-end behavior that becomes demonstrable or
   verifiable.
 
@@ -91,13 +93,11 @@ shared-resource needs. Record maintainer availability independently when the
 source resolves it; otherwise leave that dimension for the adaptive pre-mutation
 gate rather than inferring absence from Mission topology.
 
-Show the proposed order, blockers, conflicts, and shared resources outside Git.
-Distinguish priority order from required sequence or phase barriers so execution
-can continue independent work around a local blocker. Prefer serial delivery.
-Propose parallel groups when their benefit, repository/contract independence,
-shared-resource compatibility, actual runtime capacity, and integration
-boundaries are established. Preserve explicitly required topology during
-execution; resolve an unavailable prerequisite rather than silently changing it.
+Show the planned execution, blockers, conflicts, and shared resources outside
+Git. Distinguish priority from required sequence or phase barriers, and record
+any capacity assumptions for dispatch to check at execution time. Preserve the
+user's established ordering constraints without treating list order as an
+execution dependency.
 
 Every implementation Ticket in a multi-Ticket Mission, including integration
 Tickets, requires an exclusive worktree and branch established by its technical
@@ -178,6 +178,9 @@ user's perspective>
 
 **Conflicts with:** <linked Ticket paths and shared surfaces, or "None">
 
+**Execution:** <planned concurrency and required order not already expressed by
+the relations, including relevant shared-resource or capacity assumptions>
+
 **Delivery:** <branch artifact or explicit integration target plus direct-push
 or pull-request method; every PR includes a durable source-to-squash mapping;
 integration also includes all predecessor identities, base/target, combination
@@ -229,6 +232,11 @@ durable exact-input evidence obligations, and post-delivery cleanup>
 
 - <each conflicting ticket reference plus the shared surface, or "None">
 
+## Execution
+
+<planned concurrency and required order not already expressed by the relations,
+including relevant shared-resource or capacity assumptions>
+
 </issue-template>
 
 Describe behavior and acceptance criteria without incidental file paths,
@@ -241,7 +249,7 @@ decision-bearing parts and identify it as prototype output.
 
 The publish step is complete when every approved Ticket exists separately with
 one category and `needs-triage`, and every parent, blocking, and conflict
-relation is recorded.
+relation and execution decision is recorded.
 
 ## Next-phase handoff
 
@@ -256,14 +264,15 @@ maintainer absence alone does not require one.
 Explicit authorization may accompany the audit request; after PASS, delivery
 proceeds in a fresh implementation context, separate from the audit coordinator.
 Audit-only requests stop after status/readiness recording. For a Mission, pass
-the selected finite queue, relations, required order, delivery boundaries, and
-established availability to [dispatch-tickets](../dispatch-tickets/SKILL.md). It
-checks live state, starts or resumes Ticket owners, preserves blocked work while
-advancing eligible independent Tickets, and verifies delivery. For one selected
-Ticket, [implement](../implement/SKILL.md) loads
-[orchestrate](../orchestrate/SKILL.md) in the current conversation, whether the
-maintainer stays or authorizes work while away. It adds no dispatcher or owner
-handoff. Pass resolved skill paths when launching owners for a multi-Ticket
-Mission. Every route preserves the accepted scope, applicable gates, exclusive
-ownership, independent review, and delivery evidence; readiness alone does not
-select work.
+the selected finite queue, recorded execution plan, relations, delivery
+boundaries, and established availability to
+[dispatch-tickets](../dispatch-tickets/SKILL.md). It follows those planning
+decisions, checks live state, starts or resumes Ticket owners, and verifies
+delivery. It preserves blocked work while advancing other eligible Tickets
+within the plan. For one selected Ticket, [implement](../implement/SKILL.md)
+loads [orchestrate](../orchestrate/SKILL.md) in the current conversation,
+whether the maintainer stays or authorizes work while away. It adds no
+dispatcher or owner handoff. Pass resolved skill paths when launching owners for
+a multi-Ticket Mission. Every route preserves the accepted scope, applicable
+gates, exclusive ownership, independent review, and delivery evidence; readiness
+alone does not select work.

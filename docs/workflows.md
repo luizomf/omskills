@@ -56,10 +56,12 @@ requires them; requested audit readiness means the same in both modes.
   follows the selected destination: conversation summary, Scratchpad, new Spec,
   existing tracked-item update, domain language or ADR.
 - [to-spec](../skills/engineering/to-spec/SKILL.md) synthesizes established
-  context into a new or updated tracker Spec.
+  context into a new or updated tracker Spec, preserving known execution
+  constraints.
 - [to-tickets](../skills/engineering/to-tickets/SKILL.md) turns a plan, Spec or
-  conversation into approved tracer-bullet Tickets with blocking/conflict
-  relations, candidate ownership and delivery boundaries.
+  conversation into approved tracer-bullet Tickets. During planning, decide what
+  can safely run in parallel to save time and record that decision with the
+  blocking/conflict relations, candidate ownership, and delivery boundaries.
 
 A planning path can therefore be:
 
@@ -111,10 +113,11 @@ several subtasks inside one request creates a Mission.
 
 [dispatch-tickets](../skills/engineering/dispatch-tickets/SKILL.md) is
 discoverable for carrying an authorized queue through delivery. Supply selected
-Tickets, relations, required order, and delivery boundaries in prose, a list, or
-an existing phased plan. The dispatcher reads live tracker/repository evidence,
-starts or resumes eligible owners, routes decisions, and verifies delivery. It
-keeps Mission continuity while technical work stays with each Ticket owner.
+Tickets, their recorded execution decisions, relations, required order, and
+delivery boundaries in prose, a list, or an existing phased plan. The dispatcher
+follows that plan, checks live tracker/repository evidence and capacity, starts
+or resumes eligible owners, routes decisions, and verifies delivery. It keeps
+Mission continuity while technical work stays with each Ticket owner.
 
 New dispatched Tickets get fresh owners running
 [orchestrate](../skills/engineering/orchestrate/SKILL.md) themselves; paused or
@@ -141,12 +144,13 @@ on the accepted requirements and final-state evidence, not reviewer agreement.
 Record reviewed and final commits honestly; interrupted review remains
 incomplete and follows the caller's recovery authority.
 
-Serial execution is the default. Correctable findings and failing checks stay
-with the owner as work to resolve. A genuine missing prerequisite preserves the
-Ticket's owner, candidate, evidence, and next step; it does not end the whole
-Mission. The dispatcher continues other eligible selected Tickets where required
-order and dependencies permit. Resume the same owner when the prerequisite is
-resolved, carrying relevant intervening deliveries.
+Scheduling comes from the Tickets' execution plan, not a fixed serial or
+parallel default. Correctable findings and failing checks stay with the owner as
+work to resolve. A genuine missing prerequisite preserves the Ticket's owner,
+candidate, evidence, and next step; it does not end the whole Mission. The
+dispatcher continues other eligible selected Tickets where required order and
+dependencies permit. Resume the same owner when the prerequisite is resolved,
+carrying relevant intervening deliveries.
 
 Track start time, last observed progress, and the next useful check for active
 owners. If a checkpoint is missed or progress is unclear, inspect evidence or
@@ -172,12 +176,13 @@ phase 3: integration Ticket → combines exact A/B commits → delivers target
 phase 4: dependent work
 ```
 
-Parallel work needs established independence, shared-resource compatibility,
-actual available capacity, and an agreed integration boundary. Explicitly
-required phase barriers remain constraints. The dispatcher verifies exact
-commits, review and check results, tracker/PR state, and cleanup rather than
-accepting a status string as proof. Mission completion requires every selected
-Ticket and the overall boundary to be verified.
+Planning establishes parallel work's independence, shared-resource
+compatibility, and integration boundary; dispatch checks the live prerequisites
+and capacity before launching it. Explicitly required phase barriers remain
+constraints. The dispatcher verifies exact commits, review and check results,
+tracker/PR state, and cleanup rather than accepting a status string as proof.
+Mission completion requires every selected Ticket and the overall boundary to be
+verified.
 
 Use existing subagents or tmux-worker for transport and authorized scheduler
 reminders when useful. A concise conversation record or ignored Markdown note

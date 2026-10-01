@@ -99,14 +99,18 @@ checks/actions, blockers, and verified deliveries. The conversation or an
 ignored Markdown note suffices. Durable requirements and delivery records use
 the configured tracker.
 
-The plan can be prose, a list, or an existing phased JSON plan. Record priority
-separately from required sequence or phase barriers. The dispatcher chooses
-eligible work inside the selected queue, honoring required order and live
-relations. Serial execution is the default. Parallel work requires proven
-independence, shared-resource compatibility, actual available transport
-capacity, and agreed integration boundaries. Preserve a required parallel
-topology when capacity is unavailable by reporting the unmet prerequisite rather
-than silently changing the agreement.
+The plan can be prose, a list, or an existing phased JSON plan. `to-spec`
+preserves established execution constraints. During decomposition, `to-tickets`
+decides what can safely run in parallel to save time, using dependencies,
+conflicts, shared resources, and delivery needs. Record those decisions and any
+capacity assumptions in the Tickets or their incorporated planning sources;
+distinguish priority from required sequence or phase barriers.
+
+The dispatcher follows that plan and checks live prerequisites and transport
+capacity before launching eligible owners, using the supported concurrent path
+for planned parallel work. It resolves mismatches with the accepted plan rather
+than silently changing required topology. This replaces a blanket scheduling
+default, not the safeguards around ownership or integration.
 
 Correctable findings and failing checks remain work for the same Ticket owner,
 not by themselves reasons to stop. A blocker requires a concrete missing
@@ -265,10 +269,11 @@ semantic state machine or wording-test framework.
 This revision replaces the frozen mechanical dispatcher, compulsory JSON
 outcomes, default separate writer, automatic global stop on a local blocker,
 transport-specific Mission topology, repeated review of author corrections,
-one-Ticket dispatch, and automatic Mission/audit gates upon maintainer
-departure. `orchestrate` remains available as the current owner's procedure
-while connected workflows converge on that responsibility. Existing phase
-constraints remain usable when the accepted Mission actually requires them.
-Audit eligibility, scoped authority, independent review, exclusive ownership,
-verified integration, privacy, and safe cleanup remain in force. Historical
-Issues, audits, and delivery records are preserved rather than rewritten.
+one-Ticket dispatch, automatic Mission/audit gates upon maintainer departure,
+and serial-by-default scheduling. `orchestrate` remains available as the current
+owner's procedure while connected workflows converge on that responsibility.
+Existing phase constraints remain usable when the accepted Mission actually
+requires them. Audit eligibility, scoped authority, independent review,
+exclusive ownership, verified integration, privacy, and safe cleanup remain in
+force. Historical Issues, audits, and delivery records are preserved rather than
+rewritten.

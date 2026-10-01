@@ -119,10 +119,11 @@ open-ended mandate
 **Mission plan**: The selected finite queue with unambiguous tracker/repository
 identities, priority order, required sequence or phase barriers,
 blocking/conflict relations, and delivery boundaries. Prose, lists, or existing
-phased JSON can express it. The dispatcher checks live state and chooses
-eligible work within those constraints. Serial execution is the default;
-parallel groups need established compatibility, actual capacity, and integration
-boundaries. _Avoid_: mandatory JSON schema, frozen cursor, open-ended discovery
+phased JSON can express it. Planning decides what can safely run in parallel to
+save time and records that decision with the Ticket relations and delivery
+boundaries. The dispatcher follows the plan, checks live prerequisites and
+capacity, and starts eligible work within those constraints. _Avoid_: mandatory
+JSON schema, frozen cursor, open-ended discovery
 
 **Mission envelope**: The scope established by Mission authorization: selected
 Tickets, accepted requirements, deferrals, ordering constraints, and completion
@@ -251,18 +252,19 @@ implementation
   Every route preserves applicable ownership, review, and delivery obligations.
   Continue through the user's stopping point without routine approval stops
   between implementation, review, corrections, and delivery.
-- Planning records required order separately from priority. The dispatcher
-  checks live dependencies and shared resources; a local blocker pauses its
-  Ticket and dependents, while independent selected work may proceed where order
-  permits.
+- `to-spec` preserves established execution constraints; `to-tickets` decides
+  what can safely run in parallel to save time and records the plan in the
+  Tickets. Required order is distinct from priority. The dispatcher follows
+  those decisions and checks live dependencies, resources, and capacity; a local
+  blocker pauses its Ticket and dependents while other planned eligible work can
+  proceed.
 - Each Mission implementation Ticket owns an exclusive branch/worktree, fixed
   base, exact reviewed and final commits, and one current technical owner.
   Review, corrections, and checks use that candidate. See the
   [worktree policy](skills/engineering/orchestrate/WORKTREES.md).
-- Serial delivery is the default. Parallelism requires actual available
-  capacity, proven independence, and explicit integration boundaries. Existing
-  required phase barriers remain constraints; transport capacity does not
-  silently revise them.
+- Execution topology is a planning decision based on the work, not a fixed
+  scheduling default. Dispatch checks actual capacity and preserves the recorded
+  concurrency, integration boundaries, and required phase barriers.
 - Parallel members deliver verified pushed branch artifacts. A planned
   integration Ticket, blocked by every member, combines verified exact inputs in
   its own candidate and reviews/checks the complete result before dependent

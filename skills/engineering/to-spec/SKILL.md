@@ -46,8 +46,11 @@ imagined prior conversation.
 
 4. Record test seams, interfaces, architecture hints, and other implementation
    guidance only when the supplied context or repository has already established
-   them. Mark missing implementation decisions as unresolved rather than
-   inventing them or interviewing the user during synthesis.
+   them. Preserve established ordering, concurrency, and shared-resource
+   constraints; [to-tickets](../to-tickets/SKILL.md) decides execution during
+   decomposition and records it in the Tickets. Mark missing implementation
+   decisions as unresolved rather than inventing them or interviewing the user
+   during synthesis.
 
 5. Write the Spec with the template below. Update the governing Spec found in
    step 3, or publish one new planning issue when none exists. Add no
