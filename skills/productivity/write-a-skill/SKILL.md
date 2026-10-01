@@ -22,8 +22,9 @@ description:
    the adaptive Delivery mode gate; drafting may not. Honor any semantic
    topology and availability choices already established, and ask only for a
    materially unresolved dimension. An untracked request or exactly one selected
-   Ticket may remain Direct Assisted work without mandatory readiness, Prompt
-   Audit, or dispatcher.
+   Ticket stays with its current conversational owner, whether the maintainer
+   stays or authorizes work while away. Absence alone adds no readiness, Prompt
+   Audit, dispatcher, or approval step.
 
    Resolve all of these questions:
    - What task or domain does the skill cover?
@@ -33,10 +34,10 @@ description:
    - Will it remain user-only by default, or does it qualify as
      agent-discoverable under
      [Description and Discovery](#description-and-discovery)?
-   - If it handles Tickets, does it preserve Direct Assisted work, readiness
-     versus execution authority, the dispatcher's queue/delivery responsibility,
-     the Ticket owner's continuous technical responsibility, and `implement`'s
-     one-item composition?
+   - If it handles Tickets, does it keep one request or Ticket with its current
+     owner, reserve dispatch for multiple selected Tickets, distinguish
+     readiness from execution authority, and preserve the authorized stopping
+     point?
    - If it selects among several user-only skills, is it a skill-selection
      Router Skill rather than a Ticket dispatcher?
    - If it launches model-selectable workers, does its caller compose
@@ -77,8 +78,8 @@ description:
    applies in-scope corrections, and verifies them without seeking reviewer
    approval of the corrections. Purely editorial documentation may be
    self-reviewed. A delegated helper returns its draft and evidence to the
-   responsible owner for that review. User feedback may
-   supplement but never substitute for required independent review.
+   responsible owner for that review. User feedback may supplement but never
+   substitute for required independent review.
 
    The skill is complete only when every accepted use case and every
    decision-bearing bundled resource is accounted for, every checklist item
@@ -131,11 +132,13 @@ pointer under the loaded `writing-great-skills` discovery rules; composition
 does not require a visible discovery entry. A Router Skill selects an installed
 skill or disclosed reference to load; it does not own Mission identities,
 topology or Ticket dispatch. `dispatch-tickets` owns Mission continuity,
-eligibility decisions within the selected queue, and delivery verification;
-`implement` retains its one-item composition. `orchestrate` keeps one Ticket's
-technical ownership through implementation, independent review, corrections, and
-delivery, including direct invocation. Entry checks selected-work authority,
-live gates, and actual capabilities.
+eligibility decisions within the selected queue, and delivery verification; it
+supervises multiple selected Tickets, including their time and progress, without
+writing code. `implement` loads `orchestrate` in the current conversation for
+one Ticket. `orchestrate` is that owner's procedure for implementation,
+independent review, corrections, and delivery, not another coordinator to
+launch. Maintainer availability does not change topology or ownership. Entry
+checks selected-work authority, applicable gates, and actual capabilities.
 
 Every description must:
 
@@ -191,9 +194,10 @@ After drafting, verify every item:
       verification basis, rather than copied into workflow instructions.
 - [ ] Each concept has one term, used consistently; Router Skill wording cannot
       imply Ticket-dispatch ownership.
-- [ ] Ticket routing, when present, permits Direct Assisted work without
-      readiness by default and treats readiness as eligibility rather than
-      Mission authorization.
+- [ ] Ticket routing keeps single-request ownership in the current conversation,
+      reserves dispatch for multiple Tickets, and does not add gates merely
+      because the maintainer leaves. Required readiness remains eligibility, not
+      execution authorization.
 - [ ] Every skill or sequence split has the required discovery or
       observed-sequence evidence.
 - [ ] Every bundled context pointer links directly to its target, with no

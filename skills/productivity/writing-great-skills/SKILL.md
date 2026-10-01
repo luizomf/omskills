@@ -48,17 +48,16 @@ the accepted scope authorizes that addition. Its context pointers must link each
 target and state the condition for reading it. This is a skill-selection role
 only. Mission continuity belongs to `dispatch-tickets` when used.
 
-For skills that route Ticket execution, preserve the existing delivery
-boundaries: Direct Assisted work can remain with its conversational owner, while
-Unattended work uses durable authority and applicable readiness/Prompt Audit
-gates. A Mission dispatcher receives the selected finite queue, relations,
-required order, delivery boundaries, and availability; it chooses eligible work
-within that scope and verifies delivery. `implement` composes a one-Ticket queue
-through the dispatcher. `orchestrate` owns one Ticket's implementation and
-independent-review adjudication in the same conversation, whether invoked
-directly or dispatched. New Tickets get fresh owners; paused work prefers its
-existing owner. Discovery helps select the skill; the accepted request selects
-the work.
+For skills that route execution, keep an untracked request or one selected
+Ticket with its current conversational owner. `implement` loads `orchestrate` in
+that conversation; `orchestrate` is the owner's delivery procedure, not a
+separate coordinator. Maintainer absence changes how unresolved Questions are
+handled, not ownership or topology, and adds no audit or approval gate by
+itself. Continue through the authorized stopping point. A dispatcher supervises
+multiple selected Tickets: queue, relations, order, time/progress, and verified
+delivery, without writing code. New dispatched Tickets get fresh owners;
+existing work keeps its owner. Discovery selects the skill; the accepted request
+selects the work and applicable gates.
 
 ## Descriptions
 

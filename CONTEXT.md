@@ -65,40 +65,43 @@ fit. `BYPASS` records an explicit maintainer waiver, not a successful audit.
 explicit `BYPASS` promotes a complete tracked implementation Ticket to
 `ready-for-agent`, preserving one category and one state role, regardless of
 availability. It establishes eligibility, not work selection. Audits are
-optional for ordinary Assisted work and required for Unattended eligibility. A
-material change to outcome, scope, workflow/order, deliverables, acceptance
-criteria, relations, or completion makes the prior status stale; remove failed
-or stale readiness. The Ticket body may contain the whole contract without a
-separate brief.
+required when requested or imposed by the accepted repository/task contract, not
+automatically by maintainer absence. A material change to outcome, scope,
+workflow/order, deliverables, acceptance criteria, relations, or completion
+makes the prior status stale; remove failed or stale readiness. The Ticket body
+may contain the whole contract without a separate brief.
 
 **Delivery topology**: The organization of responsibility resolved before
 implementation. Direct delivery keeps one conversational agent in end-to-end
-ownership. Mission topology coordinates selected Tickets and their dependency,
-conflict, integration, shared-resource, or multiple-owner needs. Several edits
-do not become multiple Tickets merely because they touch several files. _Avoid_:
+ownership, whether the maintainer is present or away. Mission topology
+coordinates multiple selected Tickets and their dependency, conflict,
+integration, shared-resource, or multiple-owner needs. Several edits do not
+become multiple Tickets merely because they touch several files. _Avoid_:
 autonomy level, fixed mode matrix
 
 **Direct delivery**: The route for an untracked request or one selected Ticket
-without a coordination need. In Assisted work, the conversational agent owns
-investigation, implementation, review adjudication, corrections, verification,
-and delivery. The accepted conversation is its active contract. Durable tracking
-is needed when the contract must survive the conversation or materially changes
-governing authority. Bounded research/design assistance can support the owner
-without transferring implementation responsibility. _Avoid_: unreviewed work,
-mandatory dispatcher route
+in the current conversation. The responsible agent owns investigation,
+implementation, review adjudication, corrections, verification, and delivery
+through the authorized stopping point, whether Assisted or Unattended. The
+accepted conversation is its active contract. Durable tracking is needed when
+the contract must survive the conversation or materially changes governing
+authority. Bounded research/design assistance can support the owner without
+transferring implementation responsibility. _Avoid_: unreviewed work, mandatory
+dispatcher route
 
 **Maintainer availability**: Whether the maintainer remains available for
 ordinary implementation Questions. `Assisted` means available. `Unattended`
-means execution relies on durable authority and reports genuinely unresolved
-decisions as blockers. Availability is independent of topology; changing Direct
-Assisted work to Unattended establishes a one-Ticket Mission. Silence does not
-change availability. _Avoid_: inferred absence, agent-count preference
+means the user has authorized continuation while away, with a stated stopping
+point and established decisions. Preserve the context needed to continue and
+report genuinely unresolved blockers. Availability changes neither ownership nor
+topology and adds no automatic audit or approval gate. Silence does not change
+availability. _Avoid_: inferred absence, one-Ticket Mission transition
 
-**Unattended Mission**: A Mission authorized to continue without ordinary
-maintainer decisions. Durable Ticket contracts, applicable readiness/audit
-gates, dependencies, recovery authority, and completion boundaries support
-progress in the maintainer's absence. A local blocker can coexist with eligible
-independent work. _Avoid_: every Mission, unattended direct delivery
+**Unattended Mission**: A multi-Ticket Mission authorized to continue while the
+maintainer is away. Ticket contracts, dependencies, established decisions, and
+the agreed stopping point support progress. Apply readiness/audit gates only
+when the task or repository requires them. A local blocker can coexist with
+eligible independent work. _Avoid_: every Mission, every unattended request
 
 **Delivery mode gate**: Resolve materially missing topology or availability
 before the first implementation mutation. Read-only investigation and
@@ -129,27 +132,29 @@ adjacent-work authorization, child-selected scope
 
 **Ticket dispatcher**: The Mission continuity role implemented by
 agent-discoverable `dispatch-tickets`. It reads tracker/repository evidence,
-maintains the selected queue and owner references, starts or resumes eligible
-owners, routes user decisions, recovers concrete failures within authority, and
-verifies delivery. It preserves blocked work while advancing proven-independent
-selected Tickets when required order permits. It leaves implementation and code
-review with each Ticket owner and reviewer. Its state can live in the
-conversation or an ignored Markdown note; existing tools provide transport and
-optional reminders. _Avoid_: implementation worker, code reviewer, runtime
-supervisor service
+maintains the multi-Ticket queue and owner references, tracks elapsed time and
+observed progress, starts or resumes eligible owners, routes user decisions,
+recovers concrete failures within authority, and verifies delivery. It preserves
+blocked work while advancing proven-independent selected Tickets when required
+order permits. It leaves implementation and code review with each Ticket owner
+and reviewer. Its state can live in the conversation or an ignored Markdown
+note; existing tools provide transport and optional reminders. _Avoid_:
+implementation worker, code reviewer, runtime supervisor service
 
-**One-Ticket convenience entry**: The user-only `implement` skill, which
-forwards one selected Ticket and established availability to `dispatch-tickets`
-as a one-item queue. It owns no separate implementation path. _Avoid_:
-orchestrate alias, second implementation owner
+**One-Ticket convenience entry**: The user-only `implement` skill, which loads
+`orchestrate` in the current conversation for one selected Ticket. It creates no
+new coordinator or dispatcher. Multiple selected Tickets use `dispatch-tickets`.
+_Avoid_: one-item dispatcher queue, second implementation owner
 
 **Ticket owner**: The technical responsible agent running `orchestrate` for one
-selected Ticket, formerly called the Ticket coordinator. The same conversation
-investigates, reproduces, implements, tests, obtains independent review,
-adjudicates findings, corrects, and delivers. It checks live authority/gates and
-actual capabilities, owns an exclusive candidate, and preserves context across
-blockers. New dispatched Tickets receive fresh owners; existing work prefers its
-current owner. Direct invocation is supported. A Prompt Audit context hands
+selected Ticket, formerly called the Ticket coordinator. `orchestrate` is the
+current owner's delivery procedure, not a request to launch another agent; it
+also supports an untracked bounded request. The same conversation investigates,
+reproduces, implements, tests, obtains independent review, adjudicates findings,
+corrects, and delivers. It checks live authority/gates and actual capabilities,
+owns an exclusive candidate, and preserves context across blockers. New
+dispatched Tickets receive fresh owners; existing work prefers its current
+owner. Direct invocation is supported. A Prompt Audit context hands
 implementation to a fresh owner. _Avoid_: separate default writer, Mission
 dispatcher, review leaf
 
@@ -230,20 +235,22 @@ implementation
 
 - Specs become approved Tickets; publication and readiness remain separate from
   execution authorization.
-- Direct Assisted work can use the accepted conversation without mandatory
-  tracking, readiness, or Prompt Audit. Material changes to governing authority
-  update the applicable durable sources.
-- Mission topology applies to multiple selected Tickets or real coordination.
-  Availability is resolved separately. An Unattended transition preserves
-  current work and establishes durable authority, resolved relations, readiness,
-  a current `PASS` or explicit `BYPASS`, and execution authorization.
+- Direct delivery can use the accepted conversation without mandatory tracking,
+  readiness, or Prompt Audit, whether the maintainer stays or authorizes work
+  while away. Material changes to governing authority update applicable sources;
+  explicitly required gates remain applicable.
+- Mission topology applies to multiple selected Tickets. Maintainer departure
+  preserves the current owner and topology, established decisions, recoverable
+  state, and authorized stopping point.
 - The final Ticket is the recoverable contract; historical audit records remain
   evidence for their exact version. Audit-only requests stop at recording;
   combined authorized delivery continues with a fresh implementation owner.
-- The dispatcher may be selected automatically for an authorized queue.
-  `implement` composes a one-Ticket queue; callers can also invoke `orchestrate`
-  directly. Every route preserves the same applicable ownership, gate, review,
-  and delivery obligations.
+- The dispatcher may be selected automatically for an authorized multi-Ticket
+  queue and stays through its completion even when one Ticket remains.
+  `implement` loads `orchestrate` in the current conversation for one Ticket.
+  Every route preserves applicable ownership, review, and delivery obligations.
+  Continue through the user's stopping point without routine approval stops
+  between implementation, review, corrections, and delivery.
 - Planning records required order separately from priority. The dispatcher
   checks live dependencies and shared resources; a local blocker pauses its
   Ticket and dependents, while independent selected work may proceed where order
@@ -270,13 +277,17 @@ implementation
   complete candidate and reports every supported problem without sugar-coating
   or a finding quota; the owner records a disposition for every finding. The
   reviewer cannot rely on a later pass to finish the investigation. Review is a
-  one-way handoff, not an approval loop: the owner keeps correcting and verifying
-  without sending corrections for another review. Completion depends on accepted
-  requirements and final-state evidence, not reviewer agreement. Correctable
-  findings are work, not by themselves a blocked Ticket. Incomplete review needs
-  recovery under existing authority and does not count as a completed pass.
-- The dispatcher verifies review/check records, exact candidate/target evidence,
-  tracker obligations, and cleanup without becoming another code reviewer.
+  one-way handoff, not an approval loop: the owner keeps correcting and
+  verifying without sending corrections for another review. Completion depends
+  on accepted requirements and final-state evidence, not reviewer agreement.
+  Correctable findings are work, not by themselves a blocked Ticket. Incomplete
+  review needs recovery under existing authority and does not count as a
+  completed pass.
+- The dispatcher supervises progress and time as well as delivery. It verifies
+  review/check records, exact candidate/target evidence, tracker obligations,
+  and cleanup without writing code or becoming another code reviewer. Elapsed
+  time prompts an evidence check, not automatic replacement; scheduler reminders
+  provide later checks when completion events alone are insufficient.
 - Recover the current owner first. Before replacement within authority, settle
   previous candidate-writing activity and preserve conversation,
   branch/worktree, HEAD, dirty changes, checks, hypothesis, and next action.

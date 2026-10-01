@@ -86,11 +86,10 @@ Present a numbered draft. For each ticket, include:
   verifiable.
 
 Before requesting approval, identify Mission topology whenever the breakdown
-selects multiple Tickets or establishes real dependency, conflict, integration,
-shared-resource, or multiple-writer coordination. Record maintainer availability
-independently when the source resolves it; otherwise leave that dimension for
-the adaptive pre-mutation gate rather than inferring absence from Mission
-topology.
+selects multiple Tickets; record their dependency, conflict, integration, and
+shared-resource needs. Record maintainer availability independently when the
+source resolves it; otherwise leave that dimension for the adaptive pre-mutation
+gate rather than inferring absence from Mission topology.
 
 Show the proposed order, blockers, conflicts, and shared resources outside Git.
 Distinguish priority order from required sequence or phase barriers so execution
@@ -100,12 +99,13 @@ shared-resource compatibility, actual runtime capacity, and integration
 boundaries are established. Preserve explicitly required topology during
 execution; resolve an unavailable prerequisite rather than silently changing it.
 
-Every Mission implementation Ticket, including a one-item or integration Ticket,
-requires an exclusive worktree and branch established by its technical owner
-before implementation. Read [the worktree policy](../orchestrate/WORKTREES.md)
-when planning candidate locations and cleanup. Before reading relative links,
-run `cd '<loaded-skill-directory>' && pwd -P` with this loaded file's directory
-to obtain the physical base, then resolve links against that printed directory.
+Every implementation Ticket in a multi-Ticket Mission, including integration
+Tickets, requires an exclusive worktree and branch established by its technical
+owner before implementation. Read
+[the worktree policy](../orchestrate/WORKTREES.md) when planning candidate
+locations and cleanup. Before reading relative links, run
+`cd '<loaded-skill-directory>' && pwd -P` with this loaded file's directory to
+obtain the physical base, then resolve links against that printed directory.
 Resolve the source symlink before applying `..`; read linked files even when
 their skills are absent from the discovery list. For planning, use that shared
 policy without invoking the coordinator.
@@ -122,19 +122,20 @@ Declare every delivery boundary in the approved breakdown:
   guessed during planning. The integration Ticket combines those verified inputs
   in its own candidate, reviews and verifies the complete combined state, and
   records input-to-result commits before dependent work advances.
-- Non-member/one-item Tickets state their normal integration target and
-  direct-push or pull-request delivery method explicitly. A pull request is
-  optional unless repository policy or the accepted request requires one; every
-  used pull request is squash-merged.
+- Non-member Tickets and individually selected Tickets state their integration
+  target and direct-push or pull-request delivery method explicitly. A pull
+  request is optional unless repository policy or the accepted request requires
+  one; every used pull request is squash-merged.
 - Require a durable source-to-squash mapping for every pull request, including
-  non-member and one-item delivery. Make verified owner-managed cleanup under
-  the shared worktree policy part of completion, assigning declared predecessor
-  cleanup to the integration owner after the final consumer completes.
+  non-member and individually selected Ticket delivery. Make verified
+  owner-managed cleanup under the shared worktree policy part of completion,
+  assigning declared predecessor cleanup to the integration owner after the
+  final consumer completes.
 
 For example, a compatible group A/B/C delivers three branch artifacts; the next
 phase is integration I, blocked by A, B and C; dependent D is blocked by I. I is
-an ordinary audited, authorized Ticket, not a dispatcher integration action.
-These decisions are part of breakdown approval, not another user gate.
+an ordinary authorized Ticket, not a dispatcher integration action. These
+decisions are part of breakdown approval, not another user gate.
 
 Ask the user to identify:
 
@@ -250,7 +251,7 @@ body is complete. Requested `prompt-comprehension-audits` checks comprehension
 and one-context fit; current `PASS` or explicit maintainer `BYPASS` applies
 `ready-for-agent` regardless of availability, without selecting work. Remove
 failed or materially stale readiness. Reuse an unchanged applicable audit;
-ordinary Assisted work does not require one.
+maintainer absence alone does not require one.
 
 Explicit authorization may accompany the audit request; after PASS, delivery
 proceeds in a fresh implementation context, separate from the audit coordinator.
@@ -258,9 +259,11 @@ Audit-only requests stop after status/readiness recording. For a Mission, pass
 the selected finite queue, relations, required order, delivery boundaries, and
 established availability to [dispatch-tickets](../dispatch-tickets/SKILL.md). It
 checks live state, starts or resumes Ticket owners, preserves blocked work while
-advancing eligible independent Tickets, and verifies delivery.
-[implement](../implement/SKILL.md) remains an optional one-Ticket entry through
-that dispatcher. A caller may also invoke [orchestrate](../orchestrate/SKILL.md)
-directly for one selected Ticket. Pass resolved skill paths to fresh owners.
-Every route preserves the accepted scope, applicable gates, exclusive ownership,
-independent review, and delivery evidence; readiness alone does not select work.
+advancing eligible independent Tickets, and verifies delivery. For one selected
+Ticket, [implement](../implement/SKILL.md) loads
+[orchestrate](../orchestrate/SKILL.md) in the current conversation, whether the
+maintainer stays or authorizes work while away. It adds no dispatcher or owner
+handoff. Pass resolved skill paths when launching owners for a multi-Ticket
+Mission. Every route preserves the accepted scope, applicable gates, exclusive
+ownership, independent review, and delivery evidence; readiness alone does not
+select work.

@@ -21,8 +21,9 @@ harness or test, adding instrumentation, applying a fix, or making any other
 implementation mutation, pass the adaptive Delivery mode gate. Honor topology
 and maintainer availability already established semantically; ask only for a
 materially unresolved dimension. An untracked request or exactly one selected
-Ticket may remain with the conversational responsible agent as Direct Assisted
-work without mandatory readiness, Prompt Audit, or dispatcher.
+Ticket stays with the current conversational owner through the authorized
+stopping point, whether the maintainer stays or authorizes work while away.
+Absence alone adds no readiness, Prompt Audit, or dispatcher.
 
 ## Phase 1 — Establish the symptom and feedback loop
 

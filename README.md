@@ -14,9 +14,9 @@ collection.
 ## What This Is
 
 `omskills` is a curated set of agent skills, prompts, setup docs, and helper
-scripts for Codex and other coding agents. Ordinary work uses Direct Assisted
-delivery: one conversational agent handles the accepted request while the
-maintainer is available.
+scripts for Codex and other coding agents. Ordinary work uses direct delivery:
+the current conversational agent handles the accepted request through the agreed
+stopping point, whether the maintainer stays or authorizes work while away.
 
 See the **[workflow map](docs/workflows.md)** for complete paths, dependencies
 and outcomes, including planning, coordinated Missions, investigations, creative
@@ -43,9 +43,9 @@ with no added workflow service.
 - Large or foggy work: `/wayfinder`
 - A resolved goal needing planning artifacts: `/to-spec` or `/to-tickets`
 - A bounded change: ask the agent directly
-- One selected Mission Ticket: `/implement`, or another
-  [Mission entry](docs/workflows.md#deliver-a-coordinated-mission)
-- A selected Mission queue: ask the agent to carry it through, or use
+- One selected Ticket: `/implement` or `/orchestrate` in the current
+  conversation
+- Multiple selected Tickets: ask the agent to carry the queue through, or use
   `/dispatch-tickets`
 - A bug or regression: `/diagnosing-bugs`
 - A factual investigation: `/research`
@@ -85,9 +85,10 @@ Active status and discovery are separate. Supporting harnesses keep
 agent-discoverable descriptions in model context; user-only skills are selected
 explicitly or loaded through a composing skill's file pointer. The active
 user-only skills are `design`, `teach`, `implement`, and `model-routing`.
-`dispatch-tickets` is agent-discoverable for Mission continuity; `orchestrate`
-is agent-discoverable for one Ticket's end-to-end technical ownership. The
-accepted request supplies the selected work and scope.
+`dispatch-tickets` is agent-discoverable for multi-Ticket supervision;
+`orchestrate` is agent-discoverable as the current owner's delivery procedure,
+not another agent to launch. The accepted request supplies the selected work and
+scope.
 
 Cross-skill links resolve from the referring file's physical directory,
 following symlinks before parent traversal. This works across macOS/Linux when
@@ -128,11 +129,11 @@ and delivery.
 - **[wayfinder](./skills/engineering/wayfinder/SKILL.md)**: map multi-session
   investigation work.
 - **[dispatch-tickets](./skills/engineering/dispatch-tickets/SKILL.md)**:
-  maintain a Mission queue and verify delivery.
-- **[implement](./skills/engineering/implement/SKILL.md)**: compose a one-Ticket
-  Mission through the dispatcher.
-- **[orchestrate](./skills/engineering/orchestrate/SKILL.md)**: own one Ticket
-  through implementation, review and delivery.
+  supervise multiple Tickets, track progress and time, and verify delivery.
+- **[implement](./skills/engineering/implement/SKILL.md)**: deliver one Ticket
+  in the current conversation.
+- **[orchestrate](./skills/engineering/orchestrate/SKILL.md)**: keep a bounded
+  change with its current owner through implementation, review, and delivery.
 - **[prototype](./skills/engineering/prototype/SKILL.md)**: evaluate throwaway
   logic, state or UI alternatives.
 - **[diagnosing-bugs](./skills/engineering/diagnosing-bugs/SKILL.md)**:

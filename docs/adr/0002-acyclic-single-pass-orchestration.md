@@ -21,24 +21,28 @@ writer, frozen JSON protocol, or global-stop behavior.
 
 ### Delivery authority and availability
 
-Direct Assisted delivery keeps an untracked request or one selected Ticket with
-its conversational responsible agent. The accepted conversation is the active
+Direct delivery keeps an untracked request or one selected Ticket with its
+current conversational responsible agent, whether the maintainer stays or
+authorizes continuation while away. The accepted conversation is the active
 contract. Tracking becomes necessary when the contract must survive that context
 or changes existing governing authority; update the applicable durable sources
 before delivery. Read-only investigation and reproduction may begin before all
 implementation decisions are settled.
 
-Mission topology coordinates multiple selected Tickets or real dependency,
-conflict, integration, shared-resource, or multiple-owner work. Maintainer
-availability is independent: Assisted supports ordinary Questions; Unattended
-relies on durable authority and reports genuinely unresolved decisions as
-blockers. Resolve only materially missing dimensions before implementation,
-using choices already established by the request without a fixed questionnaire.
+Mission topology supervises multiple selected Tickets, including their
+dependency, conflict, integration, and shared-resource needs. Several files or
+subtasks within one request do not create a Mission. Maintainer availability is
+independent: Assisted supports ordinary Questions; Unattended continues within
+established decisions and reports genuinely unresolved blockers.
 
-Changing Direct Assisted work to Unattended establishes a one-Ticket Mission.
-Preserve current work, establish durable contracts and resolved relations,
-obtain current readiness and Prompt Audit `PASS` or explicit `BYPASS`, and
-receive execution authorization. Silence does not change availability.
+“I'm leaving; continue through X” preserves the current owner and topology.
+Retain the decisions and recoverable state needed to reach X; no dispatcher,
+audit, readiness transition, or repeated approval is added merely because the
+maintainer leaves. Apply gates required by the accepted task or repository.
+Silence does not change availability. Continue to the authorized stopping point
+without routine approval stops between implementation, review, corrections, and
+delivery. Transport-required asynchronous turn release preserves continuation;
+it does not require the user to restart the work.
 
 Authorization selects a finite queue, scope, constraints, and completion
 boundary. It does not extend to adjacent findings or outside dependencies merely
@@ -56,8 +60,9 @@ Conversations and handoffs explain it without carrying hidden requirements.
 A current Prompt Audit `PASS` or explicit maintainer `BYPASS` makes a complete
 tracked implementation Ticket `ready-for-agent`, preserving one category and one
 state role regardless of availability. Readiness establishes eligibility, not
-selection. Ordinary Assisted work does not require an audit. A material contract
-change makes its older status stale; remove failed or stale readiness.
+selection. Audits apply when requested or required by the accepted task or
+repository, not automatically because the maintainer is absent. A material
+contract change makes its older status stale; remove failed or stale readiness.
 
 Prompt Audit remains a terminal sequential workflow. Its coordinator fixes the
 reference intent; one fresh read-only non-delegating interpreter reconstructs
@@ -79,16 +84,20 @@ status is separately authorized work.
 ### Lightweight Mission continuity
 
 `dispatch-tickets` is agent-discoverable. Its description supports automatic
-selection when the accepted task is to carry a selected queue through delivery.
-A direct user invocation and `implement`'s one-Ticket composition remain valid.
-Discovery selects the skill; the request selects the work.
+selection when the accepted task is to carry multiple selected Tickets through
+delivery. For only one Ticket, `implement` loads `orchestrate` in the current
+conversation; direct `orchestrate` invocation also stays there. A dispatcher
+already supervising a multi-Ticket Mission stays through its agreed boundary,
+even when only one Ticket remains. Discovery selects the skill; the request
+selects the work.
 
 The dispatcher reads tracker configuration, selected Tickets, relevant
 repository state, dependencies, shared resources, and delivery evidence. It
 maintains a concise record of the queue, constraints, current owners and
-conversation references, candidates, blockers/next actions, and verified
-deliveries. The conversation or an ignored Markdown note suffices. Durable
-requirements and delivery records use the configured tracker.
+conversation references, candidates, start times, last observed progress, next
+checks/actions, blockers, and verified deliveries. The conversation or an
+ignored Markdown note suffices. Durable requirements and delivery records use
+the configured tracker.
 
 The plan can be prose, a list, or an existing phased JSON plan. Record priority
 separately from required sequence or phase barriers. The dispatcher chooses
@@ -121,23 +130,28 @@ report; JSON is optional rather than a terminal protocol.
 
 ### Continuous technical ownership
 
-`orchestrate` owns one selected Ticket from investigation through delivery. Its
-same conversation reproduces, implements, tests, debugs, obtains review,
-adjudicates findings, corrects, verifies, and delivers. This replaces the
-default coordinator → writer handoff. Bounded research or design assistance can
-support the owner within the accepted task and actual capabilities.
+`orchestrate` is a delivery procedure for the current responsible agent, not a
+separate coordinator to launch. It covers an untracked bounded request or one
+selected Ticket. Its same conversation reproduces, implements, tests, debugs,
+obtains review, adjudicates findings, corrects, verifies, and delivers. This
+replaces the default coordinator → writer handoff. Bounded research or design
+assistance can support the owner within the accepted task and actual
+capabilities.
 
-New dispatched Tickets start with fresh owners. Paused work preferably resumes
-its existing conversation and candidate. Direct invocation may use the current
-responsible conversation, except that a Prompt Audit context hands
-implementation to a fresh owner. Authority comes from accepted selection and
-scope, not caller ancestry, role labels, or fixed delegation depth.
+New dispatched Tickets start with fresh owners; an already responsible
+conversation stays the owner rather than being wrapped in another coordinator.
+Paused work preferably resumes its existing conversation and candidate. Direct
+invocation uses the current responsible conversation, except that a Prompt Audit
+context hands the audited implementation contract to a fresh owner. Authority
+comes from accepted selection and scope, not caller ancestry, role labels, or
+fixed delegation depth.
 
-The owner checks the live Ticket, governing sources, applicable audit/readiness,
-repository instructions, setup, relations, candidate ownership, and actual
-implementation/review/delivery capabilities. Missing setup follows ADR 0001's
-scoped authorization for both owner and dispatcher. Material source-undetermined
-decisions go to the available maintainer or become Unattended blockers.
+The owner checks the accepted request or live Ticket, governing sources,
+applicable audit/readiness, repository instructions, setup, relations, candidate
+ownership, and actual implementation/review/delivery capabilities. Missing setup
+follows ADR 0001's scoped authorization for both owner and dispatcher. Material
+source-undetermined decisions go to the available maintainer or become
+Unattended blockers.
 
 Bug fixes preserve reproduction-first diagnosis and a faithful regression test
 where a suitable seam exists, with before/after evidence and limitations when
@@ -148,10 +162,10 @@ to the exact final candidate.
 
 Behavior changes and governing-authority changes receive a fresh independent
 review of the complete candidate. Purely editorial documentation can be
-self-reviewed in Direct Assisted work. The reviewer receives the concise
-contract, applicable standards, complete candidate, exact identity/range, and
-verification evidence. It remains read-only and non-delegating, returning full
-findings to the implementation owner. Apply the adversarial contract in
+self-reviewed in direct delivery. The reviewer receives the concise contract,
+applicable standards, complete candidate, exact identity/range, and verification
+evidence. It remains read-only and non-delegating, returning full findings to
+the implementation owner. Apply the adversarial contract in
 [code-review](../../skills/engineering/code-review/SKILL.md): challenge the
 complete candidate, continue after blockers, and report every supported problem
 without a finding quota or softened severity. Evidence, not a desired verdict,
@@ -171,12 +185,12 @@ reviewed and final SHAs and the changes between them honestly.
 
 ### Exclusive candidates and integration
 
-Each Mission implementation Ticket, including one-item and integration Tickets,
-owns an exclusive worktree and branch with a fixed full base SHA. Record and
-verify candidate path, branch, starting HEAD, reviewed commit, and final commit.
-Review, corrections, and checks stay on that candidate; unexpected drift needs
-diagnosis before further changes. Preserve unrelated work and the caller
-checkout.
+Each implementation Ticket in a multi-Ticket Mission, including integration
+Tickets, owns an exclusive worktree and branch with a fixed full base SHA.
+Record and verify candidate path, branch, starting HEAD, reviewed commit, and
+final commit. Review, corrections, and checks stay on that candidate; unexpected
+drift needs diagnosis before further changes. Preserve unrelated work and the
+caller checkout.
 
 Parallel members deliver verified pushed branch artifacts. Their planned
 integration Ticket names every predecessor, target/base, and combination
@@ -217,13 +231,19 @@ recovery, and directed retirement. Release asynchronous turns after acceptance
 so their completion events can arrive. A cooperative callback alone is not an
 automatic continuation mechanism.
 
-Optional authorized scheduler reminders can reenter the owning conversation for
-a bounded check. Their prompts restore the Mission, known owners, evidence, and
-next decision, following the scheduler's mechanical-outcome and untrusted-output
-rules. Cancel reminders when their purpose ends. An external observer can report
-concrete evidence to the responsible workflow without taking over its state.
-These workflows require no new coordinator code, daemon, watchdog, polling loop,
-or supervision service.
+The dispatcher supervises time and progress on the user's behalf, without
+writing code. Compare elapsed time with the work, last observed progress, and
+agreed checkpoints. Unclear progress calls for inspecting the known owner and
+available evidence or requesting a focused update, not automatic replacement.
+Use existing scheduler reminders when that supervision needs reentry beyond
+worker completion. Choose timing from the task and user instructions rather than
+adding universal timeouts. Their prompts restore the Mission, known owners, last
+progress, evidence, and next decision, following the scheduler's
+mechanical-outcome and untrusted-output rules. Cancel reminders when their
+purpose ends and state unavailable reentry honestly. An external observer can
+report concrete evidence to the responsible workflow without taking over its
+state. These workflows require no new coordinator code, daemon, watchdog,
+polling loop, or supervision service.
 
 Model-selectable launches use `model-routing` within explicit user choices,
 authorized policy, and active harness constraints; inheritance is the fallback.
@@ -244,9 +264,11 @@ semantic state machine or wording-test framework.
 
 This revision replaces the frozen mechanical dispatcher, compulsory JSON
 outcomes, default separate writer, automatic global stop on a local blocker,
-transport-specific Mission topology, and repeated review of author corrections.
-Existing phase constraints remain usable when the accepted Mission actually
-requires them. Audit eligibility, scoped
-authority, independent review, exclusive ownership, verified integration,
-privacy, and safe cleanup remain in force. Historical Issues, audits, and
-delivery records are preserved rather than rewritten.
+transport-specific Mission topology, repeated review of author corrections,
+one-Ticket dispatch, and automatic Mission/audit gates upon maintainer
+departure. `orchestrate` remains available as the current owner's procedure
+while connected workflows converge on that responsibility. Existing phase
+constraints remain usable when the accepted Mission actually requires them.
+Audit eligibility, scoped authority, independent review, exclusive ownership,
+verified integration, privacy, and safe cleanup remain in force. Historical
+Issues, audits, and delivery records are preserved rather than rewritten.

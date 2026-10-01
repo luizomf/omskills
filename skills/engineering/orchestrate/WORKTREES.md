@@ -1,8 +1,9 @@
 # Worktree and temporary-branch policy
 
 Apply this policy whenever authorized work creates or disposes of temporary Git
-worktrees or branches, in Direct Assisted or Mission delivery. Reading this
-reference does not invoke the Mission coordinator or require a new worktree.
+worktrees or branches, in direct or Mission delivery, whether the maintainer is
+present or away. Reading this reference does not invoke another owner or require
+a new worktree.
 
 ## Location and ownership
 
@@ -38,9 +39,9 @@ confirming that no integration consumer still needs the artifacts:
    their reasons. Cleanup failure leaves completion outstanding even when
    publication succeeded; report exact remaining artifacts and the failure.
 
-Preserve unrelated, failed, cancelled, dirty, undelivered, or still-consumed work
-and required integration inputs. A parallel member's pushed branch artifact is
-still a required input, not a leftover: its integration coordinator must clean
+Preserve unrelated, failed, cancelled, dirty, undelivered, or still-consumed
+work and required integration inputs. A parallel member's pushed branch artifact
+is still a required input, not a leftover: its integration owner must clean
 eligible declared predecessor artifacts after their final consumer completes.
 This grants no authority to touch another task's resources outside those inputs.
 No blanket deletion, history rewrite, or force-push is authorized.

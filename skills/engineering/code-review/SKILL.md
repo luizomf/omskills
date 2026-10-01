@@ -8,9 +8,9 @@ description:
 # Code Review
 
 Read applicable repository instructions and domain documents. Read issue-tracker
-configuration only when the review contract is tracked; an untracked Direct
-Assisted request uses its confirmed conversation as the contract and does not
-require tracker setup. If required configuration is unavailable, follow
+configuration only when the review contract is tracked; an untracked direct
+request uses its confirmed conversation as the contract and does not require
+tracker setup. If required configuration is unavailable, follow
 [setup-omskills](../setup-omskills/SKILL.md) and its scoped authorization gate
 before review. A read-only reviewer returns the missing prerequisite to its
 responsible caller instead of writing setup.
@@ -49,8 +49,9 @@ perform the complete investigation now instead of relying on a later pass.
   affected locations and distinct consequences remain explicit.
 - State defects, impact, and severity directly, without sugar-coating, praise
   padding, or downgrading a finding to soften the verdict. Be adversarial toward
-  the work, not the author. Evidence determines severity; inventing requirements,
-  speculative defects, or stylistic preferences is not adversarial review.
+  the work, not the author. Evidence determines severity; inventing
+  requirements, speculative defects, or stylistic preferences is not adversarial
+  review.
 - For every finding, identify Standards or Spec, severity/blocking status,
   file/line (or exact artifact section), the violated rule or expected behavior,
   supporting evidence, and consequence. Distinguish evidence gaps from confirmed
@@ -95,17 +96,17 @@ that result without manufacturing faults or claiming proof of defect-free work.
 
 For either mode, locate the current contract and every applicable repository
 instruction, governing source, and standard. The contract may be a tracked
-Ticket or Spec, or the concise confirmed request for untracked Direct Assisted
-work. If no governing contract exists, review Standards and observable
-correctness while stating that contract compliance could not be verified.
+Ticket or Spec, or the concise confirmed request for untracked direct work. If
+no governing contract exists, review Standards and observable correctness while
+stating that contract compliance could not be verified.
 
 ## Select the caller-safe review path
 
 This skill requires one isolated review pass; assigning a reviewer name does not
-create isolation, read-only behavior, tools, or delivery semantics. Direct
-Assisted code or behavior changes and changes to Specs, ADRs, workflow,
-security, or other governing authority require this fresh independent pass.
-Purely editorial documentation may instead be self-reviewed.
+create isolation, read-only behavior, tools, or delivery semantics. Direct code
+or behavior changes and changes to Specs, ADRs, workflow, security, or other
+governing authority require this fresh independent pass. Purely editorial
+documentation may instead be self-reviewed.
 
 - An interactive responsible agent, including a Ticket owner, may use the active
   harness's documented asynchronous delivery or
@@ -184,21 +185,21 @@ validate every finding against the contract and evidence, fix confirmed in-scope
 problems, and justify rejected or deferred findings, including non-blocking and
 out-of-scope ones. Continue implementation, debugging, and verification as
 needed; do not send corrections back for reviewer approval or launch another
-review of those corrections. Completion depends on the accepted requirements
-and verification evidence, not reviewer agreement or finding count.
+review of those corrections. Completion depends on the accepted requirements and
+verification evidence, not reviewer agreement or finding count.
 
-A finding is work to resolve, not by itself a reason to stop. A delivery-blocking
-defect requires correction before delivery; it does not make the Ticket
-`blocked` while the owner can resolve it within scope and available authority.
-Resolve routine technical decisions from accepted sources. Only a genuinely
-missing decision, dependency, permission, or capability that prevents further
-in-scope progress follows the caller's blocker path. Findings outside the
-accepted work remain findings rather than new implementation scope.
+A finding is work to resolve, not by itself a reason to stop. A
+delivery-blocking defect requires correction before delivery; it does not make
+the Ticket `blocked` while the owner can resolve it within scope and available
+authority. Resolve routine technical decisions from accepted sources. Only a
+genuinely missing decision, dependency, permission, or capability that prevents
+further in-scope progress follows the caller's blocker path. Findings outside
+the accepted work remain findings rather than new implementation scope.
 
-Record the reviewed and final candidate states and the corrections between
-them, rather than implying the reviewer inspected later changes. An incomplete
-attempt does not satisfy the independent-review requirement; recover it under
-the caller's existing recovery authority, not as a review/correction loop.
+Record the reviewed and final candidate states and the corrections between them,
+rather than implying the reviewer inspected later changes. An incomplete attempt
+does not satisfy the independent-review requirement; recover it under the
+caller's existing recovery authority, not as a review/correction loop.
 
 Report the selected mode, coverage and capture/verification limitations, all
 findings ordered by severity with their dispositions and correction evidence,

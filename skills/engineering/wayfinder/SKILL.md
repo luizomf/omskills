@@ -28,12 +28,11 @@ it. A request to work through a map authorizes selecting and resolving one
 in-scope investigation per session; continue established steps without asking
 for reconfirmation. The map is complete when no decision remains before
 execution. When the next step would implement the destination, pass it through
-the adaptive Delivery mode gate. Exactly one selected Ticket may use Direct
-Assisted work without readiness or Prompt Audit by default when the maintainer
-remains available; Mission and Unattended routes retain their applicable
-durable-contract, readiness, audit, relation, and authorization gates. Even
-Notes that include execution do not bypass whichever gates the resolved route
-requires.
+the adaptive Delivery mode gate. One selected Ticket stays with the current
+responsible conversation whether the maintainer stays or authorizes work while
+away; absence alone adds no readiness, Prompt Audit, or dispatcher. Multiple
+selected implementation Tickets use Mission dispatch. Preserve gates explicitly
+required by the task or repository; map Notes do not add execution authority.
 
 ## Refer to issues by title
 

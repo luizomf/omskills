@@ -22,16 +22,18 @@ the other skills here are agent-discoverable.
   into tracer-bullet tickets with blocking and conflict edges.
 - **[wayfinder](./wayfinder/SKILL.md)** - Map a huge or foggy effort into
   investigation tickets on the issue tracker.
-- **[implement](./implement/SKILL.md)** - Compose one explicitly authorized
-  Ticket as a one-item Assisted or Unattended Mission through
-  `dispatch-tickets`.
+- **[implement](./implement/SKILL.md)** - Deliver one selected Ticket in the
+  current conversation, whether the maintainer stays or authorizes work while
+  away.
 
-## Mission delivery
+## Delivery
 
-- **[dispatch-tickets](./dispatch-tickets/SKILL.md)** - Maintain the selected
-  queue, preserve owners across blockers, and verify delivery.
-- **[orchestrate](./orchestrate/SKILL.md)** - Own one Ticket's investigation,
-  implementation, independent review, corrections and delivery.
+- **[dispatch-tickets](./dispatch-tickets/SKILL.md)** - Supervise multiple
+  selected Tickets, track time and progress, preserve owners, and verify
+  delivery.
+- **[orchestrate](./orchestrate/SKILL.md)** - Follow the current owner's
+  implementation, independent review, correction, and delivery procedure for one
+  request or Ticket; loading it does not launch another coordinator.
 
 ## Typically agent-selected
 

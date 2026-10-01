@@ -18,11 +18,11 @@ Before writing the first test or changing implementation, pass the adaptive
 Delivery mode gate. Read-only inspection and reproduction may precede it. Treat
 an explicit semantic choice as sufficient; ask only when topology or maintainer
 availability remains materially unresolved. An untracked request or exactly one
-selected Ticket may remain Direct Assisted work without mandatory readiness,
-Prompt Audit, or dispatcher. The conversational responsible agent owns its
-decisions and implementation; material Questions go to the available maintainer
-without repeating choices already established by accepted sources or
-conversation.
+selected Ticket stays with its conversational owner through the authorized
+stopping point. Maintainer absence alone adds no readiness, Prompt Audit, or
+dispatcher. Resolve choices from accepted sources; ask the available maintainer
+only for missing input that blocks progress, without repeating established
+choices.
 
 ## Test criteria
 
@@ -54,12 +54,10 @@ Before writing any test:
    established repository conventions.
 3. Resolve each genuinely unconfirmed material seam through the applicable
    authority branch:
-   - In standalone interactive use, ask the explicit Question: "What's the
-     caller-visible interface, and which test seams should we exercise?" Obtain
-     confirmation before writing the first test at that seam.
-   - A Mission Ticket owner resolves the seam from its accepted contract, asks
-     the available maintainer for a materially missing decision in Assisted
-     work, or reports a blocker when Unattended authority cannot resolve it. A
+   - The responsible agent resolves the seam from the accepted contract. If
+     genuinely missing input blocks progress and the maintainer is available,
+     ask which caller-visible interface and seams to exercise. If the maintainer
+     is away and established authority cannot resolve it, report the blocker. A
      delegated helper returns the unresolved seam to that owner.
    - In any other print/headless invocation, report the unresolved seam to the
      caller and stop before writing tests. Print/headless execution never waits

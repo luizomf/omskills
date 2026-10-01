@@ -1,8 +1,9 @@
 ---
 name: prompt-comprehension-audits
 description:
-  Audit whether clean-context agents understand text as intended. Use for
-  Unattended Ticket eligibility or an explicitly requested comprehension audit.
+  Audit whether clean-context agents understand text as intended. Use when a
+  comprehension audit is requested or required by the accepted task or
+  repository.
 ---
 
 # Audit Prompt Comprehension
@@ -11,10 +12,11 @@ Test whether a fresh agent's interpretation is semantically equivalent to the
 intended request. The interpreter and reviewer provide advisory evidence; the
 audit coordinator owns the final status.
 
-Prompt Audit is an Unattended-execution eligibility gate. It is not applicable
-to Direct Assisted work by default, even when that work selects exactly one
-Ticket; run it there only when the maintainer requests an audit for complex
-intent. Assisted work can stay with its conversational implementation owner.
+Run Prompt Audit when requested or required by the accepted task or repository.
+Maintainer absence alone does not require it. One request or Ticket otherwise
+stays with its current implementation owner, whether the maintainer stays or
+authorizes continuation while away. When an audit is required, preserve its
+isolation and status rules below.
 
 For a tracked implementation Ticket, read the configured issue tracker and
 triage-label mapping before delegation. Requested audits use the same readiness

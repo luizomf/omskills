@@ -13,8 +13,9 @@ Read-only inspection may establish the question and likely scope first. Before
 creating or changing prototype files, pass the adaptive Delivery mode gate.
 Honor topology and maintainer availability already stated semantically and ask
 only for a materially unresolved dimension. An untracked request or exactly one
-selected Ticket may remain Direct Assisted work with the conversational
-responsible agent; readiness, Prompt Audit, and a dispatcher are optional there.
+selected Ticket stays with the current conversational owner through the
+requested prototype outcome, whether the maintainer stays or authorizes work
+while away. Absence alone adds no readiness, Prompt Audit, or dispatcher.
 
 ## Select one branch
 

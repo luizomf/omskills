@@ -171,22 +171,23 @@ Prompt Audit `PASS` or explicit maintainer `BYPASS`. Remove readiness when its
 audit fails or becomes materially stale. Readiness does not select the item or
 authorize implementation.
 
-Triage and readiness are not prerequisites for Direct Assisted work. An
-available maintainer may explicitly select exactly one Ticket for the
-conversational responsible agent without a Prompt Audit or dispatcher; the
-confirmed conversation is the active contract, and any accepted material change
-to existing governing authority must update that authority.
+Triage and readiness are not prerequisites for direct delivery unless the
+accepted task or repository requires them. The maintainer may select one Ticket
+for the current conversational owner and stay or authorize continuation while
+away. Neither absence nor that selection adds a Prompt Audit or dispatcher. The
+confirmed conversation is the active contract; material changes to existing
+governing authority update that authority.
 
-For authorized Mission delivery,
+For authorized multi-Ticket Mission delivery,
 [dispatch-tickets](../dispatch-tickets/SKILL.md) tracks the selected finite
 queue, checks live dependencies and delivery evidence, and starts or resumes a
 technical owner per Ticket. Supply required order, relations, delivery
 boundaries, and availability; discovery of ready work remains separate from
-selection. [implement](../implement/SKILL.md) composes a one-Ticket queue
-through that dispatcher, while [orchestrate](../orchestrate/SKILL.md) can own
-one selected Ticket directly. Pass resolved skill paths to fresh owners. These
-routes preserve applicable execution gates, exclusive ownership, independent
-review, and verified delivery.
+selection. For one Ticket, [implement](../implement/SKILL.md) loads
+[orchestrate](../orchestrate/SKILL.md) in the current conversation rather than
+launching another owner. Pass resolved skill paths to fresh dispatched owners.
+These routes preserve applicable execution gates, exclusive ownership,
+independent review, and verified delivery.
 
 ## Quick state override
 

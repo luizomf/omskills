@@ -109,7 +109,7 @@ State roles:
 - `needs-triage` — maintainer evaluation pending
 - `needs-info` — reporter information pending
 - `ready-for-agent` — recorded context is sufficient for eligibility; explicit
-  Mission authorization still selects execution
+  task authorization still selects execution
 - `ready-for-human` — human implementation required
 - `wontfix` — request will not be actioned
 

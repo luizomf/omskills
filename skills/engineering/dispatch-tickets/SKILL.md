@@ -3,17 +3,23 @@ name: dispatch-tickets
 description:
   Coordinate a multi-issue Mission by tracking dependencies, responsible agents,
   blockers, and verified deliveries. Use when asked to carry a selected queue of
-  Tickets through completion.
+  multiple Tickets through completion.
 ---
 
 # Dispatch Tickets
 
-Own the continuity of a Mission. Each [orchestrate](../orchestrate/SKILL.md)
-agent owns one Ticket's technical work; you maintain the authorized queue,
-choose the next eligible work, support its responsible agent, and verify
-delivery. Read tracker and repository evidence for those decisions.
-Implementation and code review stay with the Ticket owner and its independent
-reviewer.
+Supervise a Mission of multiple selected Tickets on the user's behalf. Each
+[orchestrate](../orchestrate/SKILL.md) owner handles one Ticket's technical
+work; you maintain the authorized queue, track progress and elapsed time,
+support its responsible agent, and verify delivery. Read tracker and repository
+evidence for those decisions. Implementation and code review stay with the
+Ticket owner and its independent reviewer.
+
+For an untracked request or only one selected Ticket, follow
+[orchestrate](../orchestrate/SKILL.md) in the current conversation instead of
+launching a dispatcher or another owner. The maintainer's absence does not
+change that route. Once a multi-Ticket Mission is underway, keep supervising it
+through its agreed boundary even when only one Ticket remains.
 
 Use the environment's existing subagents or
 [tmux-worker](../../productivity/tmux-worker/SKILL.md). This is an agent
@@ -34,14 +40,16 @@ Resolve from the request and accepted sources:
 
 - The finite set of selected Tickets, repository/tracker identities, scope, and
   completion boundary. A list, prose plan, or existing phased JSON plan can
-  supply them; one selected Ticket is also valid.
+  supply them. Several files or subtasks inside one request do not by themselves
+  make a multi-Ticket Mission.
 - Required order, blocking and conflict relations, shared resources, and each
   Ticket's delivery target. Distinguish a suggested priority order from a
   required sequence or phase barrier. Preserve explicitly required order;
   otherwise choose among eligible Tickets in priority order.
-- Maintainer availability: `Assisted` for ordinary Questions, or `Unattended`
-  for decisions within durable authority. Use the meaning already established in
-  the request; ask only about material missing choices.
+- The authorized stopping point and maintainer availability: `Assisted` for
+  ordinary Questions, or `Unattended` for continuing within established
+  decisions while the maintainer is away. Reuse those choices from the request.
+  Absence alone does not require an audit or another approval.
 - Existing owners, conversations, candidates, completed deliveries, and the
   permitted recovery scope. Check ongoing work before starting another owner.
 
@@ -60,10 +68,11 @@ through [to-tickets](../to-tickets/SKILL.md) supplies branch-artifact and
 integration boundaries when needed.
 
 Keep a concise Mission record: selected Tickets, order/relations, owner and
-conversation reference, candidate location, current state, blocker or next
-action, and delivery evidence. Use the current conversation or an ignored local
-Markdown note as appropriate. Durable requirements and delivery history belong
-in the configured tracker; private operational notes remain private.
+conversation reference, candidate location, start time, last observed progress,
+next check or action, blockers, and delivery evidence. Use the current
+conversation or an ignored local Markdown note as appropriate. Durable
+requirements and delivery history belong in the configured tracker; private
+operational notes remain private.
 
 This step is complete when the selected queue, availability, constraints, and
 current ownership are known, or a specific missing decision prevents safe
@@ -73,9 +82,8 @@ dispatch.
 
 Check live dependency delivery, conflicts, existing ownership, and capacity
 before each start. A closed issue or a ready label alone does not establish
-delivery or authorization. For Unattended work, require the current readiness
-and Prompt Audit `PASS` or explicit `BYPASS` for the exact contract; ordinary
-Assisted work does not require them by default.
+delivery or authorization. Apply readiness or Prompt Audit gates when required
+by the accepted task or repository, not merely because the maintainer is away.
 
 For a new Ticket, start one fresh responsible conversation with the resolved
 `orchestrate` path. Supply:
@@ -113,8 +121,12 @@ path, or its launch/resumption has a concrete unresolved outcome recorded.
 On a result, user message, or authorized reminder, inspect the evidence needed
 for the next decision:
 
-- **Progress:** keep the current owner working. Quiet output and elapsed time
-  alone do not establish a stall.
+- **Progress and elapsed time:** compare time spent with the task, last observed
+  progress, and any agreed checkpoint. When progress is unclear or a checkpoint
+  is missed, inspect the known owner and available evidence, or request a
+  focused update through its supported channel. Support the same owner with
+  clarification or authorized recovery. Quiet output or elapsed time alone does
+  not prove a stall or authorize replacement.
 - **User steering:** forward it to the relevant active or paused owner, or
   retain it for the selected future Tickets. Owners resolve technical details
   and durably record material contract changes. Ask only when the recipient or
@@ -125,10 +137,10 @@ for the next decision:
   without starting a reviewer-approval loop.
 - **Blocked Ticket:** require a concrete missing decision, dependency,
   permission, or capability that prevents further in-scope progress. Preserve
-  the owner, candidate, evidence, and next step. Continue other eligible selected
-  Tickets when required order and dependencies permit; a local blocker does not
-  end the Mission. If no remaining Ticket has an eligible next action, report
-  what is needed to resume.
+  the owner, candidate, evidence, and next step. Continue other eligible
+  selected Tickets when required order and dependencies permit; a local blocker
+  does not end the Mission. If no remaining Ticket has an eligible next action,
+  report what is needed to resume.
 - **Concrete failure:** inspect the known conversation, transport outcome,
   candidate state, and available evidence. Prefer recovering the current owner.
   Before replacement within the Mission's recovery authority, confirm the
@@ -146,14 +158,16 @@ target and tracker before choosing a recovery action. Recover missing evidence
 or remaining obligations rather than repeating already completed implementation
 or publication.
 
-Reminders are optional when authorized and useful. Use the existing scheduler's
-payload-free reminder with a self-contained reentry instruction identifying this
-Mission, known owners, evidence to inspect, and the next decision. Follow its
-acceptance, wake, cancellation, and untrusted-output rules. Inspect once per
-wake, then choose the next action; cancel outstanding reminders when their
-purpose ends. A cooperative tmux callback alone is not an automatic continuation
-mechanism. State the supported continuation path honestly when releasing an
-unattended turn.
+Use the existing scheduler for a later progress check when supervision needs a
+wake beyond worker completion. Choose timing from the task and any
+user-requested checkpoint, not a fixed universal timeout. A payload-free
+reminder carries this Mission, known owners, last progress, evidence to inspect,
+and the next decision. Follow the scheduler's acceptance, wake, cancellation,
+and untrusted-output rules. Inspect once per wake, then act or schedule the next
+useful check; cancel outstanding reminders when their purpose ends. If no
+automatic reentry is available, state that limitation rather than promise
+continuous monitoring. A cooperative tmux callback alone is not an automatic
+continuation mechanism.
 
 This step is complete when each observed event has a next action or recorded
 blocker, current ownership remains unambiguous, and independent eligible work
@@ -183,10 +197,12 @@ owners. Parallel branch artifacts remain inputs until their planned integration
 Ticket verifies the combined state. Advance dependents only when their required
 delivery boundary is satisfied.
 
-Report compactly: delivered work, active owner, blocked work and required
-decisions, next eligible work, and evidence references. Mission completion
-requires every currently selected Ticket and the overall completion boundary to
-be verified; report partial completion explicitly otherwise.
+Continue through the user's agreed stopping point; owner completion, review
+findings, or a progress report do not introduce approval stops. Report
+compactly: delivered work, active owner, blocked work and required decisions,
+next eligible work, and evidence references. Mission completion requires every
+currently selected Ticket and the overall completion boundary to be verified;
+report partial completion explicitly otherwise.
 
 This step is complete when the delivery claim is verified or its exact gap is
 recorded, and the next eligible owner is selected or the Mission has reached

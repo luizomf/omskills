@@ -9,31 +9,42 @@ branches. The linked skills own the detailed instructions. Full catalogs live in
 
 ## Deliver a bounded change
 
-**Direct Assisted** is the usual path for an untracked request or one selected
-Ticket while the maintainer is available and the work needs one responsible
-agent:
+**Direct delivery** is the usual path for an untracked request or one selected
+Ticket. The current conversational agent stays responsible whether the
+maintainer is available or authorizes work while away:
 
 ```text
-request → resolve scope and delivery mode → investigate / implement as needed
-        → independent review when required → verify → deliver
+user → current owner: investigate / implement → independent reviewer
+     → same owner: adjudicate / correct / verify / deliver → user
 ```
 
 The conversational agent owns decisions, corrections and delivery. Use the
 skills that help the task: diagnosis for a bug, TDD for test-first work, or
 research for an open factual question. Existing instructions and a clear request
-can already settle the delivery mode; ask about genuinely missing choices.
+can already settle the scope and stopping point; ask about genuinely missing
+choices. [orchestrate](../skills/engineering/orchestrate/SKILL.md) is this
+owner's delivery procedure, not another agent to launch.
+[implement](../skills/engineering/implement/SKILL.md) loads it in the current
+conversation for one selected Ticket.
+
+“I'm leaving; continue through push” keeps the same owner and route. Preserve
+established decisions and recoverable state, and continue through that boundary
+without inserting approval stops after implementation or review. Progress
+messages need not pause work. A genuine missing prerequisite may block progress;
+the user's absence alone adds no dispatcher or audit. Asynchronous review may
+require releasing a turn, but its completion resumes work without user approval.
 
 [code-review](../skills/engineering/code-review/SKILL.md) supplies a fresh
-independent adversarial reviewer for behavior and governing-document changes.
-It accepts a committed range or the complete work in progress and requires all
+independent adversarial reviewer for behavior and governing-document changes. It
+accepts a committed range or the complete work in progress and requires all
 supported findings, without sugar-coating or a top-findings cutoff. The
 responsible agent adjudicates every finding, fixes the candidate within scope,
 and verifies corrections. Review is a one-way handoff, not an approval loop;
 corrections stay with the author. Purely editorial documentation can be
 self-reviewed. Delivery follows the repository's commit/push and optional PR
-conventions. Ordinary Direct Assisted work needs neither readiness nor Prompt
-Audit. When an audit is requested, its readiness meaning is the same in both
-availability modes.
+conventions. Direct work needs neither readiness nor Prompt Audit by default,
+whether Assisted or Unattended. Apply them when the accepted task or repository
+requires them; requested audit readiness means the same in both modes.
 
 ## Turn an idea into a plan
 
@@ -91,11 +102,12 @@ is required.
 
 ## Deliver a coordinated Mission
 
-Use Mission topology for several selected Tickets or real coordination.
-Availability is a separate choice: **Assisted** with a maintainer available, or
-**Unattended** with current durable contracts, resolved relations and the
-eligibility above. Changing an ongoing Direct Assisted task to Unattended
-carries its recoverable state into an explicitly authorized one-Ticket Mission.
+Use Mission topology for multiple selected Tickets. The dispatcher provides the
+user's operational supervision: it tracks the queue, time and progress, supports
+owners, and verifies delivery without writing code. Availability is independent:
+**Assisted** with the maintainer available, or **Unattended** continuing within
+established decisions to the authorized stopping point. Neither absence nor
+several subtasks inside one request creates a Mission.
 
 [dispatch-tickets](../skills/engineering/dispatch-tickets/SKILL.md) is
 discoverable for carrying an authorized queue through delivery. Supply selected
@@ -104,13 +116,15 @@ an existing phased plan. The dispatcher reads live tracker/repository evidence,
 starts or resumes eligible owners, routes decisions, and verifies delivery. It
 keeps Mission continuity while technical work stays with each Ticket owner.
 
-[implement](../skills/engineering/implement/SKILL.md) remains a one-Ticket entry
-through that dispatcher.
-[orchestrate](../skills/engineering/orchestrate/SKILL.md) can also be invoked
-directly for one selected Ticket. New dispatched Tickets get fresh owners;
-paused work preferably resumes its original conversation.
+New dispatched Tickets get fresh owners running
+[orchestrate](../skills/engineering/orchestrate/SKILL.md) themselves; paused or
+already-owned work stays with its existing conversation. For only one selected
+Ticket, use the direct route above. A Mission already underway keeps its
+dispatcher through completion even when only one Ticket remains.
 
-Each owner keeps the technical work end to end:
+The topology is `user → dispatcher → Ticket owner → reviewer`, with findings
+returning to that same owner and delivery evidence to the dispatcher. Each owner
+keeps the technical work end to end:
 
 ```text
 owner: resolve Ticket and prepare exclusive worktree
@@ -133,6 +147,14 @@ Ticket's owner, candidate, evidence, and next step; it does not end the whole
 Mission. The dispatcher continues other eligible selected Tickets where required
 order and dependencies permit. Resume the same owner when the prerequisite is
 resolved, carrying relevant intervening deliveries.
+
+Track start time, last observed progress, and the next useful check for active
+owners. If a checkpoint is missed or progress is unclear, inspect evidence or
+request a focused update; time alone does not establish a stall. Use existing
+scheduler reminders when supervision needs a wake beyond worker completion,
+following the transport's lifecycle rather than polling. State any reentry
+limitation honestly, and cancel reminders once their purpose ends. No fixed
+universal timeout or new monitoring service is required.
 
 Concrete failures prompt diagnosis and recovery of the current owner first.
 Replacement within authority requires the previous candidate-writing activity to
@@ -182,7 +204,8 @@ map → one investigation → answer in tracker → updated map
 Research Tickets produce cited evidence; prototype Tickets seek a reaction to an
 artifact; grilling Tickets resolve decisions; task Tickets complete preparation.
 Human input participates where the investigation needs it. Once the destination
-is actionable, choose the appropriate Direct Assisted or Mission delivery route.
+is actionable, use direct delivery for one selected request or Mission dispatch
+for multiple selected Tickets.
 
 ## Investigate, repair and test
 

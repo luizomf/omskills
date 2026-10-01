@@ -1,197 +1,149 @@
 ---
 name: orchestrate
 description:
-  Own one selected Ticket from investigation through implementation, independent
-  review, and verified delivery. Use when responsible for completing a Mission
-  Ticket.
+  Carry a bounded change through implementation, independent review, and
+  verified delivery in the current conversation. Use when responsible for
+  completing one request or Ticket.
 ---
 
 # Orchestrate
 
-Be the technical owner of one selected Ticket. Keep investigation,
-implementation, tests, debugging, review adjudication, corrections, and delivery
-in this conversation. Bring in a fresh independent reviewer for the complete
-candidate. The default flow is:
+You are the responsible agent. Loading this skill means following the delivery
+procedure here, not launching another orchestrator. Keep the reasoning and
+responsibility established with the user through implementation and delivery.
+The default flow is:
 
 ```text
-owner: investigate → implement and test → independent reviewer
-     → adjudicate and correct → verify and deliver
+current owner: investigate → implement and test → independent reviewer
+             → adjudicate and correct → verify and deliver
 ```
 
-A dispatcher may start you, or an authorized caller may invoke you directly. Use
-the established conversation when already responsible for this Ticket; a new
-dispatched Ticket starts with a fresh owner. A conversation that conducted its
-Prompt Audit hands implementation to a fresh owner. Read the selected Ticket and
-resolve authority from the accepted request, rather than caller ancestry or role
-labels.
+For multiple selected Tickets, [dispatch-tickets](../dispatch-tickets/SKILL.md)
+provides Mission supervision and starts or resumes each Ticket's owner. An owner
+launched by that dispatcher follows this same procedure; it does not add another
+coordinator. Preserve existing ownership when resuming work. A context that
+performed a Prompt Audit of an implementation contract hands that implementation
+to a fresh owner under the audit's isolation rules.
 
 Before reading any relative link, run
 `python3 -c 'from pathlib import Path; import sys; print((Path(sys.argv[1]).resolve().parent / sys.argv[2]).resolve())' '<loaded-file-path>' '<relative-link>'`
 with this file's actual path and the link, then read the printed path. Pass
 resolved skill paths to fresh agents.
 
-## 1. Resolve the contract and candidate
+## 1. Establish the work and stopping point
 
-Read repository instructions, configured tracker operations, the complete Ticket
-and relevant comments, governing Spec/domain docs/ADRs, dependency results, and
-conflicts. Inspect the repository, live base, existing worktrees, affected
-code/tests, and shared resources. If required configuration is missing, follow
-[setup-omskills](../setup-omskills/SKILL.md) within its scoped authorization.
+Read repository instructions, affected code/tests, and the accepted request. For
+tracked work, read the complete Ticket, relevant comments, configured tracker
+operations, governing sources, and dependency results. Follow
+[setup-omskills](../setup-omskills/SKILL.md) if required configuration is
+missing. An untracked request needs no Ticket or tracker setup merely to use
+this skill.
 
-Establish:
+Reuse established scope, decisions, verification requirements, and delivery
+boundary. The user's presence changes how unresolved Questions are handled, not
+who owns the work. “I'm leaving; continue through X” keeps this conversation
+responsible through X. Record the decisions and recoverable state needed to
+continue; absence alone adds no Mission, readiness, or Prompt Audit gate. Honor
+an audit or other gate when the accepted task or repository requires it.
 
-- The selected identity, authorized scope, acceptance criteria, deferrals, and
-  delivery boundary.
-- `Assisted` or `Unattended` availability from the accepted request. In Assisted
-  work, use accepted sources and consult the maintainer for materially
-  unresolved decisions. Unattended work requires durable current authority,
-  resolved dependencies, `ready-for-agent`, and a current Prompt Audit `PASS` or
-  explicit `BYPASS` for the exact contract. Reuse unchanged applicable evidence;
-  a material contract change requires updating authority and the applicable
-  gate.
-- Actual implementation, verification, delivery, and independent-review
-  capabilities, including remote environments and ownership where relevant.
-- An exclusive Ticket-owned worktree and branch with an exact full base SHA.
-  Follow [WORKTREES.md](WORKTREES.md) for location, ownership, safe reuse, and
-  cleanup. Record the path, branch, and starting HEAD. On resumption, verify the
-  recorded candidate and current state before changing it.
+Inspect the live repository and candidate ownership. Use the existing checkout
+when appropriate for direct work. Each Mission Ticket owns an exclusive branch
+and worktree. Follow [WORKTREES.md](WORKTREES.md) when creating, reusing, or
+cleaning temporary artifacts. Record the candidate path, branch, starting HEAD,
+and fixed review base; preserve unrelated work. For integration, verify each
+predecessor's exact produced commit and delivery evidence before combining it.
 
-For integration Tickets, verify each predecessor's repository, remote branch,
-and exact full produced commit against durable delivery evidence. Establish the
-target and combination requirements before combining inputs.
+This step is complete when scope, candidate, capabilities, and stopping point
+permit work, or the concrete missing prerequisite is identified.
 
-Report a concrete blocker when required authority, dependencies, ownership,
-setup, or capabilities are missing. Preserve recoverable work and identify the
-decision or evidence needed. The dispatcher can keep independent work moving
-while this Ticket remains paused.
+## 2. Implement and verify
 
-This step is complete when the live contract, gates, ownership, fixed base, and
-delivery boundary permit implementation, or the specific blocker and recoverable
-state have been reported.
+Investigate, implement, test, and debug while retaining technical ownership. Use
+[diagnosing-bugs](../diagnosing-bugs/SKILL.md) for reproduction-first bug work
+and [tdd](../tdd/SKILL.md) for test-first changes. Bounded assistance and
+explicit user delegation choices can support the work without transferring the
+owner's decisions or introducing a coordinator layer.
 
-## 2. Investigate, implement, and test
+Apply user steering directly to the work and relevant helpers. Update affected
+durable authority when the contract changes materially. Resolve routine choices
+from accepted sources; consult an available maintainer when missing input blocks
+progress. While the maintainer is away, continue what the established authority
+resolves and preserve a concrete blocker for what it does not.
 
-Do the technical work yourself in the owned candidate, retaining the reasoning
-that connects evidence to changes. Use focused planning for work that benefits
-from it and the repository's implementation conventions.
+Check candidate identity before consequential changes, inspect the complete
+diff, and run the relevant checks. Failing checks and correctable defects are
+work to finish, not reasons to hand responsibility elsewhere or request routine
+approval. Prepare the complete candidate for review, recording its exact
+committed SHA or complete WIP state under the review contract.
 
-For bugs, follow [diagnosing-bugs](../diagnosing-bugs/SKILL.md): reproduce the
-reported failure and establish a faithful regression test where a suitable seam
-exists. If automation is impractical, record the limitation and before/after
-evidence. Use [tdd](../tdd/SKILL.md) for test-first changes. Bounded research or
-design assistance can support your decisions within the task and available
-capabilities; you retain candidate ownership and implementation.
+This step is complete when the candidate covers the accepted requirements and is
+ready for independent review, or a genuine blocker has a recoverable handoff.
 
-Resolve routine decisions from accepted sources. Failing checks and correctable
-defects are implementation work: keep investigating, fixing, and verifying while
-an in-scope next action is available. Report a blocker only with the concrete
-missing prerequisite that prevents that progress. Material user steering updates
-the affected contract and applicable gates before the changed implementation.
-Keep out-of-scope findings as findings. For integration, combine the verified
-predecessor commits and resolve the authorized integration work in this
-candidate.
-
-Verify path, branch, and expected HEAD before consequential changes; investigate
-unexpected drift rather than silently switching candidates. Run focused checks,
-inspect the complete diff from the fixed base, and commit the complete
-candidate. Record the exact full review SHA.
-
-This step is complete when the candidate covers every acceptance criterion,
-relevant checks have results, and the complete committed candidate is ready for
-independent review, or a blocker/failure has a recoverable handoff.
-
-## 3. Review and adjudicate
+## 3. Obtain independent review and resolve findings
 
 Follow [code-review](../code-review/SKILL.md) for one fresh independent
-adversarial review of the complete candidate. Use the environment's isolated
-subagent mechanism or [tmux-worker](../../productivity/tmux-worker/SKILL.md),
-preserving that transport's result and editor-safety rules. Read
+adversarial review of the complete candidate. Supply its resolved skill path,
+the concise contract, repository instructions, candidate identity and complete
+range/state, and verification results. Use the environment's isolated subagents
+or [tmux-worker](../../productivity/tmux-worker/SKILL.md); read
 [model-routing](../../productivity/model-routing/SKILL.md) before a
-model-selectable launch and follow active harness authorization and inheritance.
+model-selectable launch and honor active harness authorization and inheritance.
 
-Give the reviewer the resolved review-skill path, candidate path and branch,
-exact full base/review SHAs, governing contract, applicable repository
-instructions, verification results, and a complete result channel. The reviewer
-applies code-review's adversarial contract read-only and returns every supported
-finding, including non-blocking problems, in this single planned pass; you
-remain the implementation owner.
+Follow the transport's actual result-delivery contract. After asynchronous
+acceptance, retain the review identity and release the turn; resume from its
+matching completed result without requiring user approval. Unknown acceptance
+requires evidence recovery before another launch. Recover the full findings and
+completed outcome; partial or interrupted review is not completed review.
 
-For managed calls, use the harness's actual direct/asynchronous delivery path.
-After asynchronous acceptance, retain the review identity and release the turn;
-adjudicate after its matching completed result arrives. Unknown acceptance
-requires evidence recovery before another launch. For visible workers, agree on
-the result artifact/event before starting. Recover complete findings and a
-completed review outcome; interrupted or partial review does not count as
-completed review.
-
-Apply code-review's one-way handoff: adjudicate every finding, correct confirmed
-in-scope problems, and verify the final result yourself. Keep resolving failures
-without returning corrections for reviewer approval or another review. Record
-the reviewed and final SHAs honestly, including what changed after review.
+Adjudicate every finding, fix confirmed in-scope problems, and verify
+corrections in this conversation. Review is a one-way findings handoff, not an
+approval loop: continue resolving the work without sending corrections back for
+reviewer approval. Record the reviewed and final states honestly, including
+later changes.
 
 This step is complete when the independent pass is complete, every finding has
-an evidence-based disposition, and confirmed in-scope problems have verified
-corrections.
+an evidence-based disposition, and confirmed in-scope corrections are verified.
 
-## 4. Verify and deliver
+## 4. Deliver to the authorized boundary
 
-Check the candidate identity and final HEAD. Run repository-required checks and
-focused acceptance verification against the final state; reuse results only
-where relevant inputs are unchanged. Inspect the complete final diff and status.
-Record the base, reviewed, and final SHAs, checks, findings/dispositions, and
-any verification limitations in durable delivery evidence.
+Verify final candidate identity, status, complete diff, acceptance criteria, and
+required checks; reuse results only where relevant inputs are unchanged. Record
+reviewed/final states, findings/dispositions, checks, and limitations in the
+appropriate delivery evidence. Follow the requested delivery method and
+repository conventions; stop before publication if that is the agreed boundary.
 
-Complete the declared delivery method:
+- For a branch artifact, push and record its remote reference and exact full
+  commit; preserve it for its integration consumer.
+- For target delivery, use the agreed direct-push or PR method. A PR is optional
+  unless required. When used, squash-merge, verify target/content equivalence,
+  and record source-to-squash mapping.
+- For integration, review and verify the complete combined candidate and record
+  exact predecessor-to-result mappings before dependents proceed.
 
-- **Branch artifact:** push the verified branch and record repository, remote
-  reference, and exact full commit. Preserve it for its integration consumer.
-- **Target delivery:** integrate by the agreed direct-push or pull-request
-  method. A PR is optional unless required by the repository or request. When
-  used, squash-merge it, verify the resulting target commit and content
-  equivalence, and record the source-to-squash mapping.
-- **Integration Ticket:** review and verify the complete combined state from its
-  fixed base, deliver to the target, and record exact predecessor-to-result
-  mappings before dependent work proceeds.
+Complete applicable tracker obligations and eligible cleanup under
+[WORKTREES.md](WORKTREES.md). Preserve protected artifacts with reasons. If an
+operation fails, check what actually completed before recovery; publication
+alone does not prove the whole requested delivery is complete.
 
-Complete tracker obligations and verified cleanup under
-[WORKTREES.md](WORKTREES.md), retaining protected artifacts with explicit
-reasons. Protect private environment details, credentials, logs, and
-continuation notes; publish only appropriate delivery evidence.
+Continue through the user's stopping point without inserting approvals between
+implementation, review, corrections, and delivery. Progress messages need not
+pause work. Report there, on an explicit stop, or when a genuine blocker
+prevents further authorized progress. Transport-required turn release is
+continuation, not a request for the user to restart the task.
 
-If an operation fails, inspect what actually completed before attempting
-recovery within the task's authority. Preserve the candidate and evidence. A
-successful push with outstanding review, verification, tracker, or cleanup work
-is partial delivery, not completion.
+Return concise evidence and any remaining obligation to the user or dispatcher.
+For incomplete work, retain candidate state, conversation, checks, hypothesis,
+and next action; prefer the same owner on resumption. Settle prior writing
+activity before any replacement. Protect private operational notes and secrets.
 
-This step is complete when the declared boundary is durable and verified,
-required tracker updates and eligible cleanup are complete, or the precise
-remaining obligation and recovery state have been reported.
-
-## 5. Report the outcome and preserve continuity
-
-Return a concise report through the agreed channel with Ticket identity, status,
-evidence references, and any blocker or next action. Use `delivered` for
-verified completion, `blocked` for a missing decision/prerequisite, `failed` for
-an incomplete operational attempt, and `cancelled` for an explicit safe stop.
-Identify any publication that succeeded despite an incomplete overall outcome.
-JSON is optional when useful to the caller; evidence establishes delivery.
-
-For blocked, failed, or cancelled work, retain the conversation and candidate,
-branch/worktree, HEAD and dirty changes, completed checks, current hypothesis,
-and recommended next step. Prefer resuming this same owner when the blocker
-clears. Before any replacement writes, establish that prior candidate-writing
-activity has stopped and transfer the recoverable state. Silence alone does not
-establish failure or permission for concurrent ownership.
-
-This step is complete when the caller can verify delivery or resume the
-outstanding work without reconstructing its state from scratch.
+This step is complete when the agreed boundary is verified and required cleanup
+is complete, or the precise blocker/recovery state has been reported.
 
 ## Example
 
-For a selected regression Ticket, reproduce the failure in the owned worktree,
-add a faithful failing test, implement the fix, and run the relevant checks.
-Commit candidate A and obtain independent review of base → A. Adjudicate the
-findings, commit correction B, and verify the final state. Record A as reviewed
-and B as final, with correction evidence. Complete the agreed push or PR
-delivery, tracker updates, and cleanup; return those references to the
-dispatcher.
+After discussing #42, the user says, “Fix it and push; I'll be away.” Keep #42
+here, reproduce the bug, implement and test the fix, and obtain an independent
+review. Resolve its findings, verify, push, and clean eligible temporary
+artifacts before reporting. Neither the user's departure nor loading this skill
+creates another coordinator. For a dispatched Ticket, return the same delivery
+evidence to the supervising dispatcher.
