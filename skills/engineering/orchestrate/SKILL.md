@@ -73,8 +73,11 @@ resolves and preserve a concrete blocker for what it does not.
 Check candidate identity before consequential changes, inspect the complete
 diff, and run the relevant checks. Failing checks and correctable defects are
 work to finish, not reasons to hand responsibility elsewhere or request routine
-approval. Prepare the complete candidate for review, recording its exact
-committed SHA or complete WIP state under the review contract.
+approval. For every Mission Ticket, including integration, commit the complete
+candidate and record the exact full base and review SHAs. Review the whole
+base-to-review range, including committed predecessor inputs. Direct work may
+instead use complete WIP review when that state contains the entire candidate;
+otherwise use the complete committed range under the review contract.
 
 This step is complete when the candidate covers the accepted requirements and is
 ready for independent review, or a genuine blocker has a recoverable handoff.
