@@ -6,6 +6,11 @@ Use English for repository artifacts and the user's language in chat.
 
 ## Working style
 
+Read the context relevant to the request, not every workflow document. Workflows
+provided by skills are not mandatory steps for ordinary repository maintenance.
+Adopt upstream ideas deliberately; do not synchronize wholesale with the source
+project. Keep this file short and repository-specific, not a workflow manual.
+
 - Carry the requested work through verification, conventional commit, and push
   to `origin`, unless the user asks otherwise. No branch or PR ceremony needed.
 - Keep going when the next step is clear and in scope. Ask only when missing
@@ -37,18 +42,13 @@ Use English for repository artifacts and the user's language in chat.
 - `CONTEXT.md` and `docs/adr/`: domain vocabulary and durable design decisions.
 - `docs/agents/`: tracker and domain-document configuration when needed.
 
-Read the context relevant to the request, not every workflow document. Workflows
-provided by skills are not mandatory steps for ordinary repository maintenance.
-Adopt upstream ideas deliberately; do not synchronize wholesale with the source
-project. Keep this file short and repository-specific, not a workflow manual.
-
 ## Skill catalog and installation
 
 - Active skills belong in the root README, bucket README, and both manifests.
   Optional skills belong only in their bucket README. Link entries to `SKILL.md`.
 - New skills default to `disable-model-invocation: true`; making them permanently
-  discoverable needs maintainer approval. Active user-only exceptions are
-  recorded in `scripts/check-catalog.py`.
+  discoverable needs maintainer approval. `USER_ONLY_ACTIVE_SKILLS` in
+  `scripts/check-catalog.py` lists active skills that remain user-invoked only.
 - Rename the folder, frontmatter `name`, catalog entries, and references together.
   Preserve existing behavior unless the request changes it.
 - Use relative Markdown links for cross-skill loading. Resolve the referring
@@ -61,15 +61,14 @@ project. Keep this file short and repository-specific, not a workflow manual.
 
 ## Checks
 
-Run the applicable checks; catalog or installer changes need both the catalog
-checker and installer tests:
+Run checks relevant to the change:
 
-```sh
-./scripts/check-catalog.py
-./tests/test-link-skills.sh
-python3 -B tests/test-skill-pointers.py
-python3 -B tests/test-html-report.py
-```
+- Catalog, manifest, or installer changes: `./scripts/check-catalog.py` and
+  `./tests/test-link-skills.sh`.
+- Skill file references or pointer-resolution changes: `./scripts/check-catalog.py`
+  and `python3 -B tests/test-skill-pointers.py`.
+- Architecture-report HTML scaffold changes:
+  `python3 -B tests/test-html-report.py`.
 
 For manifest or installation changes, also run `./scripts/link-skills.sh --check`
 when the managed destination exists. No repository-wide formatter, linter, or
