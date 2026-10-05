@@ -22,6 +22,11 @@ Use English for repository artifacts and the user's language in chat.
   `~/sannux-data/worktrees/<repo>/<worktree_name>` if needed.
 - Do not force-push, rewrite history, publish releases, or change repository
   visibility without explicit authorization.
+- When you encounter a concrete problem outside the current task—such as confusing
+  navigation, conflicting instructions, broken tooling, or misleading docs—record
+  it in the configured issue tracker for later investigation rather than ignore it
+  silently. Check for an existing issue first, include observed evidence and
+  impact, distinguish observations from hypotheses, and omit sensitive data.
 - Finish with a concise summary, verification results, and any remaining issues.
 
 ## Where things live
