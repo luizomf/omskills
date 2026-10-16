@@ -204,7 +204,9 @@ uninstalled
 policy considers uncertainty, impact, and verification, with inheritance as
 fallback. Ticket ownership includes implementation and adjudication; Mission
 continuity includes operational decisions, so neither is classified solely by a
-thin-dispatch label. The maintained table is a candidate catalog, not measured
+thin-dispatch label. Independent review is judgment work even for a small diff
+or settled implementation plan; apply model-routing's review rule within its
+selection precedence. The maintained table is a candidate catalog, not measured
 parity or guaranteed availability. _Avoid_: automatic provider switching, model
 names as workflow roles
 
@@ -276,7 +278,8 @@ implementation
 - The technical owner performs implementation, independent-review adjudication,
   corrections, verification, tracker work, and cleanup in the same conversation.
   One completed adversarial review is the default: the reviewer challenges the
-  complete candidate and reports every supported problem without sugar-coating
+  complete candidate, including unnecessary complexity under code-review's
+  evidence standard, and reports every supported problem without sugar-coating
   or a finding quota; the owner records a disposition for every finding. The
   reviewer cannot rely on a later pass to finish the investigation. Review is a
   one-way handoff, not an approval loop: the owner keeps correcting and

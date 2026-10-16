@@ -172,8 +172,14 @@ evidence. It remains read-only and non-delegating, returning full findings to
 the implementation owner. Apply the adversarial contract in
 [code-review](../../skills/engineering/code-review/SKILL.md): challenge the
 complete candidate, continue after blockers, and report every supported problem
-without a finding quota or softened severity. Evidence, not a desired verdict,
-determines findings; adversarial review does not invent requirements or defects.
+without a finding quota or softened severity. This includes unnecessary
+complexity under code-review's evidence standard: show concrete costs and a
+simpler alternative preserving required behavior and constraints. Evidence, not
+a desired verdict, determines findings; adversarial review does not invent
+requirements or defects. Select a strong judgment-capable reviewer under
+[model-routing](../../skills/productivity/model-routing/SKILL.md#independent-review),
+with its explicit-route and harness precedence; a small candidate or settled
+implementation plan does not reduce review to mechanical checking.
 
 Review is a one-way handoff, not an approval loop. The reviewer finishes the
 complete investigation in one pass. The author records an evidence-based

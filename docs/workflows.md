@@ -37,10 +37,14 @@ require releasing a turn, but its completion resumes work without user approval.
 [code-review](../skills/engineering/code-review/SKILL.md) supplies a fresh
 independent adversarial reviewer for behavior and governing-document changes. It
 accepts a committed range or the complete work in progress and requires all
-supported findings, without sugar-coating or a top-findings cutoff. The
-responsible agent adjudicates every finding, fixes the candidate within scope,
-and verifies corrections. Review is a one-way handoff, not an approval loop;
-corrections stay with the author. Purely editorial documentation can be
+supported findings, without sugar-coating or a top-findings cutoff. This includes
+unnecessary complexity: findings must show a concrete cost and a simpler
+alternative that preserves requirements, not just a stylistic preference.
+[model-routing](../skills/productivity/model-routing/SKILL.md#independent-review)
+selects a strong judgment-capable reviewer within explicit routes and harness
+constraints. The responsible agent adjudicates every finding, fixes the candidate
+within scope, and verifies corrections. Review is a one-way handoff, not an
+approval loop; corrections stay with the author. Purely editorial documentation can be
 self-reviewed. Delivery follows the repository's commit/push and optional PR
 conventions. Direct work needs neither readiness nor Prompt Audit by default,
 whether Assisted or Unattended. Apply them when the accepted task or repository

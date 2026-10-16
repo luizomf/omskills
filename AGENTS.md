@@ -15,6 +15,9 @@ project. Keep this file short and repository-specific, not a workflow manual.
   to `origin`, unless the user asks otherwise. No branch or PR ceremony needed.
 - Keep going when the next step is clear and in scope. Ask only when missing
   input blocks progress or an action is destructive or hard to reverse.
+- Translate informal maintainer intent into the affected skills and governing
+  docs; exact skill names are not required. Before delivery, check connected
+  workflows for conflicting or ambiguous instructions introduced by the change.
 - Inspect Git status and relevant files before editing. Preserve unrelated work;
   never commit secrets, private notes, local settings, or scratch artifacts.
 - Prefer the smallest clear, maintainable solution. Avoid speculative features,

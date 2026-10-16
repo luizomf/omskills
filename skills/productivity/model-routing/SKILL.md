@@ -73,16 +73,27 @@ supported effort selection (or deliberate inheritance), or the missing
 authority/capability has been reported. The table supplies candidates, not
 evidence that an account can launch them.
 
+### Independent review
+
+Independent review is judgment work. Within the selection precedence above, use
+a strong reasoning model from the provider's judgment row or a more demanding
+row warranted by the uncertainty and impact. A small diff, settled implementation
+plan, capable author, or passing checks does not make review mechanical or
+bounded implementation. The reviewer must challenge the work independently,
+not merely confirm execution of the plan. This is a capability requirement, not
+a requirement to use a different model from the author or maximum effort.
+Keep concrete model/effort choices in `MODELS.md`; report any authorization or
+availability limitation rather than silently claiming the preferred route.
+
 ### Prompt Audit preference
 
-Apply the provider's task table to both interpretation and independent review.
-For OpenAI, both use the local policy's judgment route: interpreting intent,
-authorization, and completion boundaries is not mechanical extraction or
-execution of a settled plan. For other providers, a smaller capable interpreter
-and a more capable reviewer may be suitable within explicit user choices,
+Apply the provider's task table to interpretation and the Independent review
+rule above to comparison. For OpenAI, both use the local policy's judgment
+route: interpreting intent, authorization, and completion boundaries is not
+mechanical extraction or execution of a settled plan. For other providers, a
+smaller capable interpreter may be suitable within explicit user choices,
 authorized budget, and available routes. The audit coordinator retains final
-adjudication. This pairing is a practical starting preference, with
-comprehension evidence specific to the tested run.
+adjudication, with comprehension evidence specific to the tested run.
 
 ## 3. Apply and evaluate
 

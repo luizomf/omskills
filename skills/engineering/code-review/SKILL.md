@@ -33,9 +33,11 @@ Review against two separately reported criteria sets:
 
 ## Adversarial review contract
 
-Challenge the candidate rather than seek confirmation that the author is right.
-The normal path is one review followed by author corrections and verification;
-perform the complete investigation now instead of relying on a later pass.
+Defend the project's interests, not the author's solution or the status quo.
+Challenge decisions that compromise correctness, simplicity, or maintainability
+against accepted requirements and evidence. The normal path is one review
+followed by author corrections and verification: complete the investigation now
+instead of relying on a later pass.
 
 - Inspect every candidate path and contract requirement, reading surrounding
   context and tracing affected callers, consumers, tests, and governing sources
@@ -43,6 +45,14 @@ perform the complete investigation now instead of relying on a later pass.
   boundary cases, regressions, omissions, and contradictory instructions that
   apply to this candidate; passing checks and author claims are evidence to
   examine, not substitutes for inspection.
+- Challenge unnecessary complexity as part of Standards: premature abstractions,
+  pass-through layers, speculative generality, extra configuration or dependencies,
+  and redundant workflow steps. For each complexity finding, show the concrete
+  maintenance, reasoning, testing, or operational cost and a substantially simpler
+  alternative that preserves required behavior and constraints. Evaluate total
+  complexity, including what callers must absorb; fewer lines or a personal
+  preference alone is not evidence. Apply this to code and governing documents
+  without turning candidate review into an unrelated redesign.
 - Continue across the complete candidate after finding a blocker. Return every
   concrete, supported problem found, including non-blocking ones, without a
   finding quota or a top-findings cutoff. Consolidate duplicates only when all
@@ -59,8 +69,9 @@ perform the complete investigation now instead of relying on a later pass.
   scope as findings without expanding the investigation into unrelated work.
 
 The pass is complete only when every candidate path and applicable requirement
-has been examined and every supported finding is reported. State coverage and
-verification limitations explicitly; an unexamined required area makes the
+has been examined, unnecessary complexity has been assessed, and every supported
+finding is reported. State coverage, including the simplification assessment,
+and verification limitations explicitly; an unexamined required area makes the
 review incomplete, not clean. A complete pass with no supported findings reports
 that result without manufacturing faults or claiming proof of defect-free work.
 
@@ -155,10 +166,11 @@ the reviewer's model/effort. Before reading relative links, run
 `cd '<loaded-skill-directory>' && pwd -P` with this loaded file's directory to
 obtain the physical base, then resolve links against that printed directory.
 Resolve the source symlink before applying `..`; read linked files even when
-their skills are absent from the discovery list. Select for the candidate's
-remaining uncertainty and impact, respecting explicit user routes and required
-review independence; being a reviewer does not itself require the parent's
-model.
+their skills are absent from the discovery list. Apply model-routing's
+[Independent review](../../productivity/model-routing/SKILL.md#independent-review)
+rule for a strong judgment-capable reviewer, respecting explicit user routes and
+harness constraints. Independence requires a fresh context, not a different model
+from the author's.
 
 Start exactly one fresh, read-only, non-delegating reviewer. Supply the selected
 mode, candidate path and branch, exact base/review SHAs for committed mode (or
@@ -169,7 +181,7 @@ instructions and results, the selected result channel, this skill's resolved
 path, and this contract. Do not supply the parent transcript by default:
 
 ```text
-Read the supplied code-review skill and apply its Adversarial review contract directly to every candidate path against Standards and Spec. This is the single planned review before author corrections: complete the investigation and return every supported finding, not only blockers or a top-findings summary. Report coverage and limitations as well as the full findings. Do not edit the candidate, push, approve, merge, spawn, delegate, recursively invoke code-review, invent requirements, or expand the reviewed scope. If and only if a findings artifact path was supplied, write the complete result there and report that exact path.
+Read the supplied code-review skill and apply its Adversarial review contract directly to every candidate path against Standards and Spec, including its unnecessary-complexity assessment. This is the single planned review before author corrections: complete the investigation and return every supported finding, not only blockers or a top-findings summary. Report coverage and limitations as well as the full findings. Do not edit the candidate, push, approve, merge, spawn, delegate, recursively invoke code-review, invent requirements, or expand the reviewed scope. If and only if a findings artifact path was supplied, write the complete result there and report that exact path.
 ```
 
 ## Adjudicate and report
