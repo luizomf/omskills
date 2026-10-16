@@ -27,7 +27,7 @@ Use this shape for every visible Question:
 
 Keep each identifier unchanged and unambiguous while its round is visible; identifiers need not be global across rounds. The user makes each decision; do not treat a recommendation as approval.
 
-Do not enact the resulting plan or start implementation. Artifact writes are limited to the confirmed recording and routing rules below.
+Do not enact the resulting plan or start implementation. Durable artifacts and destination deliverables follow the confirmed recording and routing rules below. Disposable working notes are allowed under [Working files](../../productivity/WORKING-FILES.md); read that policy before using them. Resolve the link from the physical directory printed by `cd '<loaded-skill-directory>' && pwd -P`, following the source symlink first.
 
 ## Use repository domain language
 
@@ -80,7 +80,7 @@ Destination confirmation does not replace the domain or ADR recording gates.
 
 After the shared understanding is confirmed and the destination is authorized, take the corresponding action:
 
-- For conversation-only completion, finish with the confirmed summary and write no new artifact.
+- For conversation-only completion, finish with the confirmed summary and create no destination artifact; disposable working notes do not change that outcome.
 - Write a confirmed Scratchpad directly under the safety and content contract below.
 - Route a new Spec through [to-spec](../to-spec/SKILL.md); do not create a Spec under this skill's own authority. First run `cd '<loaded-skill-directory>' && pwd -P` with this loaded file's directory and resolve the link from that physical base. Read the target even when absent from discovery.
 - Route an existing Spec or Ticket update through the configured issue-tracker skill or invoking tracker workflow that owns that operation. Update the governing item instead of creating a duplicate.
@@ -112,4 +112,4 @@ Write the Scratchpad only at `.scratch/<topic-slug>/grill.md`, using a topic slu
 ## Recommended next destination
 ```
 
-Record concise conclusions and useful paths or URLs, not a full conversation transcript or turn-by-turn decision history. Never stage or commit the Scratchpad. It may be removed after its accepted content is incorporated into a durable artifact; preserve it while unresolved continuation context still depends on it.
+Record concise conclusions and useful paths or URLs, not a full conversation transcript or turn-by-turn decision history. Never stage or commit the Scratchpad. It is disposable and may be cleared during cleanup, not durable authority. Keep it available for its active consumer; move accepted lasting decisions to the authorized durable destination before wrapping up rather than relying on scratch retention.

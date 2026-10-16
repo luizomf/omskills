@@ -117,7 +117,9 @@ This skill requires one isolated review pass; assigning a reviewer name does not
 create isolation, read-only behavior, tools, or delivery semantics. Direct code
 or behavior changes and changes to Specs, ADRs, workflow, security, or other
 governing authority require this fresh independent pass. Purely editorial
-documentation may instead be self-reviewed.
+documentation may instead be self-reviewed. Before using disposable notes or
+transport files, read [Working files](../../productivity/WORKING-FILES.md);
+read-only review protects the candidate, not the reviewer's own working files.
 
 - An interactive responsible agent, including a Ticket owner, may use the active
   harness's documented asynchronous delivery or
@@ -151,9 +153,9 @@ terminal response plus the harness's native session reference. If terminal text
 is bounded, read the complete assistant message from that session before
 adjudication. A harness without an adequate result or inspectable native session
 may instead use one predeclared findings artifact outside the candidate
-worktree; writing that artifact is the only allowed write. Require a completed
-outcome through the selected transport as well as complete findings: for managed
-calls, verify mechanical completion; for visible workers, verify the agreed
+worktree. Working notes do not replace the agreed complete result channel.
+Require a completed outcome through the selected transport as well as complete
+findings: for managed calls, verify mechanical completion; for visible workers, verify the agreed
 terminal report/event and complete artifact. A failed, interrupted, cancelled,
 or missing reviewer outcome is incomplete even when partial findings exist. If
 complete decision-bearing findings cannot be recovered, report the review as
@@ -197,7 +199,8 @@ validate every finding against the contract and evidence, fix confirmed in-scope
 problems, and justify rejected or deferred findings, including non-blocking and
 out-of-scope ones. Continue implementation, debugging, and verification as
 needed; do not send corrections back for reviewer approval or launch another
-review of those corrections. Completion depends on the accepted requirements and
+review of those corrections automatically. A separately requested review is new
+work, not an approval loop. Completion depends on the accepted requirements and
 verification evidence, not reviewer agreement or finding count.
 
 A finding is work to resolve, not by itself a reason to stop. A

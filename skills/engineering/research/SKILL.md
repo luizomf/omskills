@@ -15,9 +15,14 @@ whether the maintainer stays or authorizes work while away.
 Select one result mode before investigation:
 
 - **Bounded evidence:** for one narrow direct-delivery investigation, require a
-  compact evidence return and no repository or candidate write.
+  compact evidence return without modifying project sources or the candidate.
 - **Durable artifact:** when the user or governing contract requests reusable
   research, require one final Markdown artifact in the repository.
+
+Use disposable notes, source captures, and transport files when useful under
+[Working files](../../productivity/WORKING-FILES.md). They are not durable
+research deliverables and do not authorize implementation. The caller owns
+preserving useful results beyond temporary storage.
 
 Use the accepted question as the brief for local work; give each delegated
 worker a self-contained brief that:
@@ -31,7 +36,8 @@ worker a self-contained brief that:
    delegating again, making implementation decisions, or implementing any
    change.
 4. For bounded evidence, requires a compact response with findings, evidence
-   pointers, uncertainties, and no file writes. For a durable artifact, names
+   pointers, and uncertainties, either directly or through an agreed temporary
+   result file. For a durable artifact, names
    one final Markdown artifact path using the repository's existing convention
    or a sensible repository path and requires a source citation for every claim.
 5. Requires public-safe output with no secrets, credentials, private user data,
@@ -59,8 +65,8 @@ routing remain governed by their own contracts.
 
 Before dispatch, establish one fresh isolated worker conversation. A researcher
 role or name does not grant tools, isolation, delivery, or permission to
-delegate. Preflight the required retrieval and read tools and, only in
-durable-artifact mode, artifact-write tools and their providers; where the
+delegate. Preflight retrieval/read tools and any write capability required by
+the selected working-file, transport, or durable-artifact path; where the
 active harness exposes lineage controls, inherit the existing depth ceiling and
 set the worker's direct-child ceiling to zero or remove delegation capability. A
 capability mismatch or over-depth request must reject before launch or prompt
@@ -89,7 +95,8 @@ inheritance, and leaf-ceiling behavior.
 
 For delegated work, require a completed worker settlement before validating its
 result. For local work, validate the completed investigation directly. In
-bounded-evidence mode, recover and validate the complete compact response. In
+bounded-evidence mode, recover and validate the complete compact response,
+reading the agreed temporary result file when that is the transport. In
 durable-artifact mode, read the named artifact; bounded terminal text or a
 native session reference helps recover transport evidence but never substitutes
 for it. Validate that the selected result answers the exact question within

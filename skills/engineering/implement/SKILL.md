@@ -21,9 +21,10 @@ linked files even when absent from discovery.
    for missing information that prevents progress. This step is complete when
    the work and delivery boundary are clear.
 2. Read and follow [orchestrate](../orchestrate/SKILL.md) in this conversation:
-   implement, obtain independent review, resolve findings, verify, and deliver
-   through the authorized boundary. This step is complete at that boundary or
-   when a genuine blocker prevents further in-scope progress.
+   implement, apply its review policy (including editorial self-review where
+   permitted), resolve findings, verify, and deliver through the authorized
+   boundary. This step is complete at that boundary or when a genuine blocker
+   prevents further in-scope progress.
 
 If the request instead selects multiple Tickets, follow
 [dispatch-tickets](../dispatch-tickets/SKILL.md) for that queue. An existing

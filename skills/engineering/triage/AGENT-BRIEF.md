@@ -123,14 +123,15 @@ requested the feature. When triaging new issues, these files should be
 checked for matches.
 
 **Key interfaces:**
-- Markdown file format in `.out-of-scope/` — each file should have a
-  `# Concept Name` heading, a `**Decision:**` line, a `**Reason:**` line,
-  and a `**Prior requests:**` list with issue links
+- Rejection records in `.out-of-scope/` — follow `OUT-OF-SCOPE.md`:
+  readable prose explaining the concept, decision, and reasoning, with links
+  to prior requests; no fixed field schema is required
 - The triage workflow should read all `.out-of-scope/*.md` files early
   and match incoming issues against them by concept similarity
 
 **Acceptance criteria:**
-- [ ] Closing a feature as wontfix creates/updates a file in `.out-of-scope/`
+- [ ] Rejecting an enhancement as wontfix creates/updates its concept record;
+      closing an already-implemented request does not
 - [ ] The file includes the decision, reasoning, and link to the closed issue
 - [ ] If a matching `.out-of-scope/` file already exists, the new issue is
       appended to its "Prior requests" list rather than creating a duplicate

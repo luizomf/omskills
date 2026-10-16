@@ -44,9 +44,10 @@ alternative that preserves requirements, not just a stylistic preference.
 selects a strong judgment-capable reviewer within explicit routes and harness
 constraints. The responsible agent adjudicates every finding, fixes the candidate
 within scope, and verifies corrections. Review is a one-way handoff, not an
-approval loop; corrections stay with the author. Purely editorial documentation can be
-self-reviewed. Delivery follows the repository's commit/push and optional PR
-conventions. Direct work needs neither readiness nor Prompt Audit by default,
+approval loop; corrections stay with the author. A separately requested review
+is new work. Purely editorial documentation can be self-reviewed, including
+through implement/orchestrate. Delivery follows the repository's commit/push
+and optional PR conventions. Direct work needs neither readiness nor Prompt Audit by default,
 whether Assisted or Unattended. Apply them when the accepted task or repository
 requires them; requested audit readiness means the same in both modes.
 
@@ -102,7 +103,7 @@ never authorizes execution.
 already authorizes delivery: after PASS, the owning workflow continues in a
 fresh session or clean-context implementation agent without another approval.
 The audit context never implements or corrects that work. The fresh owner
-retains decisions, one independent candidate review, adjudication, corrections,
+retains decisions, applicable candidate review, adjudication, corrections,
 verification and delivery; no extra dispatcher or automatic writer/reviewer loop
 is required.
 
@@ -246,8 +247,11 @@ uses codebase-design vocabulary to scan for deepening opportunities, normally
 with a fresh Explore worker, or locally when requested. The caller validates
 findings and produces a visual HTML report. That report is a complete result.
 
-When a candidate is selected, grill-with-docs develops its constraints,
-ownership, seams and applicable domain/ADR updates. The optional
+When a candidate is selected, the architecture workflow uses grill-with-docs'
+Question rounds and recording gates to confirm constraints, ownership, seams,
+test surface, and applicable domain/ADR updates—not its generic destination
+routing. After design confirmation, it asks what to do next unless continuation
+was already explicitly authorized. The optional
 [Design It Twice](../skills/engineering/codebase-design/DESIGN-IT-TWICE.md)
 process uses one fresh designer to compare interfaces when that specialist pass
 is selected. Accepted implementation then follows the normal delivery route.
@@ -296,6 +300,11 @@ practitioner/community input for questions that call for experiential judgment.
 - [caveman](../skills/productivity/caveman/SKILL.md) compresses communication
   while preserving technical accuracy when compressed reporting is useful.
 
+[Working files](../skills/productivity/WORKING-FILES.md) covers disposable notes
+and transport artifacts. Use them when useful, including during read-only work,
+without changing protected sources or isolated-pass inputs. Preserve lasting
+outcomes in their authorized durable destination before wrapping up.
+
 Cross-skill file pointers make these resources available on demand, including
 user-only skills hidden from discovery. The referring skill supplies
 physical-path resolution instructions for relative-symlink installations.
@@ -330,9 +339,9 @@ These two skills are available separately from the active plugin catalog:
   scene → editable diagram → structural checks and visual inspection when
   available.
 - [voice](../skills/productivity/voice/SKILL.md): selected useful responses →
-  spoken summary → serialized audio submission and normal written response. It
-  needs the private OMQueue/Edge TTS playback tools and the active harness's
-  supported route.
+  spoken summary through harness-native speech, or the configured personal TTS
+  fallback through an allowed transport → normal written response. If neither
+  route is available, report that without blocking the underlying task.
 
 For terminology, see [CONTEXT](../CONTEXT.md); for execution decisions, see
 [ADR 0001](adr/0001-explicit-setup-pointer-only-for-hard-dependencies.md) and

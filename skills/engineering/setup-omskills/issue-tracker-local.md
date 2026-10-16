@@ -2,7 +2,10 @@
 
 Use Markdown under `.scratch/` for local-only work. Prefer the project's durable
 Issue tracker for project-relevant requirements, decisions, and delivery
-history.
+history. These local records are disposable: cleanup may remove `.scratch/`
+contents even when they look like Specs or Tickets. Before wrapping up, move
+useful lasting outcomes to an authorized durable destination; choosing a local
+tracker does not grant permission to publish private material.
 
 ## Local-only boundary
 

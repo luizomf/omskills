@@ -90,8 +90,8 @@ Present a numbered draft. For each ticket, include:
 Before requesting approval, identify Mission topology whenever the breakdown
 selects multiple Tickets; record their dependency, conflict, integration, and
 shared-resource needs. Record maintainer availability independently when the
-source resolves it; otherwise leave that dimension for the adaptive pre-mutation
-gate rather than inferring absence from Mission topology.
+source resolves it; otherwise leave that dimension for the adaptive Delivery
+mode gate rather than inferring absence from Mission topology.
 
 Show the planned execution, blockers, conflicts, and shared resources outside
 Git. Distinguish priority from required sequence or phase barriers, and record
@@ -274,5 +274,5 @@ loads [orchestrate](../orchestrate/SKILL.md) in the current conversation,
 whether the maintainer stays or authorizes work while away. It adds no
 dispatcher or owner handoff. Pass resolved skill paths when launching owners for
 a multi-Ticket Mission. Every route preserves the accepted scope, applicable
-gates, exclusive ownership, independent review, and delivery evidence; readiness
-alone does not select work.
+gates, exclusive ownership, `orchestrate`'s review policy, and delivery evidence;
+readiness alone does not select work.

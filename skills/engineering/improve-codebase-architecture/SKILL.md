@@ -34,7 +34,7 @@ The worker must follow repository references based on observed code rather than 
 - coupled modules where a change to one requires callers to know another module's implementation; and
 - behavior with no test through the current interface, or whose tests must bypass that interface.
 
-Apply the **deletion test** to each suspected shallow module: would deleting it concentrate complexity, or just move it? Treat concentration as a positive signal for a deepening candidate.
+Apply the canonical **deletion test** from [codebase-design](../codebase-design/SKILL.md#principles) to each suspected shallow module. Use its result as evidence for the candidate's effect on locality, leverage, and caller-visible complexity.
 
 After a completed worker settlement or local scan, read the exact findings artifact and validate it before continuing. It must be non-empty, cover the requested scope, cite inspected repository paths for every candidate, include every required finding field, use the authoritative vocabularies, report evidence gaps, and contain no repository edits or private data. Bounded terminal output or a native session reference may recover transport evidence but never replaces the artifact. A failed, interrupted, missing, or invalid artifact blocks report generation.
 
@@ -65,7 +65,7 @@ Do not propose method signatures, parameter shapes, or other interfaces before s
 
 ### 3. Develop a selected candidate
 
-After the user selects a candidate, use [grill-with-docs](../grill-with-docs/SKILL.md) to resolve constraints, dependencies, the deepened module's ownership, what remains behind the seam, which existing tests remain unchanged, and which tests use the resulting interface. Apply its bounded Question-frontier rounds only inside that selected candidate: a round may include no more than three independent Questions, and must never include Questions from another report candidate.
+After the user selects a candidate, use [grill-with-docs](../grill-with-docs/SKILL.md)'s Question rounds, evidence checks, recording gates, and shared-understanding confirmation to resolve constraints, dependencies, behavior ownership, seam placement, and the interface test surface. Keep each round inside that candidate, with no more than three independent Questions. This composition ends at design confirmation; it does not include the generic destination-selection and routing steps.
 
 Maintain domain and decision docs while resolving the design:
 
@@ -74,4 +74,4 @@ Maintain domain and decision docs while resolving the design:
 - Apply `grill-with-docs`' ADR eligibility and approval gates to already-established rejections too. Record one only when it rules out candidate architectures and future agents could otherwise repeat the proposal. Do not record a rejection whose reason is represented directly in code or the domain glossary, or applies only to the current session.
 - To compare alternative interfaces, follow [codebase-design](../codebase-design/SKILL.md) and its one-designer Design It Twice process.
 
-This step is complete when the selected candidate has confirmed behavior ownership, seam placement, interface test surface, and applicable domain or ADR updates. It does not implement the refactor.
+This step is complete when the selected candidate has confirmed behavior ownership, seam placement, interface test surface, which existing tests remain unchanged, and applicable domain or ADR updates. Summarize the design and ask the user what to do next, then stop. If a continuation was already explicitly authorized, follow it under its owning workflow without asking again. Design confirmation alone authorizes neither publication nor implementation.

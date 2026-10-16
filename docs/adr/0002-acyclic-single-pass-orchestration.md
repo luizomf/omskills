@@ -166,8 +166,9 @@ to the exact final candidate.
 
 Behavior changes and governing-authority changes receive a fresh independent
 review of the complete candidate. Purely editorial documentation can be
-self-reviewed in direct delivery. The reviewer receives the concise contract,
-applicable standards, complete candidate, exact identity/range, and verification
+self-reviewed, including through `implement` and `orchestrate`. The reviewer
+receives the concise contract, applicable standards, complete candidate, exact
+identity/range, and verification
 evidence. It remains read-only and non-delegating, returning full findings to
 the implementation owner. Apply the adversarial contract in
 [code-review](../../skills/engineering/code-review/SKILL.md): challenge the
@@ -186,8 +187,9 @@ complete investigation in one pass. The author records an evidence-based
 disposition for every finding and keeps implementing, debugging, and verifying
 in-scope corrections without sending them for reviewer approval or another
 review. Completion depends on accepted requirements and final-state evidence,
-not reviewer agreement or finding count. A delivery-blocking defect is work to
-resolve, not by itself a blocked Ticket.
+not reviewer agreement or finding count. This default prevents automatic
+approval loops; an explicitly requested additional review remains separate work.
+A delivery-blocking defect is work to resolve, not by itself a blocked Ticket.
 
 Interrupted or partial review remains incomplete and needs recovery under the
 caller's existing authority; it cannot be counted as a completed pass. Record
@@ -224,6 +226,12 @@ and unrelated work remains protected. Publication success does not hide
 outstanding cleanup or tracker obligations.
 
 ### Recovery and transport
+
+Agents may use disposable notes and result-transport files under
+[Working files](../../skills/productivity/WORKING-FILES.md), including in
+read-only roles. Source protection and clean-context isolation still apply.
+Useful lasting outcomes go through the authorized durable result channel;
+temporary storage is not a delivery record.
 
 Diagnose concrete failures using the known conversation, transport outcome,
 repository, and tracker. Silence or elapsed time alone does not prove a stall.

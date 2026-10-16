@@ -12,8 +12,8 @@ Supervise a Mission of multiple selected Tickets on the user's behalf. Each
 [orchestrate](../orchestrate/SKILL.md) owner handles one Ticket's technical
 work; you maintain the authorized queue, track progress and elapsed time,
 support its responsible agent, and verify delivery. Read tracker and repository
-evidence for those decisions. Implementation and code review stay with the
-Ticket owner and its independent reviewer.
+evidence for those decisions. Implementation and review stay with the Ticket
+owner under `orchestrate`'s review policy, not with the dispatcher.
 
 For an untracked request or only one selected Ticket, follow
 [orchestrate](../orchestrate/SKILL.md) in the current conversation instead of
@@ -95,10 +95,12 @@ For a new Ticket, start one fresh responsible conversation with the resolved
   existing candidate;
 - the chosen result channel and evidence expected at delivery or a blocker.
 
-The owner investigates, implements, tests, obtains independent review,
-adjudicates, corrects, and delivers. Give it the capabilities to do that work
-and obtain its reviewer within actual harness limits. A role name is not a
-capability grant.
+The owner investigates, implements, tests, completes the applicable review,
+adjudicates, corrects, and delivers. Purely editorial documentation may be
+self-reviewed; code, behavior, and governing-authority changes require the
+independent pass specified by `orchestrate`. Give the owner the capabilities
+for its work and any required reviewer within actual harness limits. A role
+name is not a capability grant.
 
 For a paused Ticket, prefer the same conversation and candidate. Send the
 resolved blocker, accepted decisions, and relevant intervening deliveries.
@@ -179,8 +181,9 @@ Treat an owner's report as a pointer to evidence. Verify the selected Ticket's
 declared boundary against the actual tracker and repository:
 
 - issue/PR state and the relevant delivery record;
-- exact reviewed and final candidate commits, completed independent review,
-  adjudication, and required check results for the final state;
+- exact reviewed and final candidate commits, completed applicable review
+  (independent or permitted editorial self-review), adjudication, and required
+  check results for the final state;
 - the pushed branch artifact or resulting target commit, including
   source-to-squash mapping and content equivalence when squash delivery is used;
 - required tracker updates, cleanup, and any protected retained artifacts or

@@ -24,8 +24,14 @@ handoffs, and audit transcripts carry no hidden implementation requirements. A
 Ticket may be a bug, task, investigation, or slice produced by `to-tickets`.
 _Avoid_: interactive Question, Spec
 
+**Working files**: Disposable notes, evidence captures, or transport files used
+within an accepted task. Read-only roles may use their own working files while
+protecting task targets and isolation. They are not durable authority or a
+publication grant. See [Working files](skills/productivity/WORKING-FILES.md).
+
 **Scratchpad**: A temporary, untracked continuation record under an ignored
-`.scratch/` directory. It preserves established decisions, unresolved Questions,
+`.scratch/` directory. Like other working files, it may be cleared during
+cleanup. It preserves established decisions, unresolved Questions,
 evidence pointers, and the next action. It carries no implementation authority;
 durable requirements and delivery history belong in the configured tracker.
 _Avoid_: Spec, Ticket, ADR, permanent documentation
@@ -151,7 +157,7 @@ _Avoid_: one-item dispatcher queue, second implementation owner
 selected Ticket, formerly called the Ticket coordinator. `orchestrate` is the
 current owner's delivery procedure, not a request to launch another agent; it
 also supports an untracked bounded request. The same conversation investigates,
-reproduces, implements, tests, obtains independent review, adjudicates findings,
+reproduces, implements, tests, completes applicable review, adjudicates findings,
 corrects, and delivers. It checks live authority/gates and actual capabilities,
 owns an exclusive candidate, and preserves context across blockers. New
 dispatched Tickets receive fresh owners; existing work prefers its current
@@ -283,8 +289,9 @@ implementation
   or a finding quota; the owner records a disposition for every finding. The
   reviewer cannot rely on a later pass to finish the investigation. Review is a
   one-way handoff, not an approval loop: the owner keeps correcting and
-  verifying without sending corrections for another review. Completion depends
-  on accepted requirements and final-state evidence, not reviewer agreement.
+  verifying without automatically sending corrections for another review. An
+  explicitly requested additional review is separate work, not that loop.
+  Completion depends on accepted requirements and final-state evidence, not reviewer agreement.
   Correctable findings are work, not by themselves a blocked Ticket. Incomplete
   review needs recovery under existing authority and does not count as a
   completed pass.
@@ -319,8 +326,11 @@ implementation
 - A wayfinder map request authorizes one in-scope investigation per session.
   Destination implementation still needs its normal delivery authority; map
   Notes do not bypass it.
-- All `.scratch/` artifacts remain local and Git-ignored. Local tracker triage
-  `Status` and investigation `Lifecycle` remain distinct fields.
+- Working files are encouraged when useful, including for read-only roles, but
+  do not change their authorized inputs or targets. All `.scratch/` artifacts
+  remain local, Git-ignored, and disposable; deliver useful lasting outcomes to
+  their authorized durable destination. Local tracker triage `Status` and
+  investigation `Lifecycle` remain distinct fields.
 
 ## Resolved terminology
 

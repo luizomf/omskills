@@ -20,6 +20,9 @@ project. Keep this file short and repository-specific, not a workflow manual.
   workflows for conflicting or ambiguous instructions introduced by the change.
 - Inspect Git status and relevant files before editing. Preserve unrelated work;
   never commit secrets, private notes, local settings, or scratch artifacts.
+- Use disposable notes or transport files when useful under
+  [Working files](skills/productivity/WORKING-FILES.md); keep lasting outcomes
+  in the authorized durable destination, not scratch.
 - Prefer the smallest clear, maintainable solution. Avoid speculative features,
   dependencies, abstractions, and process. Fix relevant outdated docs too.
 - Review the diff and run checks relevant to the change. Prefer test-first for

@@ -80,20 +80,21 @@ instead use complete WIP review when that state contains the entire candidate;
 otherwise use the complete committed range under the review contract.
 
 This step is complete when the candidate covers the accepted requirements and is
-ready for independent review, or a genuine blocker has a recoverable handoff.
+ready for the applicable review, or a genuine blocker has a recoverable handoff.
 
-## 3. Obtain independent review and resolve findings
+## 3. Review and resolve findings
 
-Follow [code-review](../code-review/SKILL.md) for one fresh independent
-adversarial review of the complete candidate. Supply its resolved skill path,
-the concise contract, repository instructions, candidate identity and complete
-range/state, and verification results. Use the environment's isolated subagents
-or [tmux-worker](../../productivity/tmux-worker/SKILL.md); read
+Follow [code-review](../code-review/SKILL.md)'s review policy for the complete
+candidate. Purely editorial documentation may be self-reviewed; code, behavior,
+and governing-authority changes require one fresh independent adversarial pass.
+For that pass, supply the resolved skill path, concise contract, repository
+instructions, candidate identity and complete range/state, and verification
+results. Use the environment's isolated subagents or [tmux-worker](../../productivity/tmux-worker/SKILL.md); read
 [model-routing](../../productivity/model-routing/SKILL.md) before a
 model-selectable launch and honor active harness authorization and inheritance.
 
-Follow the transport's actual result-delivery contract. After asynchronous
-acceptance, retain the review identity and release the turn; resume from its
+For delegated review, follow the transport's actual result-delivery contract.
+After asynchronous acceptance, retain the review identity and release the turn; resume from its
 matching completed result without requiring user approval. Unknown acceptance
 requires evidence recovery before another launch. Recover the full findings and
 completed outcome; partial or interrupted review is not completed review.
@@ -104,8 +105,9 @@ approval loop: continue resolving the work without sending corrections back for
 reviewer approval. Record the reviewed and final states honestly, including
 later changes.
 
-This step is complete when the independent pass is complete, every finding has
+This step is complete when the applicable review is complete, every finding has
 an evidence-based disposition, and confirmed in-scope corrections are verified.
+Record whether review was independent or permitted editorial self-review.
 
 ## 4. Deliver to the authorized boundary
 

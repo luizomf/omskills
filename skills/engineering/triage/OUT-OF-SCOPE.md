@@ -20,7 +20,7 @@ One file per **concept**, not per issue.
 
 The file should be written in a relaxed, readable style — more like a short design document than a database entry. Use paragraphs, code samples, and examples to make the reasoning clear and useful to someone encountering it for the first time.
 
-```markdown
+````markdown
 # Dark Mode
 
 This project does not support dark mode or user-facing theming.
@@ -48,10 +48,10 @@ interface ThemeConfig {
 
 ## Prior requests
 
-- #42 — "Add dark mode support"
-- #87 — "Night theme for accessibility"
-- #134 — "Dark theme option"
-```
+- [#42](https://github.com/example/project/issues/42) — "Add dark mode support"
+- [#87](https://github.com/example/project/issues/87) — "Night theme for accessibility"
+- [#134](https://github.com/example/project/issues/134) — "Dark theme option"
+````
 
 ### Naming the file
 

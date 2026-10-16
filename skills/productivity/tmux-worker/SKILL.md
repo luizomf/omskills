@@ -67,7 +67,9 @@ normal editor is input-ready; at a trust gate it remains intentionally paused.
    in a uniquely named file in the OS temporary directory or a verified
    Git-ignored scratch directory. Confirm the recipient can read that path; a
    local temporary file is not automatically accessible on another machine. Keep
-   it available until the recipient has read it, and send only a short pointer,
+   it available until the recipient has read it. Before using transport files,
+   read [Working files](../WORKING-FILES.md): they are disposable, not durable
+   delivery records. Send only a short pointer,
    for example:
    `Read /absolute/path/worker-prompt.md in full and follow its instructions.`
    Do not split a document into successive chat messages. Apply this rule in

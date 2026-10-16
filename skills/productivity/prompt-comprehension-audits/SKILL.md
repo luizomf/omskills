@@ -70,9 +70,11 @@ evidence for that run, not proof that every other model will interpret it
 identically.
 
 Every delegated pass is a fresh, independent, read-only, non-delegating leaf
-that performs its assigned comparison directly. A role or name does not grant
-isolation, tools, or delivery behavior. Never continue a prior pass session or
-give a later pass hidden access to it. Explicit maintainer recovery may replace
+that performs its assigned comparison directly. Disposable notes are allowed
+under [Working files](../WORKING-FILES.md), which must be read before using them;
+keep the audited sources unchanged and each pass limited to its permitted inputs.
+A role or name does not grant isolation, tools, or delivery behavior. Never
+continue a prior pass session or give a later pass hidden access to it. Explicit maintainer recovery may replace
 a mechanically settled but incomplete pass with a fresh isolated pass before
 terminal status recording. Keep the fixed reference and required role inputs
 unchanged, retain failed-attempt evidence in the audit record, and preserve
@@ -106,8 +108,9 @@ concurrent siblings or assess the interpreter for the reviewer.
 For every pass, require a mechanically completed terminal outcome and a complete
 decision-bearing response. When terminal text is bounded, recover the complete
 response from the returned native session reference or another predeclared
-durable result channel before assessment. Reading persisted evidence does not
-add context to the child. If the pass is failed, interrupted, cancelled, missing
+result channel before assessment. Temporary transport is not durable audit
+history; preserve the required status and evidence as specified below. Reading
+persisted evidence does not add context to the child. If the pass is failed, interrupted, cancelled, missing
 its response, or cannot be recovered without weakening isolation, apply only an
 already authorized fresh-pass recovery as defined above; otherwise record `FAIL`
 and end. A partial response cannot support `PASS`, and recovery cannot reuse the
@@ -250,8 +253,9 @@ another approval, but only into a fresh implementation context.
 
 The audit-coordinating context must not implement or correct the audited work.
 Transfer the complete durable contract to a fresh session or clean-context
-implementation owner, who owns decisions, one independent candidate review,
-adjudication, corrections, verification and delivery. No mandatory dispatcher
+implementation owner, who retains decisions and follows
+[orchestrate](../../engineering/orchestrate/SKILL.md)'s review policy,
+adjudication, corrections, verification, and delivery. No mandatory dispatcher
 layer or automatic writer/reviewer loop is introduced. For example, “audit #42”
 records readiness and stops; “audit and implement #42” continues after PASS
 through that fresh owner.

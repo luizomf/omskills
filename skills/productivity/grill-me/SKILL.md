@@ -27,7 +27,7 @@ Use this shape for every visible Question:
 
 Keep each identifier unchanged and unambiguous while its round is visible; identifiers need not be global across rounds. The recommendation informs the user's decision and does not settle it.
 
-Question assumptions, undefined or multiply defined terms, contradictions, boundary cases, and missing constraints when they could change the outcome or scope. Keep repository state unchanged and the decision tree only in the conversation: do not write or modify repository artifacts, invoke a writing workflow, or execute the resulting plan.
+Question assumptions, undefined or multiply defined terms, contradictions, boundary cases, and missing constraints when they could change the outcome or scope. Keep project sources unchanged and the decision tree internal. Disposable evidence or decision notes are allowed under [Working files](../WORKING-FILES.md); read that policy before using them. Resolve this link from the physical directory printed by `cd '<loaded-skill-directory>' && pwd -P`, following the source symlink first. Working notes do not invoke a publication workflow or execute the resulting plan.
 
 ## Complete the grill
 
@@ -48,6 +48,6 @@ Choose the recommendation by these criteria:
 - **Existing Spec or Ticket update:** an existing tracked item already governs the result; update it instead of recommending a duplicate.
 - **Domain language or ADR:** shared domain meaning belongs in `CONTEXT.md`, or a durable decision belongs in an ADR, only when the destination satisfies that artifact's existing recording gate.
 
-After the shared understanding is confirmed and the destination is authorized, report the chosen destination and a concise continuation summary in the conversation only. `grill-me` never carries out the route: it never writes a Scratchpad, Spec, tracked-item update, domain document, ADR, or any other repository artifact. It never starts implementation, resolves the later Delivery mode gate, or bypasses the implementation, proportionate review, repository delivery, or route-specific readiness, Prompt Audit, and authorization rules.
+After the shared understanding is confirmed and the destination is authorized, report the chosen destination and a concise continuation summary in the conversation only. `grill-me` does not carry out the selected destination route: delivering a Scratchpad, publishing a Spec or tracked-item update, or changing domain documents and ADRs belongs to the authorized continuation. Its disposable working notes remain permitted and are not those deliverables. It never starts implementation, resolves the later Delivery mode gate, or bypasses the implementation, proportionate review, repository delivery, or route-specific readiness, Prompt Audit, and authorization rules.
 
 

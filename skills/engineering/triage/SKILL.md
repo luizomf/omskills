@@ -187,7 +187,7 @@ selection. For one Ticket, [implement](../implement/SKILL.md) loads
 [orchestrate](../orchestrate/SKILL.md) in the current conversation rather than
 launching another owner. Pass resolved skill paths to fresh dispatched owners.
 These routes preserve applicable execution gates, exclusive ownership,
-independent review, and verified delivery.
+`orchestrate`'s review policy, and verified delivery.
 
 ## Quick state override
 

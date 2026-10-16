@@ -199,9 +199,15 @@ Use when the user provides a loose idea.
 Use when the user provides a map URL or number. A specific ticket is optional.
 
 1. Load the map body without preloading every ticket.
-2. If the user named a ticket, select it. Otherwise select the first ticket in
-   frontier order. Assign it to the developer driving the map before any other
-   work.
+2. Consider the user-named Ticket, or otherwise the first Ticket in frontier
+   order. Before claiming or resolving it, verify that it belongs to this map,
+   is open and unblocked, and is unclaimed or already owned by this session.
+   Naming a Ticket does not bypass dependencies or authorize taking another
+   session's claim. For an ineligible named Ticket, report the blocker or owner
+   and stop rather than reassigning it or substituting other work. Claim an
+   eligible unclaimed Ticket for the developer driving the map; preserve an
+   existing claim when resuming this session's own Ticket. If no eligible
+   Ticket exists, report whether the map is complete or what prevents progress.
 3. Resolve only that Ticket, including as many Question rounds as it needs. Do
    not select or resume another Ticket in this session. Load related or closed
    Ticket bodies only as needed and run every skill named in **Notes**. If in
