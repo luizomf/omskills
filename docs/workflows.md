@@ -338,10 +338,11 @@ These two skills are available separately from the active plugin catalog:
 - [excalidraw](../skills/productivity/excalidraw/SKILL.md): text or an existing
   scene → editable diagram → structural checks and visual inspection when
   available.
-- [voice](../skills/productivity/voice/SKILL.md): selected useful responses →
-  spoken summary through harness-native speech, or the configured personal TTS
-  fallback through an allowed transport → normal written response. If neither
-  route is available, report that without blocking the underlying task.
+- [voice](../skills/productivity/voice/SKILL.md): requested text or useful answers
+  → `bq` running `voicept` (Portuguese) or `voiceen` (English) in the serialized
+  audio queue → normal written response as soon as submission is accepted. The
+  user maintains the voice commands; unavailable or failed playback gets a
+  brief notice, not automatic troubleshooting.
 
 For terminology, see [CONTEXT](../CONTEXT.md); for execution decisions, see
 [ADR 0001](adr/0001-explicit-setup-pointer-only-for-hard-dependencies.md) and

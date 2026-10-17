@@ -22,7 +22,7 @@ produces. Active skills are grouped by typical use; optional skills are user-onl
 ## Optional
 
 - **[excalidraw](./excalidraw/SKILL.md)** - Create and edit clear, editable Excalidraw diagrams from text or an existing scene.
-- **[voice](./voice/SKILL.md)** - Speak selected assistant responses using harness-native speech or the configured personal TTS fallback.
+- **[voice](./voice/SKILL.md)** - Use `bq` to queue requested text or useful responses through `voicept` (Portuguese) or `voiceen` (English), without waiting for playback.
 
 ## Typically agent-selected
 
