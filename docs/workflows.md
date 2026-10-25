@@ -339,9 +339,10 @@ These two skills are available separately from the active plugin catalog:
   scene → editable diagram → structural checks and visual inspection when
   available.
 - [voice](../skills/productivity/voice/SKILL.md): requested text or useful answers
-  → `bq` running `voicept` (Portuguese) or `voiceen` (English) in the serialized
-  audio queue → normal written response as soon as submission is accepted. The
-  user maintains the voice commands; unavailable or failed playback gets a
+  → raw `bq` CLI running `voicept` (Portuguese) or `voiceen` (English) in the
+  serialized audio queue → normal written response as soon as submission is
+  accepted. Fire-and-forget: no preflight checks, scheduler wrapper, or completion
+  callback. The user maintains the voice commands; a submission error gets a
   brief notice, not automatic troubleshooting.
 
 For terminology, see [CONTEXT](../CONTEXT.md); for execution decisions, see
