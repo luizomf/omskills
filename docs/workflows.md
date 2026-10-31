@@ -291,12 +291,11 @@ practitioner/community input for questions that call for experiential judgment.
   enrich diagnosis, TDD, architecture scans and grilling when present. Untracked
   review and untracked prompt audits work from their supplied contracts. See the
   [setup dependency decision](adr/0001-explicit-setup-pointer-only-for-hard-dependencies.md).
-- [model-routing](../skills/productivity/model-routing/SKILL.md) and its
-  [model table](../skills/productivity/model-routing/MODELS.md) guide callers
-  before model-selectable delegation: explicit choices first, then task-based
-  selection within authorized scope and harness support, with inheritance as the
-  fallback. This applies to review, research, design, audit and coordination
-  workers.
+- [model-routing](../skills/productivity/model-routing/SKILL.md) guides callers
+  before model-selectable delegation without prescribing a provider or model:
+  explicit choices first, then configured task-based selection within authorized
+  scope and harness support, with inheritance as the fallback. This applies to
+  review, research, design, audit and coordination workers.
 - [caveman](../skills/productivity/caveman/SKILL.md) compresses communication
   while preserving technical accuracy when compressed reporting is useful.
 

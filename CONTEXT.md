@@ -212,9 +212,9 @@ fallback. Ticket ownership includes implementation and adjudication; Mission
 continuity includes operational decisions, so neither is classified solely by a
 thin-dispatch label. Independent review is judgment work even for a small diff
 or settled implementation plan; apply model-routing's review rule within its
-selection precedence. The maintained table is a candidate catalog, not measured
-parity or guaranteed availability. _Avoid_: automatic provider switching, model
-names as workflow roles
+selection precedence. Concrete routes come from user or project configuration
+and the harness's available catalog, not a bundled provider ranking. _Avoid_:
+automatic provider switching, model names as workflow roles
 
 **Maintainer intervention**: User direction can revise scope, instructions,
 review limits, routing, recovery, or the plan. Apply clear decisions without

@@ -1,8 +1,8 @@
 ---
 name: model-routing
 description:
-  Select a model and supported reasoning level for a delegated task using a
-  cross-provider task table.
+  Select a model and supported reasoning level for delegated work within the
+  user's authorized routes.
 disable-model-invocation: true
 ---
 
@@ -38,21 +38,21 @@ Ticket evidence.
 
 ## 2. Select the route
 
-Read [MODELS.md](MODELS.md) for the local routing policy, concrete model/effort
-candidates and their source basis. Load it once per conversation and reuse it
-while the policy and assignment remain applicable; routine dispatch does not
-require browsing vendor docs.
+This skill is provider-neutral. Read model/effort preferences from the user's
+instructions or applicable configuration. Keep personal routing preferences in
+user-local configuration rather than this shared skill.
 
 Apply these choices in order:
 
 1. Honor an explicit user model/reasoning choice or incorporated standing
    agreement within its stated scope. A task-based routing instruction can
    authorize selection for future calls without reconfirming every child.
-2. Otherwise apply the local routing policy and task table within the caller's
-   authorized provider, model and budget scope. Stay with the current provider
-   unless another is explicitly allowed. Task-based selection is not permission
-   to enable credentials, purchase access, or override a harness requirement for
-   explicit model values.
+2. Otherwise apply the user's or project's configured routing policy within the
+   caller's authorized provider, model and budget scope. When task-based selection
+   is allowed, match the model's capabilities to the work identified above. Stay
+   with the current provider unless another is explicitly allowed. Task-based
+   selection is not permission to enable credentials, purchase access, or
+   override a harness requirement for explicit model values.
 3. If no selection is authorized, preserve the harness's normal inheritance and
    state that limitation when it prevents the requested routing. If a requested
    candidate is unavailable, use an already authorized available alternative
@@ -60,8 +60,8 @@ Apply these choices in order:
    return the caller's blocker. Do not silently fall back to an unrestricted
    frontier model.
 
-Resolve the table's API model ID to the actual harness route using its exposed
-catalog, a known working route, or explicit user configuration. Provider
+Resolve the selected model's identifier to the actual harness route using its
+exposed catalog, a known working route, or explicit user configuration. Provider
 prefixes and aliases vary by harness. Use supported lifecycle values, not
 guessed spellings or prompt text pretending to change a model. Apply model and
 reasoning independently: an explicit model does not authorize changing an
@@ -70,30 +70,27 @@ compute budgets.
 
 This step is complete when there is one authorized, available model and
 supported effort selection (or deliberate inheritance), or the missing
-authority/capability has been reported. The table supplies candidates, not
-evidence that an account can launch them.
+authority/capability has been reported. Model capability claims do not establish
+account access or harness support.
 
 ### Independent review
 
 Independent review is judgment work. Within the selection precedence above, use
-a strong reasoning model from the provider's judgment row or a more demanding
-row warranted by the uncertainty and impact. A small diff, settled implementation
-plan, capable author, or passing checks does not make review mechanical or
-bounded implementation. The reviewer must challenge the work independently,
+a model capable of challenging assumptions and reasoning about the task's risks.
+A small diff, settled implementation plan, capable author, or passing checks does
+not make review mechanical or bounded implementation. The reviewer must challenge the work independently,
 not merely confirm execution of the plan. This is a capability requirement, not
 a requirement to use a different model from the author or maximum effort.
-Keep concrete model/effort choices in `MODELS.md`; report any authorization or
-availability limitation rather than silently claiming the preferred route.
+Report any authorization or availability limitation rather than silently
+claiming the preferred route.
 
 ### Prompt Audit preference
 
-Apply the provider's task table to interpretation and the Independent review
-rule above to comparison. For OpenAI, both use the local policy's judgment
-route: interpreting intent, authorization, and completion boundaries is not
-mechanical extraction or execution of a settled plan. For other providers, a
-smaller capable interpreter may be suitable within explicit user choices,
-authorized budget, and available routes. The audit coordinator retains final
-adjudication, with comprehension evidence specific to the tested run.
+Interpreting intent, authorization, and completion boundaries is judgment work,
+not mechanical extraction. Choose a capable interpreter within the selection
+precedence above and apply the Independent review rule to comparison. The audit
+coordinator retains final adjudication, with comprehension evidence specific to
+the tested run.
 
 ## 3. Apply and evaluate
 
@@ -125,16 +122,12 @@ whether the child result is acceptable or the work is delivered.
 
 ## Examples
 
-- An expensive parent needs a long transcript cleaned up: use a text-capable
-  candidate from the mechanical row, not the parent's model merely by
-  inheritance. Actual audio transcription first needs an audio-capable tool or
-  model.
-- A settled design needs code and tests: start with the bounded-implementation
-  row; new unresolved architecture may justify a different route or a return to
-  the coordinator.
+- A long transcript needs cleanup: when selection is authorized, a text-capable
+  model suited to routine editing may suffice. Actual audio transcription needs
+  an audio-capable tool or model.
+- A settled design needs code and tests: choose for implementation and
+  verification; unresolved architecture may require stronger reasoning.
 - A dispatcher launches `orchestrate`: classify the full technical ownership,
-  including investigation and review adjudication, using the judgment row unless
-  an explicit route changes it. A dispatcher that diagnoses operational blockers
-  also needs judgment; it is broader than mechanical forwarding.
-- A user pins the reviewer to a supported model at medium effort: preserve that
-  choice even if the table suggests another starting point.
+  including investigation and review adjudication, not merely task forwarding.
+- A user pins the reviewer to a supported model and effort: preserve that choice
+  rather than replacing it with an inferred preference.

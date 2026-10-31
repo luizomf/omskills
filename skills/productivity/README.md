@@ -6,7 +6,7 @@ produces. Active skills are grouped by typical use; optional skills are user-onl
 
 ## Shared delegation policy
 
-- **[model-routing](./model-routing/SKILL.md)** - Select a model and supported reasoning level for a delegated task using a cross-provider task table. User-only; composed on demand by callers rather than added to permanent discovery.
+- **[model-routing](./model-routing/SKILL.md)** - Select a model and supported reasoning level for delegated work within the user's authorized routes. User-only; composed on demand by callers rather than added to permanent discovery.
 
 ## Typically user-selected
 
