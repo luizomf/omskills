@@ -47,18 +47,20 @@ Apply these choices in order:
 1. Honor an explicit user model/reasoning choice or incorporated standing
    agreement within its stated scope. A task-based routing instruction can
    authorize selection for future calls without reconfirming every child.
-2. Otherwise apply the user's or project's configured routing policy within the
-   caller's authorized provider, model and budget scope. When task-based selection
-   is allowed, match the model's capabilities to the work identified above. Stay
-   with the current provider unless another is explicitly allowed. Task-based
-   selection is not permission to enable credentials, purchase access, or
-   override a harness requirement for explicit model values.
-3. If no selection is authorized, preserve the harness's normal inheritance and
-   state that limitation when it prevents the requested routing. If a requested
-   candidate is unavailable, use an already authorized available alternative
-   appropriate to the task; otherwise ask only for the missing route decision or
-   return the caller's blocker. Do not silently fall back to an unrestricted
-   frontier model.
+2. Otherwise apply routing guidance from applicable documents, skills, and user
+   or project configuration within the caller's provider, model and budget scope.
+3. Without applicable guidance, choose an available model and supported reasoning
+   level using the task's difficulty, uncertainty, impact, cost, and verification
+   needs. Use judgment rather than assuming every child needs the parent's model
+   or the most capable model. Stay with the current provider unless another is
+   allowed; selection does not authorize enabling credentials or purchasing access.
+4. Only when the preceding sources and task-based judgment leave a value
+   undecided, use the harness's normal inheritance for that value. Honor actual
+   harness constraints and state any limitation that prevents the selected route.
+   If a requested candidate is unavailable, use an already authorized available
+   alternative appropriate to the task; otherwise ask only for the missing route
+   decision or return the caller's blocker. Do not silently fall back to an
+   unrestricted frontier model.
 
 Resolve the selected model's identifier to the actual harness route using its
 exposed catalog, a known working route, or explicit user configuration. Provider
@@ -94,10 +96,15 @@ the tested run.
 
 ## 3. Apply and evaluate
 
-Supply the selected route through the existing launch mechanism. Preserve the
-caller's tools, workspace, isolation, depth/child limits, result channel and
-workflow obligations. For a child that will delegate again, include any
-applicable standing routing instruction and the resolved path of this `SKILL.md`
+Supply the selected route through the existing launch mechanism on every start
+and continuation. Standing instructions remain applicable within their stated
+scope until superseded; a user need not repeat them per dispatch. A one-call
+exception does not replace a standing policy. Reapply selected values when the
+harness inherits omitted fields from the parent rather than retaining the
+child's previous route. Preserve the caller's tools, workspace, isolation,
+depth/child limits, result channel and workflow obligations. For a child that
+will delegate again, include any applicable standing routing instruction and
+the resolved path of this `SKILL.md`
 in its brief; fresh conversations do not receive the parent's transcript and may
 not list this hidden skill. Resolve file pointers from their referring file's
 physical directory (follow symlinks) before forwarding them, not from the

@@ -263,8 +263,10 @@ report concrete evidence to the responsible workflow without taking over its
 state. These workflows require no new coordinator code, daemon, watchdog,
 polling loop, or supervision service.
 
-Model-selectable launches use `model-routing` within explicit user choices,
-authorized policy, and active harness constraints; inheritance is the fallback.
+Model-selectable launches use `model-routing`: user instructions, applicable
+routing documents and skills, then task-based judgment within available routes
+and active harness constraints. Inheritance is the final fallback for undecided
+values, not a substitute for standing instructions on later dispatches.
 Classify full Ticket ownership and operational Mission decisions by their actual
 judgment needs. Resolve cross-skill links from the referring file's physical
 directory and pass resolved paths to fresh agents. Private operational notes,

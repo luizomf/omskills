@@ -206,10 +206,14 @@ model-selection authority. _Avoid_: workspace-relative link, hidden means
 uninstalled
 
 **Model routing**: Caller-owned selection for a future delegation through
-`model-routing`. Explicit user choices take precedence; authorized task-based
-policy considers uncertainty, impact, and verification, with inheritance as
-fallback. Ticket ownership includes implementation and adjudication; Mission
-continuity includes operational decisions, so neither is classified solely by a
+`model-routing`. User instructions take precedence, followed by applicable
+routing documents and skills, then caller judgment of task difficulty,
+uncertainty, impact, cost, and verification needs among available routes.
+Inheritance is the final fallback for undecided values. Standing instructions
+remain applicable within their scope across starts and continuations until
+superseded; selected values are reapplied through the harness on each call.
+Ticket ownership includes implementation and adjudication; Mission continuity
+includes operational decisions, so neither is classified solely by a
 thin-dispatch label. Independent review is judgment work even for a small diff
 or settled implementation plan; apply model-routing's review rule within its
 selection precedence. Concrete routes come from user or project configuration
