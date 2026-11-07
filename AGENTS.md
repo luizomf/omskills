@@ -28,8 +28,7 @@ project. Keep this file short and repository-specific, not a workflow manual.
 - Review the diff and run checks relevant to the change. Prefer test-first for
   behavior changes and regression tests for bugs; test observable behavior, not
   incidental wording. Documentation edits do not need invented tests.
-- Prefer portable Linux/macOS paths and scripts. Use `rtk` where it preserves
-  useful output. Put new worktrees under
+- Prefer portable Linux/macOS paths and scripts. Put new worktrees under
   `~/sannux-data/worktrees/<repo>/<worktree_name>` if needed.
 - Do not force-push, rewrite history, publish releases, or change repository
   visibility without explicit authorization.
