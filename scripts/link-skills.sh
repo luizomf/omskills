@@ -215,3 +215,9 @@ if [ "$MODE" = "install" ] && [ "$USE_DEFAULT_DEST" = true ]; then
     fi
   fi
 fi
+
+# Claude Code reads user skills from ~/.claude/skills, not ~/.agents/skills.
+# The default run serves it too on hosts where Claude Code is installed.
+if [ "$USE_DEFAULT_DEST" = true ] && [ -d "$HOME/.claude" ]; then
+  OMSKILLS_DEST="$HOME/.claude/skills" "$0" "$@"
+fi

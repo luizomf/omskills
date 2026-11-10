@@ -70,7 +70,9 @@ newer:
 ./scripts/link-skills.sh --check
 ```
 
-The default destination is `~/.agents/skills`. The installer uses relative
+The default destination is `~/.agents/skills`. When `~/.claude` exists, the
+default run also links the same skills into `~/.claude/skills` for Claude Code.
+The installer uses relative
 symlinks, tracks the links it owns, and preserves real paths and external links.
 On the first default installation, it migrates this repository's managed links
 from the legacy `~/.codex/skills` location while preserving unrelated content.

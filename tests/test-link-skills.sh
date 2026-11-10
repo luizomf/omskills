@@ -10,18 +10,22 @@ mkdir -p "$FAKE_HOME/.codex/skills"
 ln -s "$REPO/skills/engineering/to-spec" "$FAKE_HOME/.codex/skills/to-spec"
 printf '%s\n' "to-spec" > "$FAKE_HOME/.codex/skills/.omskills-managed-links"
 mkdir "$FAKE_HOME/.codex/skills/unrelated"
+mkdir "$FAKE_HOME/.claude"
 
 HOME="$FAKE_HOME" "$REPO/scripts/link-skills.sh" >/dev/null
-[ -L "$FAKE_HOME/.agents/skills/to-spec" ] || {
-  echo "error: default installation did not use ~/.agents/skills" >&2
-  exit 1
-}
-case "$(readlink "$FAKE_HOME/.agents/skills/to-spec")" in
-  /*)
-    echo "error: installer created an absolute skill link" >&2
+for default_dest in .agents/skills .claude/skills; do
+  [ -L "$FAKE_HOME/$default_dest/to-spec" ] || {
+    echo "error: default installation did not use ~/$default_dest" >&2
     exit 1
-    ;;
-esac
+  }
+  case "$(readlink "$FAKE_HOME/$default_dest/to-spec")" in
+    /*)
+      echo "error: installer created an absolute skill link in ~/$default_dest" >&2
+      exit 1
+      ;;
+  esac
+done
+HOME="$FAKE_HOME" "$REPO/scripts/link-skills.sh" --check >/dev/null
 [ ! -L "$FAKE_HOME/.codex/skills/to-spec" ] || {
   echo "error: legacy managed link was not migrated" >&2
   exit 1
